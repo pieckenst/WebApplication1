@@ -100,7 +100,9 @@
     <Content Include="Controls\ContentBox.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BasePage.cs" />
+    <Compile Include="App_Start\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="App_Start\PageContentStore.cs" />
     <Compile Include="App_Start\SiteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -179,7 +181,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>

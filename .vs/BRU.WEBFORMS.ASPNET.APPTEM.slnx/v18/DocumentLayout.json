@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|WebApplication1\\BRU.WEBFORMS.ASPNET.APP.csproj|solutionrelative:webapplication1\\controls\\navigationbar.ascx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|WebApplication1\\BRU.WEBFORMS.ASPNET.APP.csproj|e:\\code\\webforms2\\webapplication1\\webapplication1\\controls\\toolbar.ascx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|WebApplication1\\BRU.WEBFORMS.ASPNET.APP.csproj|E:\\code\\WEBFORMS2\\WebApplication1\\webapplication1\\controls\\toolbar.ascx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|WebApplication1\\BRU.WEBFORMS.ASPNET.APP.csproj|solutionrelative:webapplication1\\controls\\toolbar.ascx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -70,8 +70,7 @@
               "RelativeToolTip": "WebApplication1\\Controls\\Toolbar.ascx.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAUwD8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-14T12:26:03.486Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-14T12:26:03.486Z"
             },
             {
               "$type": "Document",
