@@ -91,7 +91,7 @@
             <tbody>
             <tr>
                 <td>
-                    <a class="tutorial-link" href="<%= ResolveUrl("~/en/knownissues.htm.tmp.html") %>">
+                    <a class="tutorial-link" href="<%= ResolveUrl("~/en/support/KnownIssues.aspx") %>">
                         <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Known Issues with Windows Update Restored
                     </a>
                     <blockquote>
@@ -123,12 +123,12 @@
             </tr>
             <tr>
                 <td>
-                    <a class="tutorial-link" title="Some versions of the Windows Update website rquire system modifications to work properly." href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">
+                    <a class="tutorial-link" title="Some versions of the Windows Update website require system modifications to work properly." href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>">
                         <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Prerequisites to run Windows Update Restored
                     </a>
                     <blockquote>
                         <p>Is Windows Update Restored not working for you out of the box? 
-						Head over to our <b><a href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">Prerequisites</a></b> page and that should help you!
+						Head over to our <b><a href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>">Prerequisites</a></b> page and that should help you!
 						<br>
 						<b>Please note that this applies to Windows Update Restored only.</b></p>
                     </blockquote>
@@ -187,7 +187,7 @@
 				<b>v5.windowsupdaterestored</b>.com as a WSUS server instead of Microsoft's. Lastly, Joshua Maitland has developed the Windows Update Restored v5 Checker Tool that will tell you 
 				<b>exactly what needs to be patched on your Windows operating system</b> so you can fix them and start using Windows Update Restored! 
 				<b>To check out how to apply the Windows Update Restored v5 WSUS patch to you system, visit the 
-				</b><a href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">P</a><b><a href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">rerequisites</a> page.</b>
+				</b><a href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>">P</a><b><a href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>">rerequisites</a> page.</b>
 				<b><a href="<%= ResolveUrl("~/en/downloads/WurV5CheckerTool.aspx") %>">Learn more about the 
 				Windows Update Restored V5 Checker Tool.</a></b></p>
             </div>

@@ -52,8 +52,12 @@
     SpCenter_Legacy                  : cbIntro
     IeDownloads                      : cbIntro
 
+  Main site pages:
+    Related                          : cbIntro
+
   Support pages:
     Default (support)                : cbIntro
+    KnownIssues                      : cbIntro
     KbArticles                       : cbIntro
     PrereqInstDoc                    : cbIntro
     WurV5Fix                         : cbArticle

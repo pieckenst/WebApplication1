@@ -91,6 +91,7 @@
     <Content Include="en\Contribute.aspx" />
     <Content Include="en\ReadThisFirst.aspx" />
     <Content Include="en\Prerequisites.aspx" />
+    <Content Include="en\Related.aspx" />
     <Content Include="en\Donations.aspx" />
     <Content Include="en\Privacy.aspx" />
     <Content Include="en\Legal.aspx" />
@@ -111,6 +112,7 @@
     <Content Include="en\downloads\IeDownloads.aspx" />
     <Content Include="en\support\Support.master" />
     <Content Include="en\support\Default.aspx" />
+    <Content Include="en\support\KnownIssues.aspx" />
     <Content Include="en\support\KbArticles.aspx" />
     <Content Include="en\support\PrereqInstDoc.aspx" />
     <Content Include="en\support\WurV5Fix.aspx" />
@@ -173,6 +175,10 @@
     </Compile>
     <Compile Include="en\Prerequisites.aspx.cs">
       <DependentUpon>Prerequisites.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\Related.aspx.cs">
+      <DependentUpon>Related.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="en\Donations.aspx.cs">
@@ -265,6 +271,10 @@
     </Compile>
     <Compile Include="en\support\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\KnownIssues.aspx.cs">
+      <DependentUpon>KnownIssues.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="en\support\KbArticles.aspx.cs">
