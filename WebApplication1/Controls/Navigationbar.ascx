@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Navigationbar.ascx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Controls.Navigationbar" %>
-<%@ Import Namespace="BRU.WEBFORMS.ASPNET.APP" %>
 
 <style type="text/css">
     .nav-body {
@@ -84,7 +83,7 @@
     <table class="nav-mainborder" cellspacing="0" cellpadding="0" border="0" width="100%" height="100%">
     <tr>
     <td class="nav-header" valign="middle" height="25">
-        <asp:Literal ID="litSiteName" runat="server" Text="<%= SiteConfig.SiteName %>" />
+        <asp:Literal ID="litSiteName" runat="server" />
     </td>
     </tr>
     

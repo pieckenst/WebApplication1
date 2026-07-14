@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
     <meta name="GENERATOR" content="Microsoft FrontPage 6.0">
     <meta name="ProgId" content="FrontPage.Editor.Document">
-    <title><asp:ContentPlaceHolder ID="PageTitle" runat="server"><%= SiteConfig.DefaultPageTitle %></asp:ContentPlaceHolder></title>
+    <title><asp:Literal ID="litPageTitle" runat="server" /></title>
     <link rel="icon" type="image/x-icon" href="<%= ResolveUrl("~/en/images/favicon.ico") %>">
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
