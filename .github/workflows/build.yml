@@ -1,0 +1,30 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    name: Build (MSBuild / .NET Framework)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET Framework 4.6.1 targeting pack
+        run: choco install netfx-4.6.1-devpack -y --no-progress
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore WebApplication1\packages.config -PackagesDirectory packages
+
+      - name: Build
+        run: msbuild WebApplication1\BRU.WEBFORMS.ASPNET.APP.csproj /p:Configuration=Release /p:Platform=AnyCPU /nologo /m
