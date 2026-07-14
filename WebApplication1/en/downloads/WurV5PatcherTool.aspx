@@ -1,4 +1,5 @@
 <%@ Page Title="Windows Update Restored Prerequisites Installer" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurV5PatcherTool.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.WurV5PatcherTool" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -46,11 +47,7 @@
                 <tr><td height="2" bgcolor="#000080"></td></tr>
             </table>
 
-            <p class="text-regular" style="margin-top: 0; margin-bottom: 0;">
-                The Prerequisites Installer automatically configures and updates your computer so that Windows Update Restored V5, V6, and Microsoft Update work correctly.
-                <br><br>
-                <span class="text-black text-small"><b>Published: 03/24/2024</b></span>
-            </p>
+            <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About the Prerequisites Installer" HeaderColor="Blue" ContentColor="White" />
 
             <table border="0" cellpadding="0" cellspacing="0"><tr><td height="15"></td></tr></table>
 

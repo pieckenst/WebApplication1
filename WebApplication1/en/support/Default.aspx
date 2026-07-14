@@ -1,4 +1,5 @@
 <%@ Page Title="Help &amp; Support Center - Windows Update Restored" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.Default" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -83,11 +84,7 @@
     </header>
 
     <main>
-        <p>Welcome to the Windows Update Restored Help and Support Center! This place is ideal if you have trouble getting the Windows Update websites to work. The Knowledge Base (KB) is a great way to find solutions to the problems you encounter. The issues are reported by members, if you are getting an issue with Windows Update Restored that is not in the Knowledge Base, 
-		<b><a href="<%= ResolveUrl("~/en/About.aspx") %>">contact us</a></b>.
-</p>
-        <p>Start browsing the Help &amp; Support Center by picking a link among the 
-		options below:</p>
+        <uc:ContentBox ID="cbIntro" runat="server" HeaderText="Welcome" HeaderColor="Blue" ContentColor="White" />
         <hr>
 
         <table class="content-table">

@@ -1,4 +1,5 @@
 <%@ Page Title="Other Downloads - Windows Update Restored Download Center" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="OtherDownloads.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.download_center.OtherDownloads" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -26,11 +27,7 @@
                     <tr><td height="2" bgcolor="#000080"></td></tr>
                 </table>
 
-                <p><b>These are all the available downloads that do not fit in the categories available on the <a href='<%= ResolveUrl("~/en/download-center/Default.aspx") %>'>Download Center homepage</a>. Scroll down through the page to find what you're looking for.</b></p>
-
-                <p>The downloads on this page are split into categories. You can read more about them below, or jump directly to the download options at the bottom of the page.</p>
-
-                <table border="0" cellpadding="0" cellspacing="0"><tr><td height="12"></td></tr></table>
+                <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About Other Downloads" HeaderColor="Blue" ContentColor="White" />
 
                 <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#000080">
                     <tr>

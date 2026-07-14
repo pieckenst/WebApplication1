@@ -1,4 +1,5 @@
 <%@ Page Title="Internet Explorer downloads - Windows Update Restored" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="IeDownloads.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.IeDownloads" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -39,11 +40,7 @@
  <FONT ID="f2" SIZE="2">
  <FONT ID="f1" FACE="Arial" SIZE="2">
  <p align="justify">
- <ID ID="x2">This page lists downloads of Microsoft Internet Explorer that you can use with Windows Update.</ID>
- <BR>
- Only Web Installers are listed here, which download the required files from the 
-	Windows Update Restored servers.<br>
-	<br>
+ <uc:ContentBox ID="cbIntro" runat="server" HeaderText="Internet Explorer Downloads" HeaderColor="Blue" ContentColor="White" />
  </FONT>
  	</FONT>
  </FONT>

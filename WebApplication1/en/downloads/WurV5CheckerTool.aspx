@@ -1,4 +1,5 @@
 <%@ Page Title="Windows Update Restored v5 Checker Tool" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurV5CheckerTool.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.WurV5CheckerTool" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -53,9 +54,7 @@
 
     <p><b>Published:</b> January 23, 2024</p>
 
-    <p>The Windows Update Restored Compatibility Checker checks your system to 
-	determine if your computer is compatible with Windows Update Restored v5. If 
-	not, it will inform you of what is needed to resolve the issue.</p>
+    <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About the Compatibility Checker" HeaderColor="Blue" ContentColor="White" />
 
     <hr>
 

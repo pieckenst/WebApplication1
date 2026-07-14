@@ -1,4 +1,5 @@
 <%@ Page Title="Knowledge Base Articles" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="KbArticles.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.KbArticles" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -74,9 +75,7 @@
                 <tr><td height="2" bgcolor="#000080"></td></tr>
             </table>
 
-            <p class="text-regular" style="margin-top: 0; margin-bottom: 15px;">
-                This page lists every Support topic we published over time regarding Windows Update Restored.
-            </p>
+            <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About the Knowledge Base" HeaderColor="Blue" ContentColor="White" />
 
             <div class="toc-bar">
                 <div class="toc-title">Quick Index:</div>
