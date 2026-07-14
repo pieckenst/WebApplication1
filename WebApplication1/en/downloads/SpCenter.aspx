@@ -14,9 +14,9 @@
 	<table CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
 		<tr>
 			<td ID="td1" VALIGN="top" ALIGN="left" WIDTH="94"><IMG ID="ix3" ALT=""
-					SRC='<%= ResolveUrl("~/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0"> </td>
+					SRC='<%= ResolveUrl("~/en/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0"> </td>
 			<td ID="td2" VALIGN="top" ALIGN="left"><IMG ID="ix2" ALT=""
-					SRC='<%= ResolveUrl("~/images/wurlgo_text.gif") %>' WIDTH="188" BORDER="0"> <br>
+					SRC='<%= ResolveUrl("~/en/images/wurlgo_text.gif") %>' WIDTH="188" BORDER="0"> <br>
 				<h2 style="color: darkblue; font-size: 18pt;"> Windows Service Packs Center <br>
 					<ID ID="x1a"></ID>
 				</h2>
