@@ -15,6 +15,8 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbWelcome.ContentHtml = GetConfiguredContent("cbWelcome", @"Welcome to this Windows XP styled website template! 
                 This template provides a nostalgic look reminiscent of classic Windows XP/2000 era websites. 
                 The layout uses a frame-based design with a top toolbar, navigation sidebar, and main content area.

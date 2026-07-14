@@ -13,6 +13,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbInfoCollect.ContentHtml = GetConfiguredContent("cbInfoCollect", @"We collect minimal information necessary to provide our services:
                 <ul>
                     <li><b>Usage Data:</b> Anonymous usage statistics to improve our services</li>

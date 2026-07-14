@@ -38,7 +38,12 @@ namespace BRU.WEBFORMS.ASPNET.APP
         public static string GetValue(string pageKey, string controlId, string propertyName)
         {
             string value;
-            return GetData().TryGetValue(BuildKey(pageKey, controlId, propertyName), out value) ? value : null;
+            if (!GetData().TryGetValue(BuildKey(pageKey, controlId, propertyName), out value))
+                return null;
+
+            // Treat a present-but-empty entry as "no override" so callers fall
+            // through to the next source.
+            return string.IsNullOrWhiteSpace(value) ? null : value;
         }
 
         private static string BuildKey(string pageKey, string controlId, string propertyName)

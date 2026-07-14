@@ -14,6 +14,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbTOC.ContentHtml = GetConfiguredContent("cbTOC", @"
                 <ul class='toc-list'>
                     <li><b><a href='#disclaimer'>Disclaimer and Important Notices</a></b></li>

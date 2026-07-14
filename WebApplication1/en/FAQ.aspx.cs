@@ -11,6 +11,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbGeneral.ContentHtml = GetConfiguredContent("cbGeneral", @"
                 <div class='faq-question'>What is this template for?</div>
                 <div class='faq-answer'>This template is designed for creating Windows XP/2000 styled websites using ASP.NET Web Forms. It provides an authentic retro computing aesthetic.</div>
