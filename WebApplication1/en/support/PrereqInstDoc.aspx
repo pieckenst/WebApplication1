@@ -16,10 +16,10 @@
  <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
  <TR>
  <TD ID="td1" VALIGN="top" ALIGN="left" WIDTH="94">
- <IMG ID="ix1" HEIGHT="100" ALT="" SRC='<%= ResolveUrl("~/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0">
+ <IMG ID="ix1" HEIGHT="100" ALT="" SRC='<%= ResolveUrl("~/en/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0">
  </TD>
  <TD ID="td2" VALIGN="top" ALIGN="left">
- <IMG ID="ix2" HEIGHT="100" ALT="" SRC='<%= ResolveUrl("~/images/wurlgo_text.gif") %>' WIDTH="182" BORDER="0">
+ <IMG ID="ix2" HEIGHT="100" ALT="" SRC='<%= ResolveUrl("~/en/images/wurlgo_text.gif") %>' WIDTH="182" BORDER="0">
  <BR>
  <FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <H2>

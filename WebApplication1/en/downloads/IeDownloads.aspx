@@ -19,12 +19,12 @@
 	<TR>
  <TD ID="td1" VALIGN="top" ALIGN="left" WIDTH="94" rowspan="2">
  <FONT ID="f7" FACE="Arial" SIZE="2">
- <IMG ID="ix3" HEIGHT="99" ALT="" SRC='<%= ResolveUrl("~/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0"></FONT></TD>
+ <IMG ID="ix3" HEIGHT="99" ALT="" SRC='<%= ResolveUrl("~/en/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0"></FONT></TD>
  </FONT>
  <FONT ID="f1" FACE="Arial" SIZE="2">
  <TD ID="td2" VALIGN="top" ALIGN="left">
  <font face="Arial">
- <IMG ID="ix2" HEIGHT="97" ALT="" SRC='<%= ResolveUrl("~/images/wurlgo_text.gif") %>' WIDTH="188" BORDER="0">
+ <IMG ID="ix2" HEIGHT="97" ALT="" SRC='<%= ResolveUrl("~/en/images/wurlgo_text.gif") %>' WIDTH="188" BORDER="0">
  </font><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3" SIZE="2">
  <FONT ID="f2" SIZE="2">
@@ -6313,7 +6313,7 @@
  <p align="justify">
  <BR>
  <span style="margin-right: 60px;"><font size="2">
-	<img border="0" src='<%= ResolveUrl("~/images/iepack.gif") %>' width="16" height="16" align="texttop" hspace="3">All 
+	<img border="0" src='<%= ResolveUrl("~/en/images/iepack.gif") %>' width="16" height="16" align="texttop" hspace="3">All 
 	of the files offered on this page are online installers of the Microsoft 
 	Internet Explorer Web Browser. They all retrieve the needed files from the 
 	Windows Update Restored servers. If you wish to make offline installers for 
