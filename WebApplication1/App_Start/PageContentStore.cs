@@ -80,8 +80,13 @@ namespace BRU.WEBFORMS.ASPNET.APP
             {
                 doc = XDocument.Load(path);
             }
-            catch
+            catch (Exception ex)
             {
+                // Don't crash the site over a bad content file, but make the
+                // failure visible so operators know overrides aren't applied
+                // (instead of silently falling back to code defaults).
+                System.Diagnostics.Trace.TraceError(
+                    "PageContentStore: failed to load '" + path + "': " + ex);
                 return data;
             }
 
