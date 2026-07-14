@@ -1,0 +1,109 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SiteMaster" %>
+<%@ Import Namespace="BRU.WEBFORMS.ASPNET.APP" %>
+<%@ Register TagPrefix="uc" TagName="Toolbar" Src="~/Controls/Toolbar.ascx" %>
+<%@ Register TagPrefix="uc" TagName="Navigationbar" Src="~/Controls/Navigationbar.ascx" %>
+<%@ Register TagPrefix="uc" TagName="Footer" Src="~/Controls/Footer.ascx" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <title><asp:ContentPlaceHolder ID="PageTitle" runat="server"><%= SiteConfig.DefaultPageTitle %></asp:ContentPlaceHolder></title>
+    <link rel="icon" type="image/x-icon" href="<%= ResolveUrl("~/en/images/favicon.ico") %>">
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        /* Reset and base styles */
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; }
+        img { border: 0; }
+        
+        /* Frame layout simulation */
+        .frame-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .frame-top {
+            height: 84px;
+            flex-shrink: 0;
+            background-color: #6487DC;
+        }
+        
+        .frame-middle {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .frame-sidebar {
+            width: 235px;
+            flex-shrink: 0;
+            border-right: 2px solid #2B64C8;
+            border-top: 1px solid #FFFFFF;
+            border-bottom: 1px solid #FFFFFF;
+            overflow: auto;
+        }
+        
+        .frame-content {
+            flex: 1;
+            overflow: auto;
+            background-color: #FFFFFF;
+        }
+        
+        .frame-bottom {
+            height: 24px;
+            flex-shrink: 0;
+            background-color: #6487DC;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .frame-sidebar {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        
+        <div class="frame-container">
+            <!-- Top Frame (Toolbar) -->
+            <div class="frame-top">
+                <asp:ContentPlaceHolder ID="TopContent" runat="server">
+                    <uc:Toolbar runat="server" ID="Toolbar1" />
+                </asp:ContentPlaceHolder>
+            </div>
+            
+            <!-- Middle Section -->
+            <div class="frame-middle">
+                <!-- Sidebar Frame (Navigation) -->
+                <div class="frame-sidebar">
+                    <asp:ContentPlaceHolder ID="SidebarContent" runat="server">
+                        <uc:Navigationbar runat="server" ID="Navigationbar1" />
+                    </asp:ContentPlaceHolder>
+                </div>
+                
+                <!-- Main Content Frame -->
+                <div class="frame-content">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+            
+            <!-- Bottom Frame (Footer) -->
+            <div class="frame-bottom">
+                <asp:ContentPlaceHolder ID="FooterContent" runat="server">
+                    <uc:Footer runat="server" ID="Footer1" />
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
