@@ -12,6 +12,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.en.account
     /// </summary>
     public partial class Login : BasePage
     {
+        protected global::System.Web.UI.WebControls.Panel pnlStatus;
+        protected global::System.Web.UI.WebControls.Literal litStatus;
+
         protected override void LoadPageContent()
         {
             LogPageContentLoad();
