@@ -68,6 +68,8 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="<%= ResolveUrl("~/Content/xpcss/XP.css") %>">
+    <link rel="stylesheet" href="<%= ResolveUrl("~/Content/xpcss/xp-scope.css") %>">
 </head>
 <body>
     <form id="form1" runat="server">

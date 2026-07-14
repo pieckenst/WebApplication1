@@ -118,6 +118,14 @@
     <Content Include="en\support\kb\WurBlockedByIsp.aspx" />
     <Content Include="en\support\kb\WurCert.aspx" />
     <Content Include="en\support\kb\WurV31NotWorkingAfterUsingWurV4.aspx" />
+    <Content Include="Content\xpcss\XP.css" />
+    <Content Include="Content\xpcss\xp-scope.css" />
+    <Content Include="Content\xpcss\ms_sans_serif.woff" />
+    <Content Include="Content\xpcss\ms_sans_serif.woff2" />
+    <Content Include="Content\xpcss\ms_sans_serif_bold.woff" />
+    <Content Include="Content\xpcss\ms_sans_serif_bold.woff2" />
+    <Content Include="Content\xpcss\PerfectDOSVGA437Win.woff" />
+    <Content Include="Content\xpcss\PerfectDOSVGA437Win.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BasePage.cs">

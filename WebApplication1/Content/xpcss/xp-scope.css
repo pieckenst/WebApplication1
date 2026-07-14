@@ -1,0 +1,32 @@
+/*
+ * Scopes XP.css to interactive controls only.
+ *
+ * XP.css ships some global, page-level rules (base typography, link color,
+ * <pre>/<code> styling and custom scrollbars) in addition to the control
+ * component styles. This site only wants the *controls* (buttons, checkboxes,
+ * option buttons, tabs, group boxes, text boxes, sliders, dropdowns, tree
+ * views, progress bars) styled -- not the surrounding page chrome. Loaded
+ * after XP.css, these rules revert its non-control globals so the existing
+ * legacy look is untouched, while the control components keep their XP style.
+ */
+
+/* Base typography / links / preformatted text */
+body { font-family: revert; font-size: revert; color: revert; }
+h1, h2, h3, h4 { font-size: revert; }
+u { text-decoration: revert; border-bottom: revert; }
+a { color: revert; }
+a:focus { outline: revert; }
+code, code * { font-family: revert; }
+pre { display: revert; padding: revert; background-color: revert; color: revert; font-size: revert; margin: revert; }
+pre, pre * { font-family: revert; }
+
+/* Custom scrollbars are page chrome, not a control */
+::-webkit-scrollbar,
+::-webkit-scrollbar:horizontal,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-button:horizontal:start,
+::-webkit-scrollbar-button:horizontal:end,
+::-webkit-scrollbar-button:vertical:start,
+::-webkit-scrollbar-button:vertical:end { all: revert; }
