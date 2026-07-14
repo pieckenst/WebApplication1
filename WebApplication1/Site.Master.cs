@@ -9,13 +9,15 @@ namespace BRU.WEBFORMS.ASPNET.APP
     /// </summary>
     public partial class SiteMaster : MasterPage
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected global::System.Web.UI.WebControls.Literal litPageTitle;
+
+        protected void Page_PreRender(object sender, EventArgs e)
         {
-            // Configuration can be set programmatically
-            if (!IsPostBack)
-            {
-                // Initialize any master page level functionality
-            }
+            // Reflect the page's title (set via the Page Title attribute or
+            // BasePage) in the browser title bar, falling back to SiteConfig.
+            litPageTitle.Text = !string.IsNullOrEmpty(Page.Title)
+                ? Page.Title
+                : SiteConfig.DefaultPageTitle;
         }
 
         /// <summary>

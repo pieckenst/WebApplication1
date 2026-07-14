@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Footer.ascx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Controls.Footer" %>
-<%@ Import Namespace="BRU.WEBFORMS.ASPNET.APP" %>
 
 <style type="text/css">
     .footer-container {
@@ -24,5 +23,5 @@
 </style>
 
 <div class="footer-container">
-    <asp:Literal ID="litCopyright" runat="server" Text="<%= SiteConfig.CopyrightText %>" />
+    <asp:Literal ID="litCopyright" runat="server" />
 </div>

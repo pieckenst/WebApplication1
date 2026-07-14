@@ -16,6 +16,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(litSiteName.Text))
+                litSiteName.Text = SiteConfig.SiteName;
+
             if (!IsPostBack)
             {
                 BindNavigation();
