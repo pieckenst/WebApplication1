@@ -1,4 +1,4 @@
-<%@ Page Title="Windows Update Restored v5 Checker Tool" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurInvChecker.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.WurInvChecker" %>
+<%@ Page Title="Windows Update Restored Inventory Checker Tool" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurInvChecker.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.WurInvChecker" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
