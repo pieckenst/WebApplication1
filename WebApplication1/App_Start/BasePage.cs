@@ -12,14 +12,27 @@ namespace BRU.WEBFORMS.ASPNET.APP
     public class BasePage : Page
     {
         /// <summary>
-        /// Key used for Web.config page overrides (Page.{PageContentKey}.{controlId}.{property}).
-        /// Defaults to the code-behind class name without leading underscore.
+        /// Key used for page content overrides (PageContent.xml and
+        /// Web.config Page.{PageContentKey}.{controlId}.{property}).
+        /// Resolves to the code-behind class name without a leading underscore
+        /// (e.g. "Default", "About").
+        ///
+        /// At runtime ASP.NET serves a generated type such as "default_aspx"
+        /// that derives from the code-behind class, so GetType().Name is not
+        /// the class name; we walk up to the code-behind type first.
         /// </summary>
         protected virtual string PageContentKey
         {
             get
             {
-                string name = GetType().Name;
+                Type type = GetType();
+                while (type != null &&
+                       type.Name.EndsWith("_aspx", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = type.BaseType;
+                }
+
+                string name = (type ?? GetType()).Name;
                 return name.StartsWith("_") ? name.Substring(1) : name;
             }
         }
