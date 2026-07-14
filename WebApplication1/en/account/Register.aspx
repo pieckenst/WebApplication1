@@ -44,7 +44,7 @@
                         autocomplete="new-password" placeholder="Re-enter your password" />
                 </div>
 
-                <div class="field-row">
+                <div class="field-row auth-terms">
                     <asp:CheckBox ID="chkTerms" runat="server" />
                     <label for="<%= chkTerms.ClientID %>">I agree to the
                         <a href="<%= ResolveUrl("~/en/Legal.aspx") %>">Terms</a> and
