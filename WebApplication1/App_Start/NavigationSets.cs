@@ -24,7 +24,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 new NavigationItem { Title = "Popular Downloads", IsSubheader = true },
                 new NavigationItem { Title = "Prerequisites Installer", NavigateUrl = "~/en/downloads/WurV5PatcherTool.aspx" },
                 new NavigationItem { Title = "Inventory Checker", NavigateUrl = "~/en/downloads/WurInvChecker.aspx" },
-                new NavigationItem { Title = "Internet Explorer Installers", NavigateUrl = "~/en/ie.htm.tmp.html" },
+                new NavigationItem { Title = "Internet Explorer Installers", NavigateUrl = "~/en/downloads/IeDownloads.aspx" },
                 new NavigationItem { Title = "Windows Service Packs", NavigateUrl = "~/en/downloads/SpCenter.aspx" },
                 new NavigationItem { Title = "Other Downloads", NavigateUrl = "~/en/download-center/OtherDownloads.aspx" },
 

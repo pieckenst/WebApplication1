@@ -48,8 +48,8 @@
                         </td>
 
                         <td align="center" valign="top" width="33%">
-                            <a href='<%= ResolveUrl("~/en/ie.htm.tmp.html") %>' title="Download Internet Explorer 3.0 to 6.0 SP1, available in multilanguage."><img src='<%= ResolveUrl("~/en/images/internet_explorer.gif") %>' alt="Internet Explorer" border="0" width="80"></a><br><br>
-                            <a href='<%= ResolveUrl("~/en/ie.htm.tmp.html") %>' title="Download Internet Explorer 3.0 to 6.0 SP1, available in multilanguage." class="nav-link-title">Internet Explorer Downloads</a><br>
+                            <a href='<%= ResolveUrl("~/en/downloads/IeDownloads.aspx") %>' title="Download Internet Explorer 3.0 to 6.0 SP1, available in multilanguage."><img src='<%= ResolveUrl("~/en/images/internet_explorer.gif") %>' alt="Internet Explorer" border="0" width="80"></a><br><br>
+                            <a href='<%= ResolveUrl("~/en/downloads/IeDownloads.aspx") %>' title="Download Internet Explorer 3.0 to 6.0 SP1, available in multilanguage." class="nav-link-title">Internet Explorer Downloads</a><br>
                             <div style="line-height: 1.3; margin-top: 8px; font-size: 12px;">Looking for specific versions of Internet Explorer? Access multi-language installers from 3.0 to 6.0 SP1.</div>
                         </td>
 

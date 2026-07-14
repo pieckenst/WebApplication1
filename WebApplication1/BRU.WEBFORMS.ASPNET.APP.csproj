@@ -108,6 +108,7 @@
     <Content Include="en\downloads\WurV5PatcherTool.aspx" />
     <Content Include="en\downloads\SpCenter.aspx" />
     <Content Include="en\downloads\SpCenter_Legacy.aspx" />
+    <Content Include="en\downloads\IeDownloads.aspx" />
     <Content Include="en\support\Support.master" />
     <Content Include="en\support\Default.aspx" />
     <Content Include="en\support\KbArticles.aspx" />
@@ -224,6 +225,10 @@
     </Compile>
     <Compile Include="en\downloads\SpCenter.aspx.cs">
       <DependentUpon>SpCenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\IeDownloads.aspx.cs">
+      <DependentUpon>IeDownloads.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="en\downloads\SpCenter_Legacy.aspx.cs">

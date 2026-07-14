@@ -1,38 +1,37 @@
-<HTML>
- <HEAD>
- <TITLE>Internet Explorer downloads - Windows Update Restored</TITLE>
- <META CONTENT='(PICS-1.1 "http://www.rsac.org/ratingsv01.html" L GEN TRUE COMMENT "RSACi North America Server" BY "inet@microsoft.com" ON "1997.06.30T14:48-0500" R (N 0 S 0 V 0 L 0))' HTTP-EQUIV="PICS-Label">
- <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
- <STYLE>
- <!--
- .smallblack { font-family: verdana, arial, sans-serif; font-size: 8pt; }
- .darkblue { color: #00319C; }
- A:link { color: #00319C; }
- .BodyText { COLOR: black; FONT-FAMILY: Verdana, Arial; FONT-SIZE: 8pt; }
- table {border-collapse: collapse;}
- a {color: #00319C;}
- --></STYLE>
- </HEAD>
- <BODY BGCOLOR="white" LINK="#00319c" TOPMARGIN="20" LEFTMARGIN="10" RIGHTMARGIN="50" CLASS="BodyText">
+<%@ Page Title="Internet Explorer downloads - Windows Update Restored" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="IeDownloads.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.IeDownloads" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        .cw .smallblack {font-family: verdana, arial, sans-serif; font-size: 8pt; }
+        .cw .darkblue {color: #00319C; }
+        .cw A:link {color: #00319C; }
+        .cw .BodyText {COLOR: black; FONT-FAMILY: Verdana, Arial; FONT-SIZE: 8pt; }
+        .cw table {border-collapse: collapse; }
+        .cw a {color: #00319C; }
+    </style>
+
+    <div class="cw">
+
  <FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
  <!-- MSTableType="nolayout" -->
 	<TR>
  <TD ID="td1" VALIGN="top" ALIGN="left" WIDTH="94" rowspan="2">
  <FONT ID="f7" FACE="Arial" SIZE="2">
- <IMG ID="ix3" HEIGHT="99" ALT="" SRC="http://windowsupdaterestored.com/images/wulgo_only.gif" WIDTH="100" BORDER="0"></FONT></TD>
+ <IMG ID="ix3" HEIGHT="99" ALT="" SRC='<%= ResolveUrl("~/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0"></FONT></TD>
  </FONT>
  <FONT ID="f1" FACE="Arial" SIZE="2">
  <TD ID="td2" VALIGN="top" ALIGN="left">
  <font face="Arial">
- <IMG ID="ix2" HEIGHT="97" ALT="" SRC="http://windowsupdaterestored.com/images/wurlgo_text.gif" WIDTH="188" BORDER="0">
+ <IMG ID="ix2" HEIGHT="97" ALT="" SRC='<%= ResolveUrl("~/images/wurlgo_text.gif") %>' WIDTH="188" BORDER="0">
  </font><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3" SIZE="2">
  <FONT ID="f2" SIZE="2">
  <FONT ID="f1" FACE="Arial" SIZE="2">
  <H2>
  <font color="#00008B">Internet Explorer Downloads</font></H2>
-	<img alt="Microsoft Internet Explorer 4.0 Banner Logo" src="images/Microsoft-Internet-Explorer-Logo-1996.gif" width="320" height="47" title="Microsoft Internet Explorer">
+	<img alt="Microsoft Internet Explorer 4.0 Banner Logo" src="<%= ResolveUrl("~/en/images/Microsoft-Internet-Explorer-Logo-1996.gif") %>" width="320" height="47" title="Microsoft Internet Explorer">
  </FONT>
  </FONT>
  </FONT><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -76,7 +75,7 @@
 	installer.</i><FONT ID="f1" SIZE="2"><FONT ID="f3" SIZE="2"><FONT ID="f2" SIZE="2"><p align="justify">
  <b><i>Select a version to jump to its' respective table on this page:</i></b><i><br>
 	&nbsp;</i>-</font></font></font></font></font></font><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2471" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2472" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2473" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2474" SIZE="2"><FONT ID="f2475" SIZE="2"><font color="#800000" ID="f2476" FACE="Arial" SIZE="2"> 
-	<a href="ie.htm.tmp.html#MSIE3">Microsoft Internet Explorer 3.0x (16-Bit | 32-Bit)</a></font></FONT></FONT></font></font></font></font></font></font></font></font><br>
+	<a href="#MSIE3">Microsoft Internet Explorer 3.0x (16-Bit | 32-Bit)</a></font></FONT></FONT></font></font></font></font></font></font></font></font><br>
 	<FONT ID="f2" SIZE="2"><FONT ID="f3" SIZE="2"><FONT ID="f1" SIZE="2"><FONT ID="f3" SIZE="2"><FONT ID="f2" SIZE="2"><b><font color="#800000"><br>
 	</font></b>
  	</font></font></font>
@@ -85,15 +84,15 @@
  <FONT ID="f2" SIZE="2"><FONT ID="f3" SIZE="2">
  <FONT ID="f1" SIZE="2">
  <FONT ID="f3" SIZE="2">
- <FONT ID="f2" SIZE="2">&nbsp;- <a href="ie.htm.tmp.html#MSIE401">Microsoft 
+ <FONT ID="f2" SIZE="2">&nbsp;- <a href="#MSIE401">Microsoft 
 	Internet Explorer 4.01 (RTM | SP1 | SP2)</a><br>
 	<i><br>
-	</i>&nbsp;- <a href="ie.htm.tmp.html#MSIE501">Microsoft Internet Explorer 5.01 (RTM | SP1 | 
+	</i>&nbsp;- <a href="#MSIE501">Microsoft Internet Explorer 5.01 (RTM | SP1 | 
 	SP2)</a><br>
 	<br>
-&nbsp;- <a href="ie.htm.tmp.html#MSIE55">Microsoft Internet Explorer 5.5 (RTM | SP1 | SP2)</a><br>
+&nbsp;- <a href="#MSIE55">Microsoft Internet Explorer 5.5 (RTM | SP1 | SP2)</a><br>
 	<i><br>
-&nbsp;- </i><a href="ie.htm.tmp.html#MSIE6">Microsoft Internet Explorer 6.0 (RTM | SP1)</a></font></font></font></font></font><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><i><br>
+&nbsp;- </i><a href="#MSIE6">Microsoft Internet Explorer 6.0 (RTM | SP1)</a></font></font></font></font></font><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><i><br>
 	<br>
 &nbsp;<hr></i>
  	</font></font></font>
@@ -219,7 +218,7 @@
  <FONT ID="f3449" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3450" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3451" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_AR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_AR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 	</tr>
 	<tr>
 		<td width="15%"><font size="2">Chinese (Taiwan)</font></td>
@@ -265,7 +264,7 @@
  <FONT ID="f2575" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2576" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2577" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/TWFUL30E.EXE" style="text-decoration: none">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/TWFUL30E.EXE" style="text-decoration: none">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3452" FACE="Arial" SIZE="2">
  		<FONT ID="f3453" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -324,7 +323,7 @@
  <FONT ID="f3506" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3507" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3508" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_TW.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_TW.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -372,7 +371,7 @@
  <FONT ID="f2613" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2614" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2615" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/CNFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/CNFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3509" FACE="Arial" SIZE="2">
  		<FONT ID="f3510" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -431,7 +430,7 @@
  <FONT ID="f3563" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3564" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3565" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_CN.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_CN.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -479,7 +478,7 @@
  <FONT ID="f2651" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2652" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2653" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/CSFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/CSFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3566" FACE="Arial" SIZE="2">
  		<FONT ID="f3567" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -538,7 +537,7 @@
  <FONT ID="f3620" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3621" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3622" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_CS.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_CS.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -586,7 +585,7 @@
  <FONT ID="f2689" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2690" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2691" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/DAFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/DAFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3623" FACE="Arial" SIZE="2">
  		<FONT ID="f3624" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -645,7 +644,7 @@
  <FONT ID="f3677" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3678" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3679" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_DA.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_DA.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -693,7 +692,7 @@
  <FONT ID="f2727" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2728" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2729" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/DEFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/DEFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3680" FACE="Arial" SIZE="2">
  		<FONT ID="f3681" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -752,7 +751,7 @@
  <FONT ID="f3734" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3735" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3736" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_DE.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_DE.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -868,7 +867,7 @@
  <FONT ID="f3791" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3792" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3793" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_EL.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_EL.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -928,7 +927,7 @@
  <FONT ID="f2803" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2804" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2805" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/ENFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/ENFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3794" FACE="Arial" SIZE="2">
  		<FONT ID="f3795" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -987,7 +986,7 @@
  <FONT ID="f3848" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3849" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3850" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_EN.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_EN.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1047,7 +1046,7 @@
  <FONT ID="f2841" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2842" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2843" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/ESFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/ESFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3851" FACE="Arial" SIZE="2">
  		<FONT ID="f3852" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1106,7 +1105,7 @@
  <FONT ID="f3905" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3906" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3907" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_ES.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_ES.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1166,7 +1165,7 @@
  <FONT ID="f2879" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2880" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2881" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/FIFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/FIFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3908" FACE="Arial" SIZE="2">
  		<FONT ID="f3909" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1225,7 +1224,7 @@
  <FONT ID="f3962" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3963" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3964" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_FI.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_FI.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1285,7 +1284,7 @@
  <FONT ID="f2917" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2918" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2919" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/FRFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/FRFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f3965" FACE="Arial" SIZE="2">
  		<FONT ID="f3966" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1344,7 +1343,7 @@
  <FONT ID="f4019" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4020" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4021" FACE="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_FR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_FR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1462,7 +1461,7 @@
  <FONT ID="f4076" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4077" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4078" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_HE.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_HE.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1522,7 +1521,7 @@
  <FONT ID="f2993" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f2994" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f2995" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/HUFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/HUFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4079" FACE="Arial" SIZE="2">
  		<FONT ID="f4080" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1581,7 +1580,7 @@
  <FONT ID="f4133" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4134" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4135" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_HU.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_HU.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1641,7 +1640,7 @@
  <FONT ID="f3031" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3032" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3033" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/ITFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/ITFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4136" FACE="Arial" SIZE="2">
  		<FONT ID="f4137" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1700,7 +1699,7 @@
  <FONT ID="f4190" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4191" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4192" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_IT.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_IT.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1760,7 +1759,7 @@
  <FONT ID="f3069" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3070" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3071" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/JAFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/JAFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center" height="23">
  <FONT ID="f4193" FACE="Arial" SIZE="2">
  		<FONT ID="f4194" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1819,7 +1818,7 @@
  <FONT ID="f4247" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4248" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4249" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_JA.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_JA.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1879,7 +1878,7 @@
  <FONT ID="f3107" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3108" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3109" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/KOFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/KOFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4250" FACE="Arial" SIZE="2">
  		<FONT ID="f4251" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -1938,7 +1937,7 @@
  <FONT ID="f4304" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4305" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4306" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_KO.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_KO.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -1998,7 +1997,7 @@
  <FONT ID="f3145" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3146" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3147" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/NLFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/NLFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4307" FACE="Arial" SIZE="2">
  		<FONT ID="f4308" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -2057,7 +2056,7 @@
  <FONT ID="f4361" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4362" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4363" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_NL.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_NL.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -2117,7 +2116,7 @@
  <FONT ID="f3183" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3184" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3185" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/NOFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/NOFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4364" FACE="Arial" SIZE="2">
  		<FONT ID="f4365" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -2176,7 +2175,7 @@
  <FONT ID="f4418" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4419" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4420" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_NO.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_NO.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -2236,7 +2235,7 @@
  <FONT ID="f3221" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3222" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3223" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/PLFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/PLFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4421" FACE="Arial" SIZE="2">
  		<FONT ID="f4422" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -2295,7 +2294,7 @@
  <FONT ID="f4475" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4476" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4477" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_PL.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_PL.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -2355,7 +2354,7 @@
  <FONT ID="f3259" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3260" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3261" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/BRFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/BRFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center" height="37">
  <FONT ID="f4478" FACE="Arial" SIZE="2">
  		<FONT ID="f4479" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -2414,7 +2413,7 @@
  <FONT ID="f4532" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4533" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4534" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_BR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_BR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -2474,7 +2473,7 @@
  <FONT ID="f3297" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3298" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3299" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/PTFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/PTFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4535" FACE="Arial" SIZE="2">
  		<FONT ID="f4536" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -2533,7 +2532,7 @@
  <FONT ID="f4589" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4590" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4591" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_PT.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_PT.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -2593,7 +2592,7 @@
  <FONT ID="f3335" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3336" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3337" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/RUFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/RUFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f4592" FACE="Arial" SIZE="2">
  		<FONT ID="f4593" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -2652,7 +2651,7 @@
  <FONT ID="f4646" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4647" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4648" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_RU.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_RU.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -2723,7 +2722,7 @@
  <FONT ID="f3373" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f3374" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f3375" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win16/SVFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win16/SVFUL30E.EXE">16-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  <FONT ID="f2276" SIZE="2">
  <FONT ID="f2277" SIZE="2">
  <FONT ID="f2278" SIZE="2">
@@ -2787,7 +2786,7 @@
  <FONT ID="f4703" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4704" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4705" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_SV.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_SV.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  		</font>
  </FONT>
  </FONT>
@@ -2914,7 +2913,7 @@
  <FONT ID="f4760" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f4761" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <font size="2" ID="f4762" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie302win32/MSIE302_TR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie302win32/MSIE302_TR.EXE">32-Bit</a></font></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></FONT></font></font></font></FONT></FONT></FONT></FONT></FONT></font></font></font></FONT></FONT></FONT></font></font></font></FONT></td>
  	</tr>
 	</table>
  </FONT>
@@ -3015,7 +3014,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/zhtw/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/zhtw/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3028,7 +3027,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/zhcn/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/zhcn/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3041,7 +3040,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/cs/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/cs/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3054,7 +3053,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/da/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/da/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3067,7 +3066,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/de/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/de/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3088,7 +3087,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/el/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/el/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3113,7 +3112,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/en/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/en/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3138,7 +3137,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/es/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/es/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3163,7 +3162,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/fi/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/fi/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3188,7 +3187,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/fr/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/fr/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3251,7 +3250,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/hu/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/hu/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3276,7 +3275,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/it/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/it/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3301,7 +3300,7 @@
 		RTM</font></td>
 		<td width="12%" align="center" height="23"><font size="2">SP1</font></td>
 		<td width="11%" align="center" height="23"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/ja/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/ja/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3326,7 +3325,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/ko/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/ko/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3351,7 +3350,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/nl/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/nl/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3376,7 +3375,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/no/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/no/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3401,7 +3400,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/pl/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/pl/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3426,7 +3425,7 @@
 		RTM</font></td>
 		<td width="12%" align="center" height="37"><font size="2">SP1</font></td>
 		<td width="11%" align="center" height="37"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/ptbr/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/ptbr/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3451,7 +3450,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/pt/ie4setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/pt/ie4setup.exe">
 		SP2</a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3477,7 +3476,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/ru/ie4setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/ru/ie4setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -3575,7 +3574,7 @@
  <FONT ID="f480" FACE="Arial" SIZE="2">
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/sv/ie4setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/sv/ie4setup.exe">
 		SP2</a></font></td>
  		</font>
  </FONT>
@@ -3783,7 +3782,7 @@
  <FONT ID="f658" SIZE="2">
  <FONT ID="f659" SIZE="2">
  		<font size="2" ID="f660" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie401sp2/tr/ie4setup.exe">SP2</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie401sp2/tr/ie4setup.exe">SP2</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
  	</tr>
 	</table>
  </FONT>
@@ -3849,7 +3848,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/ar/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/ar/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
 	</tr>
 	<tr>
@@ -3861,7 +3860,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/zhtw/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/zhtw/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3875,7 +3874,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/zhcn/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/zhcn/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3889,7 +3888,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/cs/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/cs/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3903,7 +3902,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/da/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/da/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3917,7 +3916,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/de/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/de/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3938,7 +3937,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/el/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/el/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3963,7 +3962,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/en/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/en/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -3988,7 +3987,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/es/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/es/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4013,7 +4012,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/fi/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/fi/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4038,7 +4037,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/fr/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/fr/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4063,7 +4062,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/he/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/he/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4088,7 +4087,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/hu/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/hu/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4113,7 +4112,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/it/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/it/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4138,7 +4137,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/ja/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/ja/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4163,7 +4162,7 @@
  		<td width="12%" align="center" height="21"><font size="2">RTM</font></td>
 		<td width="12%" align="center" height="21"><font size="2">SP1</font></td>
 		<td width="11%" align="center" height="21"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/ko/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/ko/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4188,7 +4187,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/nl/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/nl/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4213,7 +4212,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/no/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/no/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4238,7 +4237,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/pl/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/pl/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4263,7 +4262,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/ptbr/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/ptbr/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4288,7 +4287,7 @@
  		<td width="12%" align="center"><font size="2">RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/pt/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/pt/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4313,7 +4312,7 @@
  		<td width="12%" align="center" height="21"><font size="2">RTM</font></td>
 		<td width="12%" align="center" height="21"><font size="2">SP1</font></td>
 		<td width="11%" align="center" height="21"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/ru/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/ru/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT></FONT>
  </FONT>
@@ -4411,7 +4410,7 @@
  <FONT ID="f895" FACE="Arial" SIZE="2">
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/sv/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/sv/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  		</font>
  </FONT>
@@ -4618,7 +4617,7 @@
  <FONT ID="f1073" SIZE="2">
  <FONT ID="f1074" SIZE="2">
  		<font size="2" ID="f1075" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie501sp2/tr/ie5setup.exe">
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie501sp2/tr/ie5setup.exe">
 	<font color="#00008B">SP2</font></a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
  	</tr>
 	</table>
@@ -4681,7 +4680,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/ar/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/ar/ie5setup.exe">SP2</a></font></td>
 	</tr>
 	<tr>
 		<td width="15%"><font size="2">Chinese (Taiwan)</font></td>
@@ -4691,7 +4690,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/zhtw/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/zhtw/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4703,7 +4702,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/zhcn/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/zhcn/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4715,7 +4714,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/cs/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/cs/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4727,7 +4726,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/da/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/da/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4739,7 +4738,7 @@
 		RTM</font></td>
 		<td width="12%" align="center"><font size="2">SP1</font></td>
 		<td width="11%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/de/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/de/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4762,7 +4761,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/el/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/el/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4782,11 +4781,11 @@
  <FONT ID="f1" SIZE="2">
  <FONT ID="f2" SIZE="2"><FONT ID="f3" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55rtw/en/ie5setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55rtw/en/ie5setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp1/en/ie5setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp1/en/ie5setup.exe">SP1</a></font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/en/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/en/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4808,7 +4807,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/es/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/es/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4830,7 +4829,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/fi/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/fi/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4852,7 +4851,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/fr/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/fr/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4874,7 +4873,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/he/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/he/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4896,7 +4895,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/hu/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/hu/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4918,7 +4917,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/it/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/it/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4940,7 +4939,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/ja/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/ja/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4962,7 +4961,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/ko/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/ko/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -4984,7 +4983,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/nl/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/nl/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5006,7 +5005,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/no/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/no/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5028,7 +5027,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/pl/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/pl/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5050,7 +5049,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/ptbr/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/ptbr/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5072,7 +5071,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/pt/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/pt/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5094,7 +5093,7 @@
  		<td width="12%" align="center"><font size="2" face="Arial">RTM</font></td>
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/ru/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/ru/ie5setup.exe">SP2</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5180,7 +5179,7 @@
  <font face="Arial" size="2">RTM</font></td>
 		<td width="12%" align="center"><font face="Arial" size="2">SP1</font></td>
 		<td width="11%" align="center"><font face="Arial" size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/sk/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/sk/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  </FONT>
  	</tr>
@@ -5199,7 +5198,7 @@
  <font face="Arial" size="2">RTM</font></td>
 		<td width="12%" align="center"><font face="Arial" size="2">SP1</font></td>
 		<td width="11%" align="center"><font face="Arial" size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/sl/ie5setup.exe">
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/sl/ie5setup.exe">
 		<font color="#00008B">SP2</font></a></font></td>
  	</tr>
  <FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -5333,7 +5332,7 @@
  <FONT ID="f1" FACE="Arial" SIZE="2">
 		<td width="12%" align="center"><font size="2" face="Arial">SP1</font></td>
 		<td width="11%" align="center"><font size="2" face="Arial">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/sv/ie5setup.exe">SP2</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/sv/ie5setup.exe">SP2</a></font></td>
  		</font>
  </FONT>
  </FONT>
@@ -5532,7 +5531,7 @@
  <FONT ID="f237" SIZE="2">
  <FONT ID="f238" SIZE="2">
  		<font size="2" ID="f239" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie55sp2/tr/ie5setup.exe">SP2</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie55sp2/tr/ie5setup.exe">SP2</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
  	</tr>
 	</table>
  <FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -5560,9 +5559,9 @@
 	<tr>
 		<td width="15%"><font size="2">Arabic</font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/ar/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/ar/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/ar/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/ar/ie6setup.exe">SP1</a></font></td>
 	</tr>
 	<tr>
 		<td width="15%"><font size="2">Chinese (Taiwan)</font></td>
@@ -5570,9 +5569,9 @@
  <FONT ID="f1504" FACE="Verdana, Arial, Helvetica" SIZE="2">
 		<FONT ID="f1505" FACE="Verdana, Arial, Helvetica" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/zhtw/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/zhtw/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/zhtw/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/zhtw/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5582,9 +5581,9 @@
  <FONT ID="f1507" FACE="Verdana, Arial, Helvetica" SIZE="2">
 		<FONT ID="f1508" FACE="Verdana, Arial, Helvetica" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/zhcn/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/zhcn/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/zhcn/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/zhcn/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5594,9 +5593,9 @@
  <FONT ID="f1510" FACE="Verdana, Arial, Helvetica" SIZE="2">
 		<FONT ID="f1511" FACE="Verdana, Arial, Helvetica" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/cs/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/cs/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/cs/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/cs/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5606,9 +5605,9 @@
  <FONT ID="f1513" FACE="Verdana, Arial, Helvetica" SIZE="2">
 		<FONT ID="f1514" FACE="Verdana, Arial, Helvetica" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/da/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/da/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/da/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/da/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5618,9 +5617,9 @@
  <FONT ID="f1516" FACE="Verdana, Arial, Helvetica" SIZE="2">
 		<FONT ID="f1517" FACE="Verdana, Arial, Helvetica" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/de/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/de/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/de/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/de/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5638,9 +5637,9 @@
  <FONT ID="f1524" SIZE="2">
  <FONT ID="f1525" SIZE="2"><FONT ID="f1526" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/el/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/el/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/el/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/el/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5662,9 +5661,9 @@
  <FONT ID="f1536" SIZE="2">
  <FONT ID="f1537" SIZE="2"><FONT ID="f1538" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/en/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/en/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/en/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/en/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5686,9 +5685,9 @@
  <FONT ID="f1548" SIZE="2">
  <FONT ID="f1549" SIZE="2"><FONT ID="f1550" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/es/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/es/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/es/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/es/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5710,9 +5709,9 @@
  <FONT ID="f1560" SIZE="2">
  <FONT ID="f1561" SIZE="2"><FONT ID="f1562" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/fi/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/fi/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/fi/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/fi/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5734,9 +5733,9 @@
  <FONT ID="f1572" SIZE="2">
  <FONT ID="f1573" SIZE="2"><FONT ID="f1574" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/fr/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/fr/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/fr/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/fr/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5758,9 +5757,9 @@
  <FONT ID="f1584" SIZE="2">
  <FONT ID="f1585" SIZE="2"><FONT ID="f1586" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/he/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/he/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/he/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/he/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5782,9 +5781,9 @@
  <FONT ID="f1596" SIZE="2">
  <FONT ID="f1597" SIZE="2"><FONT ID="f1598" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/hu/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/hu/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/hu/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/hu/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5806,9 +5805,9 @@
  <FONT ID="f1608" SIZE="2">
  <FONT ID="f1609" SIZE="2"><FONT ID="f1610" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/it/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/it/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/it/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/it/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5830,9 +5829,9 @@
  <FONT ID="f1620" SIZE="2">
  <FONT ID="f1621" SIZE="2"><FONT ID="f1622" FACE="Arial" SIZE="2">
  		<td width="12%" align="center" height="23"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/ja/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/ja/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center" height="23"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/ja/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/ja/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5854,9 +5853,9 @@
  <FONT ID="f1632" SIZE="2">
  <FONT ID="f1633" SIZE="2"><FONT ID="f1634" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/ko/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/ko/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/ko/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/ko/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5878,9 +5877,9 @@
  <FONT ID="f1644" SIZE="2">
  <FONT ID="f1645" SIZE="2"><FONT ID="f1646" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/nl/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/nl/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/nl/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/nl/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5902,9 +5901,9 @@
  <FONT ID="f1656" SIZE="2">
  <FONT ID="f1657" SIZE="2"><FONT ID="f1658" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/no/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/no/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/no/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/no/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5926,9 +5925,9 @@
  <FONT ID="f1668" SIZE="2">
  <FONT ID="f1669" SIZE="2"><FONT ID="f1670" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/pl/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/pl/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/pl/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/pl/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5950,9 +5949,9 @@
  <FONT ID="f1680" SIZE="2">
  <FONT ID="f1681" SIZE="2"><FONT ID="f1682" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/ptbr/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/ptbr/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/ptbr/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/ptbr/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5974,9 +5973,9 @@
  <FONT ID="f1692" SIZE="2">
  <FONT ID="f1693" SIZE="2"><FONT ID="f1694" FACE="Arial" SIZE="2">
  		<td width="12%" align="center" height="21"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/pt/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/pt/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center" height="21"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/pt/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/pt/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -5998,9 +5997,9 @@
  <FONT ID="f1704" SIZE="2">
  <FONT ID="f1705" SIZE="2"><FONT ID="f1706" FACE="Arial" SIZE="2">
  		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/ru/ie6setup.exe">RTM</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/ru/ie6setup.exe">RTM</a></font></td>
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/ru/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/ru/ie6setup.exe">SP1</a></font></td>
  </FONT></FONT>
  </FONT>
  	</tr>
@@ -6090,14 +6089,14 @@
 		<FONT ID="f1779" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f1780" SIZE="2">
  <FONT ID="f1781" SIZE="2"><font size="2" ID="f1782" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/sv/ie6setup.exe">RTM</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/sv/ie6setup.exe">RTM</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
  <FONT ID="f1783" SIZE="2">
  <FONT ID="f1784" SIZE="2">
  <FONT ID="f1785" SIZE="2">
  <FONT ID="f1786" SIZE="2"><FONT ID="f1787" SIZE="2">
  <FONT ID="f1788" FACE="Arial" SIZE="2">
 		<td width="12%" align="center"><font size="2">
-		<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/sv/ie6setup.exe">SP1</a></font></td>
+		<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/sv/ie6setup.exe">SP1</a></font></td>
  		</font>
  </FONT>
  </FONT>
@@ -6185,7 +6184,7 @@
 		<FONT ID="f1858" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <FONT ID="f1859" SIZE="2">
  <FONT ID="f1860" SIZE="2"><font size="2" ID="f1861" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie6rtw/tr/ie6setup.exe">RTM</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6rtw/tr/ie6setup.exe">RTM</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
 		<td width="12%" align="center">
  <FONT ID="f1862" FACE="Arial" SIZE="2">
  <FONT ID="f1863" FACE="Verdana, Arial, Helvetica" SIZE="2">
@@ -6245,7 +6244,7 @@
  <FONT ID="f1917" SIZE="2">
  <FONT ID="f1918" SIZE="2">
  		<font size="2" ID="f1919" FACE="Arial">
-	<a href="http://download.windowsupdaterestored.com/ie/installer/ie6sp1/tr/ie6setup.exe">SP1</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/ie/installer/ie6sp1/tr/ie6setup.exe">SP1</a></font></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></FONT></td>
  	</tr>
 	</table>
  </FONT>
@@ -6314,7 +6313,7 @@
  <p align="justify">
  <BR>
  <span style="margin-right: 60px;"><font size="2">
-	<img border="0" src="http://windowsupdaterestored.com/images/iepack.gif" width="16" height="16" align="texttop" hspace="3">All 
+	<img border="0" src='<%= ResolveUrl("~/images/iepack.gif") %>' width="16" height="16" align="texttop" hspace="3">All 
 	of the files offered on this page are online installers of the Microsoft 
 	Internet Explorer Web Browser. They all retrieve the needed files from the 
 	Windows Update Restored servers. If you wish to make offline installers for 
@@ -6331,5 +6330,7 @@
  <BR>
  </font>
  </font>
- </BODY>
-</HTML>
+ 
+    </div>
+
+</asp:Content>
