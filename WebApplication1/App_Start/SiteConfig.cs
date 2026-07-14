@@ -83,6 +83,50 @@ namespace BRU.WEBFORMS.ASPNET.APP
         }
 
         /// <summary>
+        /// Gets the base URL of the external download host (large binaries such
+        /// as service packs, tools and certificates live here, not in the app).
+        /// Centralized so the host is not hardcoded across pages. No trailing slash.
+        /// </summary>
+        public static string DownloadBaseUrl
+        {
+            get { return GetSetting("ExternalUrl.DownloadHost", "http://download.windowsupdaterestored.com"); }
+        }
+
+        /// <summary>
+        /// Gets the public updates database (CabPool) URL. Configurable via the
+        /// "ExternalUrl.PublicDatabase" appSetting so the external service host is
+        /// not hardcoded in markup or code.
+        /// </summary>
+        public static string PublicDatabaseUrl
+        {
+            get { return GetSetting("ExternalUrl.PublicDatabase", "http://download.windowsupdaterestored.com/updates/cabpool/"); }
+        }
+
+        /// <summary>
+        /// Gets the Legacy Update download center URL.
+        /// </summary>
+        public static string LegacyUpdateUrl
+        {
+            get { return GetSetting("ExternalUrl.LegacyUpdate", "http://legacyupdate.net/download-center/"); }
+        }
+
+        /// <summary>
+        /// Gets the MSFN community forum topic URL.
+        /// </summary>
+        public static string MsfnForumUrl
+        {
+            get { return GetSetting("ExternalUrl.MsfnForum", "https://msfn.org/board/topic/183394-microsoft-windows-update-v3v4v5/"); }
+        }
+
+        /// <summary>
+        /// Gets the community Discord invite URL.
+        /// </summary>
+        public static string DiscordUrl
+        {
+            get { return GetSetting("ExternalUrl.Discord", "http://windowsupdaterestored.com/discord"); }
+        }
+
+        /// <summary>
         /// Gets a page-specific title override.
         /// The central App_Data/PageContent.xml file takes priority; otherwise
         /// the Web.config (Page.{pageKey}.Title) value is used.

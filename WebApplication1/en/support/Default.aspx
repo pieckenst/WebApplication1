@@ -1,151 +1,82 @@
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Windows Update Restored Download Center</title>
-    <style>
-        body {
-            color: black;
+<%@ Page Title="Help &amp; Support Center - Windows Update Restored" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.Default" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        .cw {color: black;
             background-color: white;
             margin: 0;
             padding: 0;
             font-family: Segoe UI Variable Text, Segoe UI, Tahoma, sans-serif; /* Global font family */
             line-height: 1.6;
-            padding: 20px; /* Add padding to the body for better spacing from edges */
-        }
-
-        header {
-            margin: 0 0 20px 0; /* Margin below header */
-        }
-
-        h1 {
-            font-size: 20px;
+            padding: 20px; /* Add padding to the body for better spacing from edges */ }
+        .cw header {margin: 0 0 20px 0; /* Margin below header */ }
+        .cw h1 {font-size: 20px;
             color: #000080; /* Title color */
             border-bottom: 2px solid #000080; /* Title underline color */
             padding-bottom: 10px;
-            margin: 0; /* No extra margin for consistency */
-        }
-
-        p {
-            font-size: 13px;
-            margin: 10px 0;
-        }
-
-        a {
-            color: #000080; /* Default link color */
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .tutorial-link {
-            font-weight: bold;
+            margin: 0; /* No extra margin for consistency */ }
+        .cw p {font-size: 13px;
+            margin: 10px 0; }
+        .cw a {color: #000080; /* Default link color */
+            text-decoration: none; }
+        .cw a:hover {text-decoration: underline; }
+        .cw .tutorial-link {font-weight: bold;
             font-size: 14px;
             color: #000080; /* Ensure link color matches */
             display: block;
-            margin-bottom: 10px;
-        }
-
-        .tutorial-link img {
-            vertical-align: middle;
+            margin-bottom: 10px; }
+        .cw .tutorial-link img {vertical-align: middle;
             border: 0;
-            margin-right: 5px;
-        }
-
-        blockquote {
-            margin: 10px 0;
+            margin-right: 5px; }
+        .cw blockquote {margin: 10px 0;
             padding: 10px;
             border-left: 4px solid #CCCCCC;
-            background-color: #F9F9F9;
-        }
-
-        footer {
-            text-align: center;
+            background-color: #F9F9F9; }
+        .cw footer {text-align: center;
             margin-top: 20px;
             border-top: 1px solid #000080;
-            padding-top: 10px;
-        }
-
-        .discord-link {
-            color: #0000FF;
-        }
-
-        .discord-link:hover {
-            text-decoration: underline;
-        }
-
-        .content-table {
-            width: 100%;
+            padding-top: 10px; }
+        .cw .discord-link {color: #0000FF; }
+        .cw .discord-link:hover {text-decoration: underline; }
+        .cw .content-table {width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px; /* Space below the table */
-        }
-
-        .content-table td {
-            padding: 10px;
-            vertical-align: top;
-        }
-
-        .news-section {
-            margin-top: 20px;
+            margin-bottom: 20px; /* Space below the table */ }
+        .cw .content-table td {padding: 10px;
+            vertical-align: top; }
+        .cw .news-section {margin-top: 20px;
             border: 1px solid #5E7DD8;
             padding: 10px;
-            background-color: #FFFFFF;
-        }
-
-        .latest-news-title {
-            font-size: 16px;
+            background-color: #FFFFFF; }
+        .cw .latest-news-title {font-size: 16px;
             font-weight: bold;
             color: #000080;
             margin: 0;
-            padding: 10px 0;
-        }
-
-        .news-title {
-            font-size: 10pt;
+            padding: 10px 0; }
+        .cw .news-title {font-size: 10pt;
             font-weight: bold;
             color: black;
             margin-bottom: 10px;
             display: flex;
-            align-items: center;
-        }
-
-        .news-title img {
-            margin-right: 10px;
-        }
-
-        .news-item {
-            font-size: 9pt;
+            align-items: center; }
+        .cw .news-title img {margin-right: 10px; }
+        .cw .news-item {font-size: 9pt;
             color: #000000;
-            margin-bottom: 15px;
-        }
-
-        .news-item p {
-            margin: 0;
-            padding: 0;
-        }
-
-        .news-item a {
-            color: #000080; /* Ensure link color matches */
+            margin-bottom: 15px; }
+        .cw .news-item p {margin: 0;
+            padding: 0; }
+        .cw .news-item a {color: #000080; /* Ensure link color matches */
             text-decoration: none;
-            font-weight: bold;
-        }
-
-        .news-item a:hover {
-            text-decoration: underline;
-        }
-
-        hr {
-            border: 0;
+            font-weight: bold; }
+        .cw .news-item a:hover {text-decoration: underline; }
+        .cw hr {border: 0;
             height: 1px;
             background: #000080; /* Set the horizontal rule color */
-            margin: 10px 0;
-        }
+            margin: 10px 0; }
     </style>
-</head>
 
-<body>
+    <div class="cw">
+
 
     <header>
         <h1><font size="5">Help &amp; Support Center</font></h1>
@@ -153,7 +84,7 @@
 
     <main>
         <p>Welcome to the Windows Update Restored Help and Support Center! This place is ideal if you have trouble getting the Windows Update websites to work. The Knowledge Base (KB) is a great way to find solutions to the problems you encounter. The issues are reported by members, if you are getting an issue with Windows Update Restored that is not in the Knowledge Base, 
-		<b><a href="http://windowsupdaterestored.com/en/support/about.htm">contact us</a></b>.
+		<b><a href="<%= ResolveUrl("~/en/About.aspx") %>">contact us</a></b>.
 </p>
         <p>Start browsing the Help &amp; Support Center by picking a link among the 
 		options below:</p>
@@ -163,8 +94,8 @@
             <tbody>
             <tr>
                 <td>
-                    <a class="tutorial-link" href="http://windowsupdaterestored.com/en/support/knownissues.htm">
-                        <img src="../images/arrow.gif" width="30" height="25" alt="Arrow">Known Issues with Windows Update Restored
+                    <a class="tutorial-link" href="<%= ResolveUrl("~/en/knownissues.htm.tmp.html") %>">
+                        <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Known Issues with Windows Update Restored
                     </a>
                     <blockquote>
                         <p>Wondering what current issues exist within the Windows Update Restored website? You can find out by visiting our Known Issues page!
@@ -176,13 +107,13 @@
             </tr>
             <tr>
                 <td>
-                    <a class="tutorial-link" title="Contact us to get help for a bug not listed in the Knowledge Base." href="http://windowsupdaterestored.com/en/support/about.htm">
-                        <img src="../images/arrow.gif" width="30" height="25" alt="Arrow">Assistance on a specific bug
+                    <a class="tutorial-link" title="Contact us to get help for a bug not listed in the Knowledge Base." href="<%= ResolveUrl("~/en/About.aspx") %>">
+                        <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Assistance on a specific bug
                     </a><blockquote>
                         <p>Need help regarding a specific bug or issue you're 
 						encoutering when using Windows Update Restored? Feel 
 						free to contact us! Learn more on the <b>
-						<a href="http://windowsupdaterestored.com/en/support/about.htm">About the Project</a></b> page, 
+						<a href="<%= ResolveUrl("~/en/About.aspx") %>">About the Project</a></b> page, 
 						which contains the email adresses of the owner and 
 						server provider. You can also contact us by joining our
 						<b>
@@ -195,12 +126,12 @@
             </tr>
             <tr>
                 <td>
-                    <a class="tutorial-link" title="Some versions of the Windows Update website rquire system modifications to work properly." href="../prerequisites.htm.tmp.html">
-                        <img src="../images/arrow.gif" width="30" height="25" alt="Arrow">Prerequisites to run Windows Update Restored
+                    <a class="tutorial-link" title="Some versions of the Windows Update website rquire system modifications to work properly." href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">
+                        <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Prerequisites to run Windows Update Restored
                     </a>
                     <blockquote>
                         <p>Is Windows Update Restored not working for you out of the box? 
-						Head over to our <b><a href="../prerequisites.htm.tmp.html">Prerequisites</a></b> page and that should help you!
+						Head over to our <b><a href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">Prerequisites</a></b> page and that should help you!
 						<br>
 						<b>Please note that this applies to Windows Update Restored only.</b></p>
                     </blockquote>
@@ -208,12 +139,12 @@
             </tr>
             <tr>
                 <td>
-                    <a class="tutorial-link" title="The Knowledge Base contains every support article we publish." href="kb_articles.htm.tmp.html">
-                        <img src="../images/arrow.gif" width="30" height="25" alt="Arrow">Knowledge Base
+                    <a class="tutorial-link" title="The Knowledge Base contains every support article we publish." href="<%= ResolveUrl("~/en/support/KbArticles.aspx") %>">
+                        <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Knowledge Base
                     </a>
                     <blockquote>
                         <p>If the above topics do not correspond to what you're looking for, the 
-						<b><a href="kb_articles.htm.tmp.html">Knowledge Base</a></b> might contain something helpful.</p>
+						<b><a href="<%= ResolveUrl("~/en/support/KbArticles.aspx") %>">Knowledge Base</a></b> might contain something helpful.</p>
                     </blockquote>
                 </td>
             </tr>
@@ -227,11 +158,11 @@
         <div class="news-section">
             <div class="news-item">
                 <div class="news-title">
-                    <img src="../images/warning_icon.gif" width="16" height="16" alt="Warning Triangle"> 
+                    <img src="<%= ResolveUrl("~/en/images/warning_icon.gif") %>" width="16" height="16" alt="Warning Triangle"> 
                     New! The Windows Update Restored Knowledge Base is here!</div>
                 <p>
 				<font face="Tahoma" style="color: rgb(0, 0, 0); font-family: Tahoma; font-size: 9pt; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; text-align: start;">
-				The Windows Update Restored website now has a&nbsp;<a href="kb_articles.htm.tmp.html">Knowledge 
+				The Windows Update Restored website now has a&nbsp;<a href="<%= ResolveUrl("~/en/support/KbArticles.aspx") %>">Knowledge 
 				Base</a>, listing every Support topics we published. If we see 
 				that one or more issues are frequent and we're able to fix them, 
 				we will add Support topics in the Knowledge Base regarding those 
@@ -239,7 +170,7 @@
             </div>
             <div class="news-item">
                 <div class="news-title">
-                    <img src="../images/warning_icon.gif" width="16" height="16" alt="Warning Triangle">
+                    <img src="<%= ResolveUrl("~/en/images/warning_icon.gif") %>" width="16" height="16" alt="Warning Triangle">
 					<b style="color: rgb(0, 0, 0); font-family: Tahoma; font-size: medium; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: -webkit-left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
 					<font style="font-size: 10pt;">Newly Revamped Help &amp; Support 
 					Center</font></b><font style="color: rgb(0, 0, 0); font-family: Tahoma; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: -webkit-left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; font-size: 10pt;"><b>!</b></font></div>
@@ -252,19 +183,21 @@
             </div>
             <div class="news-item">
                 <div class="news-title">
-                    <img src="../images/warning_icon.gif" width="16" height="16" alt="Warning Triangle">
+                    <img src="<%= ResolveUrl("~/en/images/warning_icon.gif") %>" width="16" height="16" alt="Warning Triangle">
                     Windows Update Restored v5 Troubleshooting Tools are here!</div>
                 <p>Ever since the launch of Windows Update Restored v5, users have had plenty of problems when trying to get certain things working with the website on their designated Windows systems. But those problems are one more step closer to being gone with the requirement of needing a proxy to use Windows Update Restored 
 				V5 gone! Thanks to WinFX, you no longer need a proxy to use Windows Update Restored v5. Instead, you can connect to 
 				<b>v5.windowsupdaterestored</b>.com as a WSUS server instead of Microsoft's. Lastly, Joshua Maitland has developed the Windows Update Restored v5 Checker Tool that will tell you 
 				<b>exactly what needs to be patched on your Windows operating system</b> so you can fix them and start using Windows Update Restored! 
 				<b>To check out how to apply the Windows Update Restored v5 WSUS patch to you system, visit the 
-				</b><a href="../prerequisites.htm.tmp.html">P</a><b><a href="../prerequisites.htm.tmp.html">rerequisites</a> page.</b>
-				<b><a href="../downloads/wurv5checkertool.htm.tmp.html">Learn more about the 
+				</b><a href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">P</a><b><a href="<%= ResolveUrl("~/en/prerequisites.htm.tmp.html") %>">rerequisites</a> page.</b>
+				<b><a href="<%= ResolveUrl("~/en/downloads/WurV5CheckerTool.aspx") %>">Learn more about the 
 				Windows Update Restored V5 Checker Tool.</a></b></p>
             </div>
         </div>
     </main>
 
-</body>
-</html>
+
+    </div>
+
+</asp:Content>

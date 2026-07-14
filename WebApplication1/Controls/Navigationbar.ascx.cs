@@ -17,7 +17,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
         protected void Page_Load(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(litSiteName.Text))
-                litSiteName.Text = SiteConfig.SiteName;
+                litSiteName.Text = NavHeader;
 
             if (!IsPostBack)
             {
@@ -25,12 +25,35 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
             }
         }
 
+        private System.Collections.Generic.List<NavigationItem> _items;
+        private string _navHeader;
+
+        /// <summary>
+        /// Configures a section-specific navigation bar (header + items),
+        /// e.g. for the Download Center or Support sub-sites. Call from the
+        /// section master before the control's Load runs.
+        /// </summary>
+        public void Configure(string header, System.Collections.Generic.List<NavigationItem> items)
+        {
+            _navHeader = header;
+            _items = items;
+        }
+
+        /// <summary>
+        /// Header text shown at the top of the navigation bar. Defaults to the
+        /// site name; section navigation controls override this.
+        /// </summary>
+        protected virtual string NavHeader
+        {
+            get { return string.IsNullOrEmpty(_navHeader) ? SiteConfig.SiteName : _navHeader; }
+        }
+
         /// <summary>
         /// Binds navigation items to the repeater.
         /// </summary>
         protected virtual void BindNavigation()
         {
-            var navigationItems = GetNavigationItems();
+            var navigationItems = _items ?? GetNavigationItems();
             rptNavigation.DataSource = navigationItems;
             rptNavigation.DataBind();
         }

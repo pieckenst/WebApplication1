@@ -1,42 +1,32 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Windows Update Restored Prerequisites Installer</title>
-    <base target="_self">
-    
+<%@ Page Title="Windows Update Restored Prerequisites Installer" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurV5PatcherTool.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.WurV5PatcherTool" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
     <style type="text/css">
-        body, table, td, p, div, span, ul, li, ol { 
-            font-family: Tahoma, Verdana, Arial, sans-serif; 
-            font-size: 10pt; /* Global reset prevents default browser text inflation */
-        }
-        body { 
-            margin: 0; 
+        .cw, .cw table, .cw td, .cw p, .cw div, .cw span, .cw ul, .cw li, .cw ol {font-family: Tahoma, Verdana, Arial, sans-serif; 
+            font-size: 10pt; /* Global reset prevents default browser text inflation */ }
+        .cw {margin: 0; 
             padding: 0; 
             background-color: #FFFFFF; 
-            color: #000000;
-        }
-        a { color: #000080; text-decoration: none; }
-        a:hover { color: #FF6600; text-decoration: underline; }
-        ul { margin-top: 5px; margin-bottom: 5px; padding-left: 18px; }
-        li { margin-bottom: 8px; font-size: 10pt; }
-        ol { margin-top: 5px; margin-bottom: 5px; padding-left: 20px; }
-        ol li { margin-bottom: 6px; font-size: 10pt; }
-        
-        .title-main { font-size: 16pt; color: #000080; font-weight: bold; }
-        .text-regular { font-size: 10pt; line-height: 1.5; }
-        .text-small { font-size: 8pt; }
-        .text-gray { color: #666666; }
-        .text-black { color: #000000; }
-        a.text-black { color: #000000; }
-        
-        .box-header-white { font-size: 10pt; color: #FFFFFF; font-weight: bold; }
-        .box-header-small { font-size: 8pt; color: #FFFFFF; font-weight: bold; }
+            color: #000000; }
+        .cw a {color: #000080; text-decoration: none; }
+        .cw a:hover {color: #FF6600; text-decoration: underline; }
+        .cw ul {margin-top: 5px; margin-bottom: 5px; padding-left: 18px; }
+        .cw li {margin-bottom: 8px; font-size: 10pt; }
+        .cw ol {margin-top: 5px; margin-bottom: 5px; padding-left: 20px; }
+        .cw ol li {margin-bottom: 6px; font-size: 10pt; }
+        .cw .title-main {font-size: 16pt; color: #000080; font-weight: bold; }
+        .cw .text-regular {font-size: 10pt; line-height: 1.5; }
+        .cw .text-small {font-size: 8pt; }
+        .cw .text-gray {color: #666666; }
+        .cw .text-black {color: #000000; }
+        .cw a.text-black {color: #000000; }
+        .cw .box-header-white {font-size: 10pt; color: #FFFFFF; font-weight: bold; }
+        .cw .box-header-small {font-size: 8pt; color: #FFFFFF; font-weight: bold; }
     </style>
-</head>
 
-<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0" bgcolor="#FFFFFF">
+    <div class="cw">
+
 
 <a name="top"></a>
 
@@ -92,7 +82,7 @@
                         <p style="margin-top: 0; margin-bottom: 8px;"><strong>File size:</strong> 23.9 MB</p>
                         <p style="margin-top: 0; margin-bottom: 8px;"><strong>Software version:</strong> v1.7 (Release)</p>
                         <p style="margin-top: 0; margin-bottom: 8px;"><strong>Developer:</strong> WULover (helped by WinFX, Joshua Maitland, TheOneGoofAli, Trisii, Johnmacro, ward201185 and Retro Circutry)</p>
-                        <p style="margin-top: 0; margin-bottom: 8px;"><strong>Download server:</strong> <a href="http://download.windowsupdaterestored.com/" target="_blank"><b><u>http://download.windowsupdaterestored.com</u></b></a></p>
+                        <p style="margin-top: 0; margin-bottom: 8px;"><strong>Download server:</strong> <a href="<%= SiteConfig.DownloadBaseUrl %>/" target="_blank"><b><u><%= SiteConfig.DownloadBaseUrl %></u></b></a></p>
                         <p style="margin-top: 0; margin-bottom: 8px;"><strong>Digital signature:</strong> Signed on May 13th, 2026 by windowsupdaterestored.com</p>
                         <p style="margin-top: 0; margin-bottom: 0;"><strong>Additional information:</strong> Windows Update Restored server provided by TheOneGoofAli (serverkul.ddns.net), and Legacy Update server provided by kirb (legacyupdate.net). This patch only applies for Windows Update Restored V5 and V6 (Microsoft Update included).<br>Windows Update Restored cannot be held responsible if the custom Update Provider you chose caused problems to your system.</p>
                     </td>
@@ -112,19 +102,19 @@
                         <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td valign="middle" width="35">
-                                    <a href="http://download.windowsupdaterestored.com/wutools/wurv5patchertool.EXE"><img border="0" src="../images/arrow.gif" width="30" height="25" alt="Download"></a>
+                                    <a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurv5patchertool.EXE"><img border="0" src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Download"></a>
                                 </td>
                                 <td valign="middle">
-                                    <span style="font-weight: 700;"><a href="http://download.windowsupdaterestored.com/wutools/wurv5patchertool.EXE"><b><u>Download now (Stable) - Recommended</u></b></a></span>
+                                    <span style="font-weight: 700;"><a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurv5patchertool.EXE"><b><u>Download now (Stable) - Recommended</u></b></a></span>
                                 </td>
                             </tr>
                             <tr><td height="10" colspan="2"></td></tr>
                             <tr>
                                 <td valign="middle" width="35">
-                                    <a href="http://download.windowsupdaterestored.com/wutools/wurv5patchertool_legacy.EXE"><img border="0" src="../images/arrow.gif" width="30" height="25" alt="Download"></a>
+                                    <a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurv5patchertool_legacy.EXE"><img border="0" src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Download"></a>
                                 </td>
                                 <td valign="middle">
-                                    <span style="font-weight: 700;"><a href="http://download.windowsupdaterestored.com/wutools/wurv5patchertool_legacy.EXE"><b><u>Download now (Legacy - Batch)</u></b></a></span>
+                                    <span style="font-weight: 700;"><a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurv5patchertool_legacy.EXE"><b><u>Download now (Legacy - Batch)</u></b></a></span>
                                 </td>
                             </tr>
                         </table>
@@ -202,7 +192,7 @@
                     <td class="text-regular">
                         <p style="margin-top: 0; margin-bottom: 5px;"><font color="#800000"><strong>Stable Version:</strong></font></p>
                         <ul>
-                            <li><strong>Error with MSCOMTCL.OCX not being present:</strong><br>If you see an error stating that "MSCOMTCL.OCX" is missing on Windows 2000/XP/Server 2003, download and install the <strong>Visual Basic 6.0 runtime</strong> <a href="http://download.windowsupdaterestored.com/wutools/VB6Runtime.exe"><b><u>from here</u></b></a> to resolve this. The patcher automatically installs this file onto your system.</li>
+                            <li><strong>Error with MSCOMTCL.OCX not being present:</strong><br>If you see an error stating that "MSCOMTCL.OCX" is missing on Windows 2000/XP/Server 2003, download and install the <strong>Visual Basic 6.0 runtime</strong> <a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/VB6Runtime.exe"><b><u>from here</u></b></a> to resolve this. The patcher automatically installs this file onto your system.</li>
                             <li><b>Microsoft Update errors out on Windows 2000:</b><br>Microsoft Update requires <b>Internet Explorer 5.5</b> at minimum to work. <b>Any previous versions will cause the website to fail.</b></li>
                             <li><b>Windows Update/Microsoft Update errors out before displaying Express/Custom, and Internet Explorer asks to install an ActiveX control signed by "windowsupdaterestored.com":</b><br>This happens because your computer does not have the Windows Update Restored Server Web Control (WUR_ACTIVEX.DLL), which is required to use the website. To fix it, download the latest stable version of the patcher and follow the instructions below:<br>- Click the bottom left "About" link<br>- In the "About" dialog box, click the "Manual Tools" button<br>- Click on the "Reinstall WUR_ACTIVEX.DLL" button<br>Done! The control has been reinstalled and registered onto your computer.</li>
                         </ul>
@@ -219,7 +209,7 @@
                                 </ol>
                                 You can also hit Ctrl + F5 in Internet Explorer.
                             </li>
-                            <li><strong>Windows Update stuck on "Windows Update is looking for available updates" on Windows 2000:</strong><br>This occurs if you’re using <strong>Internet Explorer 5.</strong> Upgrade to <strong>IE 5.5 or 6.0.</strong></li>
+                            <li><strong>Windows Update stuck on "Windows Update is looking for available updates" on Windows 2000:</strong><br>This occurs if you're using <strong>Internet Explorer 5.</strong> Upgrade to <strong>IE 5.5 or 6.0.</strong></li>
                             <li><strong>Error after checking for updates:</strong><br>If you get an error after clicking "Express" or "Custom," ensure <strong>WUWEB.DLL</strong> has been correctly replaced. Run the patcher again if necessary.</li>
                             <li><strong>Website load error on Windows XP/Server 2003 AMD64:</strong><br>Use the <strong>Stable release</strong> to avoid x64-related issues.</li>
                         </ul>
@@ -227,11 +217,13 @@
                 </tr>
             </table>
 
-            <p align="right" style="margin-top: 20px;"><a href="wurv5patchertool.htm.tmp.html#top" class="text-small text-black">Back to top &#9650;</a></p>
+            <p align="right" style="margin-top: 20px;"><a href="#top" class="text-small text-black">Back to top &#9650;</a></p>
 
         </td>
     </tr>
 </table>
 
-</body>
-</html>
+
+    </div>
+
+</asp:Content>

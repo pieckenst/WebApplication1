@@ -1,25 +1,25 @@
-<HTML>
- <HEAD>
- <TITLE>Home - Windows Update Restored</TITLE>
- <META CONTENT='(PICS-1.1 "http://www.rsac.org/ratingsv01.html" L GEN TRUE COMMENT "RSACi North America Server" BY "inet@microsoft.com" ON "1997.06.30T14:48-0500" R (N 0 S 0 V 0 L 0))' HTTP-EQUIV="PICS-Label">
- <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
- <STYLE>
- <!--
- .smallblack { font-family: verdana, arial, sans-serif; font-size: 8pt; }
- .darkblue { color: #00319C; }
- A:link { color: #00319C; }
- .BodyText { COLOR: black; FONT-FAMILY: Verdana, Arial; FONT-SIZE: 8pt; }
- --></STYLE>
- </HEAD>
- <BODY BGCOLOR="white" LINK="#00319c" TOPMARGIN="20" LEFTMARGIN="0" CLASS="BodyText">
+<%@ Page Title="Home - Windows Update Restored" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="PrereqInstDoc.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.PrereqInstDoc" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        .cw <!--
+ .smallblack {font-family: verdana, arial, sans-serif; font-size: 8pt; }
+        .cw .darkblue {color: #00319C; }
+        .cw A:link {color: #00319C; }
+        .cw .BodyText {COLOR: black; FONT-FAMILY: Verdana, Arial; FONT-SIZE: 8pt; }
+    </style>
+
+    <div class="cw">
+
  <FONT ID="f1" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
  <TR>
  <TD ID="td1" VALIGN="top" ALIGN="left" WIDTH="94">
- <IMG ID="ix1" HEIGHT="100" ALT="" SRC="http://windowsupdaterestored.com/images/wulgo_only.gif" WIDTH="100" BORDER="0">
+ <IMG ID="ix1" HEIGHT="100" ALT="" SRC='<%= ResolveUrl("~/images/wulgo_only.gif") %>' WIDTH="100" BORDER="0">
  </TD>
  <TD ID="td2" VALIGN="top" ALIGN="left">
- <IMG ID="ix2" HEIGHT="100" ALT="" SRC="http://windowsupdaterestored.com/images/wurlgo_text.gif" WIDTH="182" BORDER="0">
+ <IMG ID="ix2" HEIGHT="100" ALT="" SRC='<%= ResolveUrl("~/images/wurlgo_text.gif") %>' WIDTH="182" BORDER="0">
  <BR>
  <FONT ID="f2" FACE="Verdana, Arial, Helvetica" SIZE="2"><FONT ID="f3" FACE="Verdana, Arial, Helvetica" SIZE="2">
  <H2>
@@ -36,7 +36,7 @@
  Take a time to explore what we have here:<br>
  <br>
  -&gt;
- <a href="../downloads/wurv5patchertool.htm.tmp.html"><span style="color: #00319C">
+ <a href="<%= ResolveUrl("~/en/downloads/WurV5PatcherTool.aspx") %>"><span style="color: #00319C">
 	Prerequisites Installer download page...</span></a><br>
   <br>
   <strong>Switches (command line arguments)<br>
@@ -352,5 +352,7 @@
  &nbsp;&nbsp;&nbsp; <i>This page is based on the very first homepage of Windows 
 	Update Restored!</i><BR>
  </CENTER>
- </BODY>
-</HTML>
+ 
+    </div>
+
+</asp:Content>

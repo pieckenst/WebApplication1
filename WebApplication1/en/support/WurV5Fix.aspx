@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html>
+<%@ Page Title="Restore Access to Windows Update Restored v5 Tutorial" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="WurV5Fix.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.WurV5Fix" %>
 
-<head>
-<meta http-equiv="Content-Language" content="en-us">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>Restore Access to Windows Update Restored v5 Tutorial</title>
-</head>
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
-<body style="color: black; background-color: white; margin: 20px; font-family: Segoe UI Variable Text, Segoe UI, Tahoma, sans-serif; text-align: left;">
+    <style type="text/css">
+        
+    </style>
+
+    <div class="cw">
+
 
 <header>
     <h1 style="font-size: 18pt; color: #000080; border-bottom: 2px solid #000080; padding-bottom: 8px; margin-bottom: 10px">
@@ -36,7 +36,7 @@
         This only applies to <b>Windows 2000 SP3/SP4, Windows XP x86 &amp; x64, and Windows Server 2003 x86 &amp; x64.</b></span></p>
         <p style="margin: 10px 0;"><span style="font-size: 10pt">To download the Windows Update Restored 
 		Prerequisites Installer, 
-		<a style="color: #000080; text-decoration: none;" href="../downloads/wurv5patchertool.htm.tmp.html">visit its download page</a>.</span></p>
+		<a style="color: #000080; text-decoration: none;" href="<%= ResolveUrl("~/en/downloads/WurV5PatcherTool.aspx") %>">visit its download page</a>.</span></p>
             <hr>
     
     <div style="background-color: #f9f9f9; border: 1px solid #dcdcdc; padding: 10px; margin-top: 20px;">
@@ -50,6 +50,7 @@
     </div>
 </header>
 
-</body>
 
-</html>
+    </div>
+
+</asp:Content>

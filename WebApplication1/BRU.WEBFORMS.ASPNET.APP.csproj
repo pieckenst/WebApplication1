@@ -98,11 +98,31 @@
     <Content Include="Controls\Navigationbar.ascx" />
     <Content Include="Controls\Footer.ascx" />
     <Content Include="Controls\ContentBox.ascx" />
+    <Content Include="en\download-center\DownloadCenter.master" />
+    <Content Include="en\download-center\Default.aspx" />
+    <Content Include="en\download-center\OtherDownloads.aspx" />
+    <Content Include="en\download-center\WurApps.aspx" />
+    <Content Include="en\downloads\Certificates.aspx" />
+    <Content Include="en\downloads\WurInvChecker.aspx" />
+    <Content Include="en\downloads\WurV5CheckerTool.aspx" />
+    <Content Include="en\downloads\WurV5PatcherTool.aspx" />
+    <Content Include="en\downloads\SpCenter.aspx" />
+    <Content Include="en\downloads\SpCenter_Legacy.aspx" />
+    <Content Include="en\support\Support.master" />
+    <Content Include="en\support\Default.aspx" />
+    <Content Include="en\support\KbArticles.aspx" />
+    <Content Include="en\support\PrereqInstDoc.aspx" />
+    <Content Include="en\support\WurV5Fix.aspx" />
+    <Content Include="en\support\kb\Proxy.aspx" />
+    <Content Include="en\support\kb\WurBlockedByIsp.aspx" />
+    <Content Include="en\support\kb\WurCert.aspx" />
+    <Content Include="en\support\kb\WurV31NotWorkingAfterUsingWurV4.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="App_Start\NavigationSets.cs" />
     <Compile Include="App_Start\PageContentStore.cs" />
     <Compile Include="App_Start\SiteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -168,6 +188,82 @@
     </Compile>
     <Compile Include="Controls\ContentBox.ascx.cs">
       <DependentUpon>ContentBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\download-center\DownloadCenter.master.cs">
+      <DependentUpon>DownloadCenter.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\download-center\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\download-center\OtherDownloads.aspx.cs">
+      <DependentUpon>OtherDownloads.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\download-center\WurApps.aspx.cs">
+      <DependentUpon>WurApps.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\Certificates.aspx.cs">
+      <DependentUpon>Certificates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\WurInvChecker.aspx.cs">
+      <DependentUpon>WurInvChecker.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\WurV5CheckerTool.aspx.cs">
+      <DependentUpon>WurV5CheckerTool.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\WurV5PatcherTool.aspx.cs">
+      <DependentUpon>WurV5PatcherTool.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\SpCenter.aspx.cs">
+      <DependentUpon>SpCenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\downloads\SpCenter_Legacy.aspx.cs">
+      <DependentUpon>SpCenter_Legacy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\Support.master.cs">
+      <DependentUpon>Support.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\KbArticles.aspx.cs">
+      <DependentUpon>KbArticles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\PrereqInstDoc.aspx.cs">
+      <DependentUpon>PrereqInstDoc.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\WurV5Fix.aspx.cs">
+      <DependentUpon>WurV5Fix.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\kb\Proxy.aspx.cs">
+      <DependentUpon>Proxy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\kb\WurBlockedByIsp.aspx.cs">
+      <DependentUpon>WurBlockedByIsp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\kb\WurCert.aspx.cs">
+      <DependentUpon>WurCert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\support\kb\WurV31NotWorkingAfterUsingWurV4.aspx.cs">
+      <DependentUpon>WurV31NotWorkingAfterUsingWurV4.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
