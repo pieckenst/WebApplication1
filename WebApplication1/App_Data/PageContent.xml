@@ -40,6 +40,32 @@
     Legal          : cbDisclaimer, cbLicense, cbTrademarks, cbLiability
     ReadThisFirst  : cbTOC, cbDisclaimer, cbWelcome, cbFeatures, cbStarted
 
+  Download Center / Downloads pages (intro text; download tables stay in markup):
+    Default (download-center)        : cbIntro
+    OtherDownloads                   : cbIntro
+    WurApps                          : cbIntro
+    Certificates                     : cbIntro
+    WurInvChecker                    : cbIntro
+    WurV5CheckerTool                 : cbIntro
+    WurV5PatcherTool                 : cbIntro
+    SpCenter                         : cbIntro
+    SpCenter_Legacy                  : cbIntro
+    IeDownloads                      : cbIntro
+
+  Support pages:
+    Default (support)                : cbIntro
+    KbArticles                       : cbIntro
+    PrereqInstDoc                    : cbIntro
+    WurV5Fix                         : cbArticle
+    Proxy                            : cbArticle
+    WurBlockedByIsp                  : cbArticle
+    WurCert                          : cbArticle
+    WurV31NotWorkingAfterUsingWurV4  : cbArticle
+
+  Note: pages named "Default" share the key "Default"; scope overrides by the
+  control IDs unique to each (the download-center/support intros use cbIntro,
+  the main home page uses cbWelcome/cbAbout/cbFeatures/cbGetStarted).
+
   Example (remove the surrounding comment to activate):
 
     <page key="Default">

@@ -1,4 +1,5 @@
 <%@ Page Title="Windows Update Restored Tools" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurApps.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.download_center.WurApps" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -24,7 +25,7 @@
         <a name="top"></a>
         <h1>Windows Update Restored Tools</h1>
 
-        <p>This page lists all the Windows Update Restored tools we have created. These tools help prevent errors on the Windows Update websites while they are in use.</p>
+        <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About These Tools" HeaderColor="Blue" ContentColor="White" />
 
         <hr>
 

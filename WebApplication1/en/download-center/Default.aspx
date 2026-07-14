@@ -1,4 +1,5 @@
 <%@ Page Title="Windows Update Restored Download Center" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.download_center.Default" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -27,13 +28,7 @@
                     <tr><td height="2" bgcolor="#000080"></td></tr>
                 </table>
 
-                <p><b>All the downloads provided here are coming from our servers. They do not contain any sort of virus or malware and are verified before being uploaded to the server and added to the website.</b></p>
-
-                <p>Sometimes, when using Windows Update, you need specific files or set of files. Regarding the Windows Update Restored website, those files are usually very hard to find. We're hosting them and make them publicly available for everyone to keep them safe and always online.</p>
-
-                <p>To browse the Download Center, pick an option among the ones below:</p>
-
-                <table border="0" cellpadding="0" cellspacing="0"><tr><td height="12"></td></tr></table>
+                <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About the Download Center" HeaderColor="Blue" ContentColor="White" />
 
                 <table width="100%" border="0" cellpadding="4" cellspacing="0" bgcolor="#000080">
                     <tr>

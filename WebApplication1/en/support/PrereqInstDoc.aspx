@@ -1,4 +1,5 @@
 <%@ Page Title="Home - Windows Update Restored" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="PrereqInstDoc.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.PrereqInstDoc" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -29,12 +30,7 @@
  <ID ID="x1a"></ID>
  </FONT>
  </H2>
- Thank you for using the Windows Update Restored Prerequisites Installer! This 
-	page is the short online documentation available for the Prerequisites 
-	Installer.<br>
- <br>
- Take a time to explore what we have here:<br>
- <br>
+ <uc:ContentBox ID="cbIntro" runat="server" HeaderText="Prerequisites Installer - Online Documentation" HeaderColor="Blue" ContentColor="White" />
  -&gt;
  <a href="<%= ResolveUrl("~/en/downloads/WurV5PatcherTool.aspx") %>"><span style="color: #00319C">
 	Prerequisites Installer download page...</span></a><br>

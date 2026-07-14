@@ -1,4 +1,5 @@
 <%@ Page Title="Windows Update Restored Certificates" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="Certificates.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.Certificates" %>
+<%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -55,7 +56,7 @@
     <h1>Windows Update Restored Certificates</h1>
 
     <p><b>Published:</b> April 17, 2024</p>
-    <p>Windows Update Restored uses self-signed certificates to sign patched CABs and installers. This fix removes the certificate warnings in Internet Explorer.</p>
+    <uc:ContentBox ID="cbIntro" runat="server" HeaderText="About the Certificates" HeaderColor="Blue" ContentColor="White" />
 
     <hr>
 
