@@ -4,5 +4,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 {
     public partial class Contribute : BasePage
     {
+        protected override void LoadPageContent()
+        {
+            LogPageContentLoad();
+        }
     }
 }

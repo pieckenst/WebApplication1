@@ -65,27 +65,52 @@ namespace BRU.WEBFORMS.ASPNET.APP
         }
 
         /// <summary>
+        /// Logs (via <see cref="System.Diagnostics.Trace"/>) that this page is
+        /// loading its content. Call at the top of LoadPageContent.
+        /// </summary>
+        protected void LogPageContentLoad()
+        {
+            System.Diagnostics.Trace.TraceInformation(
+                "LoadPageContent: page '{0}'", PageContentKey);
+        }
+
+        /// <summary>
         /// Returns the centrally-configured ContentHtml for a control on this
-        /// page (Web.config, then App_Data/PageContent.xml) if present;
+        /// page (App_Data/PageContent.xml first, then Web.config) if present;
         /// otherwise returns <paramref name="defaultHtml"/>. Use this inside
-        /// LoadPageContent so a page keeps an inline default while still
-        /// honoring the central content file.
+        /// LoadPageContent so a page keeps an inline default while the central
+        /// content file takes priority. Logs which source was used.
         /// </summary>
         protected string GetConfiguredContent(string controlId, string defaultHtml)
         {
             string configured = SiteConfig.GetContentHtml(PageContentKey, controlId);
-            return string.IsNullOrWhiteSpace(configured) ? defaultHtml : configured;
+            bool fromConfig = !string.IsNullOrWhiteSpace(configured);
+            LogContentSource(controlId, "ContentHtml", fromConfig);
+            return fromConfig ? configured : defaultHtml;
         }
 
         /// <summary>
         /// Returns the centrally-configured HeaderText for a control on this
-        /// page (Web.config, then App_Data/PageContent.xml) if present;
-        /// otherwise returns <paramref name="defaultHeader"/>.
+        /// page (App_Data/PageContent.xml first, then Web.config) if present;
+        /// otherwise returns <paramref name="defaultHeader"/>. Logs which source
+        /// was used.
         /// </summary>
         protected string GetConfiguredHeader(string controlId, string defaultHeader)
         {
             string configured = SiteConfig.GetHeaderText(PageContentKey, controlId);
-            return string.IsNullOrWhiteSpace(configured) ? defaultHeader : configured;
+            bool fromConfig = !string.IsNullOrWhiteSpace(configured);
+            LogContentSource(controlId, "HeaderText", fromConfig);
+            return fromConfig ? configured : defaultHeader;
+        }
+
+        private void LogContentSource(string controlId, string propertyName, bool fromConfig)
+        {
+            System.Diagnostics.Trace.TraceInformation(
+                "PageContent: {0}.{1}.{2} <- {3}",
+                PageContentKey,
+                controlId,
+                propertyName,
+                fromConfig ? "central config (PageContent.xml/Web.config)" : "code-behind default");
         }
 
         /// <summary>
