@@ -4,5 +4,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 {
     public partial class Compatibility : BasePage
     {
+        protected override void LoadPageContent()
+        {
+            LogPageContentLoad();
+        }
     }
 }

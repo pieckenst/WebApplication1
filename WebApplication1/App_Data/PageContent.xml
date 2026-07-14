@@ -8,10 +8,10 @@
   How it works
   ============
   Each page's LoadPageContent() sets the built-in default content. Anything you
-  define here overrides that default. Web.config "Page.*" appSettings override
-  this file. So the precedence is:
+  define here takes priority over that default AND over Web.config "Page.*"
+  appSettings. So the precedence is:
 
-      Web.config  >  this file (PageContent.xml)  >  LoadPageContent() defaults
+      this file (PageContent.xml)  >  Web.config "Page.*"  >  LoadPageContent() defaults
 
   Changes here take effect immediately (the file is watched); no rebuild needed.
 

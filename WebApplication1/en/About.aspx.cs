@@ -14,6 +14,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbAbout.ContentHtml = GetConfiguredContent("cbAbout", @"This project demonstrates how to create a Windows XP styled website using ASP.NET Web Forms. 
                 The template provides a nostalgic look reminiscent of classic Windows XP/2000 era websites, bringing back the 
                 authentic feel of early 2000s web design.");

@@ -13,6 +13,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbDisclaimer.ContentHtml = GetConfiguredContent("cbDisclaimer", @"<font color='#660000'>
                 <b>THIS SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
                 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 

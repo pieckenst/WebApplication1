@@ -84,13 +84,13 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         /// <summary>
         /// Gets a page-specific title override.
-        /// Web.config (Page.{pageKey}.Title) wins; otherwise the central
-        /// App_Data/PageContent.xml file is used.
+        /// The central App_Data/PageContent.xml file takes priority; otherwise
+        /// the Web.config (Page.{pageKey}.Title) value is used.
         /// </summary>
         public static string GetPageTitle(string pageKey)
         {
-            return GetSetting(BuildPageKey(pageKey, null, "Title"), null)
-                ?? PageContentStore.GetValue(pageKey, null, "Title");
+            return PageContentStore.GetValue(pageKey, null, "Title")
+                ?? GetSetting(BuildPageKey(pageKey, null, "Title"), null);
         }
 
         /// <summary>
@@ -104,32 +104,35 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         /// <summary>
         /// Gets ContentHtml for a ContentBox on a page.
-        /// Web.config wins; otherwise the central App_Data/PageContent.xml file is used.
+        /// The central App_Data/PageContent.xml file takes priority; otherwise
+        /// the Web.config value is used.
         /// </summary>
         public static string GetContentHtml(string pageKey, string controlId)
         {
-            return GetPageSetting(pageKey, controlId, "ContentHtml")
-                ?? PageContentStore.GetValue(pageKey, controlId, "ContentHtml");
+            return PageContentStore.GetValue(pageKey, controlId, "ContentHtml")
+                ?? GetPageSetting(pageKey, controlId, "ContentHtml");
         }
 
         /// <summary>
         /// Gets HeaderText for a ContentBox on a page.
-        /// Web.config wins; otherwise the central App_Data/PageContent.xml file is used.
+        /// The central App_Data/PageContent.xml file takes priority; otherwise
+        /// the Web.config value is used.
         /// </summary>
         public static string GetHeaderText(string pageKey, string controlId)
         {
-            return GetPageSetting(pageKey, controlId, "HeaderText")
-                ?? PageContentStore.GetValue(pageKey, controlId, "HeaderText");
+            return PageContentStore.GetValue(pageKey, controlId, "HeaderText")
+                ?? GetPageSetting(pageKey, controlId, "HeaderText");
         }
 
         /// <summary>
         /// Gets text for a Literal control on a page.
-        /// Web.config wins; otherwise the central App_Data/PageContent.xml file is used.
+        /// The central App_Data/PageContent.xml file takes priority; otherwise
+        /// the Web.config value is used.
         /// </summary>
         public static string GetLiteralText(string pageKey, string controlId)
         {
-            return GetPageSetting(pageKey, controlId, "Text")
-                ?? PageContentStore.GetValue(pageKey, controlId, "Text");
+            return PageContentStore.GetValue(pageKey, controlId, "Text")
+                ?? GetPageSetting(pageKey, controlId, "Text");
         }
 
         private static string BuildPageKey(string pageKey, string controlId, string propertyName)

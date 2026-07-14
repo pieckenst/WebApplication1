@@ -10,6 +10,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
+            LogPageContentLoad();
+
             cbSupport.ContentHtml = GetConfiguredContent("cbSupport", @"This template is provided free of charge. If you find it useful for your projects, 
                 consider making a donation to support continued development and maintenance.
                 <br /><br />
