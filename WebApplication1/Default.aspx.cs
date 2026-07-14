@@ -15,13 +15,13 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         protected override void LoadPageContent()
         {
-            cbWelcome.ContentHtml = @"Welcome to this Windows XP styled website template! 
+            cbWelcome.ContentHtml = GetConfiguredContent("cbWelcome", @"Welcome to this Windows XP styled website template! 
                 This template provides a nostalgic look reminiscent of classic Windows XP/2000 era websites. 
                 The layout uses a frame-based design with a top toolbar, navigation sidebar, and main content area.
                 <br /><br />
-                Feel free to customize the navigation, content, and styling to match your needs.";
+                Feel free to customize the navigation, content, and styling to match your needs.");
 
-            cbAbout.ContentHtml = @"This template is designed to provide an authentic retro computing aesthetic. 
+            cbAbout.ContentHtml = GetConfiguredContent("cbAbout", @"This template is designed to provide an authentic retro computing aesthetic. 
                 Key features include:
                 <ul>
                     <li>Windows XP/2000 era styling and colors</li>
@@ -29,9 +29,9 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     <li>Reusable content box controls</li>
                     <li>Generic and customizable structure</li>
                     <li>ASP.NET Web Forms architecture</li>
-                </ul>";
+                </ul>");
 
-            cbFeatures.ContentHtml = @"<b>Template Features:</b>
+            cbFeatures.ContentHtml = GetConfiguredContent("cbFeatures", @"<b>Template Features:</b>
                 <ul class='feature-list'>
                     <li><b>Master Page Layout</b> - Consistent frame-based structure across all pages</li>
                     <li><b>Navigation Control</b> - Configurable sidebar navigation with sections</li>
@@ -39,9 +39,9 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     <li><b>Content Box Control</b> - Reusable styled content containers</li>
                     <li><b>Footer Control</b> - Copyright text via Web.config</li>
                     <li><b>Responsive Design</b> - Works on various screen sizes</li>
-                </ul>";
+                </ul>");
 
-            cbGetStarted.ContentHtml = @"<b>To customize this template:</b>
+            cbGetStarted.ContentHtml = GetConfiguredContent("cbGetStarted", @"<b>To customize this template:</b>
                 <ul>
                     <li>Edit <code>Web.config</code> appSettings for logo, site name, footer, and page content</li>
                     <li>Set <code>ContentHtml</code> directly on ContentBox controls in .aspx markup</li>
@@ -50,7 +50,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     <li>Add new content pages inheriting from <code>BasePage</code></li>
                 </ul>
                 <br />
-                <i>This template is ready for use as a starting point for Windows XP styled websites!</i>";
+                <i>This template is ready for use as a starting point for Windows XP styled websites!</i>");
         }
     }
 }

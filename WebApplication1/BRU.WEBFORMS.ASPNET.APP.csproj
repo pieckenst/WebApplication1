@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\PageContent.xml" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Site.Master" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BasePage.cs" />
+    <Compile Include="App_Start\PageContentStore.cs" />
     <Compile Include="App_Start\SiteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">

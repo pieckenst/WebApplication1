@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Central page content.
+
+  Edit THIS single file to customize any page's content without touching the
+  individual page files (*.aspx / *.aspx.cs).
+
+  How it works
+  ============
+  Each page's LoadPageContent() sets the built-in default content. Anything you
+  define here overrides that default. Web.config "Page.*" appSettings override
+  this file. So the precedence is:
+
+      Web.config  >  this file (PageContent.xml)  >  LoadPageContent() defaults
+
+  Changes here take effect immediately (the file is watched); no rebuild needed.
+
+  Structure
+  =========
+    <page key="Default" title="Optional browser title">
+        <box id="cbWelcome" header="Optional header text"><![CDATA[
+            Any HTML for this ContentBox goes here.
+        ]]></box>
+        <literal id="litSomething"><![CDATA[ text for a Literal control ]]></literal>
+    </page>
+
+    - key    = page class name (e.g. Default, About, FAQ, Donations, Privacy,
+               Legal, ReadThisFirst).
+    - box id / literal id = the control's ID as it appears in the .aspx markup.
+    - Put HTML inside <![CDATA[ ... ]]> so you don't have to escape < > & or quotes.
+    - "header" attribute is optional; omit it to keep the header from the markup.
+
+  Available control IDs per page
+  ==============================
+    Default        : cbWelcome, cbAbout, cbFeatures, cbGetStarted
+    About          : cbAbout, cbHowItWorks, cbHistory, cbContact, cbLegal
+    FAQ            : cbGeneral, cbCompatibility, cbUpdates
+    Donations      : cbSupport, cbHowToHelp
+    Privacy        : cbInfoCollect, cbInfoUse, cbDataSecurity, cbContact
+    Legal          : cbDisclaimer, cbLicense, cbTrademarks, cbLiability
+    ReadThisFirst  : cbTOC, cbDisclaimer, cbWelcome, cbFeatures, cbStarted
+
+  Example (remove the surrounding comment to activate):
+
+    <page key="Default">
+        <box id="cbWelcome" header="Welcome!"><![CDATA[
+            <p>Your custom welcome text here.</p>
+        ]]></box>
+    </page>
+-->
+<content>
+
+  <page key="Default">
+    <box id="cbWelcome" header="Welcome!"><![CDATA[
+Welcome to this Windows XP styled website template! 
+                This template provides a nostalgic look reminiscent of classic Windows XP/2000 era websites. 
+                The layout uses a frame-based design with a top toolbar, navigation sidebar, and main content area.
+                <br /><br />
+                Feel free to customize the navigation, content, and styling to match your needs.
+    ]]></box>
+    <box id="cbAbout" header="About This Site"><![CDATA[
+This template is designed to provide an authentic retro computing aesthetic. 
+                Key features include:
+                <ul>
+                    <li>Windows XP/2000 era styling and colors</li>
+                    <li>Frame-based layout with toolbar and sidebar navigation</li>
+                    <li>Reusable content box controls</li>
+                    <li>Generic and customizable structure</li>
+                    <li>ASP.NET Web Forms architecture</li>
+                </ul>
+    ]]></box>
+    <box id="cbFeatures" header="Key Features"><![CDATA[
+<b>Template Features:</b>
+                <ul class='feature-list'>
+                    <li><b>Master Page Layout</b> - Consistent frame-based structure across all pages</li>
+                    <li><b>Navigation Control</b> - Configurable sidebar navigation with sections</li>
+                    <li><b>Toolbar Control</b> - Logo and branding via Web.config</li>
+                    <li><b>Content Box Control</b> - Reusable styled content containers</li>
+                    <li><b>Footer Control</b> - Copyright text via Web.config</li>
+                    <li><b>Responsive Design</b> - Works on various screen sizes</li>
+                </ul>
+    ]]></box>
+    <box id="cbGetStarted" header="Getting Started"><![CDATA[
+<b>To customize this template:</b>
+                <ul>
+                    <li>Edit <code>Web.config</code> appSettings for logo, site name, footer, and page content</li>
+                    <li>Set <code>ContentHtml</code> directly on ContentBox controls in .aspx markup</li>
+                    <li>Override any page box via <code>Page.{PageKey}.{ControlId}.ContentHtml</code> in Web.config</li>
+                    <li>Modify <code>Navigationbar.ascx.cs</code> to customize navigation items</li>
+                    <li>Add new content pages inheriting from <code>BasePage</code></li>
+                </ul>
+                <br />
+                <i>This template is ready for use as a starting point for Windows XP styled websites!</i>
+    ]]></box>
+  </page>
+
+  <page key="About">
+    <box id="cbAbout" header="What is this project about?"><![CDATA[
+This project demonstrates how to create a Windows XP styled website using ASP.NET Web Forms. 
+                The template provides a nostalgic look reminiscent of classic Windows XP/2000 era websites, bringing back the 
+                authentic feel of early 2000s web design.
+    ]]></box>
+    <box id="cbHowItWorks" header="How does it work?"><![CDATA[
+The template uses a master page with frame-based layout simulation using CSS flexbox. 
+                The navigation is handled through a configurable user control that allows easy customization of menu items.
+                Content is displayed through reusable content box controls that maintain consistent styling.
+    ]]></box>
+    <box id="cbHistory" header="The history of the project"><![CDATA[
+This template was created to help developers build retro-styled websites that capture 
+                the essence of the Windows XP/2000 era. It's perfect for nostalgia projects, retro computing enthusiasts, 
+                or anyone looking to create an authentic early 2000s web experience.
+    ]]></box>
+    <box id="cbContact" header="Get in touch with us!"><![CDATA[
+If you would like to contact us for any reason, you can do so through the following channels:
+                <br /><br />
+                <b>Email:</b> <a href='mailto:contact@example.com'>contact@example.com</a>
+                <br />
+                <b>Website:</b> <a href='../Default.aspx'>Home Page</a>
+    ]]></box>
+    <box id="cbLegal" header="Privacy Policy and Legal Information"><![CDATA[
+Learn more about how your data is used and the legal side of this website by visiting the 
+                <a href='Privacy.aspx'>Privacy Policy</a> and <a href='Legal.aspx'>Legal Information</a> pages.
+    ]]></box>
+  </page>
+
+  <page key="FAQ">
+    <box id="cbGeneral" header="General Project Questions"><![CDATA[
+                <div class='faq-question'>What is this template for?</div>
+                <div class='faq-answer'>This template is designed for creating Windows XP/2000 styled websites using ASP.NET Web Forms. It provides an authentic retro computing aesthetic.</div>
+                
+                <div class='faq-question'>Is this template free to use?</div>
+                <div class='faq-answer'>Yes, this template is provided as a starting point for your own projects. Feel free to customize it to your needs.</div>
+                
+                <div class='faq-question'>What technologies does this template use?</div>
+                <div class='faq-answer'>This template uses ASP.NET Web Forms with C# code-behind, master pages, user controls, and CSS for styling.</div>
+    ]]></box>
+    <box id="cbCompatibility" header="Compatibility &amp; Operating Systems"><![CDATA[
+                <div class='faq-question'>What browsers are supported?</div>
+                <div class='faq-answer'>The template is designed to work with modern browsers while maintaining the classic Windows XP aesthetic. It uses standard HTML and CSS.</div>
+                
+                <div class='faq-question'>Does this work on mobile devices?</div>
+                <div class='faq-answer'>Yes, the template includes responsive CSS that adapts to smaller screens while maintaining the retro look on desktop.</div>
+                
+                <div class='faq-question'>Can I customize the colors?</div>
+                <div class='faq-answer'>Absolutely! All colors are defined in CSS and can be easily modified to match your preferred color scheme.</div>
+    ]]></box>
+    <box id="cbUpdates" header="Updates &amp; Contributing"><![CDATA[
+                <div class='faq-question'>How do I add new pages?</div>
+                <div class='faq-answer'>Create a new Web Form that uses the Site.Master master page and inherits from BasePage. Add your content to the MainContent placeholder.</div>
+                
+                <div class='faq-question'>How do I change the logo?</div>
+                <div class='faq-answer'>Edit SiteLogoUrl, SiteLogoWidth, SiteLogoHeight, and SiteLogoAlt in Web.config appSettings. No code changes required.</div>
+                
+                <div class='faq-question'>How do I override page content?</div>
+                <div class='faq-answer'>Set ContentHtml on ContentBox controls in .aspx markup, or add Page.{PageKey}.{ControlId}.ContentHtml keys in Web.config.</div>
+    ]]></box>
+  </page>
+
+  <page key="Donations">
+    <box id="cbSupport" header="Support This Project"><![CDATA[
+This template is provided free of charge. If you find it useful for your projects, 
+                consider making a donation to support continued development and maintenance.
+                <br /><br />
+                Your support helps cover hosting costs and allows us to dedicate more time to improving the template.
+    ]]></box>
+    <box id="cbHowToHelp" header="Other Ways to Help"><![CDATA[
+Not able to donate? There are other ways you can help:
+                <ul>
+                    <li><b>Spread the word</b> - Share this template with others who might find it useful</li>
+                    <li><b>Report bugs</b> - Help us improve by reporting any issues you encounter</li>
+                    <li><b>Contribute code</b> - Submit improvements and new features</li>
+                    <li><b>Provide feedback</b> - Let us know how we can make this template better</li>
+                </ul>
+    ]]></box>
+  </page>
+
+  <page key="Legal">
+    <box id="cbDisclaimer" header="Disclaimer"><![CDATA[
+<font color='#660000'>
+                <b>THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+                INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+                PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+                FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+                OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+                DEALINGS IN THE SOFTWARE.</b>
+                </font>
+    ]]></box>
+    <box id="cbLicense" header="License"><![CDATA[
+This template is provided for educational and personal use. 
+                You are free to:
+                <ul>
+                    <li>Use this template for your own projects</li>
+                    <li>Modify and customize the code to suit your needs</li>
+                    <li>Distribute copies to others</li>
+                </ul>
+                <br />
+                Please retain any copyright notices and attributions when using this template.
+    ]]></box>
+    <box id="cbTrademarks" header="Trademarks"><![CDATA[
+Windows, Windows XP, and other Microsoft product names are trademarks or 
+                registered trademarks of Microsoft Corporation in the United States and/or other countries.
+                <br /><br />
+                This template is not affiliated with, endorsed, sponsored, or specifically approved by Microsoft Corporation.
+                <br /><br />
+                All other trademarks mentioned are the property of their respective owners.
+    ]]></box>
+    <box id="cbLiability" header="Limitation of Liability"><![CDATA[
+The developers of this template shall not be held liable for any direct, 
+                indirect, incidental, special, exemplary, or consequential damages arising from the use of this template.
+                <br /><br />
+                Users are responsible for ensuring their use of this template complies with applicable laws and regulations.
+                <br /><br />
+                <i>This template is provided for convenience and educational purposes. Use at your own risk.</i>
+    ]]></box>
+  </page>
+
+  <page key="Privacy">
+    <box id="cbInfoCollect" header="Information We Collect"><![CDATA[
+We collect minimal information necessary to provide our services:
+                <ul>
+                    <li><b>Usage Data:</b> Anonymous usage statistics to improve our services</li>
+                    <li><b>Contact Information:</b> If you contact us, we may store your email for correspondence</li>
+                    <li><b>Cookies:</b> Essential cookies for site functionality</li>
+                </ul>
+    ]]></box>
+    <box id="cbInfoUse" header="How We Use Your Information"><![CDATA[
+The information we collect is used to:
+                <ul>
+                    <li>Provide and maintain our services</li>
+                    <li>Improve user experience</li>
+                    <li>Respond to inquiries and support requests</li>
+                    <li>Send important notifications about our services</li>
+                </ul>
+    ]]></box>
+    <box id="cbDataSecurity" header="Data Security"><![CDATA[
+We implement appropriate security measures to protect your information:
+                <ul>
+                    <li>SSL/TLS encryption for data transmission</li>
+                    <li>Regular security assessments</li>
+                    <li>Limited access to personal data</li>
+                </ul>
+                <br />
+                <i>Note: No method of transmission over the Internet is 100% secure. We strive to protect your data but cannot guarantee absolute security.</i>
+    ]]></box>
+    <box id="cbContact" header="Contact Us"><![CDATA[
+If you have questions about this privacy policy, please contact us:
+                <br /><br />
+                <b>Email:</b> <a href='mailto:privacy@example.com'>privacy@example.com</a>
+    ]]></box>
+  </page>
+
+  <page key="ReadThisFirst">
+    <box id="cbTOC" header="Table of Contents"><![CDATA[
+                <ul class='toc-list'>
+                    <li><b><a href='#disclaimer'>Disclaimer and Important Notices</a></b></li>
+                    <li><b><a href='#welcome'>Welcome!</a></b></li>
+                    <li><b><a href='#features'>Key Features</a></b></li>
+                    <li><b><a href='#started'>Getting Started</a></b></li>
+                </ul>
+    ]]></box>
+    <box id="cbDisclaimer" header="Disclaimer and Important Notices"><![CDATA[
+                <font color='#660000'>
+                    <b>This template is provided "as is", without warranty of any kind. 
+                    While we've tested it thoroughly, please ensure you have backups of any important data. 
+                    This template is for educational and personal use.</b>
+                </font>
+    ]]></box>
+    <box id="cbWelcome" header="Welcome!"><![CDATA[
+                Thank you for using this Windows XP styled website template! 
+                This template is designed to help developers create retro-styled websites with an authentic 
+                Windows XP/2000 era look and feel.
+                <br /><br />
+                The template uses ASP.NET Web Forms with master pages, user controls, and CSS to recreate 
+                the classic frame-based layout that was common in early 2000s websites.
+    ]]></box>
+    <box id="cbFeatures" header="Key Features"><![CDATA[
+                <b>Template Features:</b>
+                <ul>
+                    <li><b>Master Page Layout</b> - Consistent frame-based structure</li>
+                    <li><b>Navigation Control</b> - Configurable sidebar navigation</li>
+                    <li><b>Content Boxes</b> - Reusable styled content containers</li>
+                    <li><b>Retro Styling</b> - Authentic Windows XP aesthetic</li>
+                    <li><b>Responsive Design</b> - Works on modern devices</li>
+                    <li><b>Easy Customization</b> - Web.config and markup overrides</li>
+                </ul>
+    ]]></box>
+    <box id="cbStarted" header="Getting Started"><![CDATA[
+                To get started with this template:
+                <br /><br />
+                <b>1.</b> Open the project in Visual Studio
+                <br />
+                <b>2.</b> Build and run the project
+                <br />
+                <b>3.</b> Customize logo and site name in <code>Web.config</code>
+                <br />
+                <b>4.</b> Add your content pages using the master page and <code>BasePage</code>
+                <br />
+                <b>5.</b> Modify the CSS to match your branding
+                <br /><br />
+                <i>Refer to the FAQ page for more detailed instructions!</i>
+    ]]></box>
+  </page>
+
+</content>

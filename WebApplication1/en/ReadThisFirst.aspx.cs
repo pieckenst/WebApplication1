@@ -14,30 +14,30 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
 
         protected override void LoadPageContent()
         {
-            cbTOC.ContentHtml = @"
+            cbTOC.ContentHtml = GetConfiguredContent("cbTOC", @"
                 <ul class='toc-list'>
                     <li><b><a href='#disclaimer'>Disclaimer and Important Notices</a></b></li>
                     <li><b><a href='#welcome'>Welcome!</a></b></li>
                     <li><b><a href='#features'>Key Features</a></b></li>
                     <li><b><a href='#started'>Getting Started</a></b></li>
-                </ul>";
+                </ul>");
 
-            cbDisclaimer.ContentHtml = @"
+            cbDisclaimer.ContentHtml = GetConfiguredContent("cbDisclaimer", @"
                 <font color='#660000'>
                     <b>This template is provided ""as is"", without warranty of any kind. 
                     While we've tested it thoroughly, please ensure you have backups of any important data. 
                     This template is for educational and personal use.</b>
-                </font>";
+                </font>");
 
-            cbWelcome.ContentHtml = @"
+            cbWelcome.ContentHtml = GetConfiguredContent("cbWelcome", @"
                 Thank you for using this Windows XP styled website template! 
                 This template is designed to help developers create retro-styled websites with an authentic 
                 Windows XP/2000 era look and feel.
                 <br /><br />
                 The template uses ASP.NET Web Forms with master pages, user controls, and CSS to recreate 
-                the classic frame-based layout that was common in early 2000s websites.";
+                the classic frame-based layout that was common in early 2000s websites.");
 
-            cbFeatures.ContentHtml = @"
+            cbFeatures.ContentHtml = GetConfiguredContent("cbFeatures", @"
                 <b>Template Features:</b>
                 <ul>
                     <li><b>Master Page Layout</b> - Consistent frame-based structure</li>
@@ -46,9 +46,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
                     <li><b>Retro Styling</b> - Authentic Windows XP aesthetic</li>
                     <li><b>Responsive Design</b> - Works on modern devices</li>
                     <li><b>Easy Customization</b> - Web.config and markup overrides</li>
-                </ul>";
+                </ul>");
 
-            cbStarted.ContentHtml = @"
+            cbStarted.ContentHtml = GetConfiguredContent("cbStarted", @"
                 To get started with this template:
                 <br /><br />
                 <b>1.</b> Open the project in Visual Studio
@@ -61,7 +61,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.en
                 <br />
                 <b>5.</b> Modify the CSS to match your branding
                 <br /><br />
-                <i>Refer to the FAQ page for more detailed instructions!</i>";
+                <i>Refer to the FAQ page for more detailed instructions!</i>");
         }
     }
 }

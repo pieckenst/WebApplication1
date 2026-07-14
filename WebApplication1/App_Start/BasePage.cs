@@ -65,6 +65,30 @@ namespace BRU.WEBFORMS.ASPNET.APP
         }
 
         /// <summary>
+        /// Returns the centrally-configured ContentHtml for a control on this
+        /// page (Web.config, then App_Data/PageContent.xml) if present;
+        /// otherwise returns <paramref name="defaultHtml"/>. Use this inside
+        /// LoadPageContent so a page keeps an inline default while still
+        /// honoring the central content file.
+        /// </summary>
+        protected string GetConfiguredContent(string controlId, string defaultHtml)
+        {
+            string configured = SiteConfig.GetContentHtml(PageContentKey, controlId);
+            return string.IsNullOrWhiteSpace(configured) ? defaultHtml : configured;
+        }
+
+        /// <summary>
+        /// Returns the centrally-configured HeaderText for a control on this
+        /// page (Web.config, then App_Data/PageContent.xml) if present;
+        /// otherwise returns <paramref name="defaultHeader"/>.
+        /// </summary>
+        protected string GetConfiguredHeader(string controlId, string defaultHeader)
+        {
+            string configured = SiteConfig.GetHeaderText(PageContentKey, controlId);
+            return string.IsNullOrWhiteSpace(configured) ? defaultHeader : configured;
+        }
+
+        /// <summary>
         /// Sets the content of a ContentBox control by ID.
         /// </summary>
         protected void SetContent(string contentBoxId, string headerText, string contentHtml)
