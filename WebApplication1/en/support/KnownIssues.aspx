@@ -130,7 +130,7 @@
                     <ul>
                         <li><b>Website will not work without system modifications:</b> This website requires specific system modifications to function properly. Please refer to our <a href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>"><b><u>Prerequisites</u></b></a> page for instructions and to install the <i>Windows Update Restored Prerequisites Installer</i> to ensure the website operates correctly on your system.</li>
                         <li><b>Website throws an "Application Error":</b> This happens because we're missing pages for the V6 website (both WU and MU). It's not a proper Windows Update error.</li>
-                        <li><b>Page Availability:</b> Windows Update Restored v5 may still lack some pages; users might encounter 404 error pages when attempting to click on certain links.</li>
+                        <li><b>Page Availability:</b> Windows Update Restored v6 may still lack some pages; users might encounter 404 error pages when attempting to click on certain links.</li>
                     </ul>
                 </td>
             </tr>

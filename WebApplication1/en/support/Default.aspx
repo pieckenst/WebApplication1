@@ -123,7 +123,7 @@
             </tr>
             <tr>
                 <td>
-                    <a class="tutorial-link" title="Some versions of the Windows Update website rquire system modifications to work properly." href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>">
+                    <a class="tutorial-link" title="Some versions of the Windows Update website require system modifications to work properly." href="<%= ResolveUrl("~/en/Prerequisites.aspx") %>">
                         <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Prerequisites to run Windows Update Restored
                     </a>
                     <blockquote>
