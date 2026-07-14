@@ -42,7 +42,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
                 new NavigationItem { Title = "See Also", IsSubheader = true },
                 new NavigationItem { Title = "Frequently Asked Questions", NavigateUrl = "~/en/FAQ.aspx", ToolTip = "Read how the project works, what we used to restore the websites and other answers to common questions related to the project." },
-                new NavigationItem { Title = "Related Projects", NavigateUrl = "~/en/related.htm.tmp.html", ToolTip = "Windows Update Restored is also available through other projects. Go check them out!" },
+                new NavigationItem { Title = "Related Projects", NavigateUrl = "~/en/Related.aspx", ToolTip = "Windows Update Restored is also available through other projects. Go check them out!" },
                 new NavigationItem { Title = "Help & Support Center", NavigateUrl = "~/en/support/Default.aspx", Target = "_top" },
 
                 new NavigationItem { Title = "Windows Update Restored", IsSubheader = true },
@@ -71,7 +71,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
                 new NavigationItem { Title = "See Also", IsSubheader = true },
                 new NavigationItem { Title = "Frequently Asked Questions", NavigateUrl = "~/en/FAQ.aspx", ToolTip = "Read how the project works, what we used to restore the websites and other answers to common questions related to the project." },
-                new NavigationItem { Title = "Related Projects", NavigateUrl = "~/en/related.htm.tmp.html", ToolTip = "Windows Update Restored is also available through other projects. Go check them out!" },
+                new NavigationItem { Title = "Related Projects", NavigateUrl = "~/en/Related.aspx", ToolTip = "Windows Update Restored is also available through other projects. Go check them out!" },
                 new NavigationItem { Title = "Download Center", NavigateUrl = "~/en/download-center/Default.aspx", Target = "_top" },
 
                 new NavigationItem { Title = "Windows Update Restored", IsSubheader = true },

@@ -91,6 +91,7 @@
     <Content Include="en\Contribute.aspx" />
     <Content Include="en\ReadThisFirst.aspx" />
     <Content Include="en\Prerequisites.aspx" />
+    <Content Include="en\Related.aspx" />
     <Content Include="en\Donations.aspx" />
     <Content Include="en\Privacy.aspx" />
     <Content Include="en\Legal.aspx" />
@@ -174,6 +175,10 @@
     </Compile>
     <Compile Include="en\Prerequisites.aspx.cs">
       <DependentUpon>Prerequisites.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\Related.aspx.cs">
+      <DependentUpon>Related.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="en\Donations.aspx.cs">
