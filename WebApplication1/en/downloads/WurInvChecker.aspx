@@ -1,85 +1,53 @@
-<!DOCTYPE html>
-<html>
+<%@ Page Title="Windows Update Restored v5 Checker Tool" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="WurInvChecker.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.WurInvChecker" %>
 
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Windows Update Restored v5 Checker Tool</title>
-    <style>
-        body {
-            color: black;
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        .cw {color: black;
             background-color: white;
             overflow: auto;
             margin: 10px 16px;
-            font-family: 'Segoe UI Variable Text', Segoe UI, Tahoma, sans-serif; /* Applied font stack */
-        }
-
-        h1 {
-            font-size: 20px;
+            font-family: 'Segoe UI Variable Text', Segoe UI, Tahoma, sans-serif; /* Applied font stack */ }
+        .cw h1 {font-size: 20px;
             color: #000080;
             border-bottom: 2px solid #000080;
             padding-bottom: 8px;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            color: #000080;
+            margin-bottom: 10px; }
+        .cw h2 {color: #000080;
             font-size: 16px;
             margin: 20px 0 10px;
             border-bottom: 1px solid #000080;
-            padding-bottom: 5px;
-        }
-
-        p {
-            font-size: 13px;
+            padding-bottom: 5px; }
+        .cw p {font-size: 13px;
             line-height: 1.6;
-            margin: 10px 0;
-        }
-
-        ul {
-            margin: 5px 0 10px 20px; /* Adjust margin for lists */
-        }
-
-        hr {
-            border: none;
+            margin: 10px 0; }
+        .cw ul {margin: 5px 0 10px 20px; /* Adjust margin for lists */ }
+        .cw hr {border: none;
             border-top: 1px solid #000080;
-            margin: 10px 0;
-        }
-
-        .disclaimer {
-            background-color: #ffcccc;
+            margin: 10px 0; }
+        .cw .disclaimer {background-color: #ffcccc;
             border: 1px solid #cc0000;
             color: #cc0000;
             padding: 10px;
             margin: 10px 0;
             font-size: 13px;
             border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        a {
-            color: #000080;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .download-button {
-            font-size: 10.5pt;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
+        .cw a {color: #000080;
+            text-decoration: none; }
+        .cw a:hover {text-decoration: underline; }
+        .cw .download-button {font-size: 10.5pt;
             font-weight: 700;
             color: #000000;
             display: inline-block;
             padding: 5px;
             border: 1px solid #000080;
             background-color: #e6f7ff;
-            border-radius: 5px;
-        }
+            border-radius: 5px; }
     </style>
-</head>
 
-<body>
+    <div class="cw">
+
 
     <h1>Windows Update Restored <span lang="en">Inventory Checker Tool</span></h1>
 
@@ -112,7 +80,7 @@
     <p><strong>File size:</strong> 1.25 MB</p>
     <p><strong>Developer:</strong> WULover</p>
     <p><strong>Software version:</strong> v1.0.4 (Release)</p>
-    <p><strong>Download server:</strong> <a href="http://download.windowsupdaterestored.com/" target="_blank">http://download.windowsupdaterestored.com</a></p>
+    <p><strong>Download server:</strong> <a href="<%= SiteConfig.DownloadBaseUrl %>/" target="_blank"><%= SiteConfig.DownloadBaseUrl %></a></p>
     <p><strong>Digital signature:</strong> Signed on September 18th, 202<span lang="fr">5</span> by windowsupdaterestored.com</p>
     <p><strong>Additional information:</strong>
 	<span lang="fr">This tool is contained in a self-extracting archive. The 
@@ -123,8 +91,8 @@
 </p>
 <h2>Download File</h2>
 	<p><font color="#000080" style="font-size: 9pt" face="Tahoma">
-	<a style="color: rgb(51, 102, 255);" href="http://download.windowsupdaterestored.com/wutools/wurinvchecker.EXE">
-	<img border="0" src="../images/arrow.gif" align="middle" width="30" height="25"></a></font><font face="Tahoma" style="font-size: 10.5pt;"><span style="font-weight: 700;"><a style="color: rgb(51, 102, 255); text-decoration:none" href="http://download.windowsupdaterestored.com/wutools/wurinvchecker.EXE"><font color="#000000">Download 
+	<a style="color: rgb(51, 102, 255);" href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurinvchecker.EXE">
+	<img border="0" src="<%= ResolveUrl("~/en/images/arrow.gif") %>" align="middle" width="30" height="25"></a></font><font face="Tahoma" style="font-size: 10.5pt;"><span style="font-weight: 700;"><a style="color: rgb(51, 102, 255); text-decoration:none" href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurinvchecker.EXE"><font color="#000000">Download 
 	the wurvinvchecker.exe file now!</font></a></span></font><br>
 <br>
     </p>
@@ -141,7 +109,7 @@
 </ul>
 	<p><strong>Languages:</strong> This tool is multi-language.</p>
     <h2>Instructions</h2>
-<style="font-size: 10.5pt" color="#000000">
+
                     <section class="history">
 
         <section class="languages">
@@ -185,6 +153,7 @@
 	<i>Version 1.0.4 now relies on Visual Basic 6. Check your version of the 
 	Inventory Checker using the &quot;?&quot; button in the application.</i></p>
 
-</body>
 
-</html>
+    </div>
+
+</asp:Content>

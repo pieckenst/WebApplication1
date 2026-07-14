@@ -1,0 +1,18 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Support.master.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.SupportMaster" MasterPageFile="~/Site.Master" %>
+<%@ Register TagPrefix="uc" TagName="Toolbar" Src="~/Controls/Toolbar.ascx" %>
+<%@ Register TagPrefix="uc" TagName="Navigationbar" Src="~/Controls/Navigationbar.ascx" %>
+
+<asp:Content ID="cTop" ContentPlaceHolderID="TopContent" runat="server">
+    <uc:Toolbar runat="server" ID="Toolbar1"
+        LogoImageUrl="~/en/images/wur_support.png" LogoWidth="415" LogoHeight="81"
+        LogoAlternateText="Windows Update Restored Help &amp; Support Center"
+        HomeNavigateUrl="~/en/support/Default.aspx" />
+</asp:Content>
+
+<asp:Content ID="cSide" ContentPlaceHolderID="SidebarContent" runat="server">
+    <uc:Navigationbar runat="server" ID="Navigationbar1" />
+</asp:Content>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+</asp:Content>

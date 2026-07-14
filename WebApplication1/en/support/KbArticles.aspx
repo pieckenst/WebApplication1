@@ -1,95 +1,60 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Knowledge Base Articles</title>
-    <base target="_self">
-    
+<%@ Page Title="Knowledge Base Articles" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="KbArticles.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.KbArticles" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
     <style type="text/css">
-        body, table, td, p, div, span, ul, li { 
-            font-family: Tahoma, Verdana, Arial, sans-serif; 
-            font-size: 10pt;
-        }
-        body { 
-            margin: 0; 
+        .cw, .cw table, .cw td, .cw p, .cw div, .cw span, .cw ul, .cw li {font-family: Tahoma, Verdana, Arial, sans-serif; 
+            font-size: 10pt; }
+        .cw {margin: 0; 
             padding: 0; 
             background-color: #FFFFFF; 
-            color: #000000;
-        }
-        a { color: #000080; text-decoration: none; }
-        a:hover { color: #FF6600; text-decoration: underline; }
-        
-        .title-main { font-size: 16pt; color: #000080; font-weight: bold; }
-        .text-regular { font-size: 10pt; line-height: 1.5; }
-        .text-small { font-size: 8pt; }
-        .text-gray { color: #666666; }
-        .text-black { color: #000000; }
-        
-        .toc-bar {
-            background-color: #F5F5F5;
+            color: #000000; }
+        .cw a {color: #000080; text-decoration: none; }
+        .cw a:hover {color: #FF6600; text-decoration: underline; }
+        .cw .title-main {font-size: 16pt; color: #000080; font-weight: bold; }
+        .cw .text-regular {font-size: 10pt; line-height: 1.5; }
+        .cw .text-small {font-size: 8pt; }
+        .cw .text-gray {color: #666666; }
+        .cw .text-black {color: #000000; }
+        .cw .toc-bar {background-color: #F5F5F5;
             border: 1px solid #DCDCDC;
             padding: 10px 15px;
-            margin-bottom: 25px;
-        }
-        .toc-title {
-            font-weight: bold;
+            margin-bottom: 25px; }
+        .cw .toc-title {font-weight: bold;
             color: #000080;
-            margin-bottom: 5px;
-        }
-        .toc-list {
-            margin: 0;
-            padding-left: 15px;
-        }
-        .toc-list li {
-            margin-bottom: 4px;
-        }
-        
-        .kb-item {
-            margin-bottom: 25px;
+            margin-bottom: 5px; }
+        .cw .toc-list {margin: 0;
+            padding-left: 15px; }
+        .cw .toc-list li {margin-bottom: 4px; }
+        .cw .kb-item {margin-bottom: 25px;
             padding-bottom: 20px;
-            border-bottom: 1px solid #E0E0E0;
-        }
-        .kb-header-row {
-            margin-bottom: 6px;
-        }
-        .kb-badge {
-            background-color: #000080;
+            border-bottom: 1px solid #E0E0E0; }
+        .cw .kb-header-row {margin-bottom: 6px; }
+        .cw .kb-badge {background-color: #000080;
             color: #FFFFFF;
             font-size: 8pt;
             font-weight: bold;
             padding: 2px 6px;
             margin-right: 8px;
-            vertical-align: middle;
-        }
-        .kb-link {
-            font-size: 10.5pt;
+            vertical-align: middle; }
+        .cw .kb-link {font-size: 10.5pt;
             font-weight: bold;
             color: #0040A0;
-            vertical-align: middle;
-        }
-        .kb-link:hover {
-            color: #FF6600;
-        }
-        .kb-meta {
-            font-size: 8.5pt;
+            vertical-align: middle; }
+        .cw .kb-link:hover {color: #FF6600; }
+        .cw .kb-meta {font-size: 8.5pt;
             color: #666666;
             margin-bottom: 8px;
-            padding-left: 2px;
-        }
-        .kb-meta strong {
-            color: #333333;
-        }
-        .kb-desc {
-            font-size: 10pt;
+            padding-left: 2px; }
+        .cw .kb-meta strong {color: #333333; }
+        .cw .kb-desc {font-size: 10pt;
             line-height: 1.45;
             color: #333333;
-            margin: 5px 0 0 2px;
-        }
+            margin: 5px 0 0 2px; }
     </style>
-</head>
 
-<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0" bgcolor="#FFFFFF">
+    <div class="cw">
+
 
 <a name="top"></a>
 
@@ -116,10 +81,10 @@
             <div class="toc-bar">
                 <div class="toc-title">Quick Index:</div>
                 <ul class="toc-list">
-                    <li><a href="kb_articles.htm.tmp.html#kb-wur-1301"><b>KB-WUR-1301</b>: Windows Update V3.1 no longer works after scanning on V4</a></li>
-                    <li><a href="kb_articles.htm.tmp.html#kb-wur-1001"><b>KB-WUR-1001</b>: Handling security certificate warnings in Internet Explorer</a></li>
-                    <li><a href="kb_articles.htm.tmp.html#kb-wur-2002"><b>KB-WUR-2002</b>: Troubleshooting connection issues using a local proxy</a></li>
-                    <li><a href="kb_articles.htm.tmp.html#kb-wur-2001"><b>KB-WUR-2001</b>: Windows Update Restored connection blocked by local ISPs</a></li>
+                    <li><a href="#kb-wur-1301"><b>KB-WUR-1301</b>: Windows Update V3.1 no longer works after scanning on V4</a></li>
+                    <li><a href="#kb-wur-1001"><b>KB-WUR-1001</b>: Handling security certificate warnings in Internet Explorer</a></li>
+                    <li><a href="#kb-wur-2002"><b>KB-WUR-2002</b>: Troubleshooting connection issues using a local proxy</a></li>
+                    <li><a href="#kb-wur-2001"><b>KB-WUR-2001</b>: Windows Update Restored connection blocked by local ISPs</a></li>
                 </ul>
             </div>
 
@@ -128,12 +93,12 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td valign="top" width="55" style="padding-right: 12px;">
-                            <img border="0" src="../images/question-big.gif" width="48" height="47" alt="Question">
+                            <img border="0" src="<%= ResolveUrl("~/en/images/question-big.gif") %>" width="48" height="47" alt="Question">
                         </td>
                         <td valign="top">
                             <div class="kb-header-row">
                                 <span class="kb-badge">KB-WUR-1301</span>
-                                <a class="kb-link" href="kb/wurv31-not-working-after-using-wurv4.htm.tmp.html">Windows Update V3.1 no longer works after scanning for updates on Windows Update V4</a>
+                                <a class="kb-link" href="<%= ResolveUrl("~/en/support/kb/WurV31NotWorkingAfterUsingWurV4.aspx") %>">Windows Update V3.1 no longer works after scanning for updates on Windows Update V4</a>
                             </div>
                             <div class="kb-meta">
                                 <strong>Published:</strong> April 19, 2024 &nbsp;|&nbsp; 
@@ -153,12 +118,12 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td valign="top" width="55" style="padding-right: 12px;">
-                            <img border="0" src="../images/question-big.gif" width="48" height="47" alt="Question">
+                            <img border="0" src="<%= ResolveUrl("~/en/images/question-big.gif") %>" width="48" height="47" alt="Question">
                         </td>
                         <td valign="top">
                             <div class="kb-header-row">
                                 <span class="kb-badge">KB-WUR-1001</span>
-                                <a class="kb-link" href="kb/wurcert.htm.tmp.html">You get certificate warnings in Internet Explorer</a>
+                                <a class="kb-link" href="<%= ResolveUrl("~/en/support/kb/WurCert.aspx") %>">You get certificate warnings in Internet Explorer</a>
                             </div>
                             <div class="kb-meta">
                                 <strong>Published:</strong> April 17, 2024 &nbsp;|&nbsp; 
@@ -178,12 +143,12 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td valign="top" width="55" style="padding-right: 12px;">
-                            <img border="0" src="../images/question-big.gif" width="48" height="47" alt="Question">
+                            <img border="0" src="<%= ResolveUrl("~/en/images/question-big.gif") %>" width="48" height="47" alt="Question">
                         </td>
                         <td valign="top">
                             <div class="kb-header-row">
                                 <span class="kb-badge">KB-WUR-2002</span>
-                                <a class="kb-link" href="kb/proxy.htm.tmp.html">Troubleshooting Windows Update using a Proxy</a>
+                                <a class="kb-link" href="<%= ResolveUrl("~/en/support/kb/Proxy.aspx") %>">Troubleshooting Windows Update using a Proxy</a>
                             </div>
                             <div class="kb-meta">
                                 <strong>Published:</strong> April 15, 2024 &nbsp;|&nbsp; 
@@ -203,12 +168,12 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td valign="top" width="55" style="padding-right: 12px;">
-                            <img border="0" src="../images/question-big.gif" width="48" height="47" alt="Question">
+                            <img border="0" src="<%= ResolveUrl("~/en/images/question-big.gif") %>" width="48" height="47" alt="Question">
                         </td>
                         <td valign="top">
                             <div class="kb-header-row">
                                 <span class="kb-badge">KB-WUR-2001</span>
-                                <a class="kb-link" href="kb/wurblockedbyisp.htm.tmp.html">Windows Update Restored is blocked by your ISP</a>
+                                <a class="kb-link" href="<%= ResolveUrl("~/en/support/kb/WurBlockedByIsp.aspx") %>">Windows Update Restored is blocked by your ISP</a>
                             </div>
                             <div class="kb-meta">
                                 <strong>Published:</strong> April 15, 2024 &nbsp;|&nbsp; 
@@ -223,11 +188,13 @@
                 </table>
             </div>
 
-            <p align="right" style="margin-top: 20px;"><a href="kb_articles.htm.tmp.html#top" class="text-small text-black">Back to top &#9650;</a></p>
+            <p align="right" style="margin-top: 20px;"><a href="#top" class="text-small text-black">Back to top &#9650;</a></p>
 
         </td>
     </tr>
 </table>
 
-</body>
-</html>
+
+    </div>
+
+</asp:Content>

@@ -1,73 +1,42 @@
-<!DOCTYPE html>
-<html>
+<%@ Page Title="Windows Update Restored Certificates" Language="C#" MasterPageFile="~/en/download-center/DownloadCenter.master" AutoEventWireup="true" CodeBehind="Certificates.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.downloads.Certificates" %>
 
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Windows Update Restored Certificates</title>
-    <style>
-        body {
-            color: black;
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        .cw {color: black;
             background-color: white;
             overflow: auto;
             margin: 10px 16px;
-            font-family: 'Segoe UI Variable Text', Segoe UI, Tahoma, sans-serif; /* Applied font stack */
-        }
-
-        h1 {
-            font-size: 20px;
+            font-family: 'Segoe UI Variable Text', Segoe UI, Tahoma, sans-serif; /* Applied font stack */ }
+        .cw h1 {font-size: 20px;
             color: #000080;
             border-bottom: 2px solid #000080;
             padding-bottom: 8px;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            color: #000080;
+            margin-bottom: 10px; }
+        .cw h2 {color: #000080;
             font-size: 16px;
             margin: 10px 0;
             border-bottom: 1px solid #000080;
-            padding-bottom: 5px;
-        }
-
-        p {
-            font-size: 13px;
+            padding-bottom: 5px; }
+        .cw p {font-size: 13px;
             line-height: 1.6;
-            margin: 10px 0;
-        }
-
-        ul {
-            margin: 5px 0 10px 20px; /* Adjust margin for lists */
-        }
-
-        hr {
-            border: none;
+            margin: 10px 0; }
+        .cw ul {margin: 5px 0 10px 20px; /* Adjust margin for lists */ }
+        .cw hr {border: none;
             border-top: 1px solid #000080;
-            margin: 10px 0;
-        }
-
-        .disclaimer {
-            background-color: #ffcccc;
+            margin: 10px 0; }
+        .cw .disclaimer {background-color: #ffcccc;
             border: 1px solid #cc0000;
             color: #cc0000;
             padding: 10px;
             margin: 10px 0;
             font-size: 13px;
             border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        a {
-            color: #000080;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .download-link {
-            font-size: 13px; /* Match the font size */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
+        .cw a {color: #000080;
+            text-decoration: none; }
+        .cw a:hover {text-decoration: underline; }
+        .cw .download-link {font-size: 13px; /* Match the font size */
             font-weight: bold; /* Set font weight to bold */
             color: #000000;
             display: inline-block;
@@ -76,17 +45,12 @@
             background-color: #e6f7ff;
             border-radius: 4px;
             text-align: center;
-            width: 250px; /* Make a consistent button width */
-        }
-
-        .instructions,
-        .known-issues {
-            font-size: 13px; /* Maintain consistency */
-        }
+            width: 250px; /* Make a consistent button width */ }
+        .cw .instructions, .cw .known-issues {font-size: 13px; /* Maintain consistency */ }
     </style>
-</head>
 
-<body>
+    <div class="cw">
+
 
     <h1>Windows Update Restored Certificates</h1>
 
@@ -106,29 +70,29 @@
     <p><strong>File size:</strong> 8KB</p>
     <p><strong>Software version:</strong> No version available</p>
     <p><strong>Developer:</strong> WinFX</p>
-    <p><strong>Download server:</strong> <a href="http://download.windowsupdaterestored.com/" target="_blank">http://download.windowsupdaterestored.com</a></p>
+    <p><strong>Download server:</strong> <a href="<%= SiteConfig.DownloadBaseUrl %>/" target="_blank"><%= SiteConfig.DownloadBaseUrl %></a></p>
     <p><strong>Digital signature:</strong> No signature available</p>
     <p><strong>Additional information:</strong> This certificate will automatically install in the right Certificates Store when being imported into the registry.</p>
 
     <h2><br>
 		Download File</h2>
 	<p><font color="#000080" style="font-size: 9pt">
-	<a href="http://download.windowsupdaterestored.com/wutools/wurcert_ansi.reg">
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurcert_ansi.reg">
 	<font color="#000000">
-	<img border="0" src="../images/arrow.gif" align="middle" width="30" height="25"></font></a></font><a href="http://download.windowsupdaterestored.com/wutools/wurcert_ansi.reg"><span style="font-weight: 700"><font color="#000000" style="font-size: 10.5pt">Download 
-	the wurcert.reg (ANSI)</font></span><span style="font-weight: 700;"><font color="#000000"><style="font-size: 10.5pt;" color="#000000"> 
+	<img border="0" src="<%= ResolveUrl("~/en/images/arrow.gif") %>" align="middle" width="30" height="25"></font></a></font><a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurcert_ansi.reg"><span style="font-weight: 700"><font color="#000000" style="font-size: 10.5pt">Download 
+	the wurcert.reg (ANSI)</font></span><span style="font-weight: 700;"><font color="#000000"> 
 	file now!</font></font></span></a></p>
 <p><font color="#000080" style="font-size: 9pt">
-	<a href="http://download.windowsupdaterestored.com/wutools/wurcert_unicode.reg">
+	<a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurcert_unicode.reg">
 	<font color="#000000">
-	<img border="0" src="../images/arrow.gif" align="middle" width="30" height="25"></font></a></font><a href="http://download.windowsupdaterestored.com/wutools/wurcert_unicode.reg"><span style="font-weight: 700"><font color="#000000" style="font-size: 10.5pt">Download 
-	the wurcert.reg</font></span><span style="font-weight: 700;"><font color="#000000"><style="font-size: 10.5pt;" color="#000000"> 
+	<img border="0" src="<%= ResolveUrl("~/en/images/arrow.gif") %>" align="middle" width="30" height="25"></font></a></font><a href="<%= SiteConfig.DownloadBaseUrl %>/wutools/wurcert_unicode.reg"><span style="font-weight: 700"><font color="#000000" style="font-size: 10.5pt">Download 
+	the wurcert.reg</font></span><span style="font-weight: 700;"><font color="#000000"> 
 (UNICODE) 
 	file now!</font></font></span></a></p>
 
     <h2><br>
 	System Requirements</h2>
-<style="font-size: 10.5pt" color="#000000">
+
 
         <section class="languages">
             <p style="font-size: 13px; line-height: 1.6; margin: 10px 0"><u><b>
@@ -192,6 +156,7 @@ certificates support multi-language systems.</font></p>
 Known Issues</h2>
     <p class="known-issues">No known issues were found with this download.</p>
 
-</body>
 
-</html>
+    </div>
+
+</asp:Content>

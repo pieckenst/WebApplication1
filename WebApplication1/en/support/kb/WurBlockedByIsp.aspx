@@ -1,11 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>Windows Update Restored is blocked by your ISP</title>
-</head>
-<body style="color: black; background-color: white; margin: 0; padding: 20px; font-family: Segoe UI Variable Text, Segoe UI, Tahoma, sans-serif; line-height: 1.6;">
+<%@ Page Title="Windows Update Restored is blocked by your ISP" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="WurBlockedByIsp.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.kb.WurBlockedByIsp" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        
+    </style>
+
+    <div class="cw">
+
 
     <header>
         <h1 style="font-size: 16pt; color: #000080; border-bottom: 2px solid #000080; padding-bottom: 7px; margin: 0;">
@@ -39,5 +41,7 @@
         </main>
     </header>
 
-</body>
-</html>
+
+    </div>
+
+</asp:Content>

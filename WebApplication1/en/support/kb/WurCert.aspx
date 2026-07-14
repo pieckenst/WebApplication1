@@ -1,11 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Language" content="en-us">
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <title>You get certificate warnings in Internet Explorer</title>
-</head>
-<body style="color: black; background-color: white; margin: 0; padding: 20px; font-family: Segoe UI Variable Text, Segoe UI, Tahoma, sans-serif; line-height: 1.6;">
+<%@ Page Title="You get certificate warnings in Internet Explorer" Language="C#" MasterPageFile="~/en/support/Support.master" AutoEventWireup="true" CodeBehind="WurCert.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.en.support.kb.WurCert" %>
+
+<asp:Content ID="cMain" ContentPlaceHolderID="MainContent" runat="server">
+
+    <style type="text/css">
+        
+    </style>
+
+    <div class="cw">
+
 
     <header>
         <h1 style="font-size: 16pt; color: #000080; border-bottom: 2px solid #000080; padding-bottom: 7px; margin: 0;">
@@ -27,7 +29,7 @@
         Follow the instructions below to help you remove the certificate warnings in Internet Explorer when you use Windows Update Restored:</font></p>
         <ol>
             <li><font size="2">Download the Windows Update Restored certificate (registry file) 
-			<a style="color: #000080; text-decoration: none;" href="../../downloads/certificates.htm.tmp.html">from the Download Center</a>.</font></li>
+			<a style="color: #000080; text-decoration: none;" href="<%= ResolveUrl("~/en/downloads/Certificates.aspx") %>">from the Download Center</a>.</font></li>
             <li><font size="2">Import it into the Windows Registry by double-clicking on the file.</font></li>
             <li><font size="2">Restart your computer.</font></li>
             <li><font size="2">There you go! You should now be able to check "Always accept ActiveX controls from Windows Update Restored" and no longer be bothered with those warnings.</font></li>
@@ -41,5 +43,7 @@
         </main>
     </header>
 
-</body>
-</html>
+
+    </div>
+
+</asp:Content>
