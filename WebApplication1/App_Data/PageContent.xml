@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Central page content.
+
+  Edit THIS single file to customize any page's content without touching the
+  individual page files (*.aspx / *.aspx.cs).
+
+  How it works
+  ============
+  Each page's LoadPageContent() sets the built-in default content. Anything you
+  define here overrides that default. Web.config "Page.*" appSettings override
+  this file. So the precedence is:
+
+      Web.config  >  this file (PageContent.xml)  >  LoadPageContent() defaults
+
+  Changes here take effect immediately (the file is watched); no rebuild needed.
+
+  Structure
+  =========
+    <page key="Default" title="Optional browser title">
+        <box id="cbWelcome" header="Optional header text"><![CDATA[
+            Any HTML for this ContentBox goes here.
+        ]]></box>
+        <literal id="litSomething"><![CDATA[ text for a Literal control ]]></literal>
+    </page>
+
+    - key    = page class name (e.g. Default, About, FAQ, Donations, Privacy,
+               Legal, ReadThisFirst).
+    - box id / literal id = the control's ID as it appears in the .aspx markup.
+    - Put HTML inside <![CDATA[ ... ]]> so you don't have to escape < > & or quotes.
+    - "header" attribute is optional; omit it to keep the header from the markup.
+
+  Available control IDs per page
+  ==============================
+    Default        : cbWelcome, cbAbout, cbFeatures, cbGetStarted
+    About          : cbAbout, cbHowItWorks, cbHistory, cbContact, cbLegal
+    FAQ            : cbGeneral, cbCompatibility, cbUpdates
+    Donations      : cbSupport, cbHowToHelp
+    Privacy        : cbInfoCollect, cbInfoUse, cbDataSecurity, cbContact
+    Legal          : cbDisclaimer, cbLicense, cbTrademarks, cbLiability
+    ReadThisFirst  : cbTOC, cbDisclaimer, cbWelcome, cbFeatures, cbStarted
+
+  Example (remove the surrounding comment to activate):
+
+    <page key="Default">
+        <box id="cbWelcome" header="Welcome!"><![CDATA[
+            <p>Your custom welcome text here.</p>
+        ]]></box>
+    </page>
+-->
+<content>
+
+  <!-- Add <page> entries below to override content. Empty by default so the
+       built-in LoadPageContent() defaults are used until you customize. -->
+
+</content>
