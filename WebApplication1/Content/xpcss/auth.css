@@ -64,6 +64,10 @@
     margin: 4px 0 14px 0;
 }
 
+.auth-terms {
+    margin: 8px 0 20px 0;
+}
+
 .auth-actions {
     display: flex;
     flex-wrap: wrap;
