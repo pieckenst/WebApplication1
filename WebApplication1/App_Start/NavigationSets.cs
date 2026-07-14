@@ -58,7 +58,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 new NavigationItem { Title = "Help & Support Center Home", NavigateUrl = "~/en/support/Default.aspx", ToolTip = "Windows Update Restored Homepage" },
 
                 new NavigationItem { Title = "Available Resources", IsSubheader = true },
-                new NavigationItem { Title = "Known Issues", NavigateUrl = "~/en/knownissues.htm.tmp.html" },
+                new NavigationItem { Title = "Known Issues", NavigateUrl = "~/en/support/KnownIssues.aspx" },
                 new NavigationItem { Title = "Knowledge Base", NavigateUrl = "~/en/support/KbArticles.aspx" },
 
                 new NavigationItem { Title = "Our Community", IsSubheader = true },

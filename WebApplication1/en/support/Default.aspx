@@ -91,7 +91,7 @@
             <tbody>
             <tr>
                 <td>
-                    <a class="tutorial-link" href="<%= ResolveUrl("~/en/knownissues.htm.tmp.html") %>">
+                    <a class="tutorial-link" href="<%= ResolveUrl("~/en/support/KnownIssues.aspx") %>">
                         <img src="<%= ResolveUrl("~/en/images/arrow.gif") %>" width="30" height="25" alt="Arrow">Known Issues with Windows Update Restored
                     </a>
                     <blockquote>
