@@ -80,8 +80,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
                 // Subheader: Resources
                 new NavigationItem { Title = "Resources", IsSubheader = true },
                 
-                new NavigationItem { Title = "Download Center", NavigateUrl = "~/en/download-center/", IconUrl = "~/en/images/toc_endnode.gif", Target = "_top" },
-                new NavigationItem { Title = "Help & Support", NavigateUrl = "~/en/support/", IconUrl = "~/en/images/toc_endnode.gif", Target = "_top" },
+                new NavigationItem { Title = "Download Center", NavigateUrl = "~/en/download-center/Default.aspx", IconUrl = "~/en/images/toc_endnode.gif", Target = "_top" },
+                new NavigationItem { Title = "Help & Support", NavigateUrl = "~/en/support/Default.aspx", IconUrl = "~/en/images/toc_endnode.gif", Target = "_top" },
                 
                 // Subheader: Community
                 new NavigationItem { Title = "Community", IsSubheader = true },
