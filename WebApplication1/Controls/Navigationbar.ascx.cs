@@ -89,6 +89,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
                 new NavigationItem { Title = "Contribute", NavigateUrl = "~/en/Contribute.aspx", IconUrl = "~/en/images/toc_endnode.gif", CssClass = "nav-specialblue" },
                 new NavigationItem { Title = "Donations", NavigateUrl = "~/en/Donations.aspx", IconUrl = "~/en/images/toc_endnode.gif" },
                 
+                // Subheader: Account
+                new NavigationItem { Title = "Account", IsSubheader = true },
+
+                new NavigationItem { Title = "Sign In", NavigateUrl = "~/en/account/Login.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Sign in to your account" },
+                new NavigationItem { Title = "Create Account", NavigateUrl = "~/en/account/Register.aspx", IconUrl = "~/en/images/toc_endnode.gif" },
+
                 // Subheader: Legal
                 new NavigationItem { Title = "Legal", IsSubheader = true },
                 

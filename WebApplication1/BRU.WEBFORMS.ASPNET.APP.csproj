@@ -118,8 +118,12 @@
     <Content Include="en\support\kb\WurBlockedByIsp.aspx" />
     <Content Include="en\support\kb\WurCert.aspx" />
     <Content Include="en\support\kb\WurV31NotWorkingAfterUsingWurV4.aspx" />
+    <Content Include="en\account\Login.aspx" />
+    <Content Include="en\account\Register.aspx" />
+    <Content Include="en\account\ForgotPassword.aspx" />
     <Content Include="Content\xpcss\XP.css" />
     <Content Include="Content\xpcss\xp-scope.css" />
+    <Content Include="Content\xpcss\auth.css" />
     <Content Include="Content\xpcss\ms_sans_serif.woff" />
     <Content Include="Content\xpcss\ms_sans_serif.woff2" />
     <Content Include="Content\xpcss\ms_sans_serif_bold.woff" />
@@ -181,6 +185,18 @@
     </Compile>
     <Compile Include="en\Legal.aspx.cs">
       <DependentUpon>Legal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="en\account\ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\Toolbar.ascx.cs">
