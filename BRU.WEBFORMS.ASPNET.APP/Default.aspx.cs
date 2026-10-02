@@ -99,10 +99,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 // Set last updated timestamp
                 litLastUpdated.Text = "Last updated: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
                 
-                // Initialize content boxes with loading messages
-                cbAlerts.Content = "Loading system alerts...";
-                cbRecentActivity.Content = "Loading recent activity...";
-                cbMaintenance.Content = "Loading maintenance overview...";
+                
             }
             catch (Exception ex)
             {
@@ -231,20 +228,20 @@ namespace BRU.WEBFORMS.ASPNET.APP
                         $"<strong>Warning: {totalAlertCount} alerts detected</strong>";
                     
                     alertsHtml.Insert(0, $"<p>{alertSummary}</p>");
-                    cbAlerts.Content = alertsHtml.ToString();
+                    cbAlerts.ContentHtml = alertsHtml.ToString();
                 }
                 else
                 {
-                    cbAlerts.Content = "<p><span class='status-good'>✓ No system alerts at this time. All systems operating normally.</span></p>";
+                    cbAlerts.ContentHtml = "<p><span class='status-good'>✓ No system alerts at this time. All systems operating normally.</span></p>";
                 }
             }
             catch (ServiceException serviceEx)
             {
-                cbAlerts.Content = $"<p><span class='status-error'>Error loading system alerts: {serviceEx.Message}</span></p>";
+                cbAlerts.ContentHtml = $"<p><span class='status-error'>Error loading system alerts: {serviceEx.Message}</span></p>";
             }
             catch (Exception ex)
             {
-                cbAlerts.Content = $"<p><span class='status-error'>Unexpected error loading alerts: {ex.Message}</span></p>";
+                cbAlerts.ContentHtml = $"<p><span class='status-error'>Unexpected error loading alerts: {ex.Message}</span></p>";
             }
         }
 
@@ -307,21 +304,21 @@ namespace BRU.WEBFORMS.ASPNET.APP
                         }
                         activityHtml.Append("</p>");
                         
-                        cbRecentActivity.Content = activityHtml.ToString();
+                        cbRecentActivity.ContentHtml = activityHtml.ToString();
                     }
                     else
                     {
-                        cbRecentActivity.Content = "<p>No sales activity recorded in the past 7 days.</p>";
+                        cbRecentActivity.ContentHtml = "<p>No sales activity recorded in the past 7 days.</p>";
                     }
                 }
             }
             catch (ServiceException serviceEx)
             {
-                cbRecentActivity.Content = $"<p><span class='status-error'>Error loading recent activity: {serviceEx.Message}</span></p>";
+                cbRecentActivity.ContentHtml = $"<p><span class='status-error'>Error loading recent activity: {serviceEx.Message}</span></p>";
             }
             catch (Exception ex)
             {
-                cbRecentActivity.Content = $"<p><span class='status-error'>Unexpected error loading activity: {ex.Message}</span></p>";
+                cbRecentActivity.ContentHtml = $"<p><span class='status-error'>Unexpected error loading activity: {ex.Message}</span></p>";
             }
         }
 
@@ -385,21 +382,21 @@ namespace BRU.WEBFORMS.ASPNET.APP
                         maintenanceHtml.Append($"<span class='status-warning'>{warningCount} warnings</span>");
                         maintenanceHtml.Append("</p>");
                         
-                        cbMaintenance.Content = maintenanceHtml.ToString();
+                        cbMaintenance.ContentHtml = maintenanceHtml.ToString();
                     }
                     else
                     {
-                        cbMaintenance.Content = "<p>No maintenance records found in the system.</p>";
+                        cbMaintenance.ContentHtml = "<p>No maintenance records found in the system.</p>";
                     }
                 }
             }
             catch (ServiceException serviceEx)
             {
-                cbMaintenance.Content = $"<p><span class='status-error'>Error loading maintenance overview: {serviceEx.Message}</span></p>";
+                cbMaintenance.ContentHtml = $"<p><span class='status-error'>Error loading maintenance overview: {serviceEx.Message}</span></p>";
             }
             catch (Exception ex)
             {
-                cbMaintenance.Content = $"<p><span class='status-error'>Unexpected error loading maintenance: {ex.Message}</span></p>";
+                cbMaintenance.ContentHtml = $"<p><span class='status-error'>Unexpected error loading maintenance: {ex.Message}</span></p>";
             }
         }
 
@@ -446,14 +443,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
             {
                 Page.Title = "Dashboard - Autopark Management System";
                 
-                // Add meta description for SEO
-                if (!Page.Header.Controls.OfType<HtmlMeta>().Any(m => m.Name == "description"))
-                {
-                    HtmlMeta metaDescription = new HtmlMeta();
-                    metaDescription.Name = "description";
-                    metaDescription.Content = "Autopark Management System Dashboard - Monitor bus fleet operations, employee status, route schedules, and sales performance in real-time.";
-                    Page.Header.Controls.Add(metaDescription);
-                }
+               
             }
             catch (Exception ex)
             {

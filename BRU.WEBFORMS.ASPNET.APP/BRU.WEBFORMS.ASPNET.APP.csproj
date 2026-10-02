@@ -85,44 +85,10 @@
     <Content Include="Web.config" />
     <Content Include="Site.Master" />
     <Content Include="Default.aspx" />
-    <Content Include="en\About.aspx" />
-    <Content Include="en\FAQ.aspx" />
-    <Content Include="en\Compatibility.aspx" />
-    <Content Include="en\Contribute.aspx" />
-    <Content Include="en\ReadThisFirst.aspx" />
-    <Content Include="en\Prerequisites.aspx" />
-    <Content Include="en\Related.aspx" />
-    <Content Include="en\Donations.aspx" />
-    <Content Include="en\Privacy.aspx" />
-    <Content Include="en\Legal.aspx" />
     <Content Include="Controls\Toolbar.ascx" />
     <Content Include="Controls\Navigationbar.ascx" />
     <Content Include="Controls\Footer.ascx" />
     <Content Include="Controls\ContentBox.ascx" />
-    <Content Include="en\download-center\DownloadCenter.master" />
-    <Content Include="en\download-center\Default.aspx" />
-    <Content Include="en\download-center\OtherDownloads.aspx" />
-    <Content Include="en\download-center\WurApps.aspx" />
-    <Content Include="en\downloads\Certificates.aspx" />
-    <Content Include="en\downloads\WurInvChecker.aspx" />
-    <Content Include="en\downloads\WurV5CheckerTool.aspx" />
-    <Content Include="en\downloads\WurV5PatcherTool.aspx" />
-    <Content Include="en\downloads\SpCenter.aspx" />
-    <Content Include="en\downloads\SpCenter_Legacy.aspx" />
-    <Content Include="en\downloads\IeDownloads.aspx" />
-    <Content Include="en\support\Support.master" />
-    <Content Include="en\support\Default.aspx" />
-    <Content Include="en\support\KnownIssues.aspx" />
-    <Content Include="en\support\KbArticles.aspx" />
-    <Content Include="en\support\PrereqInstDoc.aspx" />
-    <Content Include="en\support\WurV5Fix.aspx" />
-    <Content Include="en\support\kb\Proxy.aspx" />
-    <Content Include="en\support\kb\WurBlockedByIsp.aspx" />
-    <Content Include="en\support\kb\WurCert.aspx" />
-    <Content Include="en\support\kb\WurV31NotWorkingAfterUsingWurV4.aspx" />
-    <Content Include="en\account\Login.aspx" />
-    <Content Include="en\account\Register.aspx" />
-    <Content Include="en\account\ForgotPassword.aspx" />
     <Content Include="Content\xpcss\XP.css" />
     <Content Include="Content\xpcss\xp-scope.css" />
     <Content Include="Content\xpcss\auth.css" />
@@ -132,8 +98,15 @@
     <Content Include="Content\xpcss\ms_sans_serif_bold.woff2" />
     <Content Include="Content\xpcss\PerfectDOSVGA437Win.woff" />
     <Content Include="Content\xpcss\PerfectDOSVGA437Win.woff2" />
-    <Content Include="Default.aspx" />
     <Content Include="Fleet\Buses.aspx" />
+    <Content Include="Fleet\Maintenance.aspx" />
+    <Content Include="Personnel\Employees.aspx" />
+    <Content Include="Operations\Routes.aspx" />
+    <Content Include="Operations\Schedule.aspx" />
+    <Content Include="Sales\Tickets.aspx" />
+    <Content Include="Sales\Sales.aspx" />
+    <Content Include="Sales\Payments.aspx" />
+    <Content Include="Reports\Analytics.aspx" />
     <Content Include="Data\AutoparkDB_Schema.sql" />
     <Content Include="images\autopark-logo.svg" />
   </ItemGroup>
@@ -161,56 +134,36 @@
       <DependentUpon>Buses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="Fleet\Maintenance.aspx.cs">
+      <DependentUpon>Maintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\FAQ.aspx.cs">
-      <DependentUpon>FAQ.aspx</DependentUpon>
+    <Compile Include="Personnel\Employees.aspx.cs">
+      <DependentUpon>Employees.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\Compatibility.aspx.cs">
-      <DependentUpon>Compatibility.aspx</DependentUpon>
+    <Compile Include="Operations\Routes.aspx.cs">
+      <DependentUpon>Routes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\Contribute.aspx.cs">
-      <DependentUpon>Contribute.aspx</DependentUpon>
+    <Compile Include="Operations\Schedule.aspx.cs">
+      <DependentUpon>Schedule.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\ReadThisFirst.aspx.cs">
-      <DependentUpon>ReadThisFirst.aspx</DependentUpon>
+    <Compile Include="Sales\Tickets.aspx.cs">
+      <DependentUpon>Tickets.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\Prerequisites.aspx.cs">
-      <DependentUpon>Prerequisites.aspx</DependentUpon>
+    <Compile Include="Sales\Sales.aspx.cs">
+      <DependentUpon>Sales.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\Related.aspx.cs">
-      <DependentUpon>Related.aspx</DependentUpon>
+    <Compile Include="Sales\Payments.aspx.cs">
+      <DependentUpon>Payments.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="en\Donations.aspx.cs">
-      <DependentUpon>Donations.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\Privacy.aspx.cs">
-      <DependentUpon>Privacy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\Legal.aspx.cs">
-      <DependentUpon>Legal.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\account\Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\account\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\account\ForgotPassword.aspx.cs">
-      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+    <Compile Include="Reports\Analytics.aspx.cs">
+      <DependentUpon>Analytics.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\Toolbar.ascx.cs">
@@ -227,90 +180,6 @@
     </Compile>
     <Compile Include="Controls\ContentBox.ascx.cs">
       <DependentUpon>ContentBox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\download-center\DownloadCenter.master.cs">
-      <DependentUpon>DownloadCenter.master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\download-center\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\download-center\OtherDownloads.aspx.cs">
-      <DependentUpon>OtherDownloads.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\download-center\WurApps.aspx.cs">
-      <DependentUpon>WurApps.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\Certificates.aspx.cs">
-      <DependentUpon>Certificates.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\WurInvChecker.aspx.cs">
-      <DependentUpon>WurInvChecker.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\WurV5CheckerTool.aspx.cs">
-      <DependentUpon>WurV5CheckerTool.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\WurV5PatcherTool.aspx.cs">
-      <DependentUpon>WurV5PatcherTool.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\SpCenter.aspx.cs">
-      <DependentUpon>SpCenter.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\IeDownloads.aspx.cs">
-      <DependentUpon>IeDownloads.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\downloads\SpCenter_Legacy.aspx.cs">
-      <DependentUpon>SpCenter_Legacy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\Support.master.cs">
-      <DependentUpon>Support.master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\KnownIssues.aspx.cs">
-      <DependentUpon>KnownIssues.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\KbArticles.aspx.cs">
-      <DependentUpon>KbArticles.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\PrereqInstDoc.aspx.cs">
-      <DependentUpon>PrereqInstDoc.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\WurV5Fix.aspx.cs">
-      <DependentUpon>WurV5Fix.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\kb\Proxy.aspx.cs">
-      <DependentUpon>Proxy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\kb\WurBlockedByIsp.aspx.cs">
-      <DependentUpon>WurBlockedByIsp.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\kb\WurCert.aspx.cs">
-      <DependentUpon>WurCert.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="en\support\kb\WurV31NotWorkingAfterUsingWurV4.aspx.cs">
-      <DependentUpon>WurV31NotWorkingAfterUsingWurV4.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DataAccess\DatabaseHelper.cs" />
@@ -341,7 +210,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
+    <Folder Include="Dashboard\" />
+    <Folder Include="Operations\" />
+    <Folder Include="Personnel\" />
+    <Folder Include="Reports\" />
+    <Folder Include="Sales\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

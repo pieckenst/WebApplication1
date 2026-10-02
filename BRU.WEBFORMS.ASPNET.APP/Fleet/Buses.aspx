@@ -258,83 +258,250 @@
         </div>
         
         <!-- Filter Section -->
-        <uc:ContentBox ID="cbFilters" runat="server" HeaderText="Filter Options" HeaderColor="Blue" ContentColor="White">
-            <div class="filter-section">
-                <div class="filter-row">
-                    <span class="filter-label">Status:</span>
-                    <span class="filter-control">
-                        <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
-                            <asp:ListItem Text="All Statuses" Value="" />
-                            <asp:ListItem Text="Operational" Value="Исправен" />
-                            <asp:ListItem Text="In Repair" Value="На ремонте" />
-                            <asp:ListItem Text="Retired" Value="Списан" />
-                            <asp:ListItem Text="Reserve" Value="Резерв" />
-                        </asp:DropDownList>
-                    </span>
-                </div>
-                <div class="filter-row">
-                    <span class="filter-label">Manufacturer:</span>
-                    <span class="filter-control">
-                        <asp:DropDownList ID="ddlManufacturerFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlManufacturerFilter_SelectedIndexChanged">
-                            <asp:ListItem Text="All Manufacturers" Value="" />
-                        </asp:DropDownList>
-                    </span>
-                </div>
-                <div class="filter-row">
-                    <span class="filter-label">Year Range:</span>
-                    <span class="filter-control">
-                        <asp:TextBox ID="txtYearFrom" runat="server" CssClass="form-control" Width="80" Placeholder="From" />
-                        <asp:TextBox ID="txtYearTo" runat="server" CssClass="form-control" Width="80" Placeholder="To" />
-                        <asp:Button ID="btnApplyYearFilter" runat="server" Text="Apply" CssClass="action-button" OnClick="btnApplyYearFilter_Click" />
-                    </span>
-                </div>
+      <!-- Filter Section -->
+<uc:ContentBox
+    ID="cbFilters"
+    runat="server"
+    HeaderText="Filter Options"
+    HeaderColor="Blue"
+    ContentColor="White">
+
+    <ContentTemplate>
+
+        <div class="filter-section">
+
+            <!-- Status -->
+            <div class="filter-row">
+                <span class="filter-label">Status:</span>
+
+                <span class="filter-control">
+                    <asp:DropDownList
+                        ID="ddlStatusFilter"
+                        runat="server"
+                        CssClass="form-control"
+                        AutoPostBack="true"
+                        OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
+
+                        <asp:ListItem
+                            Text="All Statuses"
+                            Value="" />
+
+                        <asp:ListItem
+                            Text="Operational"
+                            Value="Исправен" />
+
+                        <asp:ListItem
+                            Text="In Repair"
+                            Value="На ремонте" />
+
+                        <asp:ListItem
+                            Text="Retired"
+                            Value="Списан" />
+
+                        <asp:ListItem
+                            Text="Reserve"
+                            Value="Резерв" />
+
+                    </asp:DropDownList>
+                </span>
             </div>
-        </uc:ContentBox>
-        
-        <!-- Buses Grid -->
-        <uc:ContentBox ID="cbBusesList" runat="server" HeaderText="Bus Fleet" HeaderColor="Blue" ContentColor="White">
-            <asp:GridView ID="gvBuses" runat="server" 
-                AutoGenerateColumns="false" 
-                AllowPaging="true" 
-                PageSize="20"
-                AllowSorting="true"
-                CssClass="data-table"
-                GridLines="Both"
-                PagerStyle-CssClass="pagination"
-                OnPageIndexChanging="gvBuses_PageIndexChanging"
-                OnSorting="gvBuses_Sorting"
-                OnRowCommand="gvBuses_RowCommand"
-                OnRowDataBound="gvBuses_RowDataBound">
-                <Columns>
-                    <asp:BoundField DataField="bus_id" HeaderText="ID" SortExpression="bus_id" ReadOnly="true" />
-                    <asp:BoundField DataField="fleet_number" HeaderText="Fleet Number" SortExpression="fleet_number" />
-                    <asp:BoundField DataField="registration_num" HeaderText="Registration" SortExpression="registration_num" />
-                    <asp:BoundField DataField="model" HeaderText="Model" SortExpression="model" />
-                    <asp:BoundField DataField="manufacturer" HeaderText="Manufacturer" SortExpression="manufacturer" />
-                    <asp:BoundField DataField="manufacture_year" HeaderText="Year" SortExpression="manufacture_year" />
-                    <asp:BoundField DataField="capacity" HeaderText="Capacity" SortExpression="capacity" />
-                    <asp:TemplateField HeaderText="Status" SortExpression="status">
-                        <ItemTemplate>
-                            <asp:Literal ID="litStatus" runat="server" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:BoundField DataField="mileage_km" HeaderText="Mileage (km)" SortExpression="mileage_km" DataFormatString="{0:N0}" />
-                    <asp:TemplateField HeaderText="Mileage Category">
-                        <ItemTemplate>
-                            <asp:Literal ID="litMileageCategory" runat="server" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Actions">
-                        <ItemTemplate>
-                            <asp:Button ID="btnView" runat="server" Text="View" CommandName="View" CommandArgument='<%# Eval("bus_id") %>' CssClass="action-button" />
-                            <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="Edit" CommandArgument='<%# Eval("bus_id") %>' CssClass="action-button" />
-                            <asp:Button ID="btnMaintenance" runat="server" Text="Maintenance" CommandName="Maintenance" CommandArgument='<%# Eval("bus_id") %>' CssClass="action-button" />
-                            <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("bus_id") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this bus?');" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
-        </uc:ContentBox>
+
+            <!-- Manufacturer -->
+            <div class="filter-row">
+                <span class="filter-label">Manufacturer:</span>
+
+                <span class="filter-control">
+                    <asp:DropDownList
+                        ID="ddlManufacturerFilter"
+                        runat="server"
+                        CssClass="form-control"
+                        AutoPostBack="true"
+                        OnSelectedIndexChanged="ddlManufacturerFilter_SelectedIndexChanged">
+
+                        <asp:ListItem
+                            Text="All Manufacturers"
+                            Value="" />
+
+                    </asp:DropDownList>
+                </span>
+            </div>
+
+            <!-- Year Range -->
+            <div class="filter-row">
+                <span class="filter-label">Year Range:</span>
+
+                <span class="filter-control">
+
+                    <asp:TextBox
+                        ID="txtYearFrom"
+                        runat="server"
+                        CssClass="form-control"
+                        Width="80"
+                        Placeholder="From" />
+
+                    <asp:TextBox
+                        ID="txtYearTo"
+                        runat="server"
+                        CssClass="form-control"
+                        Width="80"
+                        Placeholder="To" />
+
+                    <asp:Button
+                        ID="btnApplyYearFilter"
+                        runat="server"
+                        Text="Apply"
+                        CssClass="action-button"
+                        OnClick="btnApplyYearFilter_Click" />
+
+                </span>
+            </div>
+
+        </div>
+
+    </ContentTemplate>
+
+</uc:ContentBox>
+       
+       <!-- Buses Grid -->
+<uc:ContentBox
+    ID="cbBusesList"
+    runat="server"
+    HeaderText="Bus Fleet"
+    HeaderColor="Blue"
+    ContentColor="White">
+
+    <ContentTemplate>
+
+        <asp:GridView
+            ID="gvBuses"
+            runat="server"
+            AutoGenerateColumns="false"
+            AllowPaging="true"
+            PageSize="20"
+            AllowSorting="true"
+            CssClass="data-table"
+            GridLines="Both"
+            PagerStyle-CssClass="pagination"
+            OnPageIndexChanging="gvBuses_PageIndexChanging"
+            OnSorting="gvBuses_Sorting"
+            OnRowCommand="gvBuses_RowCommand"
+            OnRowDataBound="gvBuses_RowDataBound">
+
+           <Columns>
+
+    <asp:BoundField
+        DataField="BusId"
+        HeaderText="ID"
+        SortExpression="bus_id"
+        ReadOnly="true" />
+
+    <asp:BoundField
+        DataField="FleetNumber"
+        HeaderText="Fleet Number"
+        SortExpression="fleet_number" />
+
+    <asp:BoundField
+        DataField="RegistrationNum"
+        HeaderText="Registration"
+        SortExpression="registration_num" />
+
+    <asp:BoundField
+        DataField="Model"
+        HeaderText="Model"
+        SortExpression="model" />
+
+    <asp:BoundField
+        DataField="Manufacturer"
+        HeaderText="Manufacturer"
+        SortExpression="manufacturer" />
+
+    <asp:BoundField
+        DataField="ManufactureYear"
+        HeaderText="Year"
+        SortExpression="manufacture_year" />
+
+    <asp:BoundField
+        DataField="Capacity"
+        HeaderText="Capacity"
+        SortExpression="capacity" />
+
+    <asp:TemplateField
+        HeaderText="Status"
+        SortExpression="status">
+
+        <ItemTemplate>
+            <asp:Literal
+                ID="litStatus"
+                runat="server" />
+        </ItemTemplate>
+
+    </asp:TemplateField>
+
+    <asp:BoundField
+        DataField="MileageKm"
+        HeaderText="Mileage (km)"
+        SortExpression="mileage_km"
+        DataFormatString="{0:N0}" />
+
+    <asp:TemplateField
+        HeaderText="Mileage Category">
+
+        <ItemTemplate>
+            <asp:Literal
+                ID="litMileageCategory"
+                runat="server" />
+        </ItemTemplate>
+
+    </asp:TemplateField>
+
+    <asp:TemplateField HeaderText="Actions">
+
+        <ItemTemplate>
+
+            <asp:Button
+                ID="btnView"
+                runat="server"
+                Text="View"
+                CommandName="View"
+                CommandArgument='<%# Eval("BusId") %>'
+                CssClass="action-button" />
+
+            <asp:Button
+                ID="btnEdit"
+                runat="server"
+                Text="Edit"
+                CommandName="Edit"
+                CommandArgument='<%# Eval("BusId") %>'
+                CssClass="action-button" />
+
+            <asp:Button
+                ID="btnMaintenance"
+                runat="server"
+                Text="Maintenance"
+                CommandName="Maintenance"
+                CommandArgument='<%# Eval("BusId") %>'
+                CssClass="action-button" />
+
+            <asp:Button
+                ID="btnDelete"
+                runat="server"
+                Text="Delete"
+                CommandName="Delete"
+                CommandArgument='<%# Eval("BusId") %>'
+                CssClass="action-button"
+                OnClientClick="return confirm('Are you sure you want to delete this bus?');" />
+
+        </ItemTemplate>
+
+    </asp:TemplateField>
+
+</Columns>
+
+        </asp:GridView>
+
+    </ContentTemplate>
+
+</uc:ContentBox>
         
         <!-- Pagination -->
         <div class="pagination">

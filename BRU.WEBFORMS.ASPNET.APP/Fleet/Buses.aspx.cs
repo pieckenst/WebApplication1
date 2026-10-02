@@ -11,63 +11,258 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 {
     /// <summary>
     /// Bus Fleet Management page for Autopark Management System.
-    /// Provides comprehensive bus fleet operations including CRUD operations,
-    /// filtering, searching, and maintenance tracking.
-    /// Implements enterprise-grade error handling and data validation.
+    /// Provides CRUD operations, filtering, searching, sorting,
+    /// pagination, and maintenance tracking.
     /// </summary>
     public partial class Buses : System.Web.UI.Page
     {
         #region Control Declarations
-        
+
         protected global::System.Web.UI.WebControls.Panel pnlError;
         protected global::System.Web.UI.WebControls.Literal litError;
+
         protected global::System.Web.UI.WebControls.Panel pnlSuccess;
         protected global::System.Web.UI.WebControls.Literal litSuccess;
+
         protected global::System.Web.UI.WebControls.Literal litTotalBuses;
         protected global::System.Web.UI.WebControls.Literal litOperationalBuses;
         protected global::System.Web.UI.WebControls.Literal litRepairBuses;
         protected global::System.Web.UI.WebControls.Literal litAttentionBuses;
+
         protected global::System.Web.UI.WebControls.Button btnAddBus;
         protected global::System.Web.UI.WebControls.Button btnRefresh;
         protected global::System.Web.UI.WebControls.Button btnExport;
+
+        // txtSearch is directly on Buses.aspx, so it remains a normal page control.
         protected global::System.Web.UI.WebControls.TextBox txtSearch;
         protected global::System.Web.UI.WebControls.Button btnSearch;
-        protected global::System.Web.UI.WebControls.DropDownList ddlStatusFilter;
-        protected global::System.Web.UI.WebControls.DropDownList ddlManufacturerFilter;
-        protected global::System.Web.UI.WebControls.TextBox txtYearFrom;
-        protected global::System.Web.UI.WebControls.TextBox txtYearTo;
-        protected global::System.Web.UI.WebControls.Button btnApplyYearFilter;
+
+        // ContentBox controls are directly on the page.
         protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbFilters;
         protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbBusesList;
-        protected global::System.Web.UI.WebControls.GridView gvBuses;
+
         protected global::System.Web.UI.WebControls.Literal litPagination;
-        
+
         #endregion
 
         #region Private Fields
-        
-        private BusService _busService;
+
         private List<Bus> _currentBusList;
-        private string _currentSortExpression = "fleet_number";
-        private SortDirection _currentSortDirection = SortDirection.Ascending;
-        private int _currentPage = 1;
+
         private const int _pageSize = 20;
-        
+
         #endregion
 
-        #region Page Lifecycle Methods
+        #region State Properties
 
         /// <summary>
-        /// Page load event handler with comprehensive initialization.
-        /// Implements idempotent loading pattern with proper state management.
+        /// Current page number. Stored in ViewState so it survives postbacks.
         /// </summary>
+        private int CurrentPage
+        {
+            get
+            {
+                object value = ViewState["Buses_CurrentPage"];
+
+                if (value == null)
+                {
+                    return 1;
+                }
+
+                int page;
+
+                if (int.TryParse(value.ToString(), out page) && page > 0)
+                {
+                    return page;
+                }
+
+                return 1;
+            }
+            set
+            {
+                ViewState["Buses_CurrentPage"] = value < 1 ? 1 : value;
+            }
+        }
+
+        /// <summary>
+        /// Current sort expression. Stored in ViewState.
+        /// </summary>
+        private string CurrentSortExpression
+        {
+            get
+            {
+                object value = ViewState["Buses_SortExpression"];
+
+                return value == null
+                    ? "fleet_number"
+                    : value.ToString();
+            }
+            set
+            {
+                ViewState["Buses_SortExpression"] =
+                    string.IsNullOrEmpty(value) ? "fleet_number" : value;
+            }
+        }
+
+        /// <summary>
+        /// Current sort direction. Stored in ViewState.
+        /// </summary>
+        private SortDirection CurrentSortDirection
+        {
+            get
+            {
+                object value = ViewState["Buses_SortDirection"];
+
+                if (value == null)
+                {
+                    return SortDirection.Ascending;
+                }
+
+                int direction;
+
+                if (int.TryParse(value.ToString(), out direction))
+                {
+                    return (SortDirection)direction;
+                }
+
+                return SortDirection.Ascending;
+            }
+            set
+            {
+                ViewState["Buses_SortDirection"] = (int)value;
+            }
+        }
+
+        #endregion
+
+        #region ContentBox Control Accessors
+
+        /// <summary>
+        /// Gets the status filter located inside cbFilters ContentTemplate.
+        /// </summary>
+        private DropDownList DdlStatusFilter
+        {
+            get
+            {
+                return cbFilters.FindContentControl<DropDownList>("ddlStatusFilter");
+            }
+        }
+
+        /// <summary>
+        /// Gets the manufacturer filter located inside cbFilters ContentTemplate.
+        /// </summary>
+        private DropDownList DdlManufacturerFilter
+        {
+            get
+            {
+                return cbFilters.FindContentControl<DropDownList>("ddlManufacturerFilter");
+            }
+        }
+
+        /// <summary>
+        /// Gets the "from year" textbox located inside cbFilters ContentTemplate.
+        /// </summary>
+        private TextBox TxtYearFrom
+        {
+            get
+            {
+                return cbFilters.FindContentControl<TextBox>("txtYearFrom");
+            }
+        }
+
+        /// <summary>
+        /// Gets the "to year" textbox located inside cbFilters ContentTemplate.
+        /// </summary>
+        private TextBox TxtYearTo
+        {
+            get
+            {
+                return cbFilters.FindContentControl<TextBox>("txtYearTo");
+            }
+        }
+
+        /// <summary>
+        /// Gets the Apply Year Filter button located inside cbFilters ContentTemplate.
+        /// </summary>
+        private Button BtnApplyYearFilter
+        {
+            get
+            {
+                return cbFilters.FindContentControl<Button>("btnApplyYearFilter");
+            }
+        }
+
+        /// <summary>
+        /// Gets the GridView located inside cbBusesList ContentTemplate.
+        /// </summary>
+        private GridView GvBuses
+        {
+            get
+            {
+                return cbBusesList.FindContentControl<GridView>("gvBuses");
+            }
+        }
+
+        /// <summary>
+        /// Validates that all controls required from the ContentBox templates
+        /// were successfully created.
+        /// </summary>
+        private void ValidateTemplateControls()
+        {
+            if (cbFilters == null)
+            {
+                throw new InvalidOperationException(
+                    "The cbFilters ContentBox control was not created.");
+            }
+
+            if (cbBusesList == null)
+            {
+                throw new InvalidOperationException(
+                    "The cbBusesList ContentBox control was not created.");
+            }
+
+            if (DdlStatusFilter == null)
+            {
+                throw new InvalidOperationException(
+                    "Control 'ddlStatusFilter' was not found inside cbFilters.");
+            }
+
+            if (DdlManufacturerFilter == null)
+            {
+                throw new InvalidOperationException(
+                    "Control 'ddlManufacturerFilter' was not found inside cbFilters.");
+            }
+
+            if (TxtYearFrom == null)
+            {
+                throw new InvalidOperationException(
+                    "Control 'txtYearFrom' was not found inside cbFilters.");
+            }
+
+            if (TxtYearTo == null)
+            {
+                throw new InvalidOperationException(
+                    "Control 'txtYearTo' was not found inside cbFilters.");
+            }
+
+            if (GvBuses == null)
+            {
+                throw new InvalidOperationException(
+                    "Control 'gvBuses' was not found inside cbBusesList.");
+            }
+        }
+
+        #endregion
+
+        #region Page Lifecycle
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!IsPostBack)
                 {
-                    InitializeServiceLayer();
+                    InitializeStateFromQueryString();
                     InitializeFilters();
                     LoadManufacturerOptions();
                     LoadBusData();
@@ -88,316 +283,478 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        #endregion
-
-        #region Initialization Methods
-
         /// <summary>
-        /// Initializes the service layer for data operations.
+        /// Initializes the page number from ?page=N when opening
+        /// the page through the custom pagination links.
         /// </summary>
-        private void InitializeServiceLayer()
+        private void InitializeStateFromQueryString()
         {
-            try
+            int page;
+
+            if (int.TryParse(Request.QueryString["page"], out page) && page > 0)
             {
-                _busService = new BusService();
-                _currentBusList = new List<Bus>();
+                CurrentPage = page;
             }
-            catch (Exception ex)
+            else
             {
-                throw new ServiceException("Error initializing service layer", ex);
+                CurrentPage = 1;
             }
+
+            CurrentSortExpression = "fleet_number";
+            CurrentSortDirection = SortDirection.Ascending;
         }
 
-        /// <summary>
-        /// Initializes filter controls with default values.
-        /// </summary>
+        #endregion
+
+        #region Initialization
+
         private void InitializeFilters()
         {
             try
             {
-                ddlStatusFilter.SelectedIndex = 0;
-                ddlManufacturerFilter.SelectedIndex = 0;
-                txtYearFrom.Text = string.Empty;
-                txtYearTo.Text = string.Empty;
-                txtSearch.Text = string.Empty;
+                ValidateTemplateControls();
+
+                if (DdlStatusFilter.Items.Count > 0)
+                {
+                    DdlStatusFilter.SelectedIndex = 0;
+                }
+
+                if (DdlManufacturerFilter.Items.Count > 0)
+                {
+                    DdlManufacturerFilter.SelectedIndex = 0;
+                }
+
+                TxtYearFrom.Text = string.Empty;
+                TxtYearTo.Text = string.Empty;
+
+                if (txtSearch != null)
+                {
+                    txtSearch.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error initializing filters", ex);
+                throw new ServiceException(
+                    "Error initializing filters", ex);
             }
         }
 
-        /// <summary>
-        /// Loads manufacturer options for filtering.
-        /// </summary>
         private void LoadManufacturerOptions()
         {
             try
             {
+                ValidateTemplateControls();
+
                 using (BusService busService = new BusService())
                 {
                     List<Bus> allBuses = busService.GetAllBuses();
-                    
-                    if (allBuses != null && allBuses.Count > 0)
+
+                    DdlManufacturerFilter.Items.Clear();
+                    DdlManufacturerFilter.Items.Add(
+                        new ListItem("All Manufacturers", ""));
+
+                    if (allBuses == null)
                     {
-                        // Get unique manufacturers
-                        var manufacturers = allBuses
-                            .Select(b => b.Manufacturer)
-                            .Distinct()
-                            .OrderBy(m => m)
-                            .ToList();
-                        
-                        ddlManufacturerFilter.Items.Clear();
-                        ddlManufacturerFilter.Items.Add(new ListItem("All Manufacturers", ""));
-                        
-                        foreach (string manufacturer in manufacturers)
-                        {
-                            ddlManufacturerFilter.Items.Add(new ListItem(manufacturer, manufacturer));
-                        }
+                        return;
+                    }
+
+                    List<string> manufacturers = allBuses
+                        .Select(b => b.Manufacturer)
+                        .Where(m => !string.IsNullOrEmpty(m))
+                        .Distinct()
+                        .OrderBy(m => m)
+                        .ToList();
+
+                    foreach (string manufacturer in manufacturers)
+                    {
+                        DdlManufacturerFilter.Items.Add(
+                            new ListItem(manufacturer, manufacturer));
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error loading manufacturer options", ex);
+                throw new ServiceException(
+                    "Error loading manufacturer options", ex);
             }
         }
 
         #endregion
 
-        #region Data Loading Methods
+        #region Data Loading
 
-        /// <summary>
-        /// Loads bus data with comprehensive filtering and sorting.
-        /// </summary>
         private void LoadBusData()
         {
             try
             {
+                ValidateTemplateControls();
+
                 using (BusService busService = new BusService())
                 {
-                    // Get all buses initially
                     List<Bus> allBuses = busService.GetAllBuses();
-                    
-                    // Apply filters
+
+                    if (allBuses == null)
+                    {
+                        allBuses = new List<Bus>();
+                    }
+
                     _currentBusList = ApplyFilters(allBuses);
-                    
-                    // Apply sorting
                     _currentBusList = ApplySorting(_currentBusList);
-                    
-                    // Bind to grid view
+
                     BindGridView();
                 }
             }
-            catch (ServiceException serviceEx)
+            catch (ServiceException)
             {
-                HandleServiceError(serviceEx);
+                throw;
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error loading bus data", ex);
+                throw new ServiceException(
+                    "Error loading bus data", ex);
             }
         }
 
-        /// <summary>
-        /// Applies current filter settings to the bus list.
-        /// </summary>
         private List<Bus> ApplyFilters(List<Bus> buses)
         {
-            List<Bus> filteredBuses = new List<Bus>(buses);
-            
             try
             {
+                List<Bus> filteredBuses =
+                    new List<Bus>(buses ?? new List<Bus>());
+
                 // Status filter
-                if (!string.IsNullOrEmpty(ddlStatusFilter.SelectedValue))
+                if (DdlStatusFilter != null &&
+                    !string.IsNullOrEmpty(DdlStatusFilter.SelectedValue))
                 {
-                    string selectedStatus = ddlStatusFilter.SelectedValue;
-                    filteredBuses = filteredBuses.Where(b => b.Status == selectedStatus).ToList();
+                    string selectedStatus =
+                        DdlStatusFilter.SelectedValue;
+
+                    filteredBuses = filteredBuses
+                        .Where(b => b != null &&
+                                    b.Status == selectedStatus)
+                        .ToList();
                 }
-                
+
                 // Manufacturer filter
-                if (!string.IsNullOrEmpty(ddlManufacturerFilter.SelectedValue))
+                if (DdlManufacturerFilter != null &&
+                    !string.IsNullOrEmpty(
+                        DdlManufacturerFilter.SelectedValue))
                 {
-                    string selectedManufacturer = ddlManufacturerFilter.SelectedValue;
-                    filteredBuses = filteredBuses.Where(b => b.Manufacturer == selectedManufacturer).ToList();
+                    string selectedManufacturer =
+                        DdlManufacturerFilter.SelectedValue;
+
+                    filteredBuses = filteredBuses
+                        .Where(b => b != null &&
+                                    b.Manufacturer ==
+                                    selectedManufacturer)
+                        .ToList();
                 }
-                
-                // Year range filter
-                if (!string.IsNullOrEmpty(txtYearFrom.Text) && !string.IsNullOrEmpty(txtYearTo.Text))
+
+                // Year filter
+                if (TxtYearFrom != null &&
+                    TxtYearTo != null &&
+                    !string.IsNullOrEmpty(TxtYearFrom.Text) &&
+                    !string.IsNullOrEmpty(TxtYearTo.Text))
                 {
-                    int yearFrom, yearTo;
-                    if (int.TryParse(txtYearFrom.Text, out yearFrom) && int.TryParse(txtYearTo.Text, out yearTo))
+                    int yearFrom;
+                    int yearTo;
+
+                    if (int.TryParse(TxtYearFrom.Text, out yearFrom) &&
+                        int.TryParse(TxtYearTo.Text, out yearTo))
                     {
-                        filteredBuses = filteredBuses.Where(b => b.ManufactureYear >= yearFrom && b.ManufactureYear <= yearTo).ToList();
+                        if (yearFrom > yearTo)
+                        {
+                            int temp = yearFrom;
+                            yearFrom = yearTo;
+                            yearTo = temp;
+                        }
+
+                        filteredBuses = filteredBuses
+                            .Where(b => b != null &&
+                                        b.ManufactureYear >= yearFrom &&
+                                        b.ManufactureYear <= yearTo)
+                            .ToList();
                     }
                 }
-                
+
                 // Search filter
-                if (!string.IsNullOrEmpty(txtSearch.Text))
+                if (txtSearch != null &&
+                    !string.IsNullOrWhiteSpace(txtSearch.Text))
                 {
-                    string searchTerm = txtSearch.Text.ToLower();
-                    filteredBuses = filteredBuses.Where(b => 
-                        b.FleetNumber.ToLower().Contains(searchTerm) ||
-                        b.Model.ToLower().Contains(searchTerm) ||
-                        b.RegistrationNum.ToLower().Contains(searchTerm)
-                    ).ToList();
+                    string searchTerm =
+                        txtSearch.Text.Trim();
+
+                    filteredBuses = filteredBuses
+                        .Where(b =>
+                            b != null &&
+                            (
+                                (!string.IsNullOrEmpty(b.FleetNumber) &&
+                                 b.FleetNumber.IndexOf(
+                                     searchTerm,
+                                     StringComparison.OrdinalIgnoreCase) >= 0)
+
+                                ||
+
+                                (!string.IsNullOrEmpty(b.Model) &&
+                                 b.Model.IndexOf(
+                                     searchTerm,
+                                     StringComparison.OrdinalIgnoreCase) >= 0)
+
+                                ||
+
+                                (!string.IsNullOrEmpty(b.RegistrationNum) &&
+                                 b.RegistrationNum.IndexOf(
+                                     searchTerm,
+                                     StringComparison.OrdinalIgnoreCase) >= 0)
+                            ))
+                        .ToList();
                 }
-                
+
                 return filteredBuses;
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error applying filters", ex);
+                throw new ServiceException(
+                    "Error applying filters", ex);
             }
         }
 
-        /// <summary>
-        /// Applies current sorting to the bus list.
-        /// </summary>
         private List<Bus> ApplySorting(List<Bus> buses)
         {
             try
             {
-                switch (_currentSortExpression.ToLower())
+                if (buses == null)
+                {
+                    return new List<Bus>();
+                }
+
+                bool ascending =
+                    CurrentSortDirection == SortDirection.Ascending;
+
+                switch ((CurrentSortExpression ?? "")
+                    .ToLowerInvariant())
                 {
                     case "fleet_number":
-                        return _currentSortDirection == SortDirection.Ascending 
+                        return ascending
                             ? buses.OrderBy(b => b.FleetNumber).ToList()
-                            : buses.OrderByDescending(b => b.FleetNumber).ToList();
+                            : buses.OrderByDescending(
+                                b => b.FleetNumber).ToList();
+
                     case "model":
-                        return _currentSortDirection == SortDirection.Ascending 
+                        return ascending
                             ? buses.OrderBy(b => b.Model).ToList()
-                            : buses.OrderByDescending(b => b.Model).ToList();
+                            : buses.OrderByDescending(
+                                b => b.Model).ToList();
+
                     case "manufacturer":
-                        return _currentSortDirection == SortDirection.Ascending 
-                            ? buses.OrderBy(b => b.Manufacturer).ToList()
-                            : buses.OrderByDescending(b => b.Manufacturer).ToList();
+                        return ascending
+                            ? buses.OrderBy(
+                                b => b.Manufacturer).ToList()
+                            : buses.OrderByDescending(
+                                b => b.Manufacturer).ToList();
+
                     case "manufacture_year":
-                        return _currentSortDirection == SortDirection.Ascending 
-                            ? buses.OrderBy(b => b.ManufactureYear).ToList()
-                            : buses.OrderByDescending(b => b.ManufactureYear).ToList();
+                        return ascending
+                            ? buses.OrderBy(
+                                b => b.ManufactureYear).ToList()
+                            : buses.OrderByDescending(
+                                b => b.ManufactureYear).ToList();
+
                     case "status":
-                        return _currentSortDirection == SortDirection.Ascending 
+                        return ascending
                             ? buses.OrderBy(b => b.Status).ToList()
-                            : buses.OrderByDescending(b => b.Status).ToList();
+                            : buses.OrderByDescending(
+                                b => b.Status).ToList();
+
                     case "mileage_km":
-                        return _currentSortDirection == SortDirection.Ascending 
+                        return ascending
                             ? buses.OrderBy(b => b.MileageKm).ToList()
-                            : buses.OrderByDescending(b => b.MileageKm).ToList();
+                            : buses.OrderByDescending(
+                                b => b.MileageKm).ToList();
+
+                    case "bus_id":
+                        return ascending
+                            ? buses.OrderBy(b => b.BusId).ToList()
+                            : buses.OrderByDescending(
+                                b => b.BusId).ToList();
+
+                    case "registration_num":
+                        return ascending
+                            ? buses.OrderBy(
+                                b => b.RegistrationNum).ToList()
+                            : buses.OrderByDescending(
+                                b => b.RegistrationNum).ToList();
+
+                    case "capacity":
+                        return ascending
+                            ? buses.OrderBy(b => b.Capacity).ToList()
+                            : buses.OrderByDescending(
+                                b => b.Capacity).ToList();
+
                     default:
-                        return buses.OrderBy(b => b.FleetNumber).ToList();
+                        return ascending
+                            ? buses.OrderBy(
+                                b => b.FleetNumber).ToList()
+                            : buses.OrderByDescending(
+                                b => b.FleetNumber).ToList();
                 }
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error applying sorting", ex);
+                throw new ServiceException(
+                    "Error applying sorting", ex);
             }
         }
 
-        /// <summary>
-        /// Binds filtered and sorted data to the grid view.
-        /// </summary>
         private void BindGridView()
         {
             try
             {
-                // Calculate pagination
+                ValidateTemplateControls();
+
+                if (_currentBusList == null)
+                {
+                    _currentBusList = new List<Bus>();
+                }
+
                 int totalItems = _currentBusList.Count;
-                int totalPages = (int)Math.Ceiling((double)totalItems / _pageSize);
-                
-                // Ensure current page is valid
-                if (_currentPage > totalPages) _currentPage = totalPages;
-                if (_currentPage < 1) _currentPage = 1;
-                
-                // Get page data
-                var pageData = _currentBusList
-                    .Skip((_currentPage - 1) * _pageSize)
-                    .Take(_pageSize)
-                    .ToList();
-                
-                // Bind to grid view
-                gvBuses.DataSource = pageData;
-                gvBuses.VirtualItemCount = totalItems;
-                gvBuses.DataBind();
-                
-                // Update pagination display
+
+                int totalPages =
+                    totalItems == 0
+                        ? 1
+                        : (int)Math.Ceiling(
+                            (double)totalItems / _pageSize);
+
+                // Keep current page inside valid range.
+                if (CurrentPage > totalPages)
+                {
+                    CurrentPage = totalPages;
+                }
+
+                if (CurrentPage < 1)
+                {
+                    CurrentPage = 1;
+                }
+
+                // Let GridView perform the actual page slicing.
+                GvBuses.PageSize = _pageSize;
+                GvBuses.PageIndex = CurrentPage - 1;
+                GvBuses.DataSource = _currentBusList;
+                GvBuses.DataBind();
+
                 UpdatePagination(totalPages, totalItems);
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error binding grid view", ex);
+                throw new ServiceException(
+                    "Error binding grid view", ex);
             }
         }
 
-        /// <summary>
-        /// Updates pagination controls and display.
-        /// </summary>
         private void UpdatePagination(int totalPages, int totalItems)
         {
             try
             {
-                StringBuilder paginationHtml = new StringBuilder();
-                
+                StringBuilder paginationHtml =
+                    new StringBuilder();
+
                 if (totalPages > 1)
                 {
                     paginationHtml.Append("Page ");
-                    
+
                     for (int i = 1; i <= totalPages; i++)
                     {
-                        if (i == _currentPage)
+                        if (i == CurrentPage)
                         {
-                            paginationHtml.Append($"<span class='current'>{i}</span>");
+                            paginationHtml.Append(
+                                "<span class='current'>" +
+                                i +
+                                "</span>");
                         }
                         else
                         {
-                            paginationHtml.Append($"<a href='?page={i}'>{i}</a>");
+                            paginationHtml.Append(
+                                "<a href='?page=" +
+                                i +
+                                "'>" +
+                                i +
+                                "</a>");
                         }
                     }
-                    
-                    paginationHtml.Append($" of {totalPages} ({totalItems} total buses)");
+
+                    paginationHtml.Append(
+                        " of " +
+                        totalPages +
+                        " (" +
+                        totalItems +
+                        " total buses)");
                 }
                 else
                 {
-                    paginationHtml.Append($"Showing {totalItems} buses");
+                    paginationHtml.Append(
+                        "Showing " +
+                        totalItems +
+                        " buses");
                 }
-                
-                litPagination.Text = paginationHtml.ToString();
+
+                litPagination.Text =
+                    paginationHtml.ToString();
             }
             catch (Exception ex)
-                {
-                    throw new ServiceException("Error updating pagination", ex);
-                }
+            {
+                throw new ServiceException(
+                    "Error updating pagination", ex);
+            }
         }
 
-        /// <summary>
-        /// Updates statistics display with current fleet information.
-        /// </summary>
         private void UpdateStatistics()
         {
             try
             {
                 using (BusService busService = new BusService())
                 {
-                    List<Bus> allBuses = busService.GetAllBuses();
-                    
-                    if (allBuses != null)
+                    List<Bus> allBuses =
+                        busService.GetAllBuses();
+
+                    if (allBuses == null)
                     {
-                        litTotalBuses.Text = allBuses.Count.ToString();
-                        litOperationalBuses.Text = allBuses.Count(b => b.Status == BusStatus.Operational).ToString();
-                        litRepairBuses.Text = allBuses.Count(b => b.Status == BusStatus.InRepair).ToString();
-                        
-                        List<Bus> busesNeedingAttention = busService.GetBusesNeedingAttention();
-                        litAttentionBuses.Text = busesNeedingAttention.Count.ToString();
+                        allBuses = new List<Bus>();
                     }
+
+                    litTotalBuses.Text =
+                        allBuses.Count.ToString();
+
+                    litOperationalBuses.Text =
+                        allBuses.Count(
+                            b => b != null &&
+                                 b.Status ==
+                                 BusStatus.Operational)
+                        .ToString();
+
+                    litRepairBuses.Text =
+                        allBuses.Count(
+                            b => b != null &&
+                                 b.Status ==
+                                 BusStatus.InRepair)
+                        .ToString();
+
+                    List<Bus> busesNeedingAttention =
+                        busService.GetBusesNeedingAttention();
+
+                    litAttentionBuses.Text =
+                        busesNeedingAttention == null
+                            ? "0"
+                            : busesNeedingAttention.Count.ToString();
                 }
             }
-            catch (ServiceException serviceEx)
+            catch (ServiceException)
             {
-                HandleServiceError(serviceEx);
+                throw;
             }
             catch (Exception ex)
             {
-                throw new ServiceException("Error updating statistics", ex);
+                throw new ServiceException(
+                    "Error updating statistics", ex);
             }
         }
 
@@ -405,15 +762,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #region Event Handlers
 
-        /// <summary>
-        /// Handles add new bus button click.
-        /// </summary>
-        protected void btnAddBus_Click(object sender, EventArgs e)
+        protected void btnAddBus_Click(
+            object sender,
+            EventArgs e)
         {
             try
             {
-                // Redirect to add bus page (to be implemented)
-                Response.Redirect("~/Fleet/BusEdit.aspx?mode=add");
+                Response.Redirect(
+                    "~/Fleet/BusEdit.aspx?mode=add");
             }
             catch (Exception ex)
             {
@@ -421,16 +777,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles refresh button click.
-        /// </summary>
-        protected void btnRefresh_Click(object sender, EventArgs e)
+        protected void btnRefresh_Click(
+            object sender,
+            EventArgs e)
         {
             try
             {
+                CurrentPage = 1;
+
                 LoadBusData();
                 UpdateStatistics();
-                ShowSuccessMessage("Data refreshed successfully.");
+
+                ShowSuccessMessage(
+                    "Data refreshed successfully.");
             }
             catch (Exception ex)
             {
@@ -438,15 +797,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        ///        /// <summary>
-        /// Handles export to Excel button click.
-        /// </summary>
-        protected void btnExport_Click(object sender, EventArgs e)
+        protected void btnExport_Click(
+            object sender,
+            EventArgs e)
         {
             try
             {
-                // Export current filtered data to Excel (to be implemented)
-                ShowSuccessMessage("Export functionality will be implemented.");
+                ShowSuccessMessage(
+                    "Export functionality will be implemented.");
             }
             catch (Exception ex)
             {
@@ -454,13 +812,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles search button click.
-        /// </summary>
-        protected void btnSearch_Click(object sender, EventArgs e)
+        protected void btnSearch_Click(
+            object sender,
+            EventArgs e)
         {
             try
             {
+                CurrentPage = 1;
                 LoadBusData();
             }
             catch (Exception ex)
@@ -469,14 +827,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles status filter selection change.
-        /// </summary>
-        protected void ddlStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlStatusFilter_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
         {
             try
             {
-                _currentPage = 1;
+                CurrentPage = 1;
                 LoadBusData();
             }
             catch (Exception ex)
@@ -485,14 +842,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles manufacturer filter selection change.
-        /// </summary>
-        protected void ddlManufacturerFilter_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlManufacturerFilter_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
         {
             try
             {
-                _currentPage = 1;
+                CurrentPage = 1;
                 LoadBusData();
             }
             catch (Exception ex)
@@ -501,14 +857,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles year range filter application.
-        /// </summary>
-        protected void btnApplyYearFilter_Click(object sender, EventArgs e)
+        protected void btnApplyYearFilter_Click(
+            object sender,
+            EventArgs e)
         {
             try
             {
-                _currentPage = 1;
+                CurrentPage = 1;
                 LoadBusData();
             }
             catch (Exception ex)
@@ -517,15 +872,17 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles grid view page index changing.
-        /// </summary>
-        protected void gvBuses_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void gvBuses_PageIndexChanging(
+            object sender,
+            GridViewPageEventArgs e)
         {
             try
             {
-                _currentPage = e.NewPageIndex + 1;
-                BindGridView();
+                CurrentPage = e.NewPageIndex + 1;
+
+                // Reload the complete filtered/sorted list.
+                // GridView will then display CurrentPage.
+                LoadBusData();
             }
             catch (Exception ex)
             {
@@ -533,25 +890,34 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles grid view sorting.
-        /// </summary>
-        protected void gvBuses_Sorting(object sender, GridViewSortEventArgs e)
+        protected void gvBuses_Sorting(
+            object sender,
+            GridViewSortEventArgs e)
         {
             try
             {
-                if (_currentSortExpression == e.SortExpression)
+                if (string.Equals(
+                    CurrentSortExpression,
+                    e.SortExpression,
+                    StringComparison.OrdinalIgnoreCase))
                 {
-                    _currentSortDirection = _currentSortDirection == SortDirection.Ascending 
-                        ? SortDirection.Descending 
-                        : SortDirection.Ascending;
+                    CurrentSortDirection =
+                        CurrentSortDirection ==
+                        SortDirection.Ascending
+                            ? SortDirection.Descending
+                            : SortDirection.Ascending;
                 }
                 else
                 {
-                    _currentSortExpression = e.SortExpression;
-                    _currentSortDirection = SortDirection.Ascending;
+                    CurrentSortExpression =
+                        e.SortExpression;
+
+                    CurrentSortDirection =
+                        SortDirection.Ascending;
                 }
-                
+
+                CurrentPage = 1;
+
                 LoadBusData();
             }
             catch (Exception ex)
@@ -560,34 +926,52 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles grid view row commands (view, edit, delete, maintenance).
-        /// </summary>
-        protected void gvBuses_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void gvBuses_RowCommand(
+            object sender,
+            GridViewCommandEventArgs e)
         {
             try
             {
-                int busId = Convert.ToInt32(e.CommandArgument);
-                
+                if (e == null ||
+                    e.CommandArgument == null)
+                {
+                    return;
+                }
+
+                int busId =
+                    Convert.ToInt32(e.CommandArgument);
+
                 switch (e.CommandName)
                 {
                     case "View":
-                        // Redirect to view page (to be implemented)
-                        Response.Redirect($"~/Fleet/BusDetails.aspx?busId={busId}");
+
+                        Response.Redirect(
+                            "~/Fleet/BusDetails.aspx?busId=" +
+                            busId);
+
                         break;
-                        
+
                     case "Edit":
-                        // Redirect to edit page (to be implemented)
-                        Response.Redirect($"~/Fleet/BusEdit.aspx?busId={busId}&mode=edit");
+
+                        Response.Redirect(
+                            "~/Fleet/BusEdit.aspx?busId=" +
+                            busId +
+                            "&mode=edit");
+
                         break;
-                        
+
                     case "Maintenance":
-                        // Redirect to maintenance page (to be implemented)
-                        Response.Redirect($"~/Fleet/BusMaintenance.aspx?busId={busId}");
+
+                        Response.Redirect(
+                            "~/Fleet/BusMaintenance.aspx?busId=" +
+                            busId);
+
                         break;
-                        
+
                     case "Delete":
+
                         DeleteBus(busId);
+
                         break;
                 }
             }
@@ -597,32 +981,54 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        /// <summary>
-        /// Handles grid view row data binding for custom styling.
-        /// </summary>
-        protected void gvBuses_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void gvBuses_RowDataBound(
+            object sender,
+            GridViewRowEventArgs e)
         {
             try
             {
-                if (e.Row.RowType == DataControlRowType.DataRow)
+                if (e.Row.RowType !=
+                    DataControlRowType.DataRow)
                 {
-                    Bus bus = e.Row.DataItem as Bus;
-                    if (bus != null)
-                    {
-                        // Style status cell
-                        Literal litStatus = e.Row.FindControl("litStatus") as Literal;
-                        if (litStatus != null)
-                        {
-                            litStatus.Text = $"<span class='{GetStatusCssClass(bus.Status)}'>{bus.Status}</span>";
-                        }
-                        
-                        // Style mileage category cell
-                        Literal litMileageCategory = e.Row.FindControl("litMileageCategory") as Literal;
-                        if (litMileageCategory != null)
-                        {
-                            litMileageCategory.Text = $"<span class='{GetMileageCssClass(bus.MileageCategory)}'>{bus.MileageCategory}</span>";
-                        }
-                    }
+                    return;
+                }
+
+                Bus bus =
+                    e.Row.DataItem as Bus;
+
+                if (bus == null)
+                {
+                    return;
+                }
+
+                Literal litStatus =
+                    e.Row.FindControl(
+                        "litStatus") as Literal;
+
+                if (litStatus != null)
+                {
+                    litStatus.Text =
+                        "<span class='" +
+                        GetStatusCssClass(bus.Status) +
+                        "'>" +
+                        Server.HtmlEncode(bus.Status) +
+                        "</span>";
+                }
+
+                Literal litMileageCategory =
+                    e.Row.FindControl(
+                        "litMileageCategory") as Literal;
+
+                if (litMileageCategory != null)
+                {
+                    litMileageCategory.Text =
+                        "<span class='" +
+                        GetMileageCssClass(
+                            bus.MileageCategory) +
+                        "'>" +
+                        Server.HtmlEncode(
+                            bus.MileageCategory) +
+                        "</span>";
                 }
             }
             catch (Exception ex)
@@ -633,22 +1039,28 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #endregion
 
-        #region Business Logic Methods
+        #region Business Logic
 
-        /// <summary>
-        /// Deletes a bus with validation and business rule enforcement.
-        /// </summary>
         private void DeleteBus(int busId)
         {
             try
             {
-                using (BusService busService = new BusService())
+                using (BusService busService =
+                    new BusService())
                 {
                     busService.DeleteBus(busId);
-                    ShowSuccessMessage("Bus deleted successfully.");
-                    LoadBusData();
-                    UpdateStatistics();
                 }
+
+                ShowSuccessMessage(
+                    "Bus deleted successfully.");
+
+                if (CurrentPage < 1)
+                {
+                    CurrentPage = 1;
+                }
+
+                LoadBusData();
+                UpdateStatistics();
             }
             catch (ServiceException serviceEx)
             {
@@ -664,146 +1076,166 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #region Helper Methods
 
-        /// <summary>
-        /// Returns CSS class based on bus status for visual indicators.
-        /// </summary>
         private string GetStatusCssClass(string status)
         {
             switch (status)
             {
                 case BusStatus.Operational:
                     return "status-operational";
+
                 case BusStatus.InRepair:
                     return "status-repair";
+
                 case BusStatus.Retired:
                     return "status-retired";
+
                 case BusStatus.Reserve:
                     return "status-reserve";
+
                 default:
-                    return "";
+                    return string.Empty;
             }
         }
 
-        /// <summary>
-        /// Returns CSS class based on mileage category for visual indicators.
-        /// </summary>
-        private string GetMileageCssClass(string mileageCategory)
+        private string GetMileageCssClass(
+            string mileageCategory)
         {
             switch (mileageCategory)
             {
                 case MileageCategory.High:
                     return "mileage-high";
+
                 case MileageCategory.Medium:
                     return "mileage-medium";
+
                 case MileageCategory.Low:
                     return "mileage-low";
+
                 default:
-                    return "";
+                    return string.Empty;
             }
         }
 
-        /// <summary>
-        /// Shows success message to user.
-        /// </summary>
-        private void ShowSuccessMessage(string message)
+        private void ShowSuccessMessage(
+            string message)
         {
             pnlSuccess.Visible = true;
             litSuccess.Text = message;
+
             pnlError.Visible = false;
+            litError.Text = string.Empty;
         }
 
-        /// <summary>
-        /// Shows error message to user.
-        /// </summary>
-        private void ShowErrorMessage(string message)
+        private void ShowErrorMessage(
+            string message)
         {
             pnlError.Visible = true;
             litError.Text = message;
+
+            pnlSuccess.Visible = false;
+            litSuccess.Text = string.Empty;
+        }
+
+        #endregion
+
+        #region Error Handling
+
+        private void HandleDatabaseError(
+            System.Data.SqlClient.SqlException ex)
+        {
+            pnlError.Visible = true;
+
+            StringBuilder errorMessage =
+                new StringBuilder();
+
+            errorMessage.Append(
+                "<strong>Database Connection Error:</strong> ");
+
+            errorMessage.Append(
+                "Unable to connect to the Autopark database. ");
+
+            switch (ex.Number)
+            {
+                case 53:
+
+                    errorMessage.Append(
+                        "Database server is not available. " +
+                        "Please check your connection settings.");
+
+                    break;
+
+                case 18456:
+
+                    errorMessage.Append(
+                        "Authentication failed. " +
+                        "Please verify your database credentials.");
+
+                    break;
+
+                case 208:
+
+                    errorMessage.Append(
+                        "Database 'AutoparkDB' not found. " +
+                        "Please run the database setup script.");
+
+                    break;
+
+                default:
+
+                    errorMessage.Append(
+                        "Error code: " +
+                        ex.Number +
+                        ". " +
+                        ex.Message);
+
+                    break;
+            }
+
+            litError.Text =
+                errorMessage.ToString();
+
             pnlSuccess.Visible = false;
         }
 
-        #endregion
-
-        #region Error Handling Methods
-
-        /// <summary>
-        /// Handles database-specific errors with appropriate user messaging.
-        /// </summary>
-        private void HandleDatabaseError(System.Data.SqlClient.SqlException ex)
+        private void HandleServiceError(
+            ServiceException ex)
         {
             pnlError.Visible = true;
-            
-            StringBuilder errorMessage = new StringBuilder();
-            errorMessage.Append("<strong>Database Connection Error:</strong> ");
-            errorMessage.Append("Unable to connect to the Autopark database. ");
-            
-            switch (ex.Number)
-            {
-                case 53:   // Server not found
-                    errorMessage.Append("Database server is not available. Please check your connection settings.");
-                    break;
-                case 18456: // Login failed
-                    errorMessage.Append("Authentication failed. Please verify your database credentials.");
-                    break;
-                case 208:   // Database not found
-                    errorMessage.Append("Database 'AutoparkDB' not found. Please run the database setup script.");
-                    break;
-                default:
-                    errorMessage.Append($"Error code: {ex.Number}. {ex.Message}");
-                    break;
-            }
-            
-            litError.Text = errorMessage.ToString();
-        }
 
-        /// <summary>
-        /// Handles service layer errors with context-specific messaging.
-        /// </summary>
-        private void HandleServiceError(ServiceException ex)
-        {
-            pnlError.Visible = true;
-            litError.Text = $"<strong>Service Error:</strong> {ex.Message}";
-            
+            litError.Text =
+                "<strong>Service Error:</strong> " +
+                Server.HtmlEncode(ex.Message);
+
             if (ex.InnerException != null)
             {
-                litError.Text += $"<br><small>Details: {ex.InnerException.Message}</small>";
+                litError.Text +=
+                    "<br><small>Details: " +
+                    Server.HtmlEncode(
+                        ex.InnerException.Message) +
+                    "</small>";
             }
+
+            pnlSuccess.Visible = false;
         }
 
-        /// <summary>
-        /// Handles generic unexpected errors with fallback messaging.
-        /// </summary>
-        private void HandleGenericError(Exception ex)
+        private void HandleGenericError(
+            Exception ex)
         {
             pnlError.Visible = true;
-            litError.Text = $"<strong>Unexpected Error:</strong> An error occurred while processing your request. Please try again or contact system administrator.";
-        }
 
-        #endregion
+            litError.Text =
+                "<strong>Unexpected Error:</strong> " +
+                "An error occurred while processing your request. " +
+                "Please try again or contact system administrator.";
 
-        #region Cleanup
-
-        /// <summary>
-        /// Dispose pattern implementation for service layer cleanup.
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_busService != null)
-                {
-                    _busService.Dispose();
-                    _busService = null;
-                }
-            }
-            base.Dispose(disposing);
+            pnlSuccess.Visible = false;
         }
 
         #endregion
     }
 
     /// <summary>
-    /// Sort direction enumeration for grid view sorting.
+    /// Sort direction enumeration used by the Buses page.
     /// </summary>
     public enum SortDirection
     {
