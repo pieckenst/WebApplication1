@@ -80,6 +80,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         private List<Department> _allDepartments;
 
         private const int _pageSize = 20;
+        private bool _templateControlsResolved;
 
         #endregion
 
@@ -179,6 +180,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         {
             try
             {
+                EnsureTemplateControlsResolved();
+
                 if (!IsPostBack)
                 {
                     LoadFilterData();
@@ -198,6 +201,73 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
             {
                 HandleGenericError(ex);
             }
+        }
+
+        #endregion
+
+        #region Template Control Resolution
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+
+            EnsureContentBoxCreated(cbFilters, "cbFilters");
+            EnsureContentBoxCreated(cbEmployeesList, "cbEmployeesList");
+            EnsureContentBoxCreated(cbEmployeeForm, "cbEmployeeForm");
+            EnsureContentBoxCreated(cbEmployeeDetail, "cbEmployeeDetail");
+
+            // Resolve filter controls
+            ddlStatusFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlStatusFilter");
+            ddlJobFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlJobFilter");
+            ddlDepartmentFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlDepartmentFilter");
+
+            // Resolve grid control
+            gvEmployees = FindRequiredTemplateControl<GridView>(cbEmployeesList, "gvEmployees");
+
+            // Resolve form controls
+            txtSurname = FindRequiredTemplateControl<TextBox>(cbEmployeeForm, "txtSurname");
+            txtName = FindRequiredTemplateControl<TextBox>(cbEmployeeForm, "txtName");
+            txtPatronym = FindRequiredTemplateControl<TextBox>(cbEmployeeForm, "txtPatronym");
+            txtEmployedDate = FindRequiredTemplateControl<TextBox>(cbEmployeeForm, "txtEmployedDate");
+            ddlJob = FindRequiredTemplateControl<DropDownList>(cbEmployeeForm, "ddlJob");
+            ddlDepartment = FindRequiredTemplateControl<DropDownList>(cbEmployeeForm, "ddlDepartment");
+            txtPhone = FindRequiredTemplateControl<TextBox>(cbEmployeeForm, "txtPhone");
+            txtEmail = FindRequiredTemplateControl<TextBox>(cbEmployeeForm, "txtEmail");
+            ddlStatus = FindRequiredTemplateControl<DropDownList>(cbEmployeeForm, "ddlStatus");
+            btnSave = FindRequiredTemplateControl<Button>(cbEmployeeForm, "btnSave");
+            btnCancel = FindRequiredTemplateControl<Button>(cbEmployeeForm, "btnCancel");
+
+            // Resolve detail controls
+            litDetailSurname = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailSurname");
+            litDetailName = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailName");
+            litDetailPatronym = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailPatronym");
+            litDetailEmployedDate = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailEmployedDate");
+            litDetailJob = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailJob");
+            litDetailDepartment = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailDepartment");
+            litDetailPhone = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailPhone");
+            litDetailEmail = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailEmail");
+            litDetailStatus = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailStatus");
+            litDetailServiceYears = FindRequiredTemplateControl<Literal>(cbEmployeeDetail, "litDetailServiceYears");
+            btnDetailClose = FindRequiredTemplateControl<Button>(cbEmployeeDetail, "btnDetailClose");
+
+            _templateControlsResolved = true;
+        }
+
+        private static void EnsureContentBoxCreated(Controls.ContentBox contentBox, string controlId)
+        {
+            if (contentBox == null)
+                throw new InvalidOperationException(
+                    "Required ContentBox '" + controlId + "' was not created. Check Employees.aspx markup and the ContentBox registration.");
+        }
+
+        private static T FindRequiredTemplateControl<T>(Controls.ContentBox contentBox, string controlId) where T : Control
+        {
+            T control = contentBox.FindContentControl<T>(controlId);
+            if (control == null)
+                throw new InvalidOperationException(
+                    "Required control '" + controlId + "' was not found inside ContentBox '" +
+                    contentBox.ID + "'. Check that the control is inside the ContentTemplate and has runat=\"server\".");
+            return control;
         }
 
         #endregion

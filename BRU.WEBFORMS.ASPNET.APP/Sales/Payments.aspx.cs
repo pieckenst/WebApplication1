@@ -55,6 +55,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         private List<Payment> _currentPaymentList;
         private const int _pageSize = 20;
+        private bool _templateControlsResolved;
 
         #endregion
 
@@ -111,6 +112,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
+                EnsureTemplateControlsResolved();
+
                 if (!IsPostBack)
                 {
                     LoadPayments();
@@ -129,6 +132,60 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
             {
                 HandleGenericError(ex);
             }
+        }
+
+        #endregion
+
+        #region Template Control Resolution
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+
+            EnsureContentBoxCreated(cbFilters, "cbFilters");
+            EnsureContentBoxCreated(cbPaymentsList, "cbPaymentsList");
+            EnsureContentBoxCreated(cbPaymentForm, "cbPaymentForm");
+            EnsureContentBoxCreated(cbPaymentDetail, "cbPaymentDetail");
+
+            // Resolve filter controls
+            ddlStatusFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlStatusFilter");
+
+            // Resolve list controls
+            gvPayments = FindRequiredTemplateControl<GridView>(cbPaymentsList, "gvPayments");
+
+            // Resolve form controls
+            pnlPaymentForm = FindRequiredTemplateControl<Panel>(cbPaymentForm, "pnlPaymentForm");
+            txtSaleId = FindRequiredTemplateControl<TextBox>(cbPaymentForm, "txtSaleId");
+            rfvSaleId = FindRequiredTemplateControl<RequiredFieldValidator>(cbPaymentForm, "rfvSaleId");
+            txtAmount = FindRequiredTemplateControl<TextBox>(cbPaymentForm, "txtAmount");
+            rfvAmount = FindRequiredTemplateControl<RequiredFieldValidator>(cbPaymentForm, "rfvAmount");
+            ddlMethod = FindRequiredTemplateControl<DropDownList>(cbPaymentForm, "ddlMethod");
+            txtTransactionId = FindRequiredTemplateControl<TextBox>(cbPaymentForm, "txtTransactionId");
+            btnSavePayment = FindRequiredTemplateControl<Button>(cbPaymentForm, "btnSavePayment");
+            btnCancelPayment = FindRequiredTemplateControl<Button>(cbPaymentForm, "btnCancelPayment");
+
+            // Resolve detail controls
+            litPaymentDetail = FindRequiredTemplateControl<Literal>(cbPaymentDetail, "litPaymentDetail");
+            btnDetailClose = FindRequiredTemplateControl<Button>(cbPaymentDetail, "btnDetailClose");
+
+            _templateControlsResolved = true;
+        }
+
+        private static void EnsureContentBoxCreated(Controls.ContentBox contentBox, string controlId)
+        {
+            if (contentBox == null)
+                throw new InvalidOperationException(
+                    "Required ContentBox '" + controlId + "' was not created. Check Payments.aspx markup and the ContentBox registration.");
+        }
+
+        private static T FindRequiredTemplateControl<T>(Controls.ContentBox contentBox, string controlId) where T : Control
+        {
+            T control = contentBox.FindContentControl<T>(controlId);
+            if (control == null)
+                throw new InvalidOperationException(
+                    "Required control '" + controlId + "' was not found inside ContentBox '" +
+                    contentBox.ID + "'. Check that the control is inside the ContentTemplate and has runat=\"server\".");
+            return control;
         }
 
         #endregion

@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using BRU.WEBFORMS.ASPNET.APP.Services;
 using BRU.WEBFORMS.ASPNET.APP.Models;
+using BRU.WEBFORMS.ASPNET.APP.Controls;
 using System.Data.SqlClient;
 
 namespace BRU.WEBFORMS.ASPNET.APP.Reports
@@ -47,6 +48,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
 
         #region Private Fields
 
+        private bool _templateControlsResolved;
         private decimal _maxChannelAmount = 1;
         private decimal _maxRouteAmount = 1;
         private decimal _maxEmployeeAmount = 1;
@@ -59,6 +61,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
         {
             try
             {
+                EnsureTemplateControlsResolved();
+
                 if (!IsPostBack)
                 {
                     LoadSummary();
@@ -80,6 +84,45 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             {
                 HandleGenericError(ex);
             }
+        }
+
+        #endregion
+
+        #region Template Control Resolution
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+
+            EnsureContentBoxCreated(cbSalesByChannel, "cbSalesByChannel");
+            EnsureContentBoxCreated(cbSalesByRoute, "cbSalesByRoute");
+            EnsureContentBoxCreated(cbSalesByEmployee, "cbSalesByEmployee");
+
+            litChannelChart = FindRequiredTemplateControl<Literal>(cbSalesByChannel, "litChannelChart");
+            gvSalesByChannel = FindRequiredTemplateControl<GridView>(cbSalesByChannel, "gvSalesByChannel");
+            litRouteChart = FindRequiredTemplateControl<Literal>(cbSalesByRoute, "litRouteChart");
+            gvSalesByRoute = FindRequiredTemplateControl<GridView>(cbSalesByRoute, "gvSalesByRoute");
+            litEmployeeChart = FindRequiredTemplateControl<Literal>(cbSalesByEmployee, "litEmployeeChart");
+            gvSalesByEmployee = FindRequiredTemplateControl<GridView>(cbSalesByEmployee, "gvSalesByEmployee");
+
+            _templateControlsResolved = true;
+        }
+
+        private static void EnsureContentBoxCreated(ContentBox contentBox, string controlId)
+        {
+            if (contentBox == null)
+                throw new InvalidOperationException(
+                    "Required ContentBox '" + controlId + "' was not created. Check Analytics.aspx markup and the ContentBox registration.");
+        }
+
+        private static T FindRequiredTemplateControl<T>(ContentBox contentBox, string controlId) where T : Control
+        {
+            T control = contentBox.FindContentControl<T>(controlId);
+            if (control == null)
+                throw new InvalidOperationException(
+                    "Required control '" + controlId + "' was not found inside ContentBox '" +
+                    contentBox.ID + "'. Check that the control is inside the ContentTemplate and has runat=\"server\".");
+            return control;
         }
 
         #endregion

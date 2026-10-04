@@ -69,6 +69,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         private List<Ticket> _currentTicketList;
         private const int _pageSize = 20;
         private const int _lowStockThreshold = 50;
+        private bool _templateControlsResolved;
 
         #endregion
 
@@ -184,6 +185,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
+                EnsureTemplateControlsResolved();
+
                 if (!IsPostBack)
                 {
                     LoadTypeFilter();
@@ -203,6 +206,71 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
             {
                 HandleGenericError(ex);
             }
+        }
+
+        #endregion
+
+        #region Template Control Resolution
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+
+            EnsureContentBoxCreated(cbFilters, "cbFilters");
+            EnsureContentBoxCreated(cbTicketsList, "cbTicketsList");
+            EnsureContentBoxCreated(cbTicketForm, "cbTicketForm");
+            EnsureContentBoxCreated(cbTicketDetail, "cbTicketDetail");
+
+            // Resolve filter controls
+            ddlTypeFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlTypeFilter");
+            txtPriceFrom = FindRequiredTemplateControl<TextBox>(cbFilters, "txtPriceFrom");
+            txtPriceTo = FindRequiredTemplateControl<TextBox>(cbFilters, "txtPriceTo");
+            btnApplyPriceFilter = FindRequiredTemplateControl<Button>(cbFilters, "btnApplyPriceFilter");
+            ddlStatusFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlStatusFilter");
+
+            // Resolve list controls
+            gvTickets = FindRequiredTemplateControl<GridView>(cbTicketsList, "gvTickets");
+
+            // Resolve form controls
+            pnlTicketForm = FindRequiredTemplateControl<Panel>(cbTicketForm, "pnlTicketForm");
+            txtTicketName = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtTicketName");
+            rfvTicketName = FindRequiredTemplateControl<RequiredFieldValidator>(cbTicketForm, "rfvTicketName");
+            txtTicketType = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtTicketType");
+            rfvTicketType = FindRequiredTemplateControl<RequiredFieldValidator>(cbTicketForm, "rfvTicketType");
+            txtZone = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtZone");
+            txtPrice = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtPrice");
+            rfvPrice = FindRequiredTemplateControl<RequiredFieldValidator>(cbTicketForm, "rfvPrice");
+            txtValidDays = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtValidDays");
+            rfvValidDays = FindRequiredTemplateControl<RequiredFieldValidator>(cbTicketForm, "rfvValidDays");
+            txtAvailableCount = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtAvailableCount");
+            rfvAvailableCount = FindRequiredTemplateControl<RequiredFieldValidator>(cbTicketForm, "rfvAvailableCount");
+            txtExpiryDate = FindRequiredTemplateControl<TextBox>(cbTicketForm, "txtExpiryDate");
+            chkActive = FindRequiredTemplateControl<CheckBox>(cbTicketForm, "chkActive");
+            btnSave = FindRequiredTemplateControl<Button>(cbTicketForm, "btnSave");
+            btnCancel = FindRequiredTemplateControl<Button>(cbTicketForm, "btnCancel");
+
+            // Resolve detail controls
+            litDetail = FindRequiredTemplateControl<Literal>(cbTicketDetail, "litDetail");
+            btnDetailClose = FindRequiredTemplateControl<Button>(cbTicketDetail, "btnDetailClose");
+
+            _templateControlsResolved = true;
+        }
+
+        private static void EnsureContentBoxCreated(Controls.ContentBox contentBox, string controlId)
+        {
+            if (contentBox == null)
+                throw new InvalidOperationException(
+                    "Required ContentBox '" + controlId + "' was not created. Check Tickets.aspx markup and the ContentBox registration.");
+        }
+
+        private static T FindRequiredTemplateControl<T>(Controls.ContentBox contentBox, string controlId) where T : Control
+        {
+            T control = contentBox.FindContentControl<T>(controlId);
+            if (control == null)
+                throw new InvalidOperationException(
+                    "Required control '" + controlId + "' was not found inside ContentBox '" +
+                    contentBox.ID + "'. Check that the control is inside the ContentTemplate and has runat=\"server\".");
+            return control;
         }
 
         #endregion

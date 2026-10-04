@@ -44,6 +44,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         private List<RouteSchedule> _currentScheduleList;
         private const int _pageSize = 20;
+        private bool _templateControlsResolved;
 
         #endregion
 
@@ -126,6 +127,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         {
             try
             {
+                EnsureTemplateControlsResolved();
+
                 if (!IsPostBack)
                 {
                     LoadRouteFilter();
@@ -145,6 +148,39 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             {
                 HandleGenericError(ex);
             }
+        }
+
+        #endregion
+
+        #region Template Control Resolution
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+
+            EnsureContentBoxCreated(cbScheduleList, "cbScheduleList");
+
+            // Resolve schedule grid control
+            gvSchedule = FindRequiredTemplateControl<GridView>(cbScheduleList, "gvSchedule");
+
+            _templateControlsResolved = true;
+        }
+
+        private static void EnsureContentBoxCreated(Controls.ContentBox contentBox, string controlId)
+        {
+            if (contentBox == null)
+                throw new InvalidOperationException(
+                    "Required ContentBox '" + controlId + "' was not created. Check Schedule.aspx markup and the ContentBox registration.");
+        }
+
+        private static T FindRequiredTemplateControl<T>(Controls.ContentBox contentBox, string controlId) where T : Control
+        {
+            T control = contentBox.FindContentControl<T>(controlId);
+            if (control == null)
+                throw new InvalidOperationException(
+                    "Required control '" + controlId + "' was not found inside ContentBox '" +
+                    contentBox.ID + "'. Check that the control is inside the ContentTemplate and has runat=\"server\".");
+            return control;
         }
 
         #endregion

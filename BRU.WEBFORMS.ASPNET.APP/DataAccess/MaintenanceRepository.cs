@@ -25,7 +25,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         {
             List<Maintenance> maintenanceList = new List<Maintenance>();
             
-            using (SqlDataReader reader = _db.ExecuteReader("SELECT * FROM dbo.maintenance ORDER BY maintenance_date DESC"))
+            using (SqlDataReader reader = _db.ExecuteReader(
+                @"SELECT m.*, b.fleet_number,
+                         DATEDIFF(DAY, m.maintenance_date, GETDATE()) AS days_from_last_service
+                  FROM dbo.maintenance m
+                  LEFT JOIN dbo.bus b ON m.bus_id = b.bus_id
+                  ORDER BY m.maintenance_date DESC"))
             {
                 while (reader.Read())
                 {
@@ -265,20 +270,34 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             maintenance.Roadworthiness = reader.GetString(reader.GetOrdinal("roadworthiness"));
             maintenance.MaintenanceCost = reader.GetDecimal(reader.GetOrdinal("maintenance_cost"));
             
-            // Optional fields from view
-            if (reader.FieldCount > 10)
+            // Optional fields (present when joined with bus table or returned from views/SPs)
+            int fleetNumberOrdinal = TryGetOrdinal(reader, "fleet_number");
+            if (fleetNumberOrdinal >= 0 && !reader.IsDBNull(fleetNumberOrdinal))
             {
-                if (!reader.IsDBNull(reader.GetOrdinal("fleet_number")))
-                {
-                    maintenance.FleetNumber = reader.GetString(reader.GetOrdinal("fleet_number"));
-                }
-                if (!reader.IsDBNull(reader.GetOrdinal("days_from_last_service")))
-                {
-                    maintenance.DaysFromLastService = reader.GetInt32(reader.GetOrdinal("days_from_last_service"));
-                }
+                maintenance.FleetNumber = reader.GetString(fleetNumberOrdinal);
+            }
+
+            int daysOrdinal = TryGetOrdinal(reader, "days_from_last_service");
+            if (daysOrdinal >= 0 && !reader.IsDBNull(daysOrdinal))
+            {
+                maintenance.DaysFromLastService = reader.GetInt32(daysOrdinal);
             }
             
             return maintenance;
+        }
+
+        /// <summary>
+        /// Safely get the column ordinal without throwing if the column is absent.
+        /// </summary>
+        private static int TryGetOrdinal(SqlDataReader reader, string columnName)
+        {
+            if (string.IsNullOrEmpty(columnName)) return -1;
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                if (string.Equals(reader.GetName(i), columnName, StringComparison.OrdinalIgnoreCase))
+                    return i;
+            }
+            return -1;
         }
 
         public void Dispose()

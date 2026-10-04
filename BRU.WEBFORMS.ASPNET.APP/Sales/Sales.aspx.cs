@@ -61,6 +61,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         private List<Sale> _currentSaleList;
         private const int _pageSize = 20;
+        private bool _templateControlsResolved;
 
         #endregion
 
@@ -153,6 +154,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
+                EnsureTemplateControlsResolved();
+
                 if (!IsPostBack)
                 {
                     LoadSales();
@@ -171,6 +174,66 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
             {
                 HandleGenericError(ex);
             }
+        }
+
+        #endregion
+
+        #region Template Control Resolution
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+
+            EnsureContentBoxCreated(cbFilters, "cbFilters");
+            EnsureContentBoxCreated(cbSalesList, "cbSalesList");
+            EnsureContentBoxCreated(cbSaleForm, "cbSaleForm");
+            EnsureContentBoxCreated(cbSaleDetail, "cbSaleDetail");
+
+            // Resolve filter controls
+            txtDateFrom = FindRequiredTemplateControl<TextBox>(cbFilters, "txtDateFrom");
+            txtDateTo = FindRequiredTemplateControl<TextBox>(cbFilters, "txtDateTo");
+            btnApplyDateRange = FindRequiredTemplateControl<Button>(cbFilters, "btnApplyDateRange");
+            ddlChannelFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlChannelFilter");
+            ddlStatusFilter = FindRequiredTemplateControl<DropDownList>(cbFilters, "ddlStatusFilter");
+
+            // Resolve list controls
+            gvSales = FindRequiredTemplateControl<GridView>(cbSalesList, "gvSales");
+
+            // Resolve form controls
+            pnlSaleForm = FindRequiredTemplateControl<Panel>(cbSaleForm, "pnlSaleForm");
+            ddlTicket = FindRequiredTemplateControl<DropDownList>(cbSaleForm, "ddlTicket");
+            rfvTicket = FindRequiredTemplateControl<RequiredFieldValidator>(cbSaleForm, "rfvTicket");
+            txtQuantity = FindRequiredTemplateControl<TextBox>(cbSaleForm, "txtQuantity");
+            rfvQuantity = FindRequiredTemplateControl<RequiredFieldValidator>(cbSaleForm, "rfvQuantity");
+            txtSalePrice = FindRequiredTemplateControl<TextBox>(cbSaleForm, "txtSalePrice");
+            rfvSalePrice = FindRequiredTemplateControl<RequiredFieldValidator>(cbSaleForm, "rfvSalePrice");
+            ddlChannel = FindRequiredTemplateControl<DropDownList>(cbSaleForm, "ddlChannel");
+            ddlCashier = FindRequiredTemplateControl<DropDownList>(cbSaleForm, "ddlCashier");
+            btnSaveSale = FindRequiredTemplateControl<Button>(cbSaleForm, "btnSaveSale");
+            btnCancelSale = FindRequiredTemplateControl<Button>(cbSaleForm, "btnCancelSale");
+
+            // Resolve detail controls
+            litSaleDetail = FindRequiredTemplateControl<Literal>(cbSaleDetail, "litSaleDetail");
+            btnDetailClose = FindRequiredTemplateControl<Button>(cbSaleDetail, "btnDetailClose");
+
+            _templateControlsResolved = true;
+        }
+
+        private static void EnsureContentBoxCreated(Controls.ContentBox contentBox, string controlId)
+        {
+            if (contentBox == null)
+                throw new InvalidOperationException(
+                    "Required ContentBox '" + controlId + "' was not created. Check Sales.aspx markup and the ContentBox registration.");
+        }
+
+        private static T FindRequiredTemplateControl<T>(Controls.ContentBox contentBox, string controlId) where T : Control
+        {
+            T control = contentBox.FindContentControl<T>(controlId);
+            if (control == null)
+                throw new InvalidOperationException(
+                    "Required control '" + controlId + "' was not found inside ContentBox '" +
+                    contentBox.ID + "'. Check that the control is inside the ContentTemplate and has runat=\"server\".");
+            return control;
         }
 
         #endregion
