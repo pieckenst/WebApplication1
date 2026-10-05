@@ -44,11 +44,16 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         public void BeginTransaction()
         {
+            BeginTransaction(IsolationLevel.ReadCommitted);
+        }
+
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
             if (Connection.State == ConnectionState.Closed)
             {
                 Connection.Open();
             }
-            _transaction = Connection.BeginTransaction();
+            _transaction = Connection.BeginTransaction(isolationLevel);
         }
 
         /// <summary>

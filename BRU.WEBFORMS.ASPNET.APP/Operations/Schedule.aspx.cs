@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -30,6 +31,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         protected global::System.Web.UI.WebControls.Literal litCancelled;
         protected global::System.Web.UI.WebControls.Button btnToday;
         protected global::System.Web.UI.WebControls.Button btnRefresh;
+        protected global::System.Web.UI.WebControls.Button btnUpdateStatuses;
         protected global::System.Web.UI.WebControls.DropDownList ddlRouteFilter;
         protected global::System.Web.UI.WebControls.TextBox txtDateFrom;
         protected global::System.Web.UI.WebControls.TextBox txtDateTo;
@@ -37,6 +39,23 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbScheduleList;
         protected global::System.Web.UI.WebControls.GridView gvSchedule;
         protected global::System.Web.UI.WebControls.Literal litPagination;
+        protected global::System.Web.UI.WebControls.Panel pnlScheduleEditor;
+        protected global::System.Web.UI.WebControls.HiddenField hidScheduleId;
+        protected global::System.Web.UI.WebControls.DropDownList ddlScheduleRoute;
+        protected global::System.Web.UI.WebControls.DropDownList ddlScheduleBus;
+        protected global::System.Web.UI.WebControls.DropDownList ddlScheduleDriver;
+        protected global::System.Web.UI.WebControls.TextBox txtServiceDate;
+        protected global::System.Web.UI.WebControls.TextBox txtDeparture;
+        protected global::System.Web.UI.WebControls.TextBox txtArrival;
+        protected global::System.Web.UI.WebControls.Button btnNewSchedule;
+        protected global::System.Web.UI.WebControls.Button btnSaveSchedule;
+        protected global::System.Web.UI.WebControls.Button btnCancelScheduleEdit;
+        protected global::System.Web.UI.WebControls.TextBox txtTemplateDate;
+        protected global::System.Web.UI.WebControls.TextBox txtRecurringFrom;
+        protected global::System.Web.UI.WebControls.TextBox txtRecurringTo;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblRecurringDays;
+        protected global::System.Web.UI.WebControls.Button btnGenerateRecurring;
+        protected global::System.Web.UI.WebControls.Button btnValidateSchedule;
 
         #endregion
 
@@ -128,11 +147,25 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             try
             {
                 EnsureTemplateControlsResolved();
+                pnlScheduleEditor.Visible = CanEditSchedules;
+                btnUpdateStatuses.Visible = CanEditSchedules;
+
+                using (ScheduleAutomationService automation = new ScheduleAutomationService())
+                {
+                    ScheduleStatusUpdateResult statusResult = automation.UpdateScheduleStatuses();
+                    if (!statusResult.Success)
+                        ShowError("Automatic trip status update failed: " + statusResult.ErrorMessage);
+                }
 
                 if (!IsPostBack)
                 {
                     LoadRouteFilter();
-                    LoadTodaySchedule();
+                    LoadScheduleEditorResources();
+                    ClearScheduleEditor();
+                    // Load all schedules by default instead of just today
+                    DateFrom = new DateTime(2020, 1, 1);
+                    DateTo = new DateTime(2031, 1, 1);
+                    LoadScheduleByDateRange();
                     LoadStats();
                 }
             }
@@ -208,6 +241,38 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             }
         }
 
+        private bool CanEditSchedules
+        {
+            get { return AuthContext.HasPermission("route.write"); }
+        }
+
+        private void LoadScheduleEditorResources()
+        {
+            ddlScheduleRoute.Items.Clear();
+            ddlScheduleRoute.Items.Add(new ListItem("-- Select route --", ""));
+            using (RouteService service = new RouteService())
+            {
+                foreach (Route route in service.GetAllActiveRoutes())
+                    ddlScheduleRoute.Items.Add(new ListItem(route.RouteNum + " - " + route.RouteName, route.RouteId.ToString()));
+            }
+
+            ddlScheduleBus.Items.Clear();
+            ddlScheduleBus.Items.Add(new ListItem("-- Select bus --", ""));
+            using (BusService service = new BusService())
+            {
+                foreach (Bus bus in service.GetAllBuses())
+                    ddlScheduleBus.Items.Add(new ListItem(bus.FleetNumber + " (" + bus.Model + ", " + bus.Status + ")", bus.BusId.ToString()));
+            }
+
+            ddlScheduleDriver.Items.Clear();
+            ddlScheduleDriver.Items.Add(new ListItem("-- Select driver --", ""));
+            using (EmployeeService service = new EmployeeService())
+            {
+                foreach (Employee driver in service.GetDrivers())
+                    ddlScheduleDriver.Items.Add(new ListItem(driver.EmployeeName + " (" + driver.Status + ")", driver.EmployeeId.ToString()));
+            }
+        }
+
         private void LoadTodaySchedule()
         {
             using (RouteService service = new RouteService())
@@ -232,19 +297,17 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         private void LoadStats()
         {
-            if (_currentScheduleList == null || _currentScheduleList.Count == 0)
+            List<RouteSchedule> todaySchedules;
+            using (RouteService service = new RouteService())
             {
-                using (RouteService service = new RouteService())
-                {
-                    _currentScheduleList = service.GetTodaySchedule();
-                }
+                todaySchedules = service.GetTodaySchedule();
             }
 
-            litTodayTrips.Text = _currentScheduleList.Count.ToString();
-            litPlanned.Text = CountByStatus(_currentScheduleList, ScheduleStatus.Planned).ToString();
-            litInProgress.Text = CountByStatus(_currentScheduleList, ScheduleStatus.InProgress).ToString();
-            litCompleted.Text = CountByStatus(_currentScheduleList, ScheduleStatus.Completed).ToString();
-            litCancelled.Text = CountByStatus(_currentScheduleList, ScheduleStatus.Cancelled).ToString();
+            litTodayTrips.Text = todaySchedules.Count.ToString();
+            litPlanned.Text = CountByStatus(todaySchedules, ScheduleStatus.Planned).ToString();
+            litInProgress.Text = CountByStatus(todaySchedules, ScheduleStatus.InProgress).ToString();
+            litCompleted.Text = CountByStatus(todaySchedules, ScheduleStatus.Completed).ToString();
+            litCancelled.Text = CountByStatus(todaySchedules, ScheduleStatus.Cancelled).ToString();
         }
 
         private int CountByStatus(List<RouteSchedule> schedules, string status)
@@ -435,11 +498,34 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                     litStatus.Text = "<span class='" + cssClass + "'>" + schedule.ScheduleStatus + "</span>";
                 }
 
+                LinkButton editButton = e.Row.FindControl("btnEditSchedule") as LinkButton;
+                if (editButton != null)
+                    editButton.Visible = CanEditSchedules && schedule.ScheduleStatus == ScheduleStatus.Planned;
+
                 foreach (TableCell cell in e.Row.Cells)
                 {
                     if (cell.Text != null && cell.Text == "&nbsp;")
                         cell.Text = "<span class='text-small'>—</span>";
                 }
+            }
+        }
+
+        protected void gvSchedule_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "EditSchedule") return;
+            try
+            {
+                EnsureScheduleWriteAccess();
+                int scheduleId;
+                if (!int.TryParse(Convert.ToString(e.CommandArgument), out scheduleId))
+                    throw new ServiceException("Invalid schedule selection.");
+
+                using (ScheduleAutomationService service = new ScheduleAutomationService())
+                    PopulateScheduleEditor(service.GetScheduleById(scheduleId));
+            }
+            catch (Exception ex)
+            {
+                HandleGenericError(ex);
             }
         }
 
@@ -455,7 +541,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                 DateTo = DateTime.Today.AddDays(1);
                 CurrentPage = 1;
                 txtDateFrom.Text = DateTime.Today.ToString("dd.MM.yyyy");
-                txtDateTo.Text = DateTime.Today.AddDays(1).ToString("dd.MM.yyyy");
+                txtDateTo.Text = DateTime.Today.ToString("dd.MM.yyyy");
                 LoadTodaySchedule();
                 LoadStats();
                 ShowSuccess("Showing today's schedule.");
@@ -493,17 +579,40 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         {
             try
             {
+                string dateFromText = txtDateFrom.Text.Trim();
+                string dateToText = txtDateTo.Text.Trim();
+
+                // If both dates are empty, show ALL schedules
+                if (string.IsNullOrEmpty(dateFromText) && string.IsNullOrEmpty(dateToText))
+                {
+                    // Load all schedules (use a wide date range)
+                    DateFrom = new DateTime(2020, 1, 1);
+                    DateTo = new DateTime(2031, 1, 1);
+                    CurrentPage = 1;
+                    LoadScheduleByDateRange();
+                    LoadStats();
+                    ShowSuccess("Showing all schedules in the database.");
+                    return;
+                }
+
+                // If only one date is provided, require both
+                if (string.IsNullOrEmpty(dateFromText) || string.IsNullOrEmpty(dateToText))
+                {
+                    ShowError("Please provide both Date From and Date To, or leave both empty to show all schedules.");
+                    return;
+                }
+
                 DateTime dateFrom;
                 DateTime dateTo;
 
-                if (!DateTime.TryParseExact(txtDateFrom.Text.Trim(), "dd.MM.yyyy",
+                if (!DateTime.TryParseExact(dateFromText, "dd.MM.yyyy",
                     null, System.Globalization.DateTimeStyles.None, out dateFrom))
                 {
                     ShowError("Invalid 'Date From' format. Use dd.MM.yyyy");
                     return;
                 }
 
-                if (!DateTime.TryParseExact(txtDateTo.Text.Trim(), "dd.MM.yyyy",
+                if (!DateTime.TryParseExact(dateToText, "dd.MM.yyyy",
                     null, System.Globalization.DateTimeStyles.None, out dateTo))
                 {
                     ShowError("Invalid 'Date To' format. Use dd.MM.yyyy");
@@ -527,6 +636,228 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             {
                 HandleGenericError(ex);
             }
+        }
+
+        protected void btnNewSchedule_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureScheduleWriteAccess();
+                ClearScheduleEditor();
+            }
+            catch (Exception ex)
+            {
+                HandleGenericError(ex);
+            }
+        }
+
+        protected void btnCancelScheduleEdit_Click(object sender, EventArgs e)
+        {
+            ClearScheduleEditor();
+        }
+
+        protected void btnSaveSchedule_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureScheduleWriteAccess();
+                RouteSchedule schedule = ReadScheduleEditor();
+                using (ScheduleAutomationService service = new ScheduleAutomationService())
+                    schedule.ScheduleId = service.SaveSchedule(schedule);
+
+                DateFrom = schedule.ServiceDate.Date;
+                DateTo = schedule.ServiceDate.Date.AddDays(1);
+                txtDateFrom.Text = schedule.ServiceDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
+                txtDateTo.Text = txtDateFrom.Text;
+                FilterRouteId = string.Empty;
+                ddlRouteFilter.SelectedIndex = 0;
+                CurrentPage = 1;
+                LoadScheduleByDateRange();
+                LoadStats();
+                ClearScheduleEditor();
+                ShowSuccess("Schedule saved. Seat availability is calculated from current non-refunded sales.");
+            }
+            catch (Exception ex)
+            {
+                HandleGenericError(ex);
+            }
+        }
+
+        protected void btnUpdateStatuses_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureScheduleWriteAccess();
+                ScheduleStatusUpdateResult result;
+                using (ScheduleAutomationService service = new ScheduleAutomationService())
+                    result = service.UpdateScheduleStatuses();
+                if (!result.Success)
+                    throw new ServiceException(result.ErrorMessage);
+
+                LoadScheduleByDateRange();
+                LoadStats();
+                ShowSuccess("Trip statuses reconciled. " + result.TotalUpdated + " transition(s) applied.");
+            }
+            catch (Exception ex)
+            {
+                HandleGenericError(ex);
+            }
+        }
+
+        protected void btnGenerateRecurring_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureScheduleWriteAccess();
+                DateTime templateDate = ParseIsoDate(txtTemplateDate.Text, "Template date");
+                DateTime startDate = ParseIsoDate(txtRecurringFrom.Text, "Generate from");
+                DateTime endDate = ParseIsoDate(txtRecurringTo.Text, "Generate through");
+                if (startDate <= DateTime.Today || endDate < startDate || endDate.Subtract(startDate).TotalDays >= 90)
+                    throw new ServiceException("Choose a future date range no longer than 90 days.");
+
+                List<DayOfWeek> days = new List<DayOfWeek>();
+                foreach (ListItem item in cblRecurringDays.Items)
+                {
+                    if (item.Selected)
+                        days.Add((DayOfWeek)Enum.Parse(typeof(DayOfWeek), item.Value));
+                }
+                if (days.Count == 0)
+                    throw new ServiceException("Select at least one day of the week.");
+                bool hasSelectedDay = false;
+                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                    if (days.Contains(date.DayOfWeek)) hasSelectedDay = true;
+                if (!hasSelectedDay)
+                    throw new ServiceException("The selected weekdays do not occur in the requested date range.");
+
+                BatchScheduleGenerationResult result;
+                using (ScheduleAutomationService service = new ScheduleAutomationService())
+                    result = service.GenerateBatchSchedules(startDate, endDate, templateDate, days);
+
+                if (!result.Success)
+                    throw new ServiceException("Generation completed with " + result.TotalDaysFailed +
+                        " failed date(s). " + result.TotalSchedulesCreated + " trip(s) were created. " + result.ErrorMessage);
+
+                DateFrom = startDate.Date;
+                DateTo = endDate.Date.AddDays(1);
+                txtDateFrom.Text = startDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
+                txtDateTo.Text = endDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
+                CurrentPage = 1;
+                LoadScheduleByDateRange();
+                LoadStats();
+                ShowSuccess("Recurring generation finished: " + result.TotalSchedulesCreated + " created across " +
+                    result.TotalDaysProcessed + " selected day(s); " + result.TotalDaysFailed + " date(s) failed.");
+            }
+            catch (Exception ex)
+            {
+                HandleGenericError(ex);
+            }
+        }
+
+        protected void btnValidateSchedule_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureScheduleWriteAccess();
+                ScheduleValidationResult result;
+                using (ScheduleAutomationService service = new ScheduleAutomationService())
+                    result = service.ValidateScheduleIntegrity(DateFrom, DateTo);
+                if (!result.Success)
+                    throw new ServiceException(result.ErrorMessage);
+
+                if (result.TotalIssuesFound == 0)
+                {
+                    ShowSuccess("Validated " + result.TotalSchedulesValidated + " schedule(s); no integrity issues found.");
+                    return;
+                }
+
+                StringBuilder issues = new StringBuilder();
+                int issueCount = Math.Min(5, result.Issues.Count);
+                for (int i = 0; i < issueCount; i++)
+                    issues.Append("Schedule ").Append(result.Issues[i].ScheduleId).Append(": ")
+                        .Append(result.Issues[i].Issue).Append(" ");
+                ShowError("Found " + result.TotalIssuesFound + " issue(s). " + issues.ToString());
+            }
+            catch (Exception ex)
+            {
+                HandleGenericError(ex);
+            }
+        }
+
+        private void EnsureScheduleWriteAccess()
+        {
+            if (!CanEditSchedules)
+                throw new UnauthorizedAccessException("You do not have permission to change schedules.");
+        }
+
+        private RouteSchedule ReadScheduleEditor()
+        {
+            int scheduleId;
+            int routeId;
+            int busId;
+            int driverId;
+            DateTime serviceDate;
+            TimeSpan departure;
+            TimeSpan arrival;
+            if (!int.TryParse(hidScheduleId.Value, out scheduleId) ||
+                !int.TryParse(ddlScheduleRoute.SelectedValue, out routeId) ||
+                !int.TryParse(ddlScheduleBus.SelectedValue, out busId) ||
+                !int.TryParse(ddlScheduleDriver.SelectedValue, out driverId))
+                throw new ServiceException("Select a route, bus, and driver.");
+            serviceDate = ParseIsoDate(txtServiceDate.Text, "Service date");
+            if (!TimeSpan.TryParseExact(txtDeparture.Text, @"hh\:mm", CultureInfo.InvariantCulture, out departure) ||
+                !TimeSpan.TryParseExact(txtArrival.Text, @"hh\:mm", CultureInfo.InvariantCulture, out arrival))
+                throw new ServiceException("Enter departure and arrival times in HH:mm format.");
+
+            return new RouteSchedule
+            {
+                ScheduleId = scheduleId,
+                RouteId = routeId,
+                BusId = busId,
+                DriverId = driverId,
+                ServiceDate = serviceDate,
+                DepartureTime = departure,
+                ArrivalTime = arrival
+            };
+        }
+
+        private static DateTime ParseIsoDate(string value, string fieldName)
+        {
+            DateTime date;
+            if (!DateTime.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out date))
+                throw new ServiceException(fieldName + " is required and must be a valid date.");
+            return date.Date;
+        }
+
+        private void PopulateScheduleEditor(RouteSchedule schedule)
+        {
+            hidScheduleId.Value = schedule.ScheduleId.ToString(CultureInfo.InvariantCulture);
+            string routeId = schedule.RouteId.ToString(CultureInfo.InvariantCulture);
+            string busId = schedule.BusId.ToString(CultureInfo.InvariantCulture);
+            string driverId = schedule.DriverId.ToString(CultureInfo.InvariantCulture);
+            if (ddlScheduleRoute.Items.FindByValue(routeId) == null)
+                ddlScheduleRoute.Items.Add(new ListItem(schedule.RouteNum + " - " + schedule.RouteName + " (inactive)", routeId));
+            if (ddlScheduleBus.Items.FindByValue(busId) == null)
+                ddlScheduleBus.Items.Add(new ListItem(schedule.FleetNumber + " (unavailable)", busId));
+            if (ddlScheduleDriver.Items.FindByValue(driverId) == null)
+                ddlScheduleDriver.Items.Add(new ListItem(schedule.DriverName + " (unavailable)", driverId));
+            ddlScheduleRoute.SelectedValue = routeId;
+            ddlScheduleBus.SelectedValue = busId;
+            ddlScheduleDriver.SelectedValue = driverId;
+            txtServiceDate.Text = schedule.ServiceDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            txtDeparture.Text = schedule.DepartureTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
+            txtArrival.Text = schedule.ArrivalTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
+        }
+
+        private void ClearScheduleEditor()
+        {
+            hidScheduleId.Value = "0";
+            if (ddlScheduleRoute.Items.Count > 0) ddlScheduleRoute.SelectedIndex = 0;
+            if (ddlScheduleBus.Items.Count > 0) ddlScheduleBus.SelectedIndex = 0;
+            if (ddlScheduleDriver.Items.Count > 0) ddlScheduleDriver.SelectedIndex = 0;
+            txtServiceDate.Text = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            txtDeparture.Text = string.Empty;
+            txtArrival.Text = string.Empty;
         }
 
         #endregion
@@ -557,7 +888,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         private void HandleGenericError(Exception ex)
         {
-            ShowError("Unexpected error: " + ex.Message);
+            ShowError(ex is ServiceException || ex is UnauthorizedAccessException
+                ? ex.Message
+                : "Unexpected error: " + ex.Message);
             System.Diagnostics.Debug.WriteLine("Schedule Generic Error: " + ex.ToString());
         }
 

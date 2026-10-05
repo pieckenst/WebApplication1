@@ -112,16 +112,38 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         public List<Employee> GetEmployeesByJob(int jobId)
         {
-            List<Employee> employees = new List<Employee>();
-            
             SqlParameter[] parameters = new SqlParameter[]
             {
                 DatabaseHelper.CreateParameter("@job_id", jobId, SqlDbType.Int)
             };
-            
-            using (SqlDataReader reader = _db.ExecuteReader(
-                "SELECT * FROM dbo.v_employee_directory WHERE job_id = @job_id ORDER BY employee_name", 
-                parameters))
+
+            return GetEmployeesByJobQuery("e.job_id = @job_id", parameters);
+        }
+
+        public List<Employee> GetEmployeesByJobTitle(string jobTitle)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@job_title", jobTitle, SqlDbType.NVarChar, 100)
+            };
+
+            return GetEmployeesByJobQuery("j.job_title = @job_title", parameters);
+        }
+
+        private List<Employee> GetEmployeesByJobQuery(string predicate, SqlParameter[] parameters)
+        {
+            List<Employee> employees = new List<Employee>();
+            string sql = @"
+                SELECT e.*, CONCAT(e.surname, N' ', e.name, N' ', COALESCE(e.patronym, N'')) AS employee_name,
+                       j.job_title, d.department_name,
+                       DATEDIFF(YEAR, e.employed_date, GETDATE()) AS service_years
+                FROM dbo.employee AS e
+                INNER JOIN dbo.job AS j ON j.job_id = e.job_id
+                LEFT JOIN dbo.department AS d ON d.department_id = e.department_id
+                WHERE " + predicate + @"
+                ORDER BY employee_name";
+
+            using (SqlDataReader reader = _db.ExecuteReader(sql, parameters))
             {
                 while (reader.Read())
                 {
@@ -283,32 +305,40 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         private Employee MapEmployeeFromReader(SqlDataReader reader)
         {
             Employee employee = new Employee();
-            
             employee.EmployeeId = reader.GetInt32(reader.GetOrdinal("employee_id"));
-            
-            // Handle both base table and view
-            if (reader.FieldCount > 9) // View with additional fields
-            {
-                employee.EmployeeName = reader.GetString(reader.GetOrdinal("employee_name"));
-                employee.JobTitle = reader.GetString(reader.GetOrdinal("job_title"));
-                employee.DepartmentName = reader.IsDBNull(reader.GetOrdinal("department_name")) ? null : reader.GetString(reader.GetOrdinal("department_name"));
-                employee.Status = reader.GetString(reader.GetOrdinal("status"));
-                employee.ServiceYears = reader.GetInt32(reader.GetOrdinal("service_years"));
-            }
-            else // Base table
-            {
-                employee.Surname = reader.GetString(reader.GetOrdinal("surname"));
-                employee.Name = reader.GetString(reader.GetOrdinal("name"));
-                employee.Patronym = reader.IsDBNull(reader.GetOrdinal("patronym")) ? null : reader.GetString(reader.GetOrdinal("patronym"));
-                employee.EmployedDate = reader.GetDateTime(reader.GetOrdinal("employed_date"));
-                employee.JobId = reader.GetInt32(reader.GetOrdinal("job_id"));
-                employee.DepartmentId = reader.IsDBNull(reader.GetOrdinal("department_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("department_id"));
-                employee.Phone = reader.IsDBNull(reader.GetOrdinal("phone")) ? null : reader.GetString(reader.GetOrdinal("phone"));
-                employee.Email = reader.IsDBNull(reader.GetOrdinal("email")) ? null : reader.GetString(reader.GetOrdinal("email"));
-                employee.Status = reader.GetString(reader.GetOrdinal("status"));
-            }
-            
+            ReadEmployeeColumn(reader, "surname", delegate(string value) { employee.Surname = value; });
+            ReadEmployeeColumn(reader, "name", delegate(string value) { employee.Name = value; });
+            ReadEmployeeColumn(reader, "patronym", delegate(string value) { employee.Patronym = value; });
+            ReadEmployeeColumn(reader, "status", delegate(string value) { employee.Status = value; });
+            ReadEmployeeColumn(reader, "job_title", delegate(string value) { employee.JobTitle = value; });
+            ReadEmployeeColumn(reader, "department_name", delegate(string value) { employee.DepartmentName = value; });
+            ReadEmployeeColumn(reader, "employee_name", delegate(string value) { employee.EmployeeName = value; });
+
+            int jobIdOrdinal = TryGetOrdinal(reader, "job_id");
+            if (jobIdOrdinal >= 0 && !reader.IsDBNull(jobIdOrdinal)) employee.JobId = reader.GetInt32(jobIdOrdinal);
+            int departmentIdOrdinal = TryGetOrdinal(reader, "department_id");
+            if (departmentIdOrdinal >= 0 && !reader.IsDBNull(departmentIdOrdinal)) employee.DepartmentId = reader.GetInt32(departmentIdOrdinal);
+            int employedDateOrdinal = TryGetOrdinal(reader, "employed_date");
+            if (employedDateOrdinal >= 0 && !reader.IsDBNull(employedDateOrdinal)) employee.EmployedDate = reader.GetDateTime(employedDateOrdinal);
+            int serviceYearsOrdinal = TryGetOrdinal(reader, "service_years");
+            if (serviceYearsOrdinal >= 0 && !reader.IsDBNull(serviceYearsOrdinal)) employee.ServiceYears = reader.GetInt32(serviceYearsOrdinal);
             return employee;
+        }
+
+        private static void ReadEmployeeColumn(SqlDataReader reader, string columnName, Action<string> assign)
+        {
+            int ordinal = TryGetOrdinal(reader, columnName);
+            if (ordinal >= 0 && !reader.IsDBNull(ordinal)) assign(reader.GetString(ordinal));
+        }
+
+        private static int TryGetOrdinal(SqlDataReader reader, string columnName)
+        {
+            for (int ordinal = 0; ordinal < reader.FieldCount; ordinal++)
+            {
+                if (string.Equals(reader.GetName(ordinal), columnName, StringComparison.OrdinalIgnoreCase))
+                    return ordinal;
+            }
+            return -1;
         }
 
         public void Dispose()

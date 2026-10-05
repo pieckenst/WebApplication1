@@ -119,25 +119,15 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         public List<RouteSchedule> GetRouteSchedule(int routeId, DateTime serviceDate)
         {
-            List<RouteSchedule> schedules = new List<RouteSchedule>();
-            
             SqlParameter[] parameters = new SqlParameter[]
             {
                 DatabaseHelper.CreateParameter("@route_id", routeId, SqlDbType.Int),
                 DatabaseHelper.CreateParameter("@service_date", serviceDate, SqlDbType.Date)
             };
             
-            using (SqlDataReader reader = _db.ExecuteReader(
-                "EXEC dbo.get_route_schedule @route_id, @service_date", 
-                parameters))
-            {
-                while (reader.Read())
-                {
-                    schedules.Add(MapRouteScheduleFromReader(reader));
-                }
-            }
-            
-            return schedules;
+            return GetSchedules(
+                "rs.route_id = @route_id AND rs.service_date = @service_date",
+                parameters);
         }
 
         /// <summary>
@@ -145,24 +135,227 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         public List<RouteSchedule> GetScheduleRange(DateTime dateFrom, DateTime dateTo)
         {
-            List<RouteSchedule> schedules = new List<RouteSchedule>();
-            
+            if (dateFrom >= dateTo)
+                throw new ArgumentException("End date must be after start date.", "dateTo");
+
             SqlParameter[] parameters = new SqlParameter[]
             {
                 DatabaseHelper.CreateParameter("@date_from", dateFrom, SqlDbType.Date),
                 DatabaseHelper.CreateParameter("@date_to", dateTo, SqlDbType.Date)
             };
-            
-            using (SqlDataReader reader = _db.ExecuteReader(
-                "EXEC dbo.get_schedule_range @date_from, @date_to", 
-                parameters))
+
+            return GetSchedules(
+                "rs.service_date >= @date_from AND rs.service_date < @date_to",
+                parameters);
+        }
+
+        public RouteSchedule GetScheduleById(int scheduleId)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@schedule_id", scheduleId, SqlDbType.Int)
+            };
+            List<RouteSchedule> schedules = GetSchedules("rs.schedule_id = @schedule_id", parameters);
+            return schedules.Count == 0 ? null : schedules[0];
+        }
+
+        public int InsertSchedule(RouteSchedule schedule)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@route_id", schedule.RouteId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@bus_id", schedule.BusId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@driver_id", schedule.DriverId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@service_date", schedule.ServiceDate, SqlDbType.Date),
+                DatabaseHelper.CreateParameter("@departure_time", schedule.DepartureTime, SqlDbType.Time),
+                DatabaseHelper.CreateParameter("@arrival_time", schedule.ArrivalTime, SqlDbType.Time),
+                DatabaseHelper.CreateParameter("@available_seat_num", schedule.AvailableSeatNum, SqlDbType.SmallInt),
+                DatabaseHelper.CreateParameter("@schedule_status", schedule.ScheduleStatus, SqlDbType.NVarChar, 30)
+            };
+            return Convert.ToInt32(_db.ExecuteScalar(@"
+                INSERT INTO dbo.route_schedule
+                    (route_id, bus_id, driver_id, service_date, departure_time, arrival_time, available_seat_num, schedule_status)
+                VALUES
+                    (@route_id, @bus_id, @driver_id, @service_date, @departure_time, @arrival_time, @available_seat_num, @schedule_status);
+                SELECT CAST(SCOPE_IDENTITY() AS int);", parameters));
+        }
+
+        public int SaveSchedule(RouteSchedule schedule)
+        {
+            _db.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                SqlParameter[] validationParameters = new SqlParameter[]
+                {
+                    DatabaseHelper.CreateParameter("@schedule_id", schedule.ScheduleId, SqlDbType.Int),
+                    DatabaseHelper.CreateParameter("@route_id", schedule.RouteId, SqlDbType.Int),
+                    DatabaseHelper.CreateParameter("@bus_id", schedule.BusId, SqlDbType.Int),
+                    DatabaseHelper.CreateParameter("@driver_id", schedule.DriverId, SqlDbType.Int),
+                    DatabaseHelper.CreateParameter("@service_date", schedule.ServiceDate, SqlDbType.Date),
+                    DatabaseHelper.CreateParameter("@departure_time", schedule.DepartureTime, SqlDbType.Time),
+                    DatabaseHelper.CreateParameter("@arrival_time", schedule.ArrivalTime, SqlDbType.Time),
+                    DatabaseHelper.CreateParameter("@cancelled_status", ScheduleStatus.Cancelled, SqlDbType.NVarChar, 30),
+                    DatabaseHelper.CreateParameter("@working_status", EmployeeStatus.Working, SqlDbType.NVarChar, 30),
+                    DatabaseHelper.CreateParameter("@operational_status", BusStatus.Operational, SqlDbType.NVarChar, 30),
+                    DatabaseHelper.CreateParameter("@driver_job_id", 1, SqlDbType.Int),
+                    DatabaseHelper.CreateParameter("@refunded_sale_status", SaleStatus.Refunded, SqlDbType.NVarChar, 30),
+                    DatabaseHelper.CreateParameter("@cancelled_sale_status", SaleStatus.Cancelled, SqlDbType.NVarChar, 30)
+                };
+                int valid = Convert.ToInt32(_db.ExecuteScalar(@"
+                    SELECT CASE WHEN
+                        EXISTS (SELECT 1 FROM dbo.route WHERE route_id = @route_id AND is_active = 1)
+                        AND EXISTS (SELECT 1 FROM dbo.bus WITH (UPDLOCK, HOLDLOCK)
+                                    WHERE bus_id = @bus_id AND status = @operational_status)
+                        AND EXISTS (SELECT 1 FROM dbo.employee AS e WITH (UPDLOCK, HOLDLOCK)
+                                    INNER JOIN dbo.job AS j ON j.job_id = e.job_id
+                                    WHERE e.employee_id = @driver_id AND e.status = @working_status
+                                                                            AND (j.job_id = @driver_job_id OR j.job_title = N'Водитель автобуса'))
+                        AND NOT EXISTS (SELECT 1 FROM dbo.maintenance WITH (UPDLOCK, HOLDLOCK)
+                                        WHERE bus_id = @bus_id
+                                          AND (maintenance_date = @service_date OR next_maintenance_date = @service_date))
+                                                AND (@schedule_id = 0 OR EXISTS
+                                                (
+                                                        SELECT 1
+                                                        FROM dbo.route_schedule AS current_schedule WITH (UPDLOCK, HOLDLOCK)
+                                                        INNER JOIN dbo.bus AS target_bus ON target_bus.bus_id = @bus_id
+                                                        OUTER APPLY
+                                                        (
+                                                                SELECT SUM(s.ticket_quantity) AS seats_sold
+                                                                FROM dbo.sale AS s WITH (UPDLOCK, HOLDLOCK)
+                                                                WHERE s.schedule_id = current_schedule.schedule_id
+                                                                    AND s.sale_status NOT IN (@refunded_sale_status, @cancelled_sale_status)
+                                                        ) AS sold
+                                                        WHERE current_schedule.schedule_id = @schedule_id
+                                                            AND target_bus.capacity >= COALESCE(sold.seats_sold, 0)
+                                                ))
+                        AND NOT EXISTS
+                        (
+                            SELECT 1 FROM dbo.route_schedule AS rs WITH (UPDLOCK, HOLDLOCK)
+                            WHERE rs.service_date = @service_date
+                              AND rs.schedule_id <> @schedule_id
+                              AND rs.schedule_status <> @cancelled_status
+                              AND (rs.bus_id = @bus_id OR rs.driver_id = @driver_id)
+                              AND DATEDIFF(MINUTE, CAST('00:00' AS time), @departure_time) <
+                                  DATEDIFF(MINUTE, CAST('00:00' AS time), rs.arrival_time) + 15
+                              AND DATEDIFF(MINUTE, CAST('00:00' AS time), rs.departure_time) <
+                                  DATEDIFF(MINUTE, CAST('00:00' AS time), @arrival_time) + 15
+                        )
+                    THEN 1 ELSE 0 END", validationParameters));
+
+                if (valid == 0)
+                    throw new InvalidOperationException("A route, resource, maintenance, or booking conflict changed while saving. Refresh and review the schedule.");
+
+                int scheduleId;
+                if (schedule.ScheduleId == 0)
+                {
+                    scheduleId = InsertSchedule(schedule);
+                }
+                else
+                {
+                    if (!UpdateSchedule(schedule))
+                        throw new InvalidOperationException("Only unchanged planned schedules can be edited. Refresh and try again.");
+                    scheduleId = schedule.ScheduleId;
+                }
+
+                _db.CommitTransaction();
+                return scheduleId;
+            }
+            catch
+            {
+                _db.RollbackTransaction();
+                throw;
+            }
+        }
+
+        public bool UpdateSchedule(RouteSchedule schedule)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@schedule_id", schedule.ScheduleId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@route_id", schedule.RouteId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@bus_id", schedule.BusId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@driver_id", schedule.DriverId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@service_date", schedule.ServiceDate, SqlDbType.Date),
+                DatabaseHelper.CreateParameter("@departure_time", schedule.DepartureTime, SqlDbType.Time),
+                DatabaseHelper.CreateParameter("@arrival_time", schedule.ArrivalTime, SqlDbType.Time),
+                DatabaseHelper.CreateParameter("@refunded_sale_status", SaleStatus.Refunded, SqlDbType.NVarChar, 30),
+                DatabaseHelper.CreateParameter("@cancelled_sale_status", SaleStatus.Cancelled, SqlDbType.NVarChar, 30)
+            };
+            int rowsAffected = _db.ExecuteNonQuery(@"
+                UPDATE rs
+                SET route_id = @route_id, bus_id = @bus_id, driver_id = @driver_id,
+                    service_date = @service_date, departure_time = @departure_time,
+                    arrival_time = @arrival_time,
+                    available_seat_num = CAST(CASE
+                        WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+                        THEN b.capacity - COALESCE(sold.seats_sold, 0) ELSE 0 END AS smallint)
+                FROM dbo.route_schedule AS rs
+                INNER JOIN dbo.bus AS b ON b.bus_id = @bus_id
+                OUTER APPLY
+                (
+                    SELECT SUM(s.ticket_quantity) AS seats_sold
+                    FROM dbo.sale AS s
+                    WHERE s.schedule_id = rs.schedule_id
+                      AND s.sale_status NOT IN (@refunded_sale_status, @cancelled_sale_status)
+                ) AS sold
+                WHERE rs.schedule_id = @schedule_id AND rs.schedule_status = @planned_status",
+                AddPlannedStatusParameter(parameters));
+            return rowsAffected > 0;
+        }
+
+        public bool UpdateScheduleStatus(int scheduleId, string status)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@schedule_id", scheduleId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@status", status, SqlDbType.NVarChar, 30),
+                DatabaseHelper.CreateParameter("@cancelled_status", ScheduleStatus.Cancelled, SqlDbType.NVarChar, 30)
+            };
+            return _db.ExecuteNonQuery(@"
+                UPDATE dbo.route_schedule SET schedule_status = @status
+                WHERE schedule_id = @schedule_id AND schedule_status <> @cancelled_status",
+                parameters) > 0;
+        }
+
+        private static SqlParameter[] AddPlannedStatusParameter(SqlParameter[] parameters)
+        {
+            List<SqlParameter> result = new List<SqlParameter>(parameters);
+            result.Add(DatabaseHelper.CreateParameter("@planned_status", ScheduleStatus.Planned, SqlDbType.NVarChar, 30));
+            return result.ToArray();
+        }
+
+        private List<RouteSchedule> GetSchedules(string predicate, SqlParameter[] parameters)
+        {
+            List<RouteSchedule> schedules = new List<RouteSchedule>();
+            string sql = @"
+                SELECT rs.schedule_id, rs.route_id, rs.bus_id, rs.driver_id, rs.service_date,
+                       rs.departure_time, rs.arrival_time,
+                       CAST(CASE WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+                                 THEN b.capacity - COALESCE(sold.seats_sold, 0) ELSE 0 END AS smallint) AS available_seat_num,
+                       rs.schedule_status, rs.created_at,
+                       r.route_num, r.route_name, b.fleet_number, b.model,
+                       CONCAT(e.surname, N' ', e.name) AS driver_name,
+                       DATEDIFF(MINUTE, rs.departure_time, rs.arrival_time) AS trip_minutes
+                FROM dbo.route_schedule AS rs
+                INNER JOIN dbo.route AS r ON r.route_id = rs.route_id
+                INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+                INNER JOIN dbo.employee AS e ON e.employee_id = rs.driver_id
+                OUTER APPLY
+                (
+                    SELECT SUM(s.ticket_quantity) AS seats_sold
+                    FROM dbo.sale AS s
+                    WHERE s.schedule_id = rs.schedule_id
+                      AND s.sale_status NOT IN (N'Отменена', N'Возврат')
+                ) AS sold
+                WHERE " + predicate + @"
+                ORDER BY rs.service_date, r.route_num, rs.departure_time";
+
+            using (SqlDataReader reader = _db.ExecuteReader(sql, parameters))
             {
                 while (reader.Read())
-                {
                     schedules.Add(MapRouteScheduleFromReader(reader));
-                }
             }
-            
+
             return schedules;
         }
 
@@ -290,6 +483,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             RouteSchedule schedule = new RouteSchedule();
             
             schedule.ScheduleId = reader.GetInt32(reader.GetOrdinal("schedule_id"));
+            schedule.RouteId = reader.GetInt32(reader.GetOrdinal("route_id"));
+            schedule.BusId = reader.GetInt32(reader.GetOrdinal("bus_id"));
+            schedule.DriverId = reader.GetInt32(reader.GetOrdinal("driver_id"));
             schedule.ServiceDate = reader.GetDateTime(reader.GetOrdinal("service_date"));
             schedule.RouteNum = reader.GetString(reader.GetOrdinal("route_num"));
             schedule.RouteName = reader.GetString(reader.GetOrdinal("route_name"));
@@ -301,6 +497,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             schedule.TripMinutes = reader.GetInt32(reader.GetOrdinal("trip_minutes"));
             schedule.AvailableSeatNum = reader.GetInt16(reader.GetOrdinal("available_seat_num"));
             schedule.ScheduleStatus = reader.GetString(reader.GetOrdinal("schedule_status"));
+            schedule.CreatedAt = reader.GetDateTime(reader.GetOrdinal("created_at"));
             
             return schedule;
         }

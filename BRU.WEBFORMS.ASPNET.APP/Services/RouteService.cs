@@ -117,9 +117,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         {
             try
             {
-                if (dateFrom > dateTo)
+                if (dateFrom >= dateTo)
                 {
-                    throw new ServiceException("Start date cannot be after end date");
+                    throw new ServiceException("End date must be after start date");
                 }
 
                 return _repository.GetScheduleRange(dateFrom, dateTo);

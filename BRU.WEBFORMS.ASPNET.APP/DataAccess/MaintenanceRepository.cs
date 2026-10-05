@@ -66,6 +66,31 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             return maintenanceList;
         }
 
+        public List<Maintenance> GetMaintenanceByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            List<Maintenance> maintenanceList = new List<Maintenance>();
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@date_from", dateFrom, SqlDbType.Date),
+                DatabaseHelper.CreateParameter("@date_to", dateTo, SqlDbType.Date)
+            };
+
+            using (SqlDataReader reader = _db.ExecuteReader(@"
+                SELECT m.*, b.fleet_number,
+                       DATEDIFF(DAY, m.maintenance_date, GETDATE()) AS days_from_last_service
+                FROM dbo.maintenance AS m
+                LEFT JOIN dbo.bus AS b ON b.bus_id = m.bus_id
+                     WHERE (m.maintenance_date >= @date_from AND m.maintenance_date < @date_to)
+                         OR (m.next_maintenance_date >= @date_from AND m.next_maintenance_date < @date_to)
+                ORDER BY m.maintenance_date, m.bus_id", parameters))
+            {
+                while (reader.Read())
+                    maintenanceList.Add(MapMaintenanceFromReader(reader));
+            }
+
+            return maintenanceList;
+        }
+
         /// <summary>
         /// Get latest maintenance for all buses
         /// </summary>

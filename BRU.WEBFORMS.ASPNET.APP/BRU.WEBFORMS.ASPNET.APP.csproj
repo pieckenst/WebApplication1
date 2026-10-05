@@ -61,6 +61,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -196,6 +197,7 @@
     <Compile Include="Services\BusService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\RouteService.cs" />
+    <Compile Include="Services\ScheduleAutomationService.cs" />
     <Compile Include="Services\TicketService.cs" />
     <Compile Include="Services\MaintenanceService.cs" />
   </ItemGroup>

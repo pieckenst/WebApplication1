@@ -200,7 +200,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// </summary>
         protected void LogPageContentLoad()
         {
-            Trace.TraceInformation(
+            System.Diagnostics.Trace.TraceInformation(
                 "LoadPageContent: page '{0}'", PageContentKey);
         }
 
@@ -235,7 +235,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         private void LogContentSource(string controlId, string propertyName, bool fromConfig)
         {
-            Trace.TraceInformation(
+            System.Diagnostics.Trace.TraceInformation(
                 "PageContent: {0}.{1}.{2} <- {3}",
                 PageContentKey,
                 controlId,
@@ -392,10 +392,10 @@ namespace BRU.WEBFORMS.ASPNET.APP
         {
             LogException(svcEx, "Service layer error");
 
-            if (!string.IsNullOrEmpty(svcEx.UserMessage))
-                ShowError(svcEx.UserMessage);
-            else
-                ShowError("An error occurred while processing your request. Please try again.");
+            // ServiceException uses the base Message property
+            ShowError(!string.IsNullOrEmpty(svcEx.Message) 
+                ? svcEx.Message 
+                : "An error occurred while processing your request. Please try again.");
         }
 
         /// <summary>
@@ -578,7 +578,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 logEntry.AppendLine($"InnerMessage: {ex.InnerException.Message}");
             }
 
-            Trace.TraceError(logEntry.ToString());
+            System.Diagnostics.Trace.TraceError(logEntry.ToString());
             
             // Also log to event log for critical errors
             if (ex is SqlException || ex is NullReferenceException || ex is InvalidOperationException)
@@ -600,7 +600,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// </summary>
         protected void LogInformation(string message)
         {
-            Trace.TraceInformation($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} RequestId:{RequestId} User:{CurrentUsername ?? "Anonymous"} - {message}");
+            System.Diagnostics.Trace.TraceInformation($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} RequestId:{RequestId} User:{CurrentUsername ?? "Anonymous"} - {message}");
         }
 
         /// <summary>
@@ -608,7 +608,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// </summary>
         protected void LogWarning(string message)
         {
-            Trace.TraceWarning($"[WARN] {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} RequestId:{RequestId} User:{CurrentUsername ?? "Anonymous"} - {message}");
+            System.Diagnostics.Trace.TraceWarning($"[WARN] {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} RequestId:{RequestId} User:{CurrentUsername ?? "Anonymous"} - {message}");
         }
 
         /// <summary>
@@ -622,7 +622,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
             }
             else
             {
-                Trace.TraceInformation($"[PERF] {operation}: {milliseconds}ms");
+                System.Diagnostics.Trace.TraceInformation($"[PERF] {operation}: {milliseconds}ms");
             }
         }
 
@@ -635,7 +635,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
             logEntry.Append($" | IP:{ClientIpAddress}");
             logEntry.Append($" | UserAgent:{Request.UserAgent}");
             
-            Trace.TraceInformation(logEntry.ToString());
+            System.Diagnostics.Trace.TraceInformation(logEntry.ToString());
         }
 
         #endregion

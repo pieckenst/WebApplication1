@@ -217,8 +217,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         {
             try
             {
-                // Assuming job_id 1 is for drivers based on the schema
-                return _repository.GetEmployeesByJob(1);
+                List<Employee> drivers = _repository.GetEmployeesByJob(1);
+                return drivers.Count > 0 ? drivers : _repository.GetEmployeesByJobTitle("Водитель автобуса");
             }
             catch (Exception ex)
             {

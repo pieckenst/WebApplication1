@@ -41,6 +41,12 @@
         .detail-row { margin-bottom: 6px; font-size: 9pt; }
         .detail-label { display: inline-block; width: 150px; font-weight: bold; color: #666666; }
         .detail-value { color: #000000; }
+        .schedule-editor { background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 12px; margin-bottom: 15px; }
+        .editor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 16px; }
+        .editor-field label { display: block; font-weight: bold; font-size: 9pt; margin-bottom: 4px; }
+        .editor-field .form-control { width: 100%; box-sizing: border-box; }
+        .editor-actions { margin-top: 12px; }
+        .weekday-list label { display: inline-block; margin-right: 12px; }
     </style>
 
     <div class="content-page">
@@ -82,6 +88,7 @@
         <div class="action-bar">
             <asp:Button ID="btnToday" runat="server" Text="Today's Schedule" CssClass="action-button" OnClick="btnToday_Click" />
             <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnUpdateStatuses" runat="server" Text="Update Trip Statuses" CssClass="action-button" OnClick="btnUpdateStatuses_Click" />
             <div style="display: inline-block; margin-left: 20px;">
                 <span class="form-label">Route:</span>
                 <asp:DropDownList ID="ddlRouteFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlRouteFilter_SelectedIndexChanged">
@@ -100,9 +107,74 @@
             </div>
         </div>
 
+        <asp:Panel ID="pnlScheduleEditor" runat="server" CssClass="schedule-editor" Visible="false">
+            <h3>Schedule Planning</h3>
+            <asp:HiddenField ID="hidScheduleId" runat="server" Value="0" />
+            <div class="editor-grid">
+                <div class="editor-field">
+                    <label for="<%= ddlScheduleRoute.ClientID %>">Route</label>
+                    <asp:DropDownList ID="ddlScheduleRoute" runat="server" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= ddlScheduleBus.ClientID %>">Bus</label>
+                    <asp:DropDownList ID="ddlScheduleBus" runat="server" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= ddlScheduleDriver.ClientID %>">Driver</label>
+                    <asp:DropDownList ID="ddlScheduleDriver" runat="server" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= txtServiceDate.ClientID %>">Service date</label>
+                    <asp:TextBox ID="txtServiceDate" runat="server" TextMode="Date" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= txtDeparture.ClientID %>">Departure</label>
+                    <asp:TextBox ID="txtDeparture" runat="server" TextMode="Time" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= txtArrival.ClientID %>">Arrival</label>
+                    <asp:TextBox ID="txtArrival" runat="server" TextMode="Time" CssClass="form-control" />
+                </div>
+            </div>
+            <div class="editor-actions">
+                <asp:Button ID="btnNewSchedule" runat="server" Text="New Schedule" CssClass="action-button" OnClick="btnNewSchedule_Click" CausesValidation="false" />
+                <asp:Button ID="btnSaveSchedule" runat="server" Text="Save Schedule" CssClass="action-button" OnClick="btnSaveSchedule_Click" />
+                <asp:Button ID="btnCancelScheduleEdit" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancelScheduleEdit_Click" CausesValidation="false" />
+            </div>
+            <hr />
+            <h4>Recurring Schedule Generation</h4>
+            <div class="editor-grid">
+                <div class="editor-field">
+                    <label for="<%= txtTemplateDate.ClientID %>">Template date</label>
+                    <asp:TextBox ID="txtTemplateDate" runat="server" TextMode="Date" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= txtRecurringFrom.ClientID %>">Generate from</label>
+                    <asp:TextBox ID="txtRecurringFrom" runat="server" TextMode="Date" CssClass="form-control" />
+                </div>
+                <div class="editor-field">
+                    <label for="<%= txtRecurringTo.ClientID %>">Generate through</label>
+                    <asp:TextBox ID="txtRecurringTo" runat="server" TextMode="Date" CssClass="form-control" />
+                </div>
+            </div>
+            <div class="form-row weekday-list">
+                <asp:CheckBoxList ID="cblRecurringDays" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                    <asp:ListItem Text="Mon" Value="Monday" />
+                    <asp:ListItem Text="Tue" Value="Tuesday" />
+                    <asp:ListItem Text="Wed" Value="Wednesday" />
+                    <asp:ListItem Text="Thu" Value="Thursday" />
+                    <asp:ListItem Text="Fri" Value="Friday" />
+                    <asp:ListItem Text="Sat" Value="Saturday" />
+                    <asp:ListItem Text="Sun" Value="Sunday" />
+                </asp:CheckBoxList>
+            </div>
+            <asp:Button ID="btnGenerateRecurring" runat="server" Text="Generate Recurring Trips" CssClass="action-button" OnClick="btnGenerateRecurring_Click" />
+            <asp:Button ID="btnValidateSchedule" runat="server" Text="Validate Schedule" CssClass="action-button" OnClick="btnValidateSchedule_Click" CausesValidation="false" />
+        </asp:Panel>
+
         <uc:ContentBox ID="cbScheduleList" runat="server" HeaderText="Trip Schedule" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <asp:GridView ID="gvSchedule" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvSchedule_PageIndexChanging" OnSorting="gvSchedule_Sorting" OnRowDataBound="gvSchedule_RowDataBound">
+                <asp:GridView ID="gvSchedule" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvSchedule_PageIndexChanging" OnSorting="gvSchedule_Sorting" OnRowDataBound="gvSchedule_RowDataBound" OnRowCommand="gvSchedule_RowCommand">
                     <Columns>
                         <asp:BoundField DataField="ScheduleId" HeaderText="ID" SortExpression="schedule_id" ReadOnly="true" />
                         <asp:TemplateField HeaderText="Route" SortExpression="route_num">
@@ -132,6 +204,11 @@
                                 <asp:Literal ID="litStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Actions">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="btnEditSchedule" runat="server" Text="Edit" CommandName="EditSchedule" CommandArgument='<%# Eval("ScheduleId") %>' CausesValidation="false" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
             </ContentTemplate>
@@ -143,5 +220,21 @@
 
         <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
     </div>
+
+    <script type="text/javascript">
+        (function () {
+            var editor = document.getElementById('<%= pnlScheduleEditor.ClientID %>');
+            var hasUnsavedChanges = false;
+            if (editor) {
+                editor.addEventListener('input', function () { hasUnsavedChanges = true; });
+                editor.addEventListener('change', function () { hasUnsavedChanges = true; });
+            }
+            window.setInterval(function () {
+                if (!hasUnsavedChanges && document.visibilityState === 'visible') {
+                    window.location.reload();
+                }
+            }, 60000);
+        })();
+    </script>
 
 </asp:Content>

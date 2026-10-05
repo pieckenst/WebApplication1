@@ -242,8 +242,62 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             };
             
             string sql = @"EXEC dbo.add_sale @schedule_id, @ticket_id, @cashier_id, @sale_price, @sale_channel, @ticket_quantity, @sale_id OUTPUT";
-            
-            _db.ExecuteNonQuery(sql, parameters);
+
+            if (sale.ScheduleId.HasValue)
+            {
+                _db.BeginTransaction();
+                try
+                {
+                    SqlParameter[] availabilityParameters = new SqlParameter[]
+                    {
+                        DatabaseHelper.CreateParameter("@schedule_id", sale.ScheduleId.Value, SqlDbType.Int),
+                        DatabaseHelper.CreateParameter("@cancelled_status", ScheduleStatus.Cancelled, SqlDbType.NVarChar, 30),
+                        DatabaseHelper.CreateParameter("@completed_status", ScheduleStatus.Completed, SqlDbType.NVarChar, 30),
+                        DatabaseHelper.CreateParameter("@refunded_status", SaleStatus.Refunded, SqlDbType.NVarChar, 30),
+                        DatabaseHelper.CreateParameter("@cancelled_sale_status", SaleStatus.Cancelled, SqlDbType.NVarChar, 30)
+                    };
+                    object availability = _db.ExecuteScalar(@"
+                        SELECT CASE WHEN rs.schedule_status IN (@cancelled_status, @completed_status) THEN -1
+                                    ELSE b.capacity - COALESCE(SUM(CASE
+                                        WHEN s.sale_status NOT IN (@refunded_status, @cancelled_sale_status)
+                                        THEN s.ticket_quantity ELSE 0 END), 0) END
+                        FROM dbo.route_schedule AS rs WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+                        LEFT JOIN dbo.sale AS s ON s.schedule_id = rs.schedule_id
+                        WHERE rs.schedule_id = @schedule_id
+                        GROUP BY rs.schedule_status, b.capacity", availabilityParameters);
+
+                    if (availability == null || Convert.ToInt32(availability) < sale.TicketQuantity)
+                        throw new InvalidOperationException("The schedule has insufficient available seats, is cancelled, or is completed.");
+
+                    _db.ExecuteNonQuery(sql, parameters);
+                    _db.ExecuteNonQuery(@"
+                        UPDATE rs
+                        SET available_seat_num = CAST(CASE
+                            WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+                            THEN b.capacity - COALESCE(sold.seats_sold, 0) ELSE 0 END AS smallint)
+                        FROM dbo.route_schedule AS rs
+                        INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+                        OUTER APPLY
+                        (
+                            SELECT SUM(s.ticket_quantity) AS seats_sold
+                            FROM dbo.sale AS s
+                            WHERE s.schedule_id = rs.schedule_id
+                              AND s.sale_status NOT IN (@refunded_status, @cancelled_sale_status)
+                        ) AS sold
+                        WHERE rs.schedule_id = @schedule_id", availabilityParameters);
+                    _db.CommitTransaction();
+                }
+                catch
+                {
+                    _db.RollbackTransaction();
+                    throw;
+                }
+            }
+            else
+            {
+                _db.ExecuteNonQuery(sql, parameters);
+            }
             
             SqlParameter outputParam = Array.Find(parameters, p => p.ParameterName == "@sale_id");
             return Convert.ToInt64(outputParam.Value);

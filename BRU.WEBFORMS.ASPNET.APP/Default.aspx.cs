@@ -176,7 +176,6 @@ namespace BRU.WEBFORMS.ASPNET.APP
             {
                 StringBuilder alertsHtml = new StringBuilder();
                 bool hasCriticalAlerts = false;
-                bool hasWarningAlerts = false;
                 int totalAlertCount = 0;
                 
                 using (MaintenanceService maintenanceService = new MaintenanceService())
@@ -198,7 +197,6 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     AutoparkSummary summary = maintenanceService.GetAutoparkSummary();
                     if (summary != null && summary.BusNeedAttentionCount > 0)
                     {
-                        hasWarningAlerts = true;
                         totalAlertCount += summary.BusNeedAttentionCount;
                         alertsHtml.Append("<div class='alert-item'>");
                         alertsHtml.Append("<span class='alert-icon'>⚠</span>");
@@ -210,7 +208,6 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     // Check for today's schedule status
                     if (summary != null && summary.TodayScheduleCount == 0)
                     {
-                        hasWarningAlerts = true;
                         totalAlertCount++;
                         alertsHtml.Append("<div class='alert-item'>");
                         alertsHtml.Append("<span class='alert-icon'>ℹ</span>");

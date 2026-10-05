@@ -60,6 +60,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
         public short AvailableSeatNum { get; set; }
         public string ScheduleStatus { get; set; }
         public DateTime CreatedAt { get; set; }
+        public short AvailableSeats { get { return AvailableSeatNum; } }
         
         // View fields
         public string RouteNum { get; set; }
