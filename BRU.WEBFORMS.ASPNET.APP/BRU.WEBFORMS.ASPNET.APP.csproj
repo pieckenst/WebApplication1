@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\PageContent.xml" />
+    <Content Include="App_Data\SystemSettings.xml" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Site.Master" />
@@ -117,6 +118,7 @@
     </Compile>
     <Compile Include="App_Start\AuthContext.cs" />
     <Compile Include="App_Start\SecurePage.cs" />
+    <Compile Include="App_Start\SystemSettingsStore.cs" />
     <Compile Include="App_Start\NavigationSets.cs" />
     <Compile Include="App_Start\PageContentStore.cs" />
     <Compile Include="App_Start\SiteConfig.cs" />

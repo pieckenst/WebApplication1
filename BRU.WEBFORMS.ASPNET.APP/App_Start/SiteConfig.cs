@@ -192,6 +192,10 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// </summary>
         private static string GetSetting(string key, string defaultValue)
         {
+            string persistedValue = SystemSettingsStore.GetValue(key);
+            if (!string.IsNullOrEmpty(persistedValue))
+                return persistedValue;
+
             string value = ConfigurationManager.AppSettings[key];
             return string.IsNullOrEmpty(value) ? defaultValue : value;
         }
