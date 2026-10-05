@@ -14,8 +14,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
     /// Provides CRUD operations for routes, route stops viewing,
     /// search, sorting, pagination, and comprehensive error handling.
     /// </summary>
-    public partial class Routes : System.Web.UI.Page
+    public partial class Routes : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "route.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

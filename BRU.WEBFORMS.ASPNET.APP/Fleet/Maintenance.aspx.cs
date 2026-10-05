@@ -18,8 +18,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
     /// tracking, cost analysis, overdue maintenance alerts, bus/mechanic
     /// filtering, sorting, pagination, and comprehensive statistics.
     /// </summary>
-    public partial class Maintenance : System.Web.UI.Page
+    public partial class Maintenance : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "bus.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

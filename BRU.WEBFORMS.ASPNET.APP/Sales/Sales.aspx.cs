@@ -15,8 +15,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
     /// filtering, new sale creation, detail view, sorting, pagination,
     /// and comprehensive revenue statistics.
     /// </summary>
-    public partial class SalesPage : System.Web.UI.Page
+    public partial class SalesPage : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "sale.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

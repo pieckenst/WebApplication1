@@ -436,6 +436,67 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             return stops;
         }
 
+        public List<Stop> GetStopsForManagement()
+        {
+            List<Stop> stops = new List<Stop>();
+            using (SqlDataReader reader = _db.ExecuteReader(@"
+                SELECT st.stop_id, st.stop_name, st.location, st.latitude, st.longitude, st.is_active,
+                       COUNT(DISTINCT rs.route_id) AS route_count
+                FROM dbo.stop AS st
+                LEFT JOIN dbo.route_stop AS rs ON rs.stop_id = st.stop_id
+                GROUP BY st.stop_id, st.stop_name, st.location, st.latitude, st.longitude, st.is_active
+                ORDER BY st.stop_name"))
+            {
+                while (reader.Read()) stops.Add(MapStopFromReader(reader));
+            }
+            return stops;
+        }
+
+        public int InsertStop(Stop stop)
+        {
+            SqlParameter[] parameters = CreateStopParameters(stop, false);
+            return Convert.ToInt32(_db.ExecuteScalar(@"
+                INSERT INTO dbo.stop (stop_name, location, latitude, longitude)
+                VALUES (@stop_name, @location, @latitude, @longitude);
+                SELECT CAST(SCOPE_IDENTITY() AS int);", parameters));
+        }
+
+        public bool UpdateStop(Stop stop)
+        {
+            SqlParameter[] parameters = CreateStopParameters(stop, true);
+            return _db.ExecuteNonQuery(@"
+                UPDATE dbo.stop
+                SET stop_name = @stop_name, location = @location, latitude = @latitude, longitude = @longitude
+                WHERE stop_id = @stop_id", parameters) > 0;
+        }
+
+        public bool SetStopActive(int stopId, bool isActive)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@stop_id", stopId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@is_active", isActive, SqlDbType.Bit)
+            };
+            return _db.ExecuteNonQuery("UPDATE dbo.stop SET is_active = @is_active WHERE stop_id = @stop_id", parameters) > 0;
+        }
+
+        private static SqlParameter[] CreateStopParameters(Stop stop, bool includeId)
+        {
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            if (includeId) parameters.Add(DatabaseHelper.CreateParameter("@stop_id", stop.StopId, SqlDbType.Int));
+            parameters.Add(DatabaseHelper.CreateParameter("@stop_name", stop.StopName, SqlDbType.NVarChar, 120));
+            parameters.Add(DatabaseHelper.CreateParameter("@location", stop.Location ?? (object)DBNull.Value, SqlDbType.NVarChar, 200));
+            SqlParameter latitude = DatabaseHelper.CreateParameter("@latitude", stop.Latitude ?? (decimal?)null, SqlDbType.Decimal);
+            latitude.Precision = 9;
+            latitude.Scale = 6;
+            SqlParameter longitude = DatabaseHelper.CreateParameter("@longitude", stop.Longitude ?? (decimal?)null, SqlDbType.Decimal);
+            longitude.Precision = 9;
+            longitude.Scale = 6;
+            parameters.Add(latitude);
+            parameters.Add(longitude);
+            return parameters.ToArray();
+        }
+
         /// <summary>
         /// Map SqlDataReader to Route object
         /// </summary>
@@ -515,8 +576,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             stop.Latitude = reader.IsDBNull(reader.GetOrdinal("latitude")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("latitude"));
             stop.Longitude = reader.IsDBNull(reader.GetOrdinal("longitude")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("longitude"));
             stop.IsActive = reader.GetBoolean(reader.GetOrdinal("is_active"));
+            int routeCountOrdinal = TryGetOrdinal(reader, "route_count");
+            if (routeCountOrdinal >= 0 && !reader.IsDBNull(routeCountOrdinal))
+                stop.RouteCount = reader.GetInt32(routeCountOrdinal);
             
             return stop;
+        }
+
+        private static int TryGetOrdinal(SqlDataReader reader, string columnName)
+        {
+            for (int ordinal = 0; ordinal < reader.FieldCount; ordinal++)
+                if (string.Equals(reader.GetName(ordinal), columnName, StringComparison.OrdinalIgnoreCase))
+                    return ordinal;
+            return -1;
         }
 
         public void Dispose()

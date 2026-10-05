@@ -134,4 +134,17 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
             Permissions = new System.Collections.Generic.List<string>();
         }
     }
+
+    public class DatabaseSecurityGrant
+    {
+        public string ServerLogin { get; set; }
+        public string DatabaseName { get; set; }
+        public string DatabaseUser { get; set; }
+        public string DatabaseRole { get; set; }
+        public bool IsDatabaseOwner { get; set; }
+        public bool IsServerAdmin { get; set; }
+        public string Securable { get; set; }
+        public string PermissionName { get; set; }
+        public string PermissionState { get; set; }
+    }
 }

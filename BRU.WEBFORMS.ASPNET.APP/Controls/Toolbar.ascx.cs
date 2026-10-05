@@ -13,10 +13,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
     {
         protected global::System.Web.UI.WebControls.HyperLink hlHome;
         protected global::System.Web.UI.WebControls.Image imgLogo;
+        protected global::System.Web.UI.WebControls.Literal litCurrentUser;
+        protected global::System.Web.UI.WebControls.HyperLink hlSignIn;
+        protected global::System.Web.UI.WebControls.HyperLink hlSignOut;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             ApplyConfigDefaults();
+            bool isAuthenticated = AuthContext.IsAuthenticated;
+            litCurrentUser.Text = isAuthenticated
+                ? Server.HtmlEncode(AuthContext.CurrentUsername ?? string.Empty)
+                : string.Empty;
+            hlSignIn.Visible = !isAuthenticated;
+            hlSignOut.Visible = isAuthenticated;
         }
 
         /// <summary>

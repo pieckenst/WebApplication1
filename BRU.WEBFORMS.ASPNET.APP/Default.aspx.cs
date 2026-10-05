@@ -13,7 +13,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
     /// route schedules, sales performance, and maintenance requirements.
     /// Implements enterprise-grade error handling and data validation.
     /// </summary>
-    public partial class Default : System.Web.UI.Page
+    public partial class Default : SecurePage
     {
         #region Control Declarations
         

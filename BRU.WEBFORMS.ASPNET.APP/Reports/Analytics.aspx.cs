@@ -16,8 +16,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
     /// breakdowns by channel, route, and employee, with simple CSS
     /// bar chart visualizations and data tables.
     /// </summary>
-    public partial class Analytics : System.Web.UI.Page
+    public partial class Analytics : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "report.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

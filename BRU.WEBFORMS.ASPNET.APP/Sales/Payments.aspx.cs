@@ -15,8 +15,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
     /// creation, detail view, sorting, pagination, and comprehensive
     /// payment statistics.
     /// </summary>
-    public partial class Payments : System.Web.UI.Page
+    public partial class Payments : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "payment.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

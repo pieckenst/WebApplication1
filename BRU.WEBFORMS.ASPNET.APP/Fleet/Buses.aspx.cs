@@ -14,8 +14,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
     /// Provides CRUD operations, filtering, searching, sorting,
     /// pagination, and maintenance tracking.
     /// </summary>
-    public partial class Buses : System.Web.UI.Page
+    public partial class Buses : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "bus.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

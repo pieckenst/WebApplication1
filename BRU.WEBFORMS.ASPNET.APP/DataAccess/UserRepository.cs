@@ -277,11 +277,16 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                 return null;
 
             User user = GetUserByLogin(login);
-            if (user == null || !user.IsActive)
-                return null;
-
-            if (VerifyPassword(password, user.PasswordHash))
+            if (user == null)
             {
+                VerifyPassword(password, DummyPasswordHash);
+                return null;
+            }
+
+            if (VerifyPassword(password, user.PasswordHash) && user.IsActive)
+            {
+                if (IsLegacyHash(user.PasswordHash))
+                    ChangePassword(user.UserId, password);
                 UpdateLastLogin(user.UserId);
                 return user;
             }
@@ -290,19 +295,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         }
 
         /// <summary>
-        /// Hashes a password using SHA256.
+        /// Hashes a password using versioned PBKDF2 with a per-password random salt.
         /// </summary>
         private string HashPassword(string password)
         {
-            using (SHA256 sha256 = SHA256.Create())
+            const int iterations = 210000;
+            byte[] salt = new byte[16];
+            using (RandomNumberGenerator random = RandomNumberGenerator.Create())
+                random.GetBytes(salt);
+
+            using (Rfc2898DeriveBytes deriveBytes = new Rfc2898DeriveBytes(password, salt, iterations))
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
+                byte[] hash = deriveBytes.GetBytes(32);
+                return "PBKDF2-SHA1$" + iterations + "$" + Convert.ToBase64String(salt) + "$" + Convert.ToBase64String(hash);
             }
         }
 
@@ -311,8 +316,74 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         private bool VerifyPassword(string password, string hash)
         {
-            string passwordHash = HashPassword(password);
-            return string.Equals(passwordHash, hash, StringComparison.OrdinalIgnoreCase);
+            if (string.IsNullOrEmpty(hash))
+                return false;
+
+            string[] parts = hash.Split('$');
+            if (parts.Length == 4 && parts[0] == "PBKDF2-SHA1")
+            {
+                int iterations;
+                byte[] salt;
+                byte[] expected;
+                try
+                {
+                    if (!int.TryParse(parts[1], out iterations) || iterations < 100000 || iterations > 1000000)
+                        return false;
+                    salt = Convert.FromBase64String(parts[2]);
+                    expected = Convert.FromBase64String(parts[3]);
+                    if (salt.Length < 16 || expected.Length != 32)
+                        return false;
+                }
+                catch (FormatException)
+                {
+                    return false;
+                }
+
+                using (Rfc2898DeriveBytes deriveBytes = new Rfc2898DeriveBytes(password, salt, iterations))
+                    return FixedTimeEquals(expected, deriveBytes.GetBytes(expected.Length));
+            }
+
+            if (!IsLegacyHash(hash))
+                return false;
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] actual = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] expected = new byte[actual.Length];
+                for (int i = 0; i < expected.Length; i++)
+                    expected[i] = Convert.ToByte(hash.Substring(i * 2, 2), 16);
+                return FixedTimeEquals(expected, actual);
+            }
+        }
+
+        private static bool IsLegacyHash(string hash)
+        {
+            if (hash == null || hash.Length != 64)
+                return false;
+            foreach (char character in hash)
+                if (!Uri.IsHexDigit(character)) return false;
+            return true;
+        }
+
+        private static bool FixedTimeEquals(byte[] left, byte[] right)
+        {
+            if (left == null || right == null || left.Length != right.Length)
+                return false;
+            int difference = 0;
+            for (int i = 0; i < left.Length; i++)
+                difference |= left[i] ^ right[i];
+            return difference == 0;
+        }
+
+        private static readonly string DummyPasswordHash = CreateDummyPasswordHash();
+
+        private static string CreateDummyPasswordHash()
+        {
+            byte[] salt = new byte[16];
+            using (RandomNumberGenerator random = RandomNumberGenerator.Create())
+                random.GetBytes(salt);
+            using (Rfc2898DeriveBytes deriveBytes = new Rfc2898DeriveBytes("invalid-credential", salt, 210000))
+                return "PBKDF2-SHA1$210000$" + Convert.ToBase64String(salt) + "$" + Convert.ToBase64String(deriveBytes.GetBytes(32));
         }
 
         #endregion
@@ -421,6 +492,40 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
 
             int rowsAffected = _db.ExecuteNonQuery(sql, parameters);
             return rowsAffected > 0;
+        }
+
+        public bool SetUserRoles(int userId, List<int> roleIds, string assignedBy)
+        {
+            List<int> uniqueRoleIds = roleIds == null
+                ? new List<int>()
+                : new List<int>(new HashSet<int>(roleIds));
+            _db.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                _db.ExecuteNonQuery("DELETE FROM dbo.user_role WHERE user_id = @user_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int) });
+
+                foreach (int roleId in uniqueRoleIds)
+                {
+                    _db.ExecuteNonQuery(@"
+                        INSERT INTO dbo.user_role (user_id, role_id, assigned_by)
+                        VALUES (@user_id, @role_id, @assigned_by)",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@assigned_by", assignedBy, SqlDbType.VarChar, 80)
+                        });
+                }
+
+                _db.CommitTransaction();
+                return true;
+            }
+            catch
+            {
+                _db.RollbackTransaction();
+                throw;
+            }
         }
 
         /// <summary>

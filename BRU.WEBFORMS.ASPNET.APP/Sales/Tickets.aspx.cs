@@ -15,8 +15,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
     /// type filtering, search, sorting, pagination, stock-level tracking,
     /// and comprehensive statistics.
     /// </summary>
-    public partial class Tickets : System.Web.UI.Page
+    public partial class Tickets : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "ticket.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

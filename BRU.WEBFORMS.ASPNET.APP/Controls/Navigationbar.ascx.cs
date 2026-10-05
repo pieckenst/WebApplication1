@@ -54,8 +54,52 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
         protected virtual void BindNavigation()
         {
             var navigationItems = _items ?? GetNavigationItems();
-            rptNavigation.DataSource = navigationItems;
+            rptNavigation.DataSource = FilterNavigationItems(navigationItems);
             rptNavigation.DataBind();
+        }
+
+        private static System.Collections.Generic.List<NavigationItem> FilterNavigationItems(System.Collections.Generic.List<NavigationItem> items)
+        {
+            System.Collections.Generic.List<NavigationItem> filtered = new System.Collections.Generic.List<NavigationItem>();
+            for (int index = 0; index < items.Count; index++)
+            {
+                NavigationItem item = items[index];
+                if (!item.IsSubheader)
+                {
+                    if (HasNavigationAccess(item.NavigateUrl)) filtered.Add(item);
+                    continue;
+                }
+
+                bool hasVisibleItem = false;
+                for (int next = index + 1; next < items.Count && !items[next].IsSubheader; next++)
+                    hasVisibleItem |= HasNavigationAccess(items[next].NavigateUrl);
+                if (hasVisibleItem) filtered.Add(item);
+            }
+            return filtered;
+        }
+
+        private static bool HasNavigationAccess(string navigateUrl)
+        {
+            if (!AuthContext.IsAuthenticated)
+                return false;
+            if (string.IsNullOrEmpty(navigateUrl) || !navigateUrl.StartsWith("~/", StringComparison.Ordinal))
+                return true;
+
+            string path = navigateUrl.Substring(2).ToLowerInvariant();
+            if (path == "default.aspx") return true;
+            if (path == "fleet/buses.aspx") return AuthContext.HasPermission("bus.read");
+            if (path == "fleet/maintenance.aspx") return AuthContext.HasPermission("bus.read");
+            if (path == "personnel/employees.aspx") return AuthContext.HasPermission("employee.read");
+            if (path == "personnel/departments.aspx") return AuthContext.HasPermission("employee.read");
+            if (path == "operations/routes.aspx") return AuthContext.HasPermission("route.read");
+            if (path == "operations/schedule.aspx") return AuthContext.HasPermission("route.read");
+            if (path == "operations/stops.aspx") return AuthContext.HasPermission("route.read");
+            if (path == "sales/tickets.aspx") return AuthContext.HasPermission("ticket.read");
+            if (path == "sales/sales.aspx") return AuthContext.HasPermission("sale.read");
+            if (path == "sales/payments.aspx") return AuthContext.HasPermission("payment.read");
+            if (path.StartsWith("reports/", StringComparison.Ordinal)) return AuthContext.HasPermission("report.read");
+            if (path.StartsWith("system/", StringComparison.Ordinal)) return AuthContext.IsInRole("administrator");
+            return true;
         }
 
         /// <summary>

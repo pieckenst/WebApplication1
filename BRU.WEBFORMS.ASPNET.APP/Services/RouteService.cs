@@ -228,6 +228,78 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             }
         }
 
+        public List<Stop> GetStopsForManagement()
+        {
+            try
+            {
+                return _repository.GetStopsForManagement();
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Error retrieving stop records", ex);
+            }
+        }
+
+        public int CreateStop(Stop stop)
+        {
+            ValidateStop(stop);
+            try
+            {
+                return _repository.InsertStop(stop);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Stop could not be created. Check that its name is unique.", ex);
+            }
+        }
+
+        public bool UpdateStop(Stop stop)
+        {
+            ValidateStop(stop);
+            try
+            {
+                if (!_repository.UpdateStop(stop))
+                    throw new ServiceException("Stop not found.");
+                return true;
+            }
+            catch (ServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Stop could not be updated. Check that its name is unique.", ex);
+            }
+        }
+
+        public bool SetStopActive(int stopId, bool isActive)
+        {
+            try
+            {
+                return _repository.SetStopActive(stopId, isActive);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Stop status could not be changed.", ex);
+            }
+        }
+
+        private static void ValidateStop(Stop stop)
+        {
+            if (stop == null)
+                throw new ServiceException("Stop details are required.");
+            stop.StopName = (stop.StopName ?? string.Empty).Trim();
+            stop.Location = string.IsNullOrWhiteSpace(stop.Location) ? null : stop.Location.Trim();
+            if (stop.StopName.Length == 0 || stop.StopName.Length > 120)
+                throw new ServiceException("Stop name is required and cannot exceed 120 characters.");
+            if (stop.Location != null && stop.Location.Length > 200)
+                throw new ServiceException("Stop location cannot exceed 200 characters.");
+            if (stop.Latitude.HasValue && (stop.Latitude.Value < -90 || stop.Latitude.Value > 90))
+                throw new ServiceException("Latitude must be between -90 and 90.");
+            if (stop.Longitude.HasValue && (stop.Longitude.Value < -180 || stop.Longitude.Value > 180))
+                throw new ServiceException("Longitude must be between -180 and 180.");
+        }
+
         /// <summary>
         /// Get today's schedule
         /// </summary>

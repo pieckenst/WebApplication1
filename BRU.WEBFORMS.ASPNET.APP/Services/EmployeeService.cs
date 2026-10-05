@@ -210,6 +210,80 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             }
         }
 
+        public List<Department> GetDepartmentsForManagement()
+        {
+            try
+            {
+                return _repository.GetDepartmentsForManagement();
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Error retrieving department records", ex);
+            }
+        }
+
+        public int CreateDepartment(Department department)
+        {
+            ValidateDepartment(department);
+            try
+            {
+                return _repository.InsertDepartment(department);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Department could not be created. Check that its code is unique.", ex);
+            }
+        }
+
+        public bool UpdateDepartment(Department department)
+        {
+            ValidateDepartment(department);
+            try
+            {
+                if (!_repository.UpdateDepartment(department))
+                    throw new ServiceException("Department not found.");
+                return true;
+            }
+            catch (ServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Department could not be updated. Check that its code is unique.", ex);
+            }
+        }
+
+        public bool SetDepartmentActive(int departmentId, bool isActive)
+        {
+            try
+            {
+                return _repository.SetDepartmentActive(departmentId, isActive);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Department status could not be changed.", ex);
+            }
+        }
+
+        private static void ValidateDepartment(Department department)
+        {
+            if (department == null)
+                throw new ServiceException("Department details are required.");
+            department.DepartmentName = (department.DepartmentName ?? string.Empty).Trim();
+            department.DepartmentCode = (department.DepartmentCode ?? string.Empty).Trim().ToUpperInvariant();
+            department.Description = string.IsNullOrWhiteSpace(department.Description) ? null : department.Description.Trim();
+            if (department.DepartmentName.Length < 3 || department.DepartmentName.Length > 100)
+                throw new ServiceException("Department name must contain between 3 and 100 characters.");
+            if (department.DepartmentCode.Length == 0 || department.DepartmentCode.Length > 20)
+                throw new ServiceException("Department code is required and cannot exceed 20 characters.");
+            foreach (char character in department.DepartmentCode)
+                if (!char.IsLetterOrDigit(character) && character != '-' && character != '_')
+                    throw new ServiceException("Department code may contain only letters, numbers, hyphens, and underscores.");
+            if (department.Description != null && department.Description.Length > 500)
+                throw new ServiceException("Department description cannot exceed 500 characters.");
+        }
+
         /// <summary>
         /// Get drivers (employees with driver job)
         /// </summary>

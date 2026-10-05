@@ -16,8 +16,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
     /// route filtering, sorting, and pagination with comprehensive
     /// statistics tracking.
     /// </summary>
-    public partial class Schedule : System.Web.UI.Page
+    public partial class Schedule : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "route.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

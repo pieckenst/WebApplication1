@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using System.Threading;
 using System.Web;
 using System.Web.Security;
+using BRU.WEBFORMS.ASPNET.APP.DataAccess;
 using BRU.WEBFORMS.ASPNET.APP.Models;
 
 namespace BRU.WEBFORMS.ASPNET.APP
@@ -55,6 +58,11 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 object userId = GetSessionValue(SESSION_KEY_USER_ID);
                 if (userId != null && userId is int)
                     return (int)userId;
+
+                FormsIdentity identity = HttpContext.Current.User.Identity as FormsIdentity;
+                int ticketUserId;
+                if (identity != null && int.TryParse(identity.Ticket.UserData, out ticketUserId))
+                    return ticketUserId;
 
                 return null;
             }
@@ -151,6 +159,41 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         #region Authentication Methods
 
+        public static bool RefreshAuthorization()
+        {
+            if (!IsAuthenticated || HttpContext.Current == null || HttpContext.Current.Session == null)
+                return false;
+
+            int? userId = CurrentUserId;
+            if (!userId.HasValue)
+                return false;
+
+            User user;
+            List<string> roles;
+            List<string> permissions;
+            using (UserRepository repository = new UserRepository())
+            {
+                user = repository.GetUserById(userId.Value);
+                if (user == null || !user.IsActive)
+                    return false;
+
+                roles = repository.GetUserRoles(user.UserId);
+                permissions = repository.GetUserPermissions(user.UserId);
+            }
+
+            SetSessionValue(SESSION_KEY_USER_ID, user.UserId);
+            SetSessionValue(SESSION_KEY_USERNAME, user.Login);
+            SetSessionValue(SESSION_KEY_EMPLOYEE_ID, user.EmployeeId);
+            SetSessionValue(SESSION_KEY_ROLES, roles);
+            SetSessionValue(SESSION_KEY_PERMISSIONS, permissions);
+
+            IPrincipal currentPrincipal = HttpContext.Current.User;
+            GenericPrincipal principal = new GenericPrincipal(currentPrincipal.Identity, roles.ToArray());
+            HttpContext.Current.User = principal;
+            Thread.CurrentPrincipal = principal;
+            return true;
+        }
+
         /// <summary>
         /// Authenticates a user and creates a session.
         /// </summary>
@@ -167,6 +210,17 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
             if (HttpContext.Current == null)
                 throw new InvalidOperationException("HttpContext is not available");
+
+            if (HttpContext.Current.Session != null)
+            {
+                HttpContext.Current.Session.Clear();
+                HttpContext.Current.Session.Abandon();
+                SessionIDManager sessionIdManager = new SessionIDManager();
+                string sessionId = sessionIdManager.CreateSessionID(HttpContext.Current);
+                bool redirected;
+                bool cookieAdded;
+                sessionIdManager.SaveSessionID(HttpContext.Current, sessionId, out redirected, out cookieAdded);
+            }
 
             // Create Forms Authentication ticket
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(

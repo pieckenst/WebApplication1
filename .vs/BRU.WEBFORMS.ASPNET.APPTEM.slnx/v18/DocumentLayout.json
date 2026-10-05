@@ -3,7 +3,7 @@
   "WorkspaceRootPath": "E:\\code\\WEBFORMS2\\WEBAPPLICATION-SUBD\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|E:\\code\\WEBFORMS2\\WEBAPPLICATION-SUBD\\bru.webforms.aspnet.app\\operations\\schedule.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|e:\\code\\webforms2\\webapplication-subd\\bru.webforms.aspnet.app\\operations\\schedule.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|solutionrelative:bru.webforms.aspnet.app\\operations\\schedule.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -11,7 +11,7 @@
       "RelativeMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|solutionrelative:bru.webforms.aspnet.app\\operations\\schedule.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|e:\\code\\webforms2\\webapplication-subd\\bru.webforms.aspnet.app\\app_start\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|E:\\code\\WEBFORMS2\\WEBAPPLICATION-SUBD\\bru.webforms.aspnet.app\\app_start\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3AD4A426-1761-49F1-8B4D-A2C991AFB523}|BRU.WEBFORMS.ASPNET.APP\\BRU.WEBFORMS.ASPNET.APP.csproj|solutionrelative:bru.webforms.aspnet.app\\app_start\\basepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -150,8 +150,7 @@
               "RelativeToolTip": "BRU.WEBFORMS.ASPNET.APP\\App_Start\\BasePage.cs",
               "ViewState": "AgIAADcBAAAAAAAAAAA6wCcAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T17:54:27.26Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-04T17:54:27.26Z"
             },
             {
               "$type": "Document",
@@ -209,7 +208,7 @@
               "RelativeDocumentMoniker": "BRU.WEBFORMS.ASPNET.APP\\Operations\\Schedule.aspx.cs",
               "ToolTip": "E:\\code\\WEBFORMS2\\WEBAPPLICATION-SUBD\\BRU.WEBFORMS.ASPNET.APP\\Operations\\Schedule.aspx.cs",
               "RelativeToolTip": "BRU.WEBFORMS.ASPNET.APP\\Operations\\Schedule.aspx.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAqwL4AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAN0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-02T15:22:17.197Z",
               "EditorCaption": ""
@@ -236,8 +235,7 @@
               "RelativeToolTip": "BRU.WEBFORMS.ASPNET.APP\\Operations\\Schedule.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2026-10-02T15:22:08.524Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-02T15:22:08.524Z"
             },
             {
               "$type": "Document",
@@ -321,8 +319,7 @@
               "RelativeToolTip": "BRU.WEBFORMS.ASPNET.APP\\Site.Master",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2026-09-17T17:41:40.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-17T17:41:40.492Z"
             },
             {
               "$type": "Document",

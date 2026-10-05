@@ -27,6 +27,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
         public bool IsActive { get; set; }
+        public int RouteCount { get; set; }
+
+        public string Coordinates
+        {
+            get { return Latitude.HasValue && Longitude.HasValue ? Latitude.Value.ToString("F6") + ", " + Longitude.Value.ToString("F6") : "-"; }
+        }
     }
 
     /// <summary>

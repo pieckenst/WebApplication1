@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 using BRU.WEBFORMS.ASPNET.APP.DataAccess;
 using BRU.WEBFORMS.ASPNET.APP.Models;
 
@@ -11,6 +14,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
     /// </summary>
     public class AuthService : IDisposable
     {
+        private static readonly object LoginAttemptLock = new object();
+        private static readonly Dictionary<string, LoginAttempt> LoginAttempts = new Dictionary<string, LoginAttempt>(StringComparer.Ordinal);
         private UserRepository _userRepo;
         private RoleRepository _roleRepo;
 
@@ -35,11 +40,18 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 if (string.IsNullOrWhiteSpace(password))
                     throw new ServiceException("Password cannot be empty.", "Пароль не может быть пустым.");
 
-                User user = _userRepo.AuthenticateUser(login, password);
+                string attemptKey = GetLoginAttemptKey(login);
+                if (IsLoginLocked(attemptKey))
+                    throw new ServiceException("Invalid login or password.", "Неверный логин или пароль.");
+
+                User user = _userRepo.AuthenticateUser(login.Trim(), password);
                 if (user == null)
                 {
+                    RecordLoginFailure(attemptKey);
                     throw new ServiceException("Invalid login or password.", "Неверный логин или пароль.");
                 }
+
+                ClearLoginFailures(attemptKey);
 
                 if (!user.IsActive)
                 {
@@ -298,6 +310,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             try
             {
                 ValidateRole(role);
+                Role existing = _roleRepo.GetRoleByName(role.RoleName);
+                if (existing != null && existing.RoleId != role.RoleId)
+                    throw new ServiceException("A role with this name already exists.", "Роль с таким названием уже существует.");
                 return _roleRepo.UpdateRole(role);
             }
             catch (ServiceException)
@@ -345,6 +360,18 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             catch (Exception ex)
             {
                 throw new ServiceException("Failed to retrieve permissions.", "Ошибка при получении разрешений.", ex);
+            }
+        }
+
+        public List<DatabaseSecurityGrant> GetDatabaseSecuritySnapshot()
+        {
+            try
+            {
+                return _roleRepo.GetDatabaseSecuritySnapshot();
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Failed to retrieve SQL Server security details.", "Ошибка при получении сведений о безопасности SQL Server.", ex);
             }
         }
 
@@ -479,6 +506,18 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             }
         }
 
+        public bool SetUserRoles(int userId, List<int> roleIds, string assignedBy)
+        {
+            try
+            {
+                return _userRepo.SetUserRoles(userId, roleIds, assignedBy);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Failed to update user roles.", "Ошибка при обновлении ролей пользователя.", ex);
+            }
+        }
+
         #endregion
 
         #region Role-Permission Management
@@ -558,11 +597,87 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new ServiceException("Password is required.", "Пароль обязателен.");
 
-            if (password.Length < 6)
-                throw new ServiceException("Password must be at least 6 characters.", "Пароль должен содержать минимум 6 символов.");
+            if (password.Length < 12)
+                throw new ServiceException("Password must be at least 12 characters.", "Пароль должен содержать минимум 12 символов.");
 
             if (password.Length > 100)
                 throw new ServiceException("Password cannot exceed 100 characters.", "Пароль не может превышать 100 символов.");
+
+            bool hasUpper = false;
+            bool hasLower = false;
+            bool hasDigit = false;
+            bool hasSymbol = false;
+            foreach (char character in password)
+            {
+                hasUpper |= char.IsUpper(character);
+                hasLower |= char.IsLower(character);
+                hasDigit |= char.IsDigit(character);
+                hasSymbol |= !char.IsLetterOrDigit(character);
+            }
+            if (!hasUpper || !hasLower || !hasDigit || !hasSymbol)
+                throw new ServiceException("Password must contain uppercase and lowercase letters, a number, and a symbol.",
+                    "Пароль должен содержать заглавную и строчную буквы, цифру и символ.");
+        }
+
+        private static string GetLoginAttemptKey(string login)
+        {
+            string address = HttpContext.Current == null ? "unknown" : HttpContext.Current.Request.UserHostAddress ?? "unknown";
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] digest = sha256.ComputeHash(Encoding.UTF8.GetBytes(login.Trim().ToUpperInvariant() + "|" + address));
+                return Convert.ToBase64String(digest);
+            }
+        }
+
+        private static bool IsLoginLocked(string key)
+        {
+            lock (LoginAttemptLock)
+            {
+                LoginAttempt attempt;
+                if (!LoginAttempts.TryGetValue(key, out attempt)) return false;
+                if (attempt.LockedUntilUtc <= DateTime.UtcNow)
+                {
+                    LoginAttempts.Remove(key);
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        private static void RecordLoginFailure(string key)
+        {
+            lock (LoginAttemptLock)
+            {
+                DateTime now = DateTime.UtcNow;
+                if (LoginAttempts.Count > 10000)
+                {
+                    List<string> expired = new List<string>();
+                    foreach (KeyValuePair<string, LoginAttempt> entry in LoginAttempts)
+                        if (entry.Value.LastAttemptUtc < now.AddHours(-1)) expired.Add(entry.Key);
+                    foreach (string expiredKey in expired) LoginAttempts.Remove(expiredKey);
+                }
+
+                LoginAttempt attempt;
+                if (!LoginAttempts.TryGetValue(key, out attempt) || attempt.LastAttemptUtc < now.AddMinutes(-15))
+                    attempt = new LoginAttempt();
+                attempt.Failures++;
+                attempt.LastAttemptUtc = now;
+                if (attempt.Failures >= 5) attempt.LockedUntilUtc = now.AddMinutes(15);
+                LoginAttempts[key] = attempt;
+            }
+        }
+
+        private static void ClearLoginFailures(string key)
+        {
+            lock (LoginAttemptLock)
+                LoginAttempts.Remove(key);
+        }
+
+        private sealed class LoginAttempt
+        {
+            public int Failures { get; set; }
+            public DateTime LastAttemptUtc { get; set; }
+            public DateTime LockedUntilUtc { get; set; }
         }
 
         private void ValidateRole(Role role)

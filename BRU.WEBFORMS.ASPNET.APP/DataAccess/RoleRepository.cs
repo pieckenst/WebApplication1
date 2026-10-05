@@ -160,13 +160,15 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             SqlParameter[] parameters = new SqlParameter[]
             {
                 DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@role_name", role.RoleName, SqlDbType.VarChar, 50),
                 DatabaseHelper.CreateParameter("@description", role.Description ?? (object)DBNull.Value, SqlDbType.NVarChar, 300),
                 DatabaseHelper.CreateParameter("@is_active", role.IsActive, SqlDbType.Bit)
             };
 
             string sql = @"
                 UPDATE dbo.app_role
-                SET description = @description,
+                SET role_name = @role_name,
+                    description = @description,
                     is_active = @is_active
                 WHERE role_id = @role_id";
 
@@ -403,6 +405,51 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             return permissions;
         }
 
+        public List<DatabaseSecurityGrant> GetDatabaseSecuritySnapshot()
+        {
+            List<DatabaseSecurityGrant> grants = new List<DatabaseSecurityGrant>();
+            string sql = @"
+                SELECT DB_NAME() AS database_name,
+                       USER_NAME() AS database_user,
+                       SUSER_SNAME() AS server_login,
+                       COALESCE(role_principal.name, N'(no explicit database role)') AS database_role,
+                       CAST(IS_MEMBER(N'db_owner') AS bit) AS is_database_owner,
+                       CAST(IS_SRVROLEMEMBER(N'sysadmin') AS bit) AS is_server_admin,
+                       COALESCE(OBJECT_SCHEMA_NAME(permission.major_id) + N'.' + OBJECT_NAME(permission.major_id), N'(database scope)') AS securable,
+                       COALESCE(permission.permission_name, N'(no explicit grant)') AS permission_name,
+                       COALESCE(permission.state_desc, N'INHERITED') AS permission_state
+                FROM sys.database_principals AS current_principal
+                LEFT JOIN sys.database_role_members AS membership
+                    ON membership.member_principal_id = current_principal.principal_id
+                LEFT JOIN sys.database_principals AS role_principal
+                    ON role_principal.principal_id = membership.role_principal_id
+                LEFT JOIN sys.database_permissions AS permission
+                    ON permission.grantee_principal_id = current_principal.principal_id
+                    OR permission.grantee_principal_id = role_principal.principal_id
+                WHERE current_principal.principal_id = DATABASE_PRINCIPAL_ID()
+                ORDER BY database_role, securable, permission_name";
+
+            using (SqlDataReader reader = _db.ExecuteReader(sql))
+            {
+                while (reader.Read())
+                {
+                    grants.Add(new DatabaseSecurityGrant
+                    {
+                        DatabaseName = reader.GetString(reader.GetOrdinal("database_name")),
+                        DatabaseUser = reader.GetString(reader.GetOrdinal("database_user")),
+                        ServerLogin = reader.IsDBNull(reader.GetOrdinal("server_login")) ? null : reader.GetString(reader.GetOrdinal("server_login")),
+                        DatabaseRole = reader.GetString(reader.GetOrdinal("database_role")),
+                        IsDatabaseOwner = reader.GetBoolean(reader.GetOrdinal("is_database_owner")),
+                        IsServerAdmin = reader.GetBoolean(reader.GetOrdinal("is_server_admin")),
+                        Securable = reader.GetString(reader.GetOrdinal("securable")),
+                        PermissionName = reader.GetString(reader.GetOrdinal("permission_name")),
+                        PermissionState = reader.GetString(reader.GetOrdinal("permission_state"))
+                    });
+                }
+            }
+            return grants;
+        }
+
         /// <summary>
         /// Gets all roles that have a specific permission.
         /// </summary>
@@ -485,41 +532,34 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         public bool SetRolePermissions(int roleId, List<int> permissionIds)
         {
-            using (SqlConnection conn = _db.GetConnection())
+            List<int> uniquePermissionIds = permissionIds == null
+                ? new List<int>()
+                : new List<int>(new HashSet<int>(permissionIds));
+            _db.BeginTransaction(IsolationLevel.Serializable);
+            try
             {
-                conn.Open();
-                using (SqlTransaction transaction = conn.BeginTransaction())
+                _db.ExecuteNonQuery("DELETE FROM dbo.role_permission WHERE role_id = @role_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int) });
+
+                foreach (int permissionId in uniquePermissionIds)
                 {
-                    try
-                    {
-                        // Clear existing permissions
-                        SqlCommand clearCmd = new SqlCommand("DELETE FROM dbo.role_permission WHERE role_id = @role_id", conn, transaction);
-                        clearCmd.Parameters.AddWithValue("@role_id", roleId);
-                        clearCmd.ExecuteNonQuery();
-
-                        // Add new permissions
-                        if (permissionIds != null && permissionIds.Count > 0)
+                    _db.ExecuteNonQuery(@"
+                        INSERT INTO dbo.role_permission (role_id, permission_id)
+                        VALUES (@role_id, @permission_id)",
+                        new SqlParameter[]
                         {
-                            foreach (int permissionId in permissionIds)
-                            {
-                                SqlCommand insertCmd = new SqlCommand(
-                                    "INSERT INTO dbo.role_permission (role_id, permission_id) VALUES (@role_id, @permission_id)",
-                                    conn, transaction);
-                                insertCmd.Parameters.AddWithValue("@role_id", roleId);
-                                insertCmd.Parameters.AddWithValue("@permission_id", permissionId);
-                                insertCmd.ExecuteNonQuery();
-                            }
-                        }
-
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
+                            DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@permission_id", permissionId, SqlDbType.Int)
+                        });
                 }
+
+                _db.CommitTransaction();
+                return true;
+            }
+            catch
+            {
+                _db.RollbackTransaction();
+                throw;
             }
         }
 

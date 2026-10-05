@@ -14,6 +14,8 @@ namespace BRU.WEBFORMS.ASPNET.APP
     /// </summary>
     public class SecurePage : BasePage
     {
+        private bool _requestAuthorized = true;
+
         #region Protected Properties
 
         /// <summary>
@@ -85,22 +87,29 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         protected override void OnInit(EventArgs e)
         {
+            base.OnInit(e);
+
             // Perform security checks before page initialization
             if (!AllowAnonymous)
             {
-                CheckAuthentication();
+                if (!AuthContext.RefreshAuthorization())
+                {
+                    _requestAuthorized = false;
+                    RedirectToLogin("You must be logged in to access this page.");
+                    return;
+                }
+
                 CheckAuthorization();
             }
-
-            base.OnInit(e);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e);
+            if (!_requestAuthorized)
+                return;
 
             // Update user activity timestamp
-            if (AuthContext.IsAuthenticated)
+            if (!AllowAnonymous && AuthContext.IsAuthenticated)
             {
                 AuthContext.UpdateActivity();
 
@@ -113,6 +122,92 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     return;
                 }
             }
+
+            base.OnLoad(e);
+        }
+
+        protected override void RaisePostBackEvent(IPostBackEventHandler sourceControl, string eventArgument)
+        {
+            if (!_requestAuthorized)
+                return;
+
+            string permission = GetMutationPermission(sourceControl, eventArgument);
+            if (permission != null && !HasMutationPermission(permission))
+            {
+                _requestAuthorized = false;
+                LogWarning("Denied postback mutation " + sourceControl + " for permission " + permission);
+                RedirectToAccessDenied("You do not have permission to change this record.");
+                return;
+            }
+
+            base.RaisePostBackEvent(sourceControl, eventArgument);
+        }
+
+        private string GetMutationPermission(IPostBackEventHandler sourceControl, string eventArgument)
+        {
+            Control control = sourceControl as Control;
+            string controlName = control == null ? string.Empty : control.ID ?? string.Empty;
+            string action = (controlName + " " + (eventArgument ?? string.Empty)).ToLowerInvariant();
+            string[] mutationTerms = { "save", "create", "update", "delete", "add", "assign", "remove", "generate", "deactivate", "activate", "change", "reset", "approve", "refund", "cancel" };
+            bool isMutation = false;
+            foreach (string term in mutationTerms)
+                if (action.Contains(term)) { isMutation = true; break; }
+            if (!isMutation)
+                return null;
+
+            string path = Request.AppRelativeCurrentExecutionFilePath.ToLowerInvariant();
+            if (path.EndsWith("/fleet/buses.aspx")) return "bus.write";
+            if (path.EndsWith("/fleet/maintenance.aspx")) return "bus.write";
+            if (path.EndsWith("/personnel/employees.aspx")) return "administrator";
+            if (path.EndsWith("/personnel/departments.aspx")) return "administrator";
+            if (path.EndsWith("/operations/routes.aspx")) return "route.write";
+            if (path.EndsWith("/operations/schedule.aspx")) return "route.write";
+            if (path.EndsWith("/operations/stops.aspx")) return "route.write";
+            if (path.EndsWith("/sales/tickets.aspx")) return "ticket.write";
+            if (path.EndsWith("/sales/sales.aspx")) return "sale.write";
+            if (path.EndsWith("/sales/payments.aspx")) return "payment.write";
+            if (path.EndsWith("/system/users.aspx") || path.EndsWith("/system/roles.aspx") || path.EndsWith("/system/settings.aspx")) return "administrator";
+            return null;
+        }
+
+        private bool HasMutationPermission(string permission)
+        {
+            if (permission == "administrator") return AuthContext.IsInRole("administrator");
+            if (permission == "payment.write")
+                return AuthContext.HasPermission(permission) || AuthContext.HasPermission("sale.write") || AuthContext.IsInRole("administrator");
+            return AuthContext.HasPermission(permission) || AuthContext.IsInRole("administrator");
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            if (_requestAuthorized)
+                base.OnPreRender(e);
+        }
+
+        protected void RequireAuthentication()
+        {
+            if (!AuthContext.RefreshAuthorization())
+                throw new UnauthorizedAccessException("Authentication is required.");
+        }
+
+        protected void RequireRole(string roleName)
+        {
+            AuthContext.RequireRole(roleName);
+        }
+
+        protected void RequireAnyRole(params string[] roleNames)
+        {
+            AuthContext.RequireAnyRole(roleNames);
+        }
+
+        protected void RequirePermission(string permissionName)
+        {
+            AuthContext.RequirePermission(permissionName);
+        }
+
+        protected void RequireAnyPermission(params string[] permissionNames)
+        {
+            AuthContext.RequireAnyPermission(permissionNames);
         }
 
         #endregion
@@ -126,6 +221,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         {
             if (!AuthContext.IsAuthenticated)
             {
+                _requestAuthorized = false;
                 LogWarning($"Unauthenticated access attempt to {Request.Url?.AbsolutePath} from {ClientIpAddress}");
                 RedirectToLogin("You must be logged in to access this page.");
             }
@@ -145,6 +241,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
                 if (!hasRole)
                 {
+                    _requestAuthorized = false;
                     string roles = string.Join(", ", RequiredRoles);
                     LogWarning($"User '{AuthContext.CurrentUsername}' attempted to access {Request.Url?.AbsolutePath} but lacks required roles: {roles}");
                     RedirectToAccessDenied($"You do not have the required role(s) to access this page: {roles}");
@@ -161,6 +258,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
                 if (!hasPermission)
                 {
+                    _requestAuthorized = false;
                     string permissions = string.Join(", ", RequiredPermissions);
                     LogWarning($"User '{AuthContext.CurrentUsername}' attempted to access {Request.Url?.AbsolutePath} but lacks required permissions: {permissions}");
                     RedirectToAccessDenied($"You do not have the required permission(s) to access this page: {permissions}");
@@ -174,6 +272,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// </summary>
         protected void RedirectToLogin(string message = null)
         {
+            _requestAuthorized = false;
             string returnUrl = Request.Url?.PathAndQuery;
             string loginUrl = ResolveUrl(LoginUrl);
 
@@ -194,6 +293,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// </summary>
         protected void RedirectToAccessDenied(string message = null)
         {
+            _requestAuthorized = false;
             if (!string.IsNullOrEmpty(message))
             {
                 SetDeferredError(message);

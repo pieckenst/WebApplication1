@@ -115,6 +115,8 @@
     <Compile Include="App_Start\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="App_Start\AuthContext.cs" />
+    <Compile Include="App_Start\SecurePage.cs" />
     <Compile Include="App_Start\NavigationSets.cs" />
     <Compile Include="App_Start\PageContentStore.cs" />
     <Compile Include="App_Start\SiteConfig.cs" />
@@ -189,17 +191,22 @@
     <Compile Include="DataAccess\RouteRepository.cs" />
     <Compile Include="DataAccess\TicketRepository.cs" />
     <Compile Include="DataAccess\MaintenanceRepository.cs" />
+    <Compile Include="DataAccess\UserRepository.cs" />
+    <Compile Include="DataAccess\RoleRepository.cs" />
     <Compile Include="Models\Bus.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\Maintenance.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Services\BusService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\RouteService.cs" />
     <Compile Include="Services\ScheduleAutomationService.cs" />
     <Compile Include="Services\TicketService.cs" />
     <Compile Include="Services\MaintenanceService.cs" />
+    <Compile Include="Services\AuthService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

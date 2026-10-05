@@ -16,8 +16,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
     /// search, sorting, pagination, and employee detail views.
     /// Implements enterprise-grade validation and error handling.
     /// </summary>
-    public partial class Employees : System.Web.UI.Page
+    public partial class Employees : SecurePage
     {
+        protected override string[] RequiredPermissions { get { return new[] { "employee.read" }; } }
         #region Control Declarations
 
         protected global::System.Web.UI.WebControls.Panel pnlError;

@@ -299,6 +299,73 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             return departments;
         }
 
+        public List<Department> GetDepartmentsForManagement()
+        {
+            List<Department> departments = new List<Department>();
+            using (SqlDataReader reader = _db.ExecuteReader(@"
+                SELECT d.department_id, d.department_name, d.department_code, d.description, d.is_active,
+                       COUNT(e.employee_id) AS employee_count
+                FROM dbo.department AS d
+                LEFT JOIN dbo.employee AS e ON e.department_id = d.department_id
+                GROUP BY d.department_id, d.department_name, d.department_code, d.description, d.is_active
+                ORDER BY d.department_name"))
+            {
+                while (reader.Read())
+                {
+                    departments.Add(new Department
+                    {
+                        DepartmentId = reader.GetInt32(reader.GetOrdinal("department_id")),
+                        DepartmentName = reader.GetString(reader.GetOrdinal("department_name")),
+                        DepartmentCode = reader.GetString(reader.GetOrdinal("department_code")),
+                        Description = reader.IsDBNull(reader.GetOrdinal("description")) ? null : reader.GetString(reader.GetOrdinal("description")),
+                        IsActive = reader.GetBoolean(reader.GetOrdinal("is_active")),
+                        EmployeeCount = reader.GetInt32(reader.GetOrdinal("employee_count"))
+                    });
+                }
+            }
+            return departments;
+        }
+
+        public int InsertDepartment(Department department)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@department_name", department.DepartmentName, SqlDbType.NVarChar, 100),
+                DatabaseHelper.CreateParameter("@department_code", department.DepartmentCode, SqlDbType.VarChar, 20),
+                DatabaseHelper.CreateParameter("@description", department.Description ?? (object)DBNull.Value, SqlDbType.NVarChar, 500)
+            };
+            return Convert.ToInt32(_db.ExecuteScalar(@"
+                INSERT INTO dbo.department (department_name, department_code, description)
+                VALUES (@department_name, @department_code, @description);
+                SELECT CAST(SCOPE_IDENTITY() AS int);", parameters));
+        }
+
+        public bool UpdateDepartment(Department department)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@department_id", department.DepartmentId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@department_name", department.DepartmentName, SqlDbType.NVarChar, 100),
+                DatabaseHelper.CreateParameter("@department_code", department.DepartmentCode, SqlDbType.VarChar, 20),
+                DatabaseHelper.CreateParameter("@description", department.Description ?? (object)DBNull.Value, SqlDbType.NVarChar, 500)
+            };
+            return _db.ExecuteNonQuery(@"
+                UPDATE dbo.department
+                SET department_name = @department_name, department_code = @department_code, description = @description
+                WHERE department_id = @department_id", parameters) > 0;
+        }
+
+        public bool SetDepartmentActive(int departmentId, bool isActive)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@department_id", departmentId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@is_active", isActive, SqlDbType.Bit)
+            };
+            return _db.ExecuteNonQuery(
+                "UPDATE dbo.department SET is_active = @is_active WHERE department_id = @department_id", parameters) > 0;
+        }
+
         /// <summary>
         /// Map SqlDataReader to Employee object
         /// </summary>
