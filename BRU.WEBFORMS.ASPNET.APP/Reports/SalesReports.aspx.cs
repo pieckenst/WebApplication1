@@ -15,6 +15,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
     {
         private const int PageSize = 50;
         private bool _exporting;
+        private bool _templateControlsResolved;
 
         protected override string[] RequiredPermissions { get { return new[] { "report.read" }; } }
 
@@ -31,15 +32,34 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
         protected global::System.Web.UI.WebControls.Literal litRefunds;
         protected global::System.Web.UI.WebControls.Literal litNet;
         protected global::System.Web.UI.WebControls.GridView gvSales;
+        protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbSalesFilters;
+        protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbSalesList;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            EnsureTemplateControlsResolved();
             if (!IsPostBack)
             {
                 txtDateFrom.Text = DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 txtDateTo.Text = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 BindReport();
             }
+        }
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+            txtDateFrom = cbSalesFilters.FindContentControl<TextBox>("txtDateFrom");
+            txtDateTo = cbSalesFilters.FindContentControl<TextBox>("txtDateTo");
+            ddlChannel = cbSalesFilters.FindContentControl<DropDownList>("ddlChannel");
+            ddlStatus = cbSalesFilters.FindContentControl<DropDownList>("ddlStatus");
+            btnApply = cbSalesFilters.FindContentControl<Button>("btnApply");
+            btnExport = cbSalesFilters.FindContentControl<Button>("btnExport");
+            gvSales = cbSalesList.FindContentControl<GridView>("gvSales");
+            if (txtDateFrom == null || txtDateTo == null || ddlChannel == null || ddlStatus == null ||
+                btnApply == null || btnExport == null || gvSales == null)
+                throw new InvalidOperationException("Sales report controls were not created inside their ContentBox templates.");
+            _templateControlsResolved = true;
         }
 
         protected void btnApply_Click(object sender, EventArgs e)

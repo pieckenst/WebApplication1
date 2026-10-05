@@ -12,6 +12,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
     public partial class Departments : SecurePage
     {
         private List<Department> _departments;
+        private bool _templateControlsResolved;
 
         protected override string[] RequiredPermissions { get { return new[] { "employee.read" }; } }
 
@@ -30,14 +31,33 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         protected global::System.Web.UI.WebControls.Button btnSave;
         protected global::System.Web.UI.WebControls.Button btnCancel;
         protected global::System.Web.UI.WebControls.GridView gvDepartments;
+        protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbDepartmentList;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            EnsureTemplateControlsResolved();
             bool canManage = AuthContext.IsInRole("administrator");
             btnNew.Visible = canManage;
             cbDepartmentEditor.Visible = canManage && pnlEditor.Visible;
             if (!IsPostBack)
                 BindDepartments();
+        }
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+            pnlEditor = cbDepartmentEditor.FindContentControl<Panel>("pnlEditor");
+            hidDepartmentId = cbDepartmentEditor.FindContentControl<HiddenField>("hidDepartmentId");
+            txtName = cbDepartmentEditor.FindContentControl<TextBox>("txtName");
+            txtCode = cbDepartmentEditor.FindContentControl<TextBox>("txtCode");
+            txtDescription = cbDepartmentEditor.FindContentControl<TextBox>("txtDescription");
+            btnSave = cbDepartmentEditor.FindContentControl<Button>("btnSave");
+            btnCancel = cbDepartmentEditor.FindContentControl<Button>("btnCancel");
+            gvDepartments = cbDepartmentList.FindContentControl<GridView>("gvDepartments");
+            if (pnlEditor == null || hidDepartmentId == null || txtName == null || txtCode == null ||
+                txtDescription == null || btnSave == null || btnCancel == null || gvDepartments == null)
+                throw new InvalidOperationException("Department controls were not created inside their ContentBox templates.");
+            _templateControlsResolved = true;
         }
 
         protected void btnApply_Click(object sender, EventArgs e)

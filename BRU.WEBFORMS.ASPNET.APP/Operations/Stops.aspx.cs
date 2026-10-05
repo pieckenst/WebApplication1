@@ -13,6 +13,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
     public partial class Stops : SecurePage
     {
         private List<Stop> _stops;
+        private bool _templateControlsResolved;
 
         protected override string[] RequiredPermissions { get { return new[] { "route.read" }; } }
 
@@ -36,11 +37,30 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            EnsureTemplateControlsResolved();
             bool canManage = CanManageStops;
             btnNew.Visible = canManage;
             cbStopEditor.Visible = canManage && pnlEditor.Visible;
             if (!IsPostBack)
                 BindStops();
+        }
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved) return;
+            pnlEditor = cbStopEditor.FindContentControl<Panel>("pnlEditor");
+            hidStopId = cbStopEditor.FindContentControl<HiddenField>("hidStopId");
+            txtName = cbStopEditor.FindContentControl<TextBox>("txtName");
+            txtLocation = cbStopEditor.FindContentControl<TextBox>("txtLocation");
+            txtLatitude = cbStopEditor.FindContentControl<TextBox>("txtLatitude");
+            txtLongitude = cbStopEditor.FindContentControl<TextBox>("txtLongitude");
+            btnSave = cbStopEditor.FindContentControl<Button>("btnSave");
+            btnCancel = cbStopEditor.FindContentControl<Button>("btnCancel");
+            gvStops = cbStopsList.FindContentControl<GridView>("gvStops");
+            if (pnlEditor == null || hidStopId == null || txtName == null || txtLocation == null ||
+                txtLatitude == null || txtLongitude == null || btnSave == null || btnCancel == null || gvStops == null)
+                throw new InvalidOperationException("Stop controls were not created inside their ContentBox templates.");
+            _templateControlsResolved = true;
         }
 
         private bool CanManageStops
