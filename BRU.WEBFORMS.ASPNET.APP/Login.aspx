@@ -1,4 +1,4 @@
-<%@ Page Title="Sign In - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Login" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Login_1 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Login" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="HeadContent1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">

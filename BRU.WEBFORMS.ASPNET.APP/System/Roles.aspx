@@ -1,4 +1,4 @@
-<%@ Page Title="Roles & Permissions - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Roles.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SystemPages.Roles" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_System_Roles_7 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Roles.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SystemPages.Roles" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">
     <style type="text/css">
@@ -11,18 +11,18 @@
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
     </style>
     <div class="content-page">
-        <div class="page-title">Roles &amp; Permissions</div>
+        <div class="page-title"><%= Localization.GetHtml("Auto_System_Roles_8") %></div>
         <div class="page-divider"></div>
         <asp:Label ID="lblError" runat="server" CssClass="error-message" Visible="false" />
         <uc:ContentBox ID="cbRolesList" runat="server" HeaderText="Security Roles" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <asp:GridView ID="gvRoles" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" EmptyDataText="No roles found.">
+                <asp:GridView ID="gvRoles" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" EmptyDataText="<%$ Resources:Strings, Auto_System_Roles_1 %>">
                     <Columns>
-                        <asp:BoundField DataField="RoleName" HeaderText="Role" />
-                        <asp:BoundField DataField="Description" HeaderText="Description" />
-                        <asp:BoundField DataField="UserCount" HeaderText="Users" />
-                        <asp:BoundField DataField="PermissionCount" HeaderText="Permissions" />
-                        <asp:TemplateField HeaderText="Status">
+                        <asp:BoundField DataField="RoleName" HeaderText="<%$ Resources:Strings, Auto_System_Roles_2 %>" />
+                        <asp:BoundField DataField="Description" HeaderText="<%$ Resources:Strings, Auto_System_Roles_3 %>" />
+                        <asp:BoundField DataField="UserCount" HeaderText="<%$ Resources:Strings, Auto_System_Roles_4 %>" />
+                        <asp:BoundField DataField="PermissionCount" HeaderText="<%$ Resources:Strings, Auto_System_Roles_5 %>" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_System_Roles_6 %>">
                             <ItemTemplate>
                                 <%# ((BRU.WEBFORMS.ASPNET.APP.Models.Role)Container.DataItem).IsActive ? "Active" : "Inactive" %>
                             </ItemTemplate>

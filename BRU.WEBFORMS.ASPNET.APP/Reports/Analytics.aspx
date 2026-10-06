@@ -1,4 +1,4 @@
-<%@ Page Title="Business Analytics - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Analytics.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Reports.Analytics" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Reports_Analytics_17 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Analytics.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Reports.Analytics" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -52,109 +52,109 @@
         </asp:Panel>
 
         <div class="action-bar">
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh Data" CssClass="action-button" OnClick="btnRefresh_Click" />
-            <asp:Button ID="btnExport" runat="server" Text="Export Summary" CssClass="action-button" OnClick="btnExport_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Auto_Reports_Analytics_1 %>" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnExport" runat="server" Text="<%$ Resources:Strings, Auto_Reports_Analytics_2 %>" CssClass="action-button" OnClick="btnExport_Click" />
         </div>
 
         <!-- KPI Grid -->
-        <div class="section-header">Autopark Overview</div>
+        <div class="section-header"><%= Localization.GetHtml("Auto_Reports_Analytics_18") %></div>
         <div class="kpi-grid">
             <div class="kpi-cell">
-                <div class="kpi-label">Active Buses</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_19") %></div>
                 <div class="kpi-value"><asp:Literal ID="litActiveBuses" runat="server" Text="0" /></div>
-                <div class="kpi-sub">Operational fleet</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_20") %></div>
             </div>
             <div class="kpi-cell">
-                <div class="kpi-label">Active Employees</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_21") %></div>
                 <div class="kpi-value"><asp:Literal ID="litActiveEmployees" runat="server" Text="0" /></div>
-                <div class="kpi-sub">Working staff</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_22") %></div>
             </div>
             <div class="kpi-cell">
-                <div class="kpi-label">Active Routes</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_23") %></div>
                 <div class="kpi-value"><asp:Literal ID="litActiveRoutes" runat="server" Text="0" /></div>
-                <div class="kpi-sub">In service</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_24") %></div>
             </div>
             <div class="kpi-cell">
-                <div class="kpi-label">Today's Trips</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_25") %></div>
                 <div class="kpi-value"><asp:Literal ID="litTodaySchedules" runat="server" Text="0" /></div>
-                <div class="kpi-sub">Scheduled today</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_26") %></div>
             </div>
         </div>
 
         <div class="kpi-grid">
             <div class="kpi-cell">
-                <div class="kpi-label">Today's Sales</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_27") %></div>
                 <div class="kpi-value"><asp:Literal ID="litTodaySales" runat="server" Text="0" /></div>
-                <div class="kpi-sub">Transactions</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_28") %></div>
             </div>
             <div class="kpi-cell">
-                <div class="kpi-label">Today's Revenue</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_29") %></div>
                 <div class="kpi-value"><asp:Literal ID="litTodayRevenue" runat="server" Text="0.00" /></div>
-                <div class="kpi-sub">Total amount</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_30") %></div>
             </div>
             <div class="kpi-cell">
-                <div class="kpi-label">Need Attention</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_31") %></div>
                 <div class="kpi-value"><asp:Literal ID="litNeedAttention" runat="server" Text="0" /></div>
-                <div class="kpi-sub">Buses requiring service</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_32") %></div>
             </div>
             <div class="kpi-cell">
-                <div class="kpi-label">Avg Sale</div>
+                <div class="kpi-label"><%= Localization.GetHtml("Auto_Reports_Analytics_33") %></div>
                 <div class="kpi-value"><asp:Literal ID="litAvgSale" runat="server" Text="0.00" /></div>
-                <div class="kpi-sub">Per transaction</div>
+                <div class="kpi-sub"><%= Localization.GetHtml("Auto_Reports_Analytics_34") %></div>
             </div>
         </div>
 
         <!-- Sales by Channel -->
-        <div class="section-header">Sales by Channel</div>
+        <div class="section-header"><%= Localization.GetHtml("Auto_Reports_Analytics_35") %></div>
         <uc:ContentBox ID="cbSalesByChannel" runat="server" HeaderText="Revenue Distribution by Sales Channel" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <asp:Literal ID="litChannelChart" runat="server" />
                 <asp:GridView ID="gvSalesByChannel" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" OnRowDataBound="gvSalesByChannel_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="SaleChannel" HeaderText="Channel" />
-                        <asp:BoundField DataField="SaleCount" HeaderText="Sales" />
-                        <asp:BoundField DataField="TicketCount" HeaderText="Tickets Sold" />
-                        <asp:BoundField DataField="AmountTotal" HeaderText="Total Revenue" DataFormatString="{0:F2}" />
-                        <asp:BoundField DataField="AverageTicketPrice" HeaderText="Avg Price" DataFormatString="{0:F2}" />
+                        <asp:BoundField DataField="SaleChannel" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_3 %>" />
+                        <asp:BoundField DataField="SaleCount" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_4 %>" />
+                        <asp:BoundField DataField="TicketCount" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_5 %>" />
+                        <asp:BoundField DataField="AmountTotal" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_6 %>" DataFormatString="{0:F2}" />
+                        <asp:BoundField DataField="AverageTicketPrice" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_7 %>" DataFormatString="{0:F2}" />
                     </Columns>
                 </asp:GridView>
             </ContentTemplate>
         </uc:ContentBox>
 
         <!-- Sales by Route -->
-        <div class="section-header">Sales by Route</div>
+        <div class="section-header"><%= Localization.GetHtml("Auto_Reports_Analytics_36") %></div>
         <uc:ContentBox ID="cbSalesByRoute" runat="server" HeaderText="Top Performing Routes" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <asp:Literal ID="litRouteChart" runat="server" />
                 <asp:GridView ID="gvSalesByRoute" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" OnRowDataBound="gvSalesByRoute_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="RouteNum" HeaderText="Route #" />
-                        <asp:BoundField DataField="RouteName" HeaderText="Route Name" />
-                        <asp:BoundField DataField="SaleCount" HeaderText="Sales" />
-                        <asp:BoundField DataField="TicketCount" HeaderText="Tickets Sold" />
-                        <asp:BoundField DataField="AmountTotal" HeaderText="Total Revenue" DataFormatString="{0:F2}" />
+                        <asp:BoundField DataField="RouteNum" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_8 %>" />
+                        <asp:BoundField DataField="RouteName" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_9 %>" />
+                        <asp:BoundField DataField="SaleCount" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_10 %>" />
+                        <asp:BoundField DataField="TicketCount" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_11 %>" />
+                        <asp:BoundField DataField="AmountTotal" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_12 %>" DataFormatString="{0:F2}" />
                     </Columns>
                 </asp:GridView>
             </ContentTemplate>
         </uc:ContentBox>
 
         <!-- Sales by Employee -->
-        <div class="section-header">Sales by Employee</div>
+        <div class="section-header"><%= Localization.GetHtml("Auto_Reports_Analytics_37") %></div>
         <uc:ContentBox ID="cbSalesByEmployee" runat="server" HeaderText="Employee Performance" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <asp:Literal ID="litEmployeeChart" runat="server" />
                 <asp:GridView ID="gvSalesByEmployee" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" OnRowDataBound="gvSalesByEmployee_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="EmployeeName" HeaderText="Employee" />
-                        <asp:BoundField DataField="JobTitle" HeaderText="Position" />
-                        <asp:BoundField DataField="SaleCount" HeaderText="Sales" />
-                        <asp:BoundField DataField="AmountTotal" HeaderText="Total Revenue" DataFormatString="{0:F2}" />
+                        <asp:BoundField DataField="EmployeeName" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_13 %>" />
+                        <asp:BoundField DataField="JobTitle" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_14 %>" />
+                        <asp:BoundField DataField="SaleCount" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_15 %>" />
+                        <asp:BoundField DataField="AmountTotal" HeaderText="<%$ Resources:Strings, Auto_Reports_Analytics_16 %>" DataFormatString="{0:F2}" />
                     </Columns>
                 </asp:GridView>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Auto_Reports_Analytics_38") %></a></p>
     </div>
 
 </asp:Content>

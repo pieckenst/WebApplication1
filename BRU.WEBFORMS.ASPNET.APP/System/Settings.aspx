@@ -1,4 +1,4 @@
-<%@ Page Title="System Settings - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Settings.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SystemPages.Settings" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_System_Settings_1 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Settings.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SystemPages.Settings" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">
     <style type="text/css">

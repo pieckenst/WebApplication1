@@ -59,3 +59,30 @@ pre, pre * { font-family: revert; }
   .frame-sidebar { max-height: 180px; }
   .frame-top { min-height: 70px; }
 }
+
+/* Preserve the compact Windows XP vocabulary while letting forms and tables reflow. */
+@media (max-width: 760px) {
+  .content-page { padding: 8px; }
+  .content-page .form-row,
+  .content-page .filter-row { align-items: stretch; flex-direction: column; }
+  .content-page .form-label,
+  .content-page .filter-label { display: block; width: auto; }
+  .content-page .form-control,
+  .content-page select,
+  .content-page input[type="text"],
+  .content-page input[type="date"],
+  .content-page textarea { width: 100%; min-height: 30px; }
+  .content-page .action-bar > .action-button,
+  .content-page .filter-section > .action-button { width: 100%; margin-right: 0; }
+  .content-page .stats-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .content-page .stats-item { margin-right: 0; }
+  .content-page .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-page .modal-content { width: calc(100% - 20px); margin: 5% auto; box-sizing: border-box; }
+}
+
+@media (max-width: 420px) {
+  .content-page .page-title { font-size: 14pt; }
+  .content-page .stats-summary,
+  .content-page .kpi-grid { grid-template-columns: 1fr; }
+  .content-page .action-button { min-height: 32px; }
+}

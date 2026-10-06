@@ -1,4 +1,4 @@
-<%@ Page Title="Maintenance Records - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Maintenance.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Fleet.Maintenance" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Fleet_Maintenance_3 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Maintenance.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Fleet.Maintenance" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -136,9 +136,9 @@
                         <asp:BoundField DataField="DaysFromLastService" HeaderText="<%$ Resources:Strings, Maintenance_DaysAgo %>" SortExpression="days_from_last_service" />
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Common_Actions %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Common_View %>" CommandName="ViewRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Common_Edit %>" CommandName="EditRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %>" CommandName="DeleteRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" OnClientClick="return confirm('<%$ Resources:Strings, Common_DeleteMaintenanceConfirm %>');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Common_View %><%= Localization.GetHtml("Auto_Fleet_Maintenance_4") %><%# Eval("MaintenanceId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Common_Edit %><%= Localization.GetHtml("Auto_Fleet_Maintenance_5") %><%# Eval("MaintenanceId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %><%= Localization.GetHtml("Auto_Fleet_Maintenance_6") %><%# Eval("MaintenanceId") %><%= Localization.GetHtml("Auto_Fleet_Maintenance_7") %><%$ Resources:Strings, Common_DeleteMaintenanceConfirm %>');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -165,12 +165,12 @@
                     </div>
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Maintenance_MaintenanceDate") %> <span class="form-required">*</span></span>
-                        <asp:TextBox ID="txtMaintenanceDate" runat="server" CssClass="form-control" Width="120" placeholder="dd.MM.yyyy" />
+                        <asp:TextBox ID="txtMaintenanceDate" runat="server" CssClass="form-control" Width="120" placeholder="<%$ Resources:Strings, Auto_Fleet_Maintenance_1 %>" />
                         <asp:RequiredFieldValidator ID="rfvDate" runat="server" ControlToValidate="txtMaintenanceDate" ErrorMessage="<%$ Resources:Strings, Maintenance_DateRequired %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
                     </div>
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Maintenance_NextServiceDate") %></span>
-                        <asp:TextBox ID="txtNextDate" runat="server" CssClass="form-control" Width="120" placeholder="dd.MM.yyyy" />
+                        <asp:TextBox ID="txtNextDate" runat="server" CssClass="form-control" Width="120" placeholder="<%$ Resources:Strings, Auto_Fleet_Maintenance_2 %>" />
                     </div>
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Common_Type") %> <span class="form-required">*</span></span>

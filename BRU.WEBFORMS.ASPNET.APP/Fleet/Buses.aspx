@@ -1,4 +1,4 @@
-<%@ Page Title="Bus Fleet Management - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Buses.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Fleet.Buses" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Fleet_Buses_1 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Buses.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Fleet.Buses" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

@@ -1,4 +1,4 @@
-<%@ Page Title="Users - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SystemPages.Users" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_System_Users_7 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.SystemPages.Users" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">
     <style type="text/css">
@@ -17,13 +17,13 @@
         <asp:Label ID="lblError" runat="server" CssClass="error-message" Visible="false" />
         <uc:ContentBox ID="cbUsersList" runat="server" HeaderText="Application Users" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <asp:GridView ID="gvUsers" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" EmptyDataText="No users found.">
+                <asp:GridView ID="gvUsers" runat="server" AutoGenerateColumns="false" CssClass="data-table" GridLines="Both" EmptyDataText="<%$ Resources:Strings, Auto_System_Users_1 %>">
                     <Columns>
-                        <asp:BoundField DataField="Login" HeaderText="Login" />
-                        <asp:BoundField DataField="EmployeeName" HeaderText="Employee" />
-                        <asp:BoundField DataField="Email" HeaderText="Email" />
-                        <asp:BoundField DataField="PhoneNumber" HeaderText="Phone" />
-                        <asp:TemplateField HeaderText="Status">
+                        <asp:BoundField DataField="Login" HeaderText="<%$ Resources:Strings, Auto_System_Users_2 %>" />
+                        <asp:BoundField DataField="EmployeeName" HeaderText="<%$ Resources:Strings, Auto_System_Users_3 %>" />
+                        <asp:BoundField DataField="Email" HeaderText="<%$ Resources:Strings, Auto_System_Users_4 %>" />
+                        <asp:BoundField DataField="PhoneNumber" HeaderText="<%$ Resources:Strings, Auto_System_Users_5 %>" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_System_Users_6 %>">
                             <ItemTemplate>
                                 <%# ((BRU.WEBFORMS.ASPNET.APP.Models.User)Container.DataItem).StatusDescription %>
                             </ItemTemplate>
