@@ -189,4 +189,7 @@
   <data name="Maintenance_NextServiceDate" xml:space="preserve"><value>Next Service Date</value></data>
   <data name="Maintenance_DeleteConfirm" xml:space="preserve"><value>Are you sure you want to delete this maintenance record?</value></data>
   <data name="Route_Heading" xml:space="preserve"><value>Route Management</value></data>
+  <data name="Schedule_Heading" xml:space="preserve"><value>Schedule Management</value></data>
+  <data name="Analytics_Heading" xml:space="preserve"><value>Business Analytics</value></data>
+  <data name="Users_Heading" xml:space="preserve"><value>User Management</value></data>
 </root>

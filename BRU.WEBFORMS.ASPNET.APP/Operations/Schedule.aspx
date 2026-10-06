@@ -47,6 +47,13 @@
         .editor-field .form-control { width: 100%; box-sizing: border-box; }
         .editor-actions { margin-top: 12px; }
         .weekday-list label { display: inline-block; margin-right: 12px; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .form-label { display: block; width: auto; margin-left: 0 !important; }
+            .form-control, .date-input { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .action-bar > div { margin-left: 0 !important; width: 100%; }
+            .data-table { min-width: 760px; }
+        }
     </style>
 
     <script type="text/javascript">
@@ -70,7 +77,7 @@
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Schedule Management</div>
+        <div class="page-title"><%= Localization.GetHtml("Schedule_Heading") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">

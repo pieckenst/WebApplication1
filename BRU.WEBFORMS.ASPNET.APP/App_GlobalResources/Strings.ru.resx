@@ -189,4 +189,7 @@
   <data name="Maintenance_NextServiceDate" xml:space="preserve"><value>Дата следующего обслуживания</value></data>
   <data name="Maintenance_DeleteConfirm" xml:space="preserve"><value>Удалить эту запись об обслуживании?</value></data>
   <data name="Route_Heading" xml:space="preserve"><value>Управление маршрутами</value></data>
+  <data name="Schedule_Heading" xml:space="preserve"><value>Управление расписанием</value></data>
+  <data name="Analytics_Heading" xml:space="preserve"><value>Бизнес-аналитика</value></data>
+  <data name="Users_Heading" xml:space="preserve"><value>Управление пользователями</value></data>
 </root>

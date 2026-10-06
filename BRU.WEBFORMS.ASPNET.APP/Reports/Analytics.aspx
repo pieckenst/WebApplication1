@@ -34,11 +34,13 @@
         .kpi-value { font-size: 20pt; color: #000080; font-weight: bold; }
         .kpi-sub { font-size: 8pt; color: #666666; }
         .section-header { font-size: 12pt; color: #000080; font-weight: bold; margin: 20px 0 10px 0; border-bottom: 1px solid #000080; padding-bottom: 3px; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .kpi-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .kpi-cell { width: auto; display: block; padding: 10px; } .kpi-value { font-size: 16pt; } .data-table { min-width: 620px; } }
+        @media (max-width: 420px) { .kpi-grid { grid-template-columns: 1fr; } }
     </style>
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Business Analytics</div>
+        <div class="page-title"><%= Localization.GetHtml("Analytics_Heading") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
