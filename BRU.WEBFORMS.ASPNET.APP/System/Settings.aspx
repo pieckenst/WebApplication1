@@ -11,6 +11,7 @@
         .action-button { display: inline-block; padding: 6px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin-right: 8px; margin-bottom: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; }
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
         .success-message { background-color: #E6FFE6; border: 1px solid #008000; color: #008000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-row { display: flex; flex-wrap: wrap; gap: 6px; } .form-label { display: block; width: 100%; } .form-control, select, input[type='text'], input[type='number'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-button { margin: 0 4px 6px 0; } }
     </style>
     <div class="content-page">
         <div class="page-title"><%= Localization.GetHtml("Settings_Heading") %></div>

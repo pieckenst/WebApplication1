@@ -46,6 +46,8 @@
         .tabs { margin-bottom: 10px; }
         .tab { display: inline-block; padding: 6px 16px; background-color: #EDF2FB; border: 1px solid #1447AE; border-bottom: none; margin-right: 2px; font-size: 9pt; cursor: pointer; text-decoration: none; color: #1447AE; font-weight: bold; }
         .tab.active { background-color: #1447AE; color: #FFFFFF; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } .action-button { margin: 0; } }
     </style>
 
     <div class="content-page">

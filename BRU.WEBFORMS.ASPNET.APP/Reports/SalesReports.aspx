@@ -19,6 +19,17 @@
         .data-table td { padding: 8px; border: 1px solid #CCCCCC; background-color: #FFFFFF; }
         .pagination { margin-top: 15px; text-align: right; }
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .page-title { font-size: 14pt; }
+            .filter-label { display: block; width: auto; margin-bottom: 4px; }
+            .form-control { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .action-button { margin: 0 4px 6px 0; }
+            .stats-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+            .stats-item { margin: 0; }
+            .pagination { text-align: left; }
+        }
     </style>
     <div class="content-page">
         <div class="page-title"><%= Localization.GetHtml("Auto_Reports_SalesReports_26") %></div>

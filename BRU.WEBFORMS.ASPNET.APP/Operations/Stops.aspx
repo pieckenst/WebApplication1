@@ -16,6 +16,16 @@
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
         .success-message { background-color: #E6FFE6; border: 1px solid #008000; color: #008000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
         .pagination { margin-top: 15px; text-align: right; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .page-title { font-size: 14pt; }
+            .action-bar { display: flex; flex-wrap: wrap; gap: 6px; }
+            .action-button { margin: 0; }
+            .form-row, .filter-row { display: flex; flex-wrap: wrap; gap: 6px; }
+            .form-label, .filter-label { display: block; width: 100%; margin: 0 !important; }
+            .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; }
+        }
     </style>
     <div class="content-page">
         <div class="page-title"><%= Localization.GetHtml("Auto_Operations_Stops_19") %></div>

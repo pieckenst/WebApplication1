@@ -16,6 +16,8 @@
         .data-table th { background-color: #1447AE; color: #FFFFFF; padding: 8px; text-align: left; border: 1px solid #0A2E7A; }
         .data-table td { padding: 8px; border: 1px solid #CCCCCC; background-color: #FFFFFF; }
         .pagination { margin-top: 15px; text-align: right; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label, .filter-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } }
     </style>
     <div class="content-page">
         <div class="page-title"><%= Localization.GetHtml("Auto_Personnel_Departments_19") %></div>

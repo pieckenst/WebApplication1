@@ -9,6 +9,12 @@
         .data-table th { background-color: #1447AE; color: #FFFFFF; padding: 8px; text-align: left; border: 1px solid #0A2E7A; }
         .data-table td { padding: 8px; border: 1px solid #CCCCCC; background-color: #FFFFFF; }
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .page-title { font-size: 14pt; }
+            .data-table { font-size: 8pt; }
+        }
     </style>
     <div class="content-page">
         <div class="page-title"><%= Localization.GetHtml("Auto_System_Roles_8") %></div>

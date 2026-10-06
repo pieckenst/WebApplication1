@@ -48,6 +48,8 @@
         .detail-row { margin-bottom: 6px; font-size: 9pt; }
         .detail-label { display: inline-block; width: 150px; font-weight: bold; color: #666666; }
         .detail-value { color: #000000; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label, .filter-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'], input[type='date'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } }
     </style>
 
     <div class="content-page">

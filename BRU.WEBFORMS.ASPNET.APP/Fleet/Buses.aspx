@@ -169,6 +169,17 @@
             font-weight: bold;
             font-size: 9pt;
         }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .page-title { font-size: 14pt; }
+            .search-box { display: block; margin: 8px 0 0; }
+            .search-input, .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .filter-label, .form-label { display: block; width: auto; margin: 0 0 4px; }
+            .action-bar { display: flex; flex-wrap: wrap; gap: 6px; }
+            .action-button { margin: 0; }
+            .modal-content { width: calc(100% - 20px); margin: 5% auto; box-sizing: border-box; }
+        }
         .form-control {
             padding: 4px 8px;
             border: 1px solid #1447AE;

@@ -115,6 +115,17 @@
         .alert-icon {
             margin-right: 8px;
         }
+        .content-page { max-width: 100%; box-sizing: border-box; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .page-title { font-size: 14pt; }
+            .action-bar, .filter-section { padding: 8px; }
+            .form-row, .filter-row { display: flex; flex-wrap: wrap; gap: 6px; }
+            .form-label, .filter-label { display: block; width: 100%; margin: 0 !important; }
+            .form-control, .search-input, select, input[type='text'], input[type='date'] { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .action-button { margin: 0 4px 6px 0; }
+        }
     </style>
     
     <div class="content-page">
