@@ -40,18 +40,18 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// Override to specify if ANY of the required roles is sufficient (OR logic).
         /// Default is false, meaning ALL roles are required (AND logic).
         /// </summary>
-        protected virtual bool RequireAnyRole
+        protected virtual bool AllowAnyRole
         {
-            get { return true; } // Changed to true for more flexible authorization
+            get { return true; }
         }
 
         /// <summary>
         /// Override to specify if ANY of the required permissions is sufficient (OR logic).
         /// Default is false, meaning ALL permissions are required (AND logic).
         /// </summary>
-        protected virtual bool RequireAnyPermission
+        protected virtual bool AllowAnyPermission
         {
-            get { return true; } // Changed to true for more flexible authorization
+            get { return true; }
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
             // Check roles
             if (RequiredRoles != null && RequiredRoles.Length > 0)
             {
-                bool hasRole = RequireAnyRole
+                bool hasRole = AllowAnyRole
                     ? AuthContext.IsInAnyRole(RequiredRoles)
                     : AuthContext.IsInAllRoles(RequiredRoles);
 
@@ -252,7 +252,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
             // Check permissions
             if (RequiredPermissions != null && RequiredPermissions.Length > 0)
             {
-                bool hasPermission = RequireAnyPermission
+                bool hasPermission = AllowAnyPermission
                     ? AuthContext.HasAnyPermission(RequiredPermissions)
                     : AuthContext.HasAllPermissions(RequiredPermissions);
 

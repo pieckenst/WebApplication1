@@ -14,6 +14,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
     {
         private const int PageSize = 50;
         private bool _exporting;
+        private bool _templateControlsResolved;
 
         protected override string[] RequiredPermissions { get { return new[] { "report.read" }; } }
 
@@ -28,10 +29,16 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
         protected global::System.Web.UI.WebControls.Literal litTotalCost;
         protected global::System.Web.UI.WebControls.Literal litNotRoadworthy;
         protected global::System.Web.UI.WebControls.Literal litUpcoming;
+        protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbMaintenanceFilters;
+        protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbMaintenanceList;
         protected global::System.Web.UI.WebControls.GridView gvMaintenance;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousPage;
+        protected global::System.Web.UI.WebControls.Label lblPageInfo;
+        protected global::System.Web.UI.WebControls.LinkButton btnNextPage;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            EnsureTemplateControlsResolved();
             if (!IsPostBack)
             {
                 txtDateFrom.Text = DateTime.Today.AddDays(-365).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -41,15 +48,46 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             }
         }
 
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved)
+                return;
+
+            txtDateFrom = cbMaintenanceFilters.FindContentControl<TextBox>("txtDateFrom");
+            txtDateTo = cbMaintenanceFilters.FindContentControl<TextBox>("txtDateTo");
+            ddlBus = cbMaintenanceFilters.FindContentControl<DropDownList>("ddlBus");
+            ddlRoadworthiness = cbMaintenanceFilters.FindContentControl<DropDownList>("ddlRoadworthiness");
+            btnApply = cbMaintenanceFilters.FindContentControl<Button>("btnApply");
+            btnExport = cbMaintenanceFilters.FindContentControl<Button>("btnExport");
+            gvMaintenance = cbMaintenanceList.FindContentControl<GridView>("gvMaintenance");
+            btnPreviousPage = cbMaintenanceList.FindContentControl<LinkButton>("btnPreviousPage");
+            lblPageInfo = cbMaintenanceList.FindContentControl<Label>("lblPageInfo");
+            btnNextPage = cbMaintenanceList.FindContentControl<LinkButton>("btnNextPage");
+
+            if (txtDateFrom == null || txtDateTo == null || ddlBus == null || ddlRoadworthiness == null ||
+                btnApply == null || btnExport == null || gvMaintenance == null || btnPreviousPage == null ||
+                lblPageInfo == null || btnNextPage == null)
+                throw new InvalidOperationException("Maintenance report controls were not created inside their ContentBox templates.");
+
+            _templateControlsResolved = true;
+        }
+
         protected void btnApply_Click(object sender, EventArgs e)
         {
             gvMaintenance.PageIndex = 0;
             BindReport();
         }
 
-        protected void gvMaintenance_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void btnPreviousPage_Click(object sender, EventArgs e)
         {
-            gvMaintenance.PageIndex = e.NewPageIndex;
+            if (gvMaintenance.PageIndex > 0)
+                gvMaintenance.PageIndex--;
+            BindReport();
+        }
+
+        protected void btnNextPage_Click(object sender, EventArgs e)
+        {
+            gvMaintenance.PageIndex++;
             BindReport();
         }
 
@@ -125,9 +163,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             {
                 DateRange range = ReadDateRange();
                 MaintenanceReportData report;
+                int pageCount;
                 using (ReportsService service = new ReportsService())
+                {
                     report = service.GetMaintenanceReport(range.From, range.ToExclusive,
                         ReadBusFilter(), ddlRoadworthiness.SelectedValue, gvMaintenance.PageIndex, PageSize);
+                    pageCount = Math.Max(1, (int)Math.Ceiling((double)report.TotalRows / PageSize));
+                    if (gvMaintenance.PageIndex >= pageCount)
+                    {
+                        gvMaintenance.PageIndex = pageCount - 1;
+                        report = service.GetMaintenanceReport(range.From, range.ToExclusive,
+                            ReadBusFilter(), ddlRoadworthiness.SelectedValue, gvMaintenance.PageIndex, PageSize);
+                    }
+                }
 
                 litRecordCount.Text = report.Summary.RecordCount.ToString("N0", CultureInfo.InvariantCulture);
                 litTotalCost.Text = report.Summary.TotalCost.ToString("N2", CultureInfo.InvariantCulture);
@@ -135,6 +183,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
                 litUpcoming.Text = report.Summary.UpcomingCount.ToString("N0", CultureInfo.InvariantCulture);
                 gvMaintenance.DataSource = report.Rows;
                 gvMaintenance.DataBind();
+                btnPreviousPage.Enabled = gvMaintenance.PageIndex > 0;
+                btnNextPage.Enabled = gvMaintenance.PageIndex + 1 < pageCount;
+                lblPageInfo.Text = "Page " + (gvMaintenance.PageIndex + 1) + " of " + pageCount +
+                    " (" + report.TotalRows.ToString("N0", CultureInfo.InvariantCulture) + " rows)";
                 lblError.Visible = false;
             }
             catch (ServiceException ex)

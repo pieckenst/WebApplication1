@@ -14,17 +14,17 @@
 </asp:Content>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="content-page">
-        <div class="page-title">Sign In</div>
+        <div class="page-title"><%= Localization.GetHtml("Login_Heading") %></div>
         <div class="page-divider"></div>
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false" role="alert">
             <asp:Literal ID="litError" runat="server" />
         </asp:Panel>
-        <uc:ContentBox ID="cbSignIn" runat="server" HeaderText="Application Account" HeaderColor="Blue" ContentColor="White">
+        <uc:ContentBox ID="cbSignIn" runat="server" HeaderText="<%$ Resources:Strings, Login_AccountHeader %>" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <div class="form-row"><span class="form-label">Login</span><asp:TextBox ID="txtLogin" runat="server" CssClass="form-control" MaxLength="80" autocomplete="username" /></div>
-                <div class="form-row"><span class="form-label">Password</span><asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" MaxLength="100" autocomplete="current-password" /></div>
-                <div class="form-row"><span class="form-label"></span><asp:CheckBox ID="chkRememberMe" runat="server" Text="Keep me signed in" /></div>
-                <div class="form-row"><span class="form-label"></span><asp:Button ID="btnSignIn" runat="server" Text="Sign in" CssClass="action-button" OnClick="btnSignIn_Click" /></div>
+            <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Login_LoginLabel") %></span><asp:TextBox ID="txtLogin" runat="server" CssClass="form-control" MaxLength="80" autocomplete="username" /></div>
+            <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Login_PasswordLabel") %></span><asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" MaxLength="100" autocomplete="current-password" /></div>
+            <div class="form-row"><span class="form-label"></span><asp:CheckBox ID="chkRememberMe" runat="server" Text="<%$ Resources:Strings, Login_Remember %>" /></div>
+            <div class="form-row"><span class="form-label"></span><asp:Button ID="btnSignIn" runat="server" Text="<%$ Resources:Strings, Login_Button %>" CssClass="action-button" OnClick="btnSignIn_Click" /></div>
             </ContentTemplate>
         </uc:ContentBox>
     </div>

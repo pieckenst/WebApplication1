@@ -12,7 +12,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
         private static readonly object SyncRoot = new object();
         private static readonly HashSet<string> AllowedKeys = new HashSet<string>(StringComparer.Ordinal)
         {
-            "SiteName", "DefaultPageTitle", "CopyrightText", "SiteLogoWidth", "SiteLogoHeight", "SiteLogoAlt"
+            "SiteName", "DefaultPageTitle", "CopyrightText", "SiteLogoWidth", "SiteLogoHeight", "SiteLogoAlt", "Language"
         };
         private static Dictionary<string, string> _cachedValues = new Dictionary<string, string>(StringComparer.Ordinal);
         private static DateTime _cachedWriteTimeUtc = DateTime.MinValue;

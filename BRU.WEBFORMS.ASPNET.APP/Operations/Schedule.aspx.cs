@@ -151,18 +151,23 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                 pnlScheduleEditor.Visible = CanEditSchedules;
                 btnUpdateStatuses.Visible = CanEditSchedules;
 
-                using (ScheduleAutomationService automation = new ScheduleAutomationService())
-                {
-                    ScheduleStatusUpdateResult statusResult = automation.UpdateScheduleStatuses();
-                    if (!statusResult.Success)
-                        ShowError("Automatic trip status update failed: " + statusResult.ErrorMessage);
-                }
-
                 if (!IsPostBack)
                 {
+                    using (ScheduleAutomationService automation = new ScheduleAutomationService())
+                    {
+                        ScheduleStatusUpdateResult statusResult = automation.UpdateScheduleStatuses();
+                        LogInformation("Automatic trip status update result: success=" + statusResult.Success +
+                            ", processed=" + statusResult.TotalProcessed + ", transitions=" +
+                            statusResult.TotalUpdated + ", error=" + (statusResult.ErrorMessage ?? "none"));
+                        if (!statusResult.Success)
+                            ShowError("Automatic trip status update failed: " + statusResult.ErrorMessage);
+                    }
+
                     LoadRouteFilter();
                     LoadScheduleEditorResources();
                     ClearScheduleEditor();
+                    txtRecurringFrom.Text = DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    txtRecurringTo.Text = DateTime.Today.AddDays(30).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                     // Load all schedules by default instead of just today
                     DateFrom = new DateTime(2020, 1, 1);
                     DateTo = new DateTime(2031, 1, 1);
@@ -399,17 +404,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             if (totalPages == 0) totalPages = 1;
             if (CurrentPage > totalPages) CurrentPage = totalPages;
 
-            int skip = (CurrentPage - 1) * _pageSize;
-            int take = Math.Min(_pageSize, totalCount - skip);
-            if (take < 0) take = 0;
-
-            List<RouteSchedule> pageData = new List<RouteSchedule>();
-            for (int i = skip; i < skip + take && i < totalCount; i++)
-            {
-                pageData.Add(_currentScheduleList[i]);
-            }
-
-            gvSchedule.DataSource = pageData;
+            gvSchedule.PageSize = _pageSize;
+            gvSchedule.PageIndex = CurrentPage - 1;
+            gvSchedule.DataSource = _currentScheduleList;
             gvSchedule.DataBind();
             RenderPagination(totalPages, totalCount);
         }
@@ -417,32 +414,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         private void RenderPagination(int totalPages, int totalCount)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("<span class='text-small'>Total: ").Append(totalCount).Append(" trips | </span>");
-
-            if (totalPages <= 1)
-            {
-                sb.Append("<span class='current'>1</span>");
-            }
-            else
-            {
-                if (CurrentPage > 1)
-                    sb.Append("<a href=\"#\" onclick=\"__doPostBack('gvSchedule','Page$").Append(CurrentPage - 1).Append("');return false;\">&#9664; Prev</a>");
-
-                int startPage = Math.Max(1, CurrentPage - 3);
-                int endPage = Math.Min(totalPages, CurrentPage + 3);
-
-                for (int i = startPage; i <= endPage; i++)
-                {
-                    if (i == CurrentPage)
-                        sb.Append("<span class='current'>").Append(i).Append("</span>");
-                    else
-                        sb.Append("<a href=\"#\" onclick=\"__doPostBack('gvSchedule','Page$").Append(i).Append("');return false;\">").Append(i).Append("</a>");
-                }
-
-                if (CurrentPage < totalPages)
-                    sb.Append("<a href=\"#\" onclick=\"__doPostBack('gvSchedule','Page$").Append(CurrentPage + 1).Append("');return false;\">Next &#9654;</a>");
-            }
-
+            sb.Append("<span class='text-small'>Total: ").Append(totalCount).Append(" trips");
+            if (totalPages > 1)
+                sb.Append(" | Page ").Append(CurrentPage).Append(" of ").Append(totalPages);
+            sb.Append("</span>");
             litPagination.Text = sb.ToString();
         }
 
@@ -692,6 +667,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                 ScheduleStatusUpdateResult result;
                 using (ScheduleAutomationService service = new ScheduleAutomationService())
                     result = service.UpdateScheduleStatuses();
+                LogInformation("Manual trip status reconciliation result: success=" + result.Success +
+                    ", processed=" + result.TotalProcessed + ", transitions=" + result.TotalUpdated +
+                    ", error=" + (result.ErrorMessage ?? "none"));
                 if (!result.Success)
                     throw new ServiceException(result.ErrorMessage);
 
@@ -713,8 +691,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                 DateTime templateDate = ParseIsoDate(txtTemplateDate.Text, "Template date");
                 DateTime startDate = ParseIsoDate(txtRecurringFrom.Text, "Generate from");
                 DateTime endDate = ParseIsoDate(txtRecurringTo.Text, "Generate through");
-                if (startDate <= DateTime.Today || endDate < startDate || endDate.Subtract(startDate).TotalDays >= 90)
-                    throw new ServiceException("Choose a future date range no longer than 90 days.");
+                if (endDate.Date < startDate.Date)
+                    throw new ServiceException("Generate through must be on or after Generate from.");
+                if (endDate.Date.Subtract(startDate.Date).TotalDays >= 90)
+                    throw new ServiceException("The selected date range cannot exceed 90 days.");
 
                 List<DayOfWeek> days = new List<DayOfWeek>();
                 foreach (ListItem item in cblRecurringDays.Items)
@@ -725,10 +705,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                 if (days.Count == 0)
                     throw new ServiceException("Select at least one day of the week.");
                 bool hasSelectedDay = false;
-                for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
                     if (days.Contains(date.DayOfWeek)) hasSelectedDay = true;
                 if (!hasSelectedDay)
                     throw new ServiceException("The selected weekdays do not occur in the requested date range.");
+
+                string selectedWeekdays = string.Join(",", days);
+                string generationRequest = "range=" + startDate.ToString("yyyy-MM-dd") + ".." +
+                    endDate.ToString("yyyy-MM-dd") + ", template=" + templateDate.ToString("yyyy-MM-dd") +
+                    ", weekdays=" + selectedWeekdays;
+                if (startDate.Date < DateTime.Today)
+                    LogWarning("HISTORICAL BACKFILL requested; past trips will be stored as Completed; " + generationRequest);
+                else
+                    LogInformation("Recurring generation requested; " + generationRequest);
 
                 BatchScheduleGenerationResult result;
                 using (ScheduleAutomationService service = new ScheduleAutomationService())
@@ -745,8 +734,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                 CurrentPage = 1;
                 LoadScheduleByDateRange();
                 LoadStats();
+                string historyNotice = startDate.Date < DateTime.Today
+                    ? " Past dates were processed as historical backfill; created past trips use status Completed."
+                    : string.Empty;
                 ShowSuccess("Recurring generation finished: " + result.TotalSchedulesCreated + " created across " +
-                    result.TotalDaysProcessed + " selected day(s); " + result.TotalDaysFailed + " date(s) failed.");
+                    result.TotalDaysProcessed + " selected day(s); " + result.TotalDaysFailed + " date(s) failed." +
+                    historyNotice);
             }
             catch (Exception ex)
             {
@@ -759,9 +752,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             try
             {
                 EnsureScheduleWriteAccess();
+                LogInformation("Validate Schedule clicked; date range=" + DateFrom.ToString("yyyy-MM-dd") +
+                    ".." + DateTo.ToString("yyyy-MM-dd") + " (end exclusive)");
                 ScheduleValidationResult result;
                 using (ScheduleAutomationService service = new ScheduleAutomationService())
                     result = service.ValidateScheduleIntegrity(DateFrom, DateTo);
+                LogInformation("Validate Schedule finished; success=" + result.Success +
+                    ", checked=" + result.TotalSchedulesValidated + ", issues=" +
+                    result.TotalIssuesFound + ", error=" + (result.ErrorMessage ?? "none"));
                 if (!result.Success)
                     throw new ServiceException(result.ErrorMessage);
 

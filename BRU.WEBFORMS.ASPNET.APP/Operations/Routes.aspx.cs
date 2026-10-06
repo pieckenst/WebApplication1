@@ -285,17 +285,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             if (totalPages == 0) totalPages = 1;
             if (CurrentPage > totalPages) CurrentPage = totalPages;
 
-            int skip = (CurrentPage - 1) * _pageSize;
-            int take = Math.Min(_pageSize, totalCount - skip);
-            if (take < 0) take = 0;
-
-            List<Route> pageData = new List<Route>();
-            for (int i = skip; i < skip + take && i < totalCount; i++)
-            {
-                pageData.Add(_currentRouteList[i]);
-            }
-
-            gvRoutes.DataSource = pageData;
+            gvRoutes.PageSize = _pageSize;
+            gvRoutes.PageIndex = CurrentPage - 1;
+            gvRoutes.DataSource = _currentRouteList;
             gvRoutes.DataBind();
             RenderPagination(totalPages, totalCount);
         }
@@ -303,32 +295,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         private void RenderPagination(int totalPages, int totalCount)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("<span class='text-small'>Total: ").Append(totalCount).Append(" routes | </span>");
-
-            if (totalPages <= 1)
-            {
-                sb.Append("<span class='current'>1</span>");
-            }
-            else
-            {
-                if (CurrentPage > 1)
-                    sb.Append("<a href=\"#\" onclick=\"__doPostBack('gvRoutes','Page$").Append(CurrentPage - 1).Append("');return false;\">&#9664; Prev</a>");
-
-                int startPage = Math.Max(1, CurrentPage - 3);
-                int endPage = Math.Min(totalPages, CurrentPage + 3);
-
-                for (int i = startPage; i <= endPage; i++)
-                {
-                    if (i == CurrentPage)
-                        sb.Append("<span class='current'>").Append(i).Append("</span>");
-                    else
-                        sb.Append("<a href=\"#\" onclick=\"__doPostBack('gvRoutes','Page$").Append(i).Append("');return false;\">").Append(i).Append("</a>");
-                }
-
-                if (CurrentPage < totalPages)
-                    sb.Append("<a href=\"#\" onclick=\"__doPostBack('gvRoutes','Page$").Append(CurrentPage + 1).Append("');return false;\">Next &#9654;</a>");
-            }
-
+            sb.Append("<span class='text-small'>Total: ").Append(totalCount).Append(" routes");
+            if (totalPages > 1)
+                sb.Append(" | Page ").Append(CurrentPage).Append(" of ").Append(totalPages);
+            sb.Append("</span>");
             litPagination.Text = sb.ToString();
         }
 

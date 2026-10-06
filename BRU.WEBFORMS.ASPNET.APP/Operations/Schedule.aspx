@@ -49,6 +49,25 @@
         .weekday-list label { display: inline-block; margin-right: 12px; }
     </style>
 
+    <script type="text/javascript">
+        function confirmRecurringBackfill() {
+            var fromControl = document.getElementById('<%= txtRecurringFrom.ClientID %>');
+            var throughControl = document.getElementById('<%= txtRecurringTo.ClientID %>');
+            if (!fromControl || !throughControl || !fromControl.value) return true;
+
+            var parts = fromControl.value.split('-');
+            if (parts.length !== 3) return true;
+            var fromDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+            var now = new Date();
+            var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            if (fromDate < today) {
+                return window.confirm('This range includes past dates (' + fromControl.value +
+                    ' through ' + throughControl.value + '). Past trips will be saved as Completed. Continue?');
+            }
+            return true;
+        }
+    </script>
+
     <div class="content-page">
         <a name="top"></a>
         <div class="page-title">Schedule Management</div>
@@ -168,7 +187,7 @@
                     <asp:ListItem Text="Sun" Value="Sunday" />
                 </asp:CheckBoxList>
             </div>
-            <asp:Button ID="btnGenerateRecurring" runat="server" Text="Generate Recurring Trips" CssClass="action-button" OnClick="btnGenerateRecurring_Click" />
+            <asp:Button ID="btnGenerateRecurring" runat="server" Text="Generate Recurring Trips" CssClass="action-button" OnClientClick="return confirmRecurringBackfill();" OnClick="btnGenerateRecurring_Click" />
             <asp:Button ID="btnValidateSchedule" runat="server" Text="Validate Schedule" CssClass="action-button" OnClick="btnValidateSchedule_Click" CausesValidation="false" />
         </asp:Panel>
 

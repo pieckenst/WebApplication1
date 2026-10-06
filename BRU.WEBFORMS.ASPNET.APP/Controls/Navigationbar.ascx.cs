@@ -111,47 +111,47 @@ namespace BRU.WEBFORMS.ASPNET.APP.Controls
             return new System.Collections.Generic.List<NavigationItem>
             {
                 // Dashboard Section
-                new NavigationItem { Title = "Dashboard", NavigateUrl = "~/Default.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Main dashboard with fleet overview" },
+                new NavigationItem { Title = Localization.Get("Nav_Dashboard"), NavigateUrl = "~/Default.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Main dashboard with fleet overview" },
                 
                 // Subheader: Fleet Management
-                new NavigationItem { Title = "Fleet Management", IsSubheader = true },
+                new NavigationItem { Title = Localization.Get("Nav_FleetManagement"), IsSubheader = true },
                 
-                new NavigationItem { Title = "Bus Fleet", NavigateUrl = "~/Fleet/Buses.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Manage bus fleet and vehicle operations" },
-                new NavigationItem { Title = "Maintenance", NavigateUrl = "~/Fleet/Maintenance.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Vehicle maintenance and service records" },
+                new NavigationItem { Title = Localization.Get("Nav_BusFleet"), NavigateUrl = "~/Fleet/Buses.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Manage bus fleet and vehicle operations" },
+                new NavigationItem { Title = Localization.Get("Nav_Maintenance"), NavigateUrl = "~/Fleet/Maintenance.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Vehicle maintenance and service records" },
                 
                 // Subheader: Personnel
-                new NavigationItem { Title = "Personnel", IsSubheader = true },
+                new NavigationItem { Title = Localization.Get("Nav_Personnel"), IsSubheader = true },
                 
-                new NavigationItem { Title = "Employees", NavigateUrl = "~/Personnel/Employees.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Employee management and personnel records" },
-                new NavigationItem { Title = "Departments", NavigateUrl = "~/Personnel/Departments.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Department and job management" },
+                new NavigationItem { Title = Localization.Get("Nav_Employees"), NavigateUrl = "~/Personnel/Employees.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Employee management and personnel records" },
+                new NavigationItem { Title = Localization.Get("Nav_Departments"), NavigateUrl = "~/Personnel/Departments.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Department and job management" },
                 
                 // Subheader: Operations
-                new NavigationItem { Title = "Operations", IsSubheader = true },
+                new NavigationItem { Title = Localization.Get("Nav_Operations"), IsSubheader = true },
                 
-                new NavigationItem { Title = "Routes", NavigateUrl = "~/Operations/Routes.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Route management and scheduling" },
-                new NavigationItem { Title = "Schedule", NavigateUrl = "~/Operations/Schedule.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Daily schedule and trip planning" },
-                new NavigationItem { Title = "Stops", NavigateUrl = "~/Operations/Stops.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Bus stop management" },
+                new NavigationItem { Title = Localization.Get("Nav_Routes"), NavigateUrl = "~/Operations/Routes.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Route management and scheduling" },
+                new NavigationItem { Title = Localization.Get("Nav_Schedule"), NavigateUrl = "~/Operations/Schedule.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Daily schedule and trip planning" },
+                new NavigationItem { Title = Localization.Get("Nav_Stops"), NavigateUrl = "~/Operations/Stops.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Bus stop management" },
                 
                 // Subheader: Sales & Tickets
-                new NavigationItem { Title = "Sales & Tickets", IsSubheader = true },
+                new NavigationItem { Title = Localization.Get("Nav_SalesTickets"), IsSubheader = true },
                 
-                new NavigationItem { Title = "Ticket Types", NavigateUrl = "~/Sales/Tickets.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Ticket type management" },
-                new NavigationItem { Title = "Sales", NavigateUrl = "~/Sales/Sales.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Sales transactions and payments" },
-                new NavigationItem { Title = "Payments", NavigateUrl = "~/Sales/Payments.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Payment processing and history" },
+                new NavigationItem { Title = Localization.Get("Nav_TicketTypes"), NavigateUrl = "~/Sales/Tickets.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Ticket type management" },
+                new NavigationItem { Title = Localization.Get("Nav_Sales"), NavigateUrl = "~/Sales/Sales.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Sales transactions and payments" },
+                new NavigationItem { Title = Localization.Get("Nav_Payments"), NavigateUrl = "~/Sales/Payments.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Payment processing and history" },
                 
                 // Subheader: Reports
-                new NavigationItem { Title = "Reports", IsSubheader = true },
+                new NavigationItem { Title = Localization.Get("Nav_Reports"), IsSubheader = true },
                 
-                new NavigationItem { Title = "Analytics", NavigateUrl = "~/Reports/Analytics.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Business analytics and performance reports" },
-                new NavigationItem { Title = "Sales Reports", NavigateUrl = "~/Reports/SalesReports.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Detailed sales reporting" },
-                new NavigationItem { Title = "Maintenance Reports", NavigateUrl = "~/Reports/MaintenanceReports.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Maintenance cost analysis" },
+                new NavigationItem { Title = Localization.Get("Nav_Analytics"), NavigateUrl = "~/Reports/Analytics.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Business analytics and performance reports" },
+                new NavigationItem { Title = Localization.Get("Nav_SalesReports"), NavigateUrl = "~/Reports/SalesReports.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Detailed sales reporting" },
+                new NavigationItem { Title = Localization.Get("Nav_MaintenanceReports"), NavigateUrl = "~/Reports/MaintenanceReports.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Maintenance cost analysis" },
                 
                 // Subheader: System
-                new NavigationItem { Title = "System", IsSubheader = true },
+                new NavigationItem { Title = Localization.Get("Nav_System"), IsSubheader = true },
                 
-                new NavigationItem { Title = "Users", NavigateUrl = "~/System/Users.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "User account management" },
-                new NavigationItem { Title = "Roles & Permissions", NavigateUrl = "~/System/Roles.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Role and permission configuration" },
-                new NavigationItem { Title = "Settings", NavigateUrl = "~/System/Settings.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "System configuration" },
+                new NavigationItem { Title = Localization.Get("Nav_Users"), NavigateUrl = "~/System/Users.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "User account management" },
+                new NavigationItem { Title = Localization.Get("Nav_Roles"), NavigateUrl = "~/System/Roles.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "Role and permission configuration" },
+                new NavigationItem { Title = Localization.Get("Nav_Settings"), NavigateUrl = "~/System/Settings.aspx", IconUrl = "~/en/images/toc_endnode.gif", ToolTip = "System configuration" },
             };
         }
 

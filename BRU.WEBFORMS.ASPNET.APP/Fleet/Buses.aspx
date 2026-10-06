@@ -214,7 +214,7 @@
     
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Bus Fleet Management</div>
+        <div class="page-title"><%= Localization.GetHtml("Buses_Heading") %></div>
         <div class="page-divider"></div>
         
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -228,32 +228,32 @@
         <!-- Statistics Summary -->
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Total Buses:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Buses_Total") %></span>
                 <asp:Literal ID="litTotalBuses" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Operational:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Buses_Operational") %></span>
                 <asp:Literal ID="litOperationalBuses" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">In Repair:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Buses_InRepair") %></span>
                 <asp:Literal ID="litRepairBuses" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Need Attention:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Buses_NeedAttention") %></span>
                 <asp:Literal ID="litAttentionBuses" runat="server" Text="0" />
             </div>
         </div>
         
         <!-- Action Bar -->
         <div class="action-bar">
-            <asp:Button ID="btnAddBus" runat="server" Text="Add New Bus" CssClass="action-button" OnClick="btnAddBus_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
-            <asp:Button ID="btnExport" runat="server" Text="Export to Excel" CssClass="action-button" OnClick="btnExport_Click" />
+            <asp:Button ID="btnAddBus" runat="server" Text="<%$ Resources:Strings, Buses_Add %>" CssClass="action-button" OnClick="btnAddBus_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Common_Refresh %>" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnExport" runat="server" Text="<%$ Resources:Strings, Common_ExportExcel %>" CssClass="action-button" OnClick="btnExport_Click" />
             
             <div class="search-box">
-                <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" Placeholder="Search by fleet number or model..." />
-                <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="action-button" OnClick="btnSearch_Click" />
+                <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" Placeholder="<%$ Resources:Strings, Buses_SearchPlaceholder %>" />
+                <asp:Button ID="btnSearch" runat="server" Text="<%$ Resources:Strings, Common_Search %>" CssClass="action-button" OnClick="btnSearch_Click" />
             </div>
         </div>
         
@@ -262,7 +262,7 @@
 <uc:ContentBox
     ID="cbFilters"
     runat="server"
-    HeaderText="Filter Options"
+    HeaderText="<%$ Resources:Strings, Buses_FilterOptions %>"
     HeaderColor="Blue"
     ContentColor="White">
 
@@ -272,7 +272,7 @@
 
             <!-- Status -->
             <div class="filter-row">
-                <span class="filter-label">Status:</span>
+                <span class="filter-label"><%= Localization.GetHtml("Buses_StatusFilter") %></span>
 
                 <span class="filter-control">
                     <asp:DropDownList
@@ -283,23 +283,23 @@
                         OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
 
                         <asp:ListItem
-                            Text="All Statuses"
+                            Text="<%$ Resources:Strings, Common_AllStatuses %>"
                             Value="" />
 
                         <asp:ListItem
-                            Text="Operational"
+                            Text="<%$ Resources:Strings, Common_Operational %>"
                             Value="Исправен" />
 
                         <asp:ListItem
-                            Text="In Repair"
+                            Text="<%$ Resources:Strings, Common_InRepair %>"
                             Value="На ремонте" />
 
                         <asp:ListItem
-                            Text="Retired"
+                            Text="<%$ Resources:Strings, Common_Retired %>"
                             Value="Списан" />
 
                         <asp:ListItem
-                            Text="Reserve"
+                            Text="<%$ Resources:Strings, Common_Reserve %>"
                             Value="Резерв" />
 
                     </asp:DropDownList>
@@ -308,7 +308,7 @@
 
             <!-- Manufacturer -->
             <div class="filter-row">
-                <span class="filter-label">Manufacturer:</span>
+                <span class="filter-label"><%= Localization.GetHtml("Buses_ManufacturerFilter") %></span>
 
                 <span class="filter-control">
                     <asp:DropDownList
@@ -319,7 +319,7 @@
                         OnSelectedIndexChanged="ddlManufacturerFilter_SelectedIndexChanged">
 
                         <asp:ListItem
-                            Text="All Manufacturers"
+                            Text="<%$ Resources:Strings, Buses_AllManufacturers %>"
                             Value="" />
 
                     </asp:DropDownList>
@@ -328,7 +328,7 @@
 
             <!-- Year Range -->
             <div class="filter-row">
-                <span class="filter-label">Year Range:</span>
+                <span class="filter-label"><%= Localization.GetHtml("Buses_YearRange") %></span>
 
                 <span class="filter-control">
 
@@ -337,19 +337,19 @@
                         runat="server"
                         CssClass="form-control"
                         Width="80"
-                        Placeholder="From" />
+                        Placeholder="<%$ Resources:Strings, Common_From %>" />
 
                     <asp:TextBox
                         ID="txtYearTo"
                         runat="server"
                         CssClass="form-control"
                         Width="80"
-                        Placeholder="To" />
+                        Placeholder="<%$ Resources:Strings, Common_To %>" />
 
                     <asp:Button
                         ID="btnApplyYearFilter"
                         runat="server"
-                        Text="Apply"
+                        Text="<%$ Resources:Strings, Common_Apply %>"
                         CssClass="action-button"
                         OnClick="btnApplyYearFilter_Click" />
 
@@ -366,7 +366,7 @@
 <uc:ContentBox
     ID="cbBusesList"
     runat="server"
-    HeaderText="Bus Fleet"
+    HeaderText="<%$ Resources:Strings, Nav_BusFleet %>"
     HeaderColor="Blue"
     ContentColor="White">
 
@@ -391,42 +391,42 @@
 
     <asp:BoundField
         DataField="BusId"
-        HeaderText="ID"
+        HeaderText="<%$ Resources:Strings, Common_ID %>"
         SortExpression="bus_id"
         ReadOnly="true" />
 
     <asp:BoundField
         DataField="FleetNumber"
-        HeaderText="Fleet Number"
+        HeaderText="<%$ Resources:Strings, Common_FleetNumber %>"
         SortExpression="fleet_number" />
 
     <asp:BoundField
         DataField="RegistrationNum"
-        HeaderText="Registration"
+        HeaderText="<%$ Resources:Strings, Common_Registration %>"
         SortExpression="registration_num" />
 
     <asp:BoundField
         DataField="Model"
-        HeaderText="Model"
+        HeaderText="<%$ Resources:Strings, Common_Model %>"
         SortExpression="model" />
 
     <asp:BoundField
         DataField="Manufacturer"
-        HeaderText="Manufacturer"
+        HeaderText="<%$ Resources:Strings, Common_Manufacturer %>"
         SortExpression="manufacturer" />
 
     <asp:BoundField
         DataField="ManufactureYear"
-        HeaderText="Year"
+        HeaderText="<%$ Resources:Strings, Common_Year %>"
         SortExpression="manufacture_year" />
 
     <asp:BoundField
         DataField="Capacity"
-        HeaderText="Capacity"
+        HeaderText="<%$ Resources:Strings, Common_Capacity %>"
         SortExpression="capacity" />
 
     <asp:TemplateField
-        HeaderText="Status"
+        HeaderText="<%$ Resources:Strings, Common_Status %>"
         SortExpression="status">
 
         <ItemTemplate>
@@ -439,12 +439,12 @@
 
     <asp:BoundField
         DataField="MileageKm"
-        HeaderText="Mileage (km)"
+        HeaderText="<%$ Resources:Strings, Common_MileageKm %>"
         SortExpression="mileage_km"
         DataFormatString="{0:N0}" />
 
     <asp:TemplateField
-        HeaderText="Mileage Category">
+        HeaderText="<%$ Resources:Strings, Buses_MileageCategory %>">
 
         <ItemTemplate>
             <asp:Literal
@@ -454,14 +454,14 @@
 
     </asp:TemplateField>
 
-    <asp:TemplateField HeaderText="Actions">
+    <asp:TemplateField HeaderText="<%$ Resources:Strings, Common_Actions %>">
 
         <ItemTemplate>
 
             <asp:Button
                 ID="btnView"
                 runat="server"
-                Text="View"
+                Text="<%$ Resources:Strings, Common_View %>"
                 CommandName="View"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button" />
@@ -469,7 +469,7 @@
             <asp:Button
                 ID="btnEdit"
                 runat="server"
-                Text="Edit"
+                Text="<%$ Resources:Strings, Common_Edit %>"
                 CommandName="Edit"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button" />
@@ -477,7 +477,7 @@
             <asp:Button
                 ID="btnMaintenance"
                 runat="server"
-                Text="Maintenance"
+                Text="<%$ Resources:Strings, Nav_Maintenance %>"
                 CommandName="Maintenance"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button" />
@@ -485,11 +485,11 @@
             <asp:Button
                 ID="btnDelete"
                 runat="server"
-                Text="Delete"
+                Text="<%$ Resources:Strings, Common_Delete %>"
                 CommandName="Delete"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button"
-                OnClientClick="return confirm('Are you sure you want to delete this bus?');" />
+                OnClientClick="return confirm('<%$ Resources:Strings, Buses_DeleteConfirm %>');" />
 
         </ItemTemplate>
 
@@ -508,7 +508,7 @@
             <asp:Literal ID="litPagination" runat="server" />
         </div>
         
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top ▲</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Common_BackToTop") %></a></p>
     </div>
     
 </asp:Content>

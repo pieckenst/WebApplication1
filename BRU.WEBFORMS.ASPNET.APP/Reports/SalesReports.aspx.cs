@@ -32,6 +32,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
         protected global::System.Web.UI.WebControls.Literal litRefunds;
         protected global::System.Web.UI.WebControls.Literal litNet;
         protected global::System.Web.UI.WebControls.GridView gvSales;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousPage;
+        protected global::System.Web.UI.WebControls.Label lblPageInfo;
+        protected global::System.Web.UI.WebControls.LinkButton btnNextPage;
         protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbSalesFilters;
         protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbSalesList;
 
@@ -56,8 +59,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             btnApply = cbSalesFilters.FindContentControl<Button>("btnApply");
             btnExport = cbSalesFilters.FindContentControl<Button>("btnExport");
             gvSales = cbSalesList.FindContentControl<GridView>("gvSales");
+            btnPreviousPage = cbSalesList.FindContentControl<LinkButton>("btnPreviousPage");
+            lblPageInfo = cbSalesList.FindContentControl<Label>("lblPageInfo");
+            btnNextPage = cbSalesList.FindContentControl<LinkButton>("btnNextPage");
             if (txtDateFrom == null || txtDateTo == null || ddlChannel == null || ddlStatus == null ||
-                btnApply == null || btnExport == null || gvSales == null)
+                btnApply == null || btnExport == null || gvSales == null || btnPreviousPage == null ||
+                lblPageInfo == null || btnNextPage == null)
                 throw new InvalidOperationException("Sales report controls were not created inside their ContentBox templates.");
             _templateControlsResolved = true;
         }
@@ -68,9 +75,16 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             BindReport();
         }
 
-        protected void gvSales_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void btnPreviousPage_Click(object sender, EventArgs e)
         {
-            gvSales.PageIndex = e.NewPageIndex;
+            if (gvSales.PageIndex > 0)
+                gvSales.PageIndex--;
+            BindReport();
+        }
+
+        protected void btnNextPage_Click(object sender, EventArgs e)
+        {
+            gvSales.PageIndex++;
             BindReport();
         }
 
@@ -135,9 +149,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             {
                 DateRange range = ReadDateRange();
                 SalesReportData report;
+                int pageCount;
                 using (ReportsService service = new ReportsService())
+                {
                     report = service.GetSalesReport(range.From, range.ToExclusive,
                         ddlChannel.SelectedValue, ddlStatus.SelectedValue, gvSales.PageIndex, PageSize);
+                    pageCount = Math.Max(1, (int)Math.Ceiling((double)report.TotalRows / PageSize));
+                    if (gvSales.PageIndex >= pageCount)
+                    {
+                        gvSales.PageIndex = pageCount - 1;
+                        report = service.GetSalesReport(range.From, range.ToExclusive,
+                            ddlChannel.SelectedValue, ddlStatus.SelectedValue, gvSales.PageIndex, PageSize);
+                    }
+                }
 
                 litSaleCount.Text = report.Summary.SaleCount.ToString("N0", CultureInfo.InvariantCulture);
                 litTicketCount.Text = report.Summary.TicketCount.ToString("N0", CultureInfo.InvariantCulture);
@@ -146,6 +170,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
                 litNet.Text = report.Summary.NetAmount.ToString("N2", CultureInfo.InvariantCulture);
                 gvSales.DataSource = report.Rows;
                 gvSales.DataBind();
+                btnPreviousPage.Enabled = gvSales.PageIndex > 0;
+                btnNextPage.Enabled = gvSales.PageIndex + 1 < pageCount;
+                lblPageInfo.Text = "Page " + (gvSales.PageIndex + 1) + " of " + pageCount +
+                    " (" + report.TotalRows.ToString("N0", CultureInfo.InvariantCulture) + " rows)";
                 lblError.Visible = false;
             }
             catch (ServiceException ex)

@@ -14,7 +14,7 @@
     </asp:HyperLink>
     <div class="auth-status">
         <asp:Literal ID="litCurrentUser" runat="server" />
-        <asp:HyperLink ID="hlSignIn" runat="server" NavigateUrl="~/Login.aspx" Text="Sign in" />
-        <asp:HyperLink ID="hlSignOut" runat="server" NavigateUrl="~/Logout.aspx" Text="Sign out" />
+        <asp:HyperLink ID="hlSignIn" runat="server" NavigateUrl="~/Login.aspx" Text="<%$ Resources:Strings, Toolbar_SignIn %>" />
+        <asp:HyperLink ID="hlSignOut" runat="server" NavigateUrl="~/Logout.aspx" Text="<%$ Resources:Strings, Toolbar_SignOut %>" />
     </div>
 </div>

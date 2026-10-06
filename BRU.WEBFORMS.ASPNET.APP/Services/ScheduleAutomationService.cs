@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
+using System.Web;
 using BRU.WEBFORMS.ASPNET.APP.DataAccess;
 using BRU.WEBFORMS.ASPNET.APP.Models;
 
@@ -119,9 +121,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         /// </summary>
         public ScheduleStatusUpdateResult UpdateScheduleStatuses()
         {
+            DateTime startedAt = DateTime.Now;
             ScheduleStatusUpdateResult result = new ScheduleStatusUpdateResult
             {
-                ExecutionTime = DateTime.Now
+                ExecutionTime = startedAt
             };
 
             try
@@ -137,17 +140,34 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                     DateTime now = DateTime.Now;
                     DateTime today = now.Date;
                     TimeSpan currentTime = now.TimeOfDay;
+                    LogScheduleTrace("STATUS", "START scope=all pending/in-progress schedules through " +
+                        today.ToString("yyyy-MM-dd") + "; future schedules are left unchanged; currentTime=" +
+                        currentTime.ToString(@"hh\:mm\:ss"));
 
-                    // Get today's schedules that may need status updates
-                    List<RouteSchedule> schedules = _routeRepository.GetScheduleRange(today, today.AddDays(1));
+                    List<RouteSchedule> schedules = _routeRepository.GetSchedulesForStatusReconciliation(today);
+                    LogScheduleTrace("STATUS", "QUERY_RESULT candidates=" + schedules.Count +
+                        "; past and today's pending/in-progress schedules are included.");
+
+                    if (schedules.Count == 0)
+                    {
+                        LogScheduleTrace("STATUS", "NO_CANDIDATES no past or today's schedules remain " +
+                            "in a pending/in-progress status.");
+                    }
 
                     foreach (RouteSchedule schedule in schedules)
                     {
                         string oldStatus = schedule.ScheduleStatus;
                         string newStatus = DetermineScheduleStatus(schedule, today, currentTime);
+                        string reason = GetStatusDecisionReason(schedule, today, currentTime);
 
                         if (oldStatus != newStatus)
                         {
+                            LogScheduleTrace("STATUS", "TRANSITION_ATTEMPT scheduleId=" + schedule.ScheduleId +
+                                ", route=" + schedule.RouteNum + ", serviceDate=" +
+                                schedule.ServiceDate.ToString("yyyy-MM-dd") + ", interval=" +
+                                schedule.DepartureTime.ToString(@"hh\:mm") + "-" +
+                                schedule.ArrivalTime.ToString(@"hh\:mm") + ", old=" + oldStatus +
+                                ", new=" + newStatus + ", reason=" + reason);
                             UpdateScheduleStatus(schedule.ScheduleId, newStatus);
                             result.StatusTransitions.Add(new StatusTransition
                             {
@@ -157,6 +177,15 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                                 NewStatus = newStatus,
                                 TransitionTime = now
                             });
+                            LogScheduleTrace("STATUS", "TRANSITION_APPLIED scheduleId=" + schedule.ScheduleId +
+                                ", old=" + oldStatus + ", new=" + newStatus);
+                        }
+                        else
+                        {
+                            LogScheduleTrace("STATUS", "NO_CHANGE scheduleId=" + schedule.ScheduleId +
+                                ", route=" + schedule.RouteNum + ", serviceDate=" +
+                                schedule.ServiceDate.ToString("yyyy-MM-dd") + ", status=" + oldStatus +
+                                ", reason=" + reason);
                         }
                     }
 
@@ -164,6 +193,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                     result.TotalProcessed = schedules.Count;
                     result.TotalUpdated = result.StatusTransitions.Count;
 
+                    LogScheduleTrace("STATUS", "TRANSACTION_COMPLETE_REQUESTED processed=" + result.TotalProcessed +
+                        ", transitions=" + result.TotalUpdated);
                     scope.Complete();
                 }
             }
@@ -172,8 +203,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 result.Success = false;
                 result.ErrorMessage = ex.Message;
                 result.Exception = ex;
+                Trace.TraceError("[SCHEDULE][STATUS] RequestId:{0} FAILED after {1}ms: {2}",
+                    GetScheduleRequestId(), (DateTime.Now - startedAt).TotalMilliseconds, ex);
             }
 
+            LogScheduleTrace("STATUS", "FINISH success=" + result.Success + ", processed=" +
+                result.TotalProcessed + ", transitions=" + result.TotalUpdated + ", elapsedMs=" +
+                (DateTime.Now - startedAt).TotalMilliseconds.ToString("F0"));
             return result;
         }
 
@@ -191,9 +227,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             if (schedule.ScheduleStatus == ScheduleStatus.Cancelled)
                 return ScheduleStatus.Cancelled;
 
-            // Only process today's schedules
-            if (schedule.ServiceDate != today)
-                return schedule.ScheduleStatus;
+            if (schedule.ServiceDate.Date < today)
+                return ScheduleStatus.Completed;
+            if (schedule.ServiceDate.Date > today)
+                return ScheduleStatus.Planned;
 
             TimeSpan departure = schedule.DepartureTime;
             TimeSpan arrival = schedule.ArrivalTime;
@@ -213,6 +250,35 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             }
         }
 
+        private static string GetStatusDecisionReason(RouteSchedule schedule, DateTime today, TimeSpan currentTime)
+        {
+            if (schedule.ScheduleStatus == ScheduleStatus.Cancelled)
+                return "cancelled schedules are never auto-updated";
+            if (schedule.ServiceDate.Date < today)
+                return "service date is in the past; close as completed";
+            if (schedule.ServiceDate.Date > today)
+                return "future service date; keep planned";
+            if (currentTime < schedule.DepartureTime)
+                return "current time is before departure";
+            if (currentTime < schedule.ArrivalTime.Add(TimeSpan.FromMinutes(15)))
+                return "trip is underway or within the 15-minute completion buffer";
+            return "arrival plus the 15-minute completion buffer has passed";
+        }
+
+        private static void LogScheduleTrace(string area, string message)
+        {
+            Trace.TraceInformation("[SCHEDULE][{0}] {1:yyyy-MM-dd HH:mm:ss.fff} RequestId:{2} {3}",
+                area, DateTime.Now, GetScheduleRequestId(), message);
+        }
+
+        private static string GetScheduleRequestId()
+        {
+            HttpContext context = HttpContext.Current;
+            return context == null || context.Items["RequestId"] == null
+                ? "background"
+                : context.Items["RequestId"].ToString();
+        }
+
         /// <summary>
         /// Updates a schedule's status in the database.
         /// </summary>
@@ -227,10 +293,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         #region Recurring Schedule Generation
 
         /// <summary>
-        /// Generates recurring schedules for future dates based on templates.
+        /// Generates schedules from a template. Past dates are inserted as completed historical trips.
         /// Implements full conflict detection and validation.
         /// </summary>
-        /// <param name="generationDate">Target date to generate schedules for</param>
+            /// <param name="generationDate">Target date to generate schedules for</param>
         /// <param name="sourceTemplateDate">Template date to copy schedules from</param>
         public ScheduleGenerationResult GenerateRecurringSchedules(DateTime generationDate, DateTime sourceTemplateDate)
         {
@@ -251,12 +317,6 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                         Timeout = TimeSpan.FromMinutes(10)
                     }))
                 {
-                    // Validate target date
-                    if (generationDate <= DateTime.Today)
-                    {
-                        throw new ServiceException("Cannot generate schedules for past or current dates");
-                    }
-
                     // Check if schedules already exist for target date
                     List<RouteSchedule> existing = _routeRepository.GetScheduleRange(generationDate, generationDate.AddDays(1));
                     if (existing != null && existing.Count > 0)
@@ -271,13 +331,15 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                         throw new ServiceException($"No template schedules found for {sourceTemplateDate:yyyy-MM-dd}");
                     }
 
-                    // Load resource availability
+                    bool isHistoricalBackfill = generationDate.Date < DateTime.Today;
+
+                    // Historical entries may use resources that are now inactive.
                     List<Bus> availableBuses = _busRepository.GetAllBuses()
-                        .Where(b => b.Status == BusStatus.Operational)
+                        .Where(b => isHistoricalBackfill || b.Status == BusStatus.Operational)
                         .ToList();
                     
                     List<Employee> availableDrivers = GetEligibleDrivers()
-                        .Where(e => e.Status == EmployeeStatus.Working)
+                        .Where(e => isHistoricalBackfill || e.Status == EmployeeStatus.Working)
                         .ToList();
 
                     // Check maintenance conflicts
@@ -292,9 +354,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                     {
                         try
                         {
-                            // Validate route is still active
+                            // Past schedules may refer to routes that have since been deactivated.
                             Route route = _routeRepository.GetRouteById(template.RouteId);
-                            if (route == null || !route.IsActive)
+                            if (route == null || (!isHistoricalBackfill && !route.IsActive))
                             {
                                 result.Skipped.Add(new ScheduleGenerationItem
                                 {
@@ -350,6 +412,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                             }
 
                             // Create new schedule
+                            string generatedStatus = DetermineGeneratedScheduleStatus(
+                                generationDate, template.DepartureTime, template.ArrivalTime);
                             int newScheduleId = InsertSchedule(
                                 template.RouteId,
                                 selectedBus.BusId,
@@ -357,7 +421,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                                 generationDate,
                                 template.DepartureTime,
                                 template.ArrivalTime,
-                                selectedBus.Capacity
+                                selectedBus.Capacity,
+                                generatedStatus
                             );
 
                             result.Created.Add(new ScheduleGenerationItem
@@ -371,6 +436,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                                 BusFleetNumber = selectedBus.FleetNumber,
                                 DriverName = selectedDriver.EmployeeName
                             });
+                            LogScheduleTrace("GENERATION", "TRIP_CREATED scheduleId=" + newScheduleId +
+                                ", serviceDate=" + generationDate.ToString("yyyy-MM-dd") +
+                                ", route=" + template.RouteNum + ", bus=" + selectedBus.FleetNumber +
+                                ", driver=" + selectedDriver.EmployeeName + ", status=" + generatedStatus);
                         }
                         catch (Exception ex)
                         {
@@ -471,8 +540,25 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         /// <summary>
         /// Inserts a new schedule into the database.
         /// </summary>
+        private string DetermineGeneratedScheduleStatus(DateTime serviceDate, TimeSpan departureTime, TimeSpan arrivalTime)
+        {
+            DateTime today = DateTime.Today;
+            if (serviceDate.Date < today)
+                return ScheduleStatus.Completed;
+            if (serviceDate.Date > today)
+                return ScheduleStatus.Planned;
+
+            return DetermineScheduleStatus(new RouteSchedule
+            {
+                ServiceDate = serviceDate.Date,
+                DepartureTime = departureTime,
+                ArrivalTime = arrivalTime,
+                ScheduleStatus = ScheduleStatus.Planned
+            }, today, DateTime.Now.TimeOfDay);
+        }
+
         private int InsertSchedule(int routeId, int busId, int driverId, DateTime serviceDate, 
-            TimeSpan departureTime, TimeSpan arrivalTime, int availableSeats)
+            TimeSpan departureTime, TimeSpan arrivalTime, int availableSeats, string status)
         {
             return _routeRepository.InsertSchedule(new RouteSchedule
             {
@@ -483,7 +569,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 DepartureTime = departureTime,
                 ArrivalTime = arrivalTime,
                 AvailableSeatNum = Convert.ToInt16(availableSeats),
-                ScheduleStatus = ScheduleStatus.Planned
+                ScheduleStatus = status
             });
         }
 
@@ -511,6 +597,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
             try
             {
+                if (endDate.Date < startDate.Date)
+                    throw new ServiceException("Generate through must be on or after Generate from.");
+                if (endDate.Date.Subtract(startDate.Date).TotalDays >= 90)
+                    throw new ServiceException("The selected date range cannot exceed 90 days.");
+
                 // If no specific days specified, generate for all days
                 if (daysOfWeek == null || daysOfWeek.Count == 0)
                 {
@@ -521,13 +612,23 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                     };
                 }
 
-                DateTime currentDate = startDate;
-                while (currentDate <= endDate)
+                LogScheduleTrace("GENERATION", "START range=" + startDate.ToString("yyyy-MM-dd") +
+                    ".." + endDate.ToString("yyyy-MM-dd") + ", historicalBackfill=" +
+                    (startDate.Date < DateTime.Today) + ", template=" +
+                    templateDate.ToString("yyyy-MM-dd") + ", weekdays=" +
+                    string.Join(",", daysOfWeek));
+
+                DateTime currentDate = startDate.Date;
+                while (currentDate <= endDate.Date)
                 {
                     if (daysOfWeek.Contains(currentDate.DayOfWeek))
                     {
                         ScheduleGenerationResult dayResult = GenerateRecurringSchedules(currentDate, templateDate);
                         batchResult.DailyResults.Add(dayResult);
+                        LogScheduleTrace("GENERATION", "DATE_RESULT date=" + currentDate.ToString("yyyy-MM-dd") +
+                            ", success=" + dayResult.Success + ", created=" + dayResult.TotalGenerated +
+                            ", skipped=" + dayResult.TotalSkipped + ", failed=" + dayResult.TotalFailed +
+                            ", error=" + (dayResult.ErrorMessage ?? "none"));
 
                         batchResult.TotalDaysProcessed++;
                         if (dayResult.Success)
@@ -545,12 +646,18 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 }
 
                 batchResult.Success = batchResult.TotalDaysFailed == 0;
+                LogScheduleTrace("GENERATION", "FINISH success=" + batchResult.Success +
+                    ", processedDays=" + batchResult.TotalDaysProcessed +
+                    ", created=" + batchResult.TotalSchedulesCreated +
+                    ", failedDays=" + batchResult.TotalDaysFailed);
             }
             catch (Exception ex)
             {
                 batchResult.Success = false;
                 batchResult.ErrorMessage = ex.Message;
                 batchResult.Exception = ex;
+                Trace.TraceError("[SCHEDULE][GENERATION] RequestId:{0} FAILED: {1}",
+                    GetScheduleRequestId(), ex);
             }
 
             return batchResult;
@@ -566,6 +673,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         /// </summary>
         public ScheduleValidationResult ValidateScheduleIntegrity(DateTime startDate, DateTime endDate)
         {
+            DateTime startedAt = DateTime.Now;
             ScheduleValidationResult result = new ScheduleValidationResult
             {
                 StartDate = startDate,
@@ -575,10 +683,21 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
             try
             {
+                LogScheduleTrace("VALIDATION", "START range=" + startDate.ToString("yyyy-MM-dd") +
+                    ".." + endDate.ToString("yyyy-MM-dd") + " (end exclusive)");
                 List<RouteSchedule> schedules = _routeRepository.GetScheduleRange(startDate, endDate);
+                LogScheduleTrace("VALIDATION", "QUERY_RESULT schedules=" + schedules.Count);
 
                 foreach (RouteSchedule schedule in schedules)
                 {
+                    LogScheduleTrace("VALIDATION", "CHECK scheduleId=" + schedule.ScheduleId +
+                        ", route=" + schedule.RouteNum + ", date=" +
+                        schedule.ServiceDate.ToString("yyyy-MM-dd") + ", time=" +
+                        schedule.DepartureTime.ToString(@"hh\:mm") + "-" +
+                        schedule.ArrivalTime.ToString(@"hh\:mm") + ", busId=" + schedule.BusId +
+                        ", driverId=" + schedule.DriverId + ", status=" + schedule.ScheduleStatus +
+                        ", seats=" + schedule.AvailableSeats);
+
                     // Validate route exists and is active
                     Route route = _routeRepository.GetRouteById(schedule.RouteId);
                     if (route == null)
@@ -676,6 +795,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 }
 
                 List<Maintenance> maintenanceRecords = _maintenanceRepository.GetMaintenanceByDateRange(startDate, endDate);
+                LogScheduleTrace("VALIDATION", "MAINTENANCE_QUERY records=" + maintenanceRecords.Count);
                 foreach (RouteSchedule schedule in schedules)
                 {
                     if (schedule.ScheduleStatus == ScheduleStatus.Cancelled)
@@ -719,12 +839,22 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 result.TotalSchedulesValidated = schedules.Count;
                 result.TotalIssuesFound = result.Issues.Count;
                 result.Success = true;
+                foreach (ValidationIssue issue in result.Issues)
+                {
+                    Trace.TraceWarning("[SCHEDULE][VALIDATION] RequestId:{0} ISSUE severity={1}, scheduleId={2}, message={3}",
+                        GetScheduleRequestId(), issue.Severity, issue.ScheduleId, issue.Issue);
+                }
+                LogScheduleTrace("VALIDATION", "FINISH success=true, checked=" +
+                    result.TotalSchedulesValidated + ", issues=" + result.TotalIssuesFound +
+                    ", elapsedMs=" + (DateTime.Now - startedAt).TotalMilliseconds.ToString("F0"));
             }
             catch (Exception ex)
             {
                 result.Success = false;
                 result.ErrorMessage = ex.Message;
                 result.Exception = ex;
+                Trace.TraceError("[SCHEDULE][VALIDATION] RequestId:{0} FAILED after {1}ms: {2}",
+                    GetScheduleRequestId(), (DateTime.Now - startedAt).TotalMilliseconds, ex);
             }
 
             return result;

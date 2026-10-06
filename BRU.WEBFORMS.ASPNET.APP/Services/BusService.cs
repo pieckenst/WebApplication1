@@ -324,7 +324,20 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
     /// </summary>
     public class ServiceException : Exception
     {
+        public string LocalizedMessage { get; private set; }
+
         public ServiceException(string message) : base(message) { }
         public ServiceException(string message, Exception innerException) : base(message, innerException) { }
+
+        public ServiceException(string message, string localizedMessage) : base(message)
+        {
+            LocalizedMessage = localizedMessage;
+        }
+
+        public ServiceException(string message, string localizedMessage, Exception innerException)
+            : base(message, innerException)
+        {
+            LocalizedMessage = localizedMessage;
+        }
     }
 }

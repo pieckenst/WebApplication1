@@ -48,7 +48,7 @@
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Maintenance Records</div>
+        <div class="page-title"><%= Localization.GetHtml("Maintenance_Heading") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -65,80 +65,80 @@
 
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Total Records:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Maintenance_TotalRecords") %></span>
                 <asp:Literal ID="litTotalRecords" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Operational:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Maintenance_Operational") %></span>
                 <asp:Literal ID="litOperational" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Needs Attention:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Maintenance_NeedsAttention") %></span>
                 <asp:Literal ID="litNeedsAttention" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Not Operational:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Maintenance_NotOperational") %></span>
                 <asp:Literal ID="litNotOperational" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Total Cost:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Maintenance_TotalCost") %></span>
                 <asp:Literal ID="litTotalCost" runat="server" Text="0.00" />
             </div>
         </div>
 
         <div class="action-bar">
-            <asp:Button ID="btnAddRecord" runat="server" Text="Add Maintenance Record" CssClass="action-button" OnClick="btnAddRecord_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnAddRecord" runat="server" Text="<%$ Resources:Strings, Maintenance_AddRecord %>" CssClass="action-button" OnClick="btnAddRecord_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Common_Refresh %>" CssClass="action-button" OnClick="btnRefresh_Click" />
         </div>
 
-        <uc:ContentBox ID="cbFilters" runat="server" HeaderText="Filter Records" HeaderColor="Blue" ContentColor="White">
+        <uc:ContentBox ID="cbFilters" runat="server" HeaderText="<%$ Resources:Strings, Maintenance_FilterRecords %>" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <div class="filter-section">
                     <div class="filter-row">
-                        <span class="filter-label">Roadworthiness:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Maintenance_RoadworthinessFilter") %></span>
                         <asp:DropDownList ID="ddlRwFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlRwFilter_SelectedIndexChanged">
-                            <asp:ListItem Text="All" Value="" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_All %>" Value="" />
                             <asp:ListItem Text="Исправен" Value="Исправен" />
                             <asp:ListItem Text="Требует внимания" Value="Требует внимания" />
                             <asp:ListItem Text="Неисправен" Value="Неисправен" />
                         </asp:DropDownList>
                     </div>
                     <div class="filter-row">
-                        <span class="filter-label">Bus:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Maintenance_BusFilter") %></span>
                         <asp:DropDownList ID="ddlBusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlBusFilter_SelectedIndexChanged">
-                            <asp:ListItem Text="All Buses" Value="" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Maintenance_AllBuses %>" Value="" />
                         </asp:DropDownList>
                     </div>
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <uc:ContentBox ID="cbMaintenanceList" runat="server" HeaderText="Maintenance Records" HeaderColor="Blue" ContentColor="White">
+        <uc:ContentBox ID="cbMaintenanceList" runat="server" HeaderText="<%$ Resources:Strings, Maintenance_ListHeader %>" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <asp:GridView ID="gvMaintenance" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvMaintenance_PageIndexChanging" OnSorting="gvMaintenance_Sorting" OnRowCommand="gvMaintenance_RowCommand" OnRowDataBound="gvMaintenance_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="MaintenanceId" HeaderText="ID" SortExpression="maintenance_id" ReadOnly="true" />
-                        <asp:BoundField DataField="FleetNumber" HeaderText="Bus" SortExpression="fleet_number" />
-                        <asp:BoundField DataField="MaintenanceDate" HeaderText="Date" SortExpression="maintenance_date" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:BoundField DataField="MaintenanceType" HeaderText="Type" SortExpression="maintenance_type" />
-                        <asp:BoundField DataField="MileageKm" HeaderText="Mileage" SortExpression="mileage_km" />
-                        <asp:TemplateField HeaderText="Roadworthiness" SortExpression="roadworthiness">
+                        <asp:BoundField DataField="MaintenanceId" HeaderText="<%$ Resources:Strings, Common_ID %>" SortExpression="maintenance_id" ReadOnly="true" />
+                        <asp:BoundField DataField="FleetNumber" HeaderText="<%$ Resources:Strings, Common_Bus %>" SortExpression="fleet_number" />
+                        <asp:BoundField DataField="MaintenanceDate" HeaderText="<%$ Resources:Strings, Maintenance_Date %>" SortExpression="maintenance_date" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:BoundField DataField="MaintenanceType" HeaderText="<%$ Resources:Strings, Common_Type %>" SortExpression="maintenance_type" />
+                        <asp:BoundField DataField="MileageKm" HeaderText="<%$ Resources:Strings, Common_Mileage %>" SortExpression="mileage_km" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Common_Roadworthiness %>" SortExpression="roadworthiness">
                             <ItemTemplate>
                                 <asp:Literal ID="litRw" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Cost" SortExpression="maintenance_cost">
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Common_Cost %>" SortExpression="maintenance_cost">
                             <ItemTemplate>
                                 <asp:Literal ID="litCost" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="NextMaintenanceDate" HeaderText="Next Service" SortExpression="next_maintenance_date" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:BoundField DataField="DaysFromLastService" HeaderText="Days Ago" SortExpression="days_from_last_service" />
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:BoundField DataField="NextMaintenanceDate" HeaderText="<%$ Resources:Strings, Common_NextService %>" SortExpression="next_maintenance_date" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:BoundField DataField="DaysFromLastService" HeaderText="<%$ Resources:Strings, Maintenance_DaysAgo %>" SortExpression="days_from_last_service" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Common_Actions %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="View" CommandName="ViewRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this maintenance record?');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Common_View %>" CommandName="ViewRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Common_Edit %>" CommandName="EditRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %>" CommandName="DeleteRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this maintenance record?');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -151,46 +151,46 @@
         </div>
 
         <!-- Add/Edit Maintenance Form -->
-        <uc:ContentBox ID="cbMaintenanceForm" runat="server" HeaderText="Add / Edit Maintenance Record" HeaderColor="Blue" ContentColor="White" Visible="false">
+        <uc:ContentBox ID="cbMaintenanceForm" runat="server" HeaderText="<%$ Resources:Strings, Maintenance_AddEditHeader %>" HeaderColor="Blue" ContentColor="White" Visible="false">
             <ContentTemplate>
                 <asp:Panel ID="pnlMaintenanceForm" runat="server" DefaultButton="btnSave">
                     <div class="form-row">
-                        <span class="form-label">Bus <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Common_Bus") %> <span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlBus" runat="server" CssClass="form-control" />
-                        <asp:RequiredFieldValidator ID="rfvBus" runat="server" ControlToValidate="ddlBus" InitialValue="" ErrorMessage="Bus is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
+                        <asp:RequiredFieldValidator ID="rfvBus" runat="server" ControlToValidate="ddlBus" InitialValue="" ErrorMessage="<%$ Resources:Strings, Maintenance_BusRequired %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Mechanic</span>
+                        <span class="form-label"><%= Localization.GetHtml("Common_Mechanic") %></span>
                         <asp:DropDownList ID="ddlMechanic" runat="server" CssClass="form-control" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Maintenance Date <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Maintenance_MaintenanceDate") %> <span class="form-required">*</span></span>
                         <asp:TextBox ID="txtMaintenanceDate" runat="server" CssClass="form-control" Width="120" placeholder="dd.MM.yyyy" />
-                        <asp:RequiredFieldValidator ID="rfvDate" runat="server" ControlToValidate="txtMaintenanceDate" ErrorMessage="Date is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
+                        <asp:RequiredFieldValidator ID="rfvDate" runat="server" ControlToValidate="txtMaintenanceDate" ErrorMessage="<%$ Resources:Strings, Maintenance_DateRequired %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Next Service Date</span>
+                        <span class="form-label"><%= Localization.GetHtml("Maintenance_NextServiceDate") %></span>
                         <asp:TextBox ID="txtNextDate" runat="server" CssClass="form-control" Width="120" placeholder="dd.MM.yyyy" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Type <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Common_Type") %> <span class="form-required">*</span></span>
                         <asp:TextBox ID="txtType" runat="server" CssClass="form-control" MaxLength="100" />
-                        <asp:RequiredFieldValidator ID="rfvType" runat="server" ControlToValidate="txtType" ErrorMessage="Type is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
+                        <asp:RequiredFieldValidator ID="rfvType" runat="server" ControlToValidate="txtType" ErrorMessage="<%$ Resources:Strings, Maintenance_TypeRequired %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Found Issue</span>
+                        <span class="form-label"><%= Localization.GetHtml("Maintenance_FoundIssue") %></span>
                         <asp:TextBox ID="txtFoundIssue" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Service Result</span>
+                        <span class="form-label"><%= Localization.GetHtml("Maintenance_ServiceResult") %></span>
                         <asp:TextBox ID="txtServiceResult" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Mileage (km)</span>
+                        <span class="form-label"><%= Localization.GetHtml("Common_MileageKm") %></span>
                         <asp:TextBox ID="txtMileage" runat="server" CssClass="form-control" Width="120" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Roadworthiness <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Common_Roadworthiness") %> <span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlRoadworthiness" runat="server" CssClass="form-control">
                             <asp:ListItem Text="Исправен" Value="Исправен" />
                             <asp:ListItem Text="Требует внимания" Value="Требует внимания" />
@@ -198,29 +198,29 @@
                         </asp:DropDownList>
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Cost <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Common_Cost") %> <span class="form-required">*</span></span>
                         <asp:TextBox ID="txtCost" runat="server" CssClass="form-control" Width="120" Text="0.00" />
-                        <asp:RequiredFieldValidator ID="rfvCost" runat="server" ControlToValidate="txtCost" ErrorMessage="Cost is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
+                        <asp:RequiredFieldValidator ID="rfvCost" runat="server" ControlToValidate="txtCost" ErrorMessage="<%$ Resources:Strings, Maintenance_CostRequired %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="MaintenanceForm" />
                     </div>
                     <div class="form-row" style="margin-top: 15px;">
-                        <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="MaintenanceForm" />
-                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancel_Click" CausesValidation="false" />
+                        <asp:Button ID="btnSave" runat="server" Text="<%$ Resources:Strings, Common_Save %>" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="MaintenanceForm" />
+                        <asp:Button ID="btnCancel" runat="server" Text="<%$ Resources:Strings, Common_Cancel %>" CssClass="action-button" OnClick="btnCancel_Click" CausesValidation="false" />
                     </div>
                 </asp:Panel>
             </ContentTemplate>
         </uc:ContentBox>
 
         <!-- Maintenance Detail View -->
-        <uc:ContentBox ID="cbMaintenanceDetail" runat="server" HeaderText="Maintenance Details" HeaderColor="Gray" ContentColor="Gray" Visible="false">
+        <uc:ContentBox ID="cbMaintenanceDetail" runat="server" HeaderText="<%$ Resources:Strings, Maintenance_Details %>" HeaderColor="Gray" ContentColor="Gray" Visible="false">
             <ContentTemplate>
                 <asp:Literal ID="litDetail" runat="server" />
                 <div style="margin-top: 15px;">
-                    <asp:Button ID="btnDetailClose" runat="server" Text="Close" CssClass="action-button" OnClick="btnDetailClose_Click" />
+                    <asp:Button ID="btnDetailClose" runat="server" Text="<%$ Resources:Strings, Common_Close %>" CssClass="action-button" OnClick="btnDetailClose_Click" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Common_BackToTop") %></a></p>
     </div>
 
 </asp:Content>

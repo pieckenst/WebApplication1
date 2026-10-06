@@ -119,7 +119,7 @@
     
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Autopark Dashboard</div>
+        <div class="page-title"><%= Localization.GetHtml("Default_Heading") %></div>
         <div class="page-divider"></div>
         
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -127,7 +127,7 @@
         </asp:Panel>
         
         <p class="text-regular" style="margin-top: 0; margin-bottom: 0;">
-            Welcome to the Autopark Management System. Here you can monitor the current status of your bus fleet, employees, routes, and daily operations.
+            <%= Localization.GetHtml("Default_Welcome") %>
             <br><br>
             <span class="text-small"><b><asp:Literal ID="litLastUpdated" runat="server" /></b></span>
         </p>
@@ -135,81 +135,81 @@
         <!-- Dashboard Statistics -->
         <div class="dashboard-grid">
             <div class="stat-card">
-                <div class="stat-card-header">Active Buses</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_ActiveBuses") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litActiveBuses" runat="server" Text="0" />
                 </div>
-                <div class="stat-card-subtext">Total operational fleet</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_OperationalFleet") %></div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-card-header">Active Employees</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_ActiveEmployees") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litActiveEmployees" runat="server" Text="0" />
                 </div>
-                <div class="stat-card-subtext">Currently working</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_CurrentlyWorking") %></div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-card-header">Active Routes</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_ActiveRoutes") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litActiveRoutes" runat="server" Text="0" />
                 </div>
-                <div class="stat-card-subtext">Routes in service</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_RoutesInService") %></div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-card-header">Today's Schedule</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_TodaySchedule") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litTodaySchedule" runat="server" Text="0" />
                 </div>
-                <div class="stat-card-subtext">Scheduled trips today</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_ScheduledTripsToday") %></div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-card-header">Today's Sales</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_TodaySales") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litTodaySales" runat="server" Text="0" />
                 </div>
-                <div class="stat-card-subtext">Tickets sold today</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_TicketsSoldToday") %></div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-card-header">Today's Revenue</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_TodayRevenue") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litTodayRevenue" runat="server" Text="0.00" />
                 </div>
-                <div class="stat-card-subtext">Total revenue (BYN)</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_TotalRevenueByn") %></div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-card-header">Buses Needing Attention</div>
+                <div class="stat-card-header"><%= Localization.GetHtml("Default_BusesAttention") %></div>
                 <div class="stat-card-value">
                     <asp:Literal ID="litBusesAttention" runat="server" Text="0" />
                 </div>
-                <div class="stat-card-subtext">Maintenance required</div>
+                <div class="stat-card-subtext"><%= Localization.GetHtml("Default_MaintenanceRequired") %></div>
             </div>
         </div>
         
         <!-- System Alerts -->
-        <uc:ContentBox ID="cbAlerts" runat="server" HeaderText="System Alerts" HeaderColor="Red" ContentColor="Yellow" />
+        <uc:ContentBox ID="cbAlerts" runat="server" HeaderText="<%$ Resources:Strings, Default_SystemAlerts %>" HeaderColor="Red" ContentColor="Yellow" />
         
         <!-- Quick Actions -->
         <div class="quick-actions">
-            <asp:HyperLink ID="hlBuses" runat="server" CssClass="action-button" NavigateUrl="~/Fleet/Buses.aspx">Manage Buses</asp:HyperLink>
-            <asp:HyperLink ID="hlEmployees" runat="server" CssClass="action-button" NavigateUrl="~/Personnel/Employees.aspx">Manage Employees</asp:HyperLink>
-            <asp:HyperLink ID="hlRoutes" runat="server" CssClass="action-button" NavigateUrl="~/Operations/Routes.aspx">Manage Routes</asp:HyperLink>
-            <asp:HyperLink ID="hlSales" runat="server" CssClass="action-button" NavigateUrl="~/Sales/Sales.aspx">Sales & Tickets</asp:HyperLink>
-            <asp:HyperLink ID="hlReports" runat="server" CssClass="action-button" NavigateUrl="~/Reports/Analytics.aspx">Reports</asp:HyperLink>
+            <asp:HyperLink ID="hlBuses" runat="server" CssClass="action-button" NavigateUrl="~/Fleet/Buses.aspx" Text="<%$ Resources:Strings, Default_ManageBuses %>" />
+            <asp:HyperLink ID="hlEmployees" runat="server" CssClass="action-button" NavigateUrl="~/Personnel/Employees.aspx" Text="<%$ Resources:Strings, Default_ManageEmployees %>" />
+            <asp:HyperLink ID="hlRoutes" runat="server" CssClass="action-button" NavigateUrl="~/Operations/Routes.aspx" Text="<%$ Resources:Strings, Default_ManageRoutes %>" />
+            <asp:HyperLink ID="hlSales" runat="server" CssClass="action-button" NavigateUrl="~/Sales/Sales.aspx" Text="<%$ Resources:Strings, Default_SalesTickets %>" />
+            <asp:HyperLink ID="hlReports" runat="server" CssClass="action-button" NavigateUrl="~/Reports/Analytics.aspx" Text="<%$ Resources:Strings, Default_Reports %>" />
         </div>
         
         <!-- Recent Activity -->
-        <uc:ContentBox ID="cbRecentActivity" runat="server" HeaderText="Recent Sales Activity" HeaderColor="Blue" ContentColor="White" />
+        <uc:ContentBox ID="cbRecentActivity" runat="server" HeaderText="<%$ Resources:Strings, Default_RecentActivity %>" HeaderColor="Blue" ContentColor="White" />
         
         <!-- Maintenance Overview -->
-        <uc:ContentBox ID="cbMaintenance" runat="server" HeaderText="Maintenance Overview" HeaderColor="Gray" ContentColor="Gray" />
+        <uc:ContentBox ID="cbMaintenance" runat="server" HeaderText="<%$ Resources:Strings, Default_MaintenanceOverview %>" HeaderColor="Gray" ContentColor="Gray" />
         
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top ▲</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Common_BackToTop") %></a></p>
     </div>
     
 </asp:Content>

@@ -9,8 +9,11 @@ namespace BRU.WEBFORMS.ASPNET.APP
 {
     public partial class Login : SecurePage
     {
+        private bool _templateControlsResolved;
+
         protected global::System.Web.UI.WebControls.Panel pnlError;
         protected global::System.Web.UI.WebControls.Literal litError;
+        protected global::BRU.WEBFORMS.ASPNET.APP.Controls.ContentBox cbSignIn;
         protected global::System.Web.UI.WebControls.TextBox txtLogin;
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
         protected global::System.Web.UI.WebControls.CheckBox chkRememberMe;
@@ -23,8 +26,25 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            EnsureTemplateControlsResolved();
             if (!IsPostBack && AuthContext.IsAuthenticated)
                 RedirectToLocalUrl(ResolveUrl("~/Default.aspx"));
+        }
+
+        private void EnsureTemplateControlsResolved()
+        {
+            if (_templateControlsResolved)
+                return;
+
+            txtLogin = cbSignIn.FindContentControl<TextBox>("txtLogin");
+            txtPassword = cbSignIn.FindContentControl<TextBox>("txtPassword");
+            chkRememberMe = cbSignIn.FindContentControl<CheckBox>("chkRememberMe");
+            btnSignIn = cbSignIn.FindContentControl<Button>("btnSignIn");
+
+            if (txtLogin == null || txtPassword == null || chkRememberMe == null || btnSignIn == null)
+                throw new InvalidOperationException("Sign-in controls were not created inside the ContentBox template.");
+
+            _templateControlsResolved = true;
         }
 
         protected void btnSignIn_Click(object sender, EventArgs e)

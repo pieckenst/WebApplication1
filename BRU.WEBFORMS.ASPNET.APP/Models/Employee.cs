@@ -45,15 +45,4 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
         public bool IsActive { get; set; }
     }
 
-    /// <summary>
-    /// Represents a department
-    /// </summary>
-    public class Department
-    {
-        public int DepartmentId { get; set; }
-        public string DepartmentName { get; set; }
-        public string DepartmentCode { get; set; }
-        public string Description { get; set; }
-        public bool IsActive { get; set; }
-    }
 }

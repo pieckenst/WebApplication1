@@ -263,7 +263,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             {
                 if (!IsPostBack)
                 {
-                    InitializeStateFromQueryString();
+                    CurrentPage = 1;
+                    CurrentSortExpression = "fleet_number";
+                    CurrentSortDirection = SortDirection.Ascending;
                     InitializeFilters();
                     LoadManufacturerOptions();
                     LoadBusData();
@@ -282,27 +284,6 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             {
                 HandleGenericError(ex);
             }
-        }
-
-        /// <summary>
-        /// Initializes the page number from ?page=N when opening
-        /// the page through the custom pagination links.
-        /// </summary>
-        private void InitializeStateFromQueryString()
-        {
-            int page;
-
-            if (int.TryParse(Request.QueryString["page"], out page) && page > 0)
-            {
-                CurrentPage = page;
-            }
-            else
-            {
-                CurrentPage = 1;
-            }
-
-            CurrentSortExpression = "fleet_number";
-            CurrentSortDirection = SortDirection.Ascending;
         }
 
         #endregion
@@ -659,44 +640,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 StringBuilder paginationHtml =
                     new StringBuilder();
 
+                paginationHtml.Append("Showing ").Append(totalItems).Append(" buses");
                 if (totalPages > 1)
-                {
-                    paginationHtml.Append("Page ");
-
-                    for (int i = 1; i <= totalPages; i++)
-                    {
-                        if (i == CurrentPage)
-                        {
-                            paginationHtml.Append(
-                                "<span class='current'>" +
-                                i +
-                                "</span>");
-                        }
-                        else
-                        {
-                            paginationHtml.Append(
-                                "<a href='?page=" +
-                                i +
-                                "'>" +
-                                i +
-                                "</a>");
-                        }
-                    }
-
-                    paginationHtml.Append(
-                        " of " +
-                        totalPages +
-                        " (" +
-                        totalItems +
-                        " total buses)");
-                }
-                else
-                {
-                    paginationHtml.Append(
-                        "Showing " +
-                        totalItems +
-                        " buses");
-                }
+                    paginationHtml.Append(" | Page ").Append(CurrentPage).Append(" of ").Append(totalPages);
 
                 litPagination.Text =
                     paginationHtml.ToString();

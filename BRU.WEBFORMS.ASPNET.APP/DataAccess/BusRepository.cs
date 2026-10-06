@@ -212,13 +212,24 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             bus.Status = reader.GetString(reader.GetOrdinal("status"));
             bus.MileageKm = reader.GetInt32(reader.GetOrdinal("mileage_km"));
             
-            // Optional fields from view
-            if (reader.FieldCount > 8 && !reader.IsDBNull(reader.GetOrdinal("mileage_category")))
+            int mileageCategoryOrdinal = TryGetOrdinal(reader, "mileage_category");
+            if (mileageCategoryOrdinal >= 0 && !reader.IsDBNull(mileageCategoryOrdinal))
             {
-                bus.MileageCategory = reader.GetString(reader.GetOrdinal("mileage_category"));
+                bus.MileageCategory = reader.GetString(mileageCategoryOrdinal);
             }
             
             return bus;
+        }
+
+        private static int TryGetOrdinal(SqlDataReader reader, string columnName)
+        {
+            for (int ordinal = 0; ordinal < reader.FieldCount; ordinal++)
+            {
+                if (string.Equals(reader.GetName(ordinal), columnName, StringComparison.OrdinalIgnoreCase))
+                    return ordinal;
+            }
+
+            return -1;
         }
 
         public void Dispose()

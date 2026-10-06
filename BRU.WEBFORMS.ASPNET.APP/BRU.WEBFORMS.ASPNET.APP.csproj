@@ -81,12 +81,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\Strings.resx" />
+    <EmbeddedResource Include="App_GlobalResources\Strings.ru.resx">
+      <DependentUpon>Strings.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="App_Data\PageContent.xml" />
     <Content Include="App_Data\SystemSettings.xml" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Site.Master" />
     <Content Include="Default.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="Logout.aspx" />
     <Content Include="Controls\Toolbar.ascx" />
     <Content Include="Controls\Navigationbar.ascx" />
     <Content Include="Controls\Footer.ascx" />
@@ -103,12 +111,19 @@
     <Content Include="Fleet\Buses.aspx" />
     <Content Include="Fleet\Maintenance.aspx" />
     <Content Include="Personnel\Employees.aspx" />
+    <Content Include="Personnel\Departments.aspx" />
     <Content Include="Operations\Routes.aspx" />
     <Content Include="Operations\Schedule.aspx" />
+    <Content Include="Operations\Stops.aspx" />
     <Content Include="Sales\Tickets.aspx" />
     <Content Include="Sales\Sales.aspx" />
     <Content Include="Sales\Payments.aspx" />
     <Content Include="Reports\Analytics.aspx" />
+    <Content Include="Reports\SalesReports.aspx" />
+    <Content Include="Reports\MaintenanceReports.aspx" />
+    <Content Include="System\Settings.aspx" />
+    <Content Include="System\Users.aspx" />
+    <Content Include="System\Roles.aspx" />
     <Content Include="Data\AutoparkDB_Schema.sql" />
     <Content Include="images\autopark-logo.svg" />
   </ItemGroup>
@@ -117,8 +132,11 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="App_Start\AuthContext.cs" />
-    <Compile Include="App_Start\SecurePage.cs" />
+    <Compile Include="App_Start\SecurePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="App_Start\SystemSettingsStore.cs" />
+    <Compile Include="App_Start\Localization.cs" />
     <Compile Include="App_Start\NavigationSets.cs" />
     <Compile Include="App_Start\PageContentStore.cs" />
     <Compile Include="App_Start\SiteConfig.cs" />
@@ -135,6 +153,14 @@
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Fleet\Buses.aspx.cs">
       <DependentUpon>Buses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -147,12 +173,20 @@
       <DependentUpon>Employees.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Personnel\Departments.aspx.cs">
+      <DependentUpon>Departments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Operations\Routes.aspx.cs">
       <DependentUpon>Routes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Operations\Schedule.aspx.cs">
       <DependentUpon>Schedule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Operations\Stops.aspx.cs">
+      <DependentUpon>Stops.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Sales\Tickets.aspx.cs">
@@ -169,6 +203,26 @@
     </Compile>
     <Compile Include="Reports\Analytics.aspx.cs">
       <DependentUpon>Analytics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SalesReports.aspx.cs">
+      <DependentUpon>SalesReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\MaintenanceReports.aspx.cs">
+      <DependentUpon>MaintenanceReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\Settings.aspx.cs">
+      <DependentUpon>Settings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\Roles.aspx.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\Toolbar.ascx.cs">
@@ -195,12 +249,14 @@
     <Compile Include="DataAccess\MaintenanceRepository.cs" />
     <Compile Include="DataAccess\UserRepository.cs" />
     <Compile Include="DataAccess\RoleRepository.cs" />
+    <Compile Include="DataAccess\ReportsRepository.cs" />
     <Compile Include="Models\Bus.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\Ticket.cs" />
     <Compile Include="Models\Maintenance.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\Reports.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\BusService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
@@ -208,10 +264,12 @@
     <Compile Include="Services\ScheduleAutomationService.cs" />
     <Compile Include="Services\TicketService.cs" />
     <Compile Include="Services\MaintenanceService.cs" />
+    <Compile Include="Services\ReportsService.cs" />
     <Compile Include="Services\AuthService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Data\BootstrapAdminPassword.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -222,10 +280,6 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Dashboard\" />
-    <Folder Include="Operations\" />
-    <Folder Include="Personnel\" />
-    <Folder Include="Reports\" />
-    <Folder Include="Sales\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -13,20 +13,21 @@
         .success-message { background-color: #E6FFE6; border: 1px solid #008000; color: #008000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
     </style>
     <div class="content-page">
-        <div class="page-title">System Settings</div>
+        <div class="page-title"><%= Localization.GetHtml("Settings_Heading") %></div>
         <div class="page-divider"></div>
         <asp:Label ID="lblError" runat="server" CssClass="error-message" Visible="false" />
         <asp:Label ID="lblSuccess" runat="server" CssClass="success-message" Visible="false" />
         <uc:ContentBox ID="cbSettings" runat="server" HeaderText="Site Configuration" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <asp:Panel ID="pnlSettings" runat="server" DefaultButton="btnSave">
-                    <div class="form-row"><span class="form-label">Site name</span><asp:TextBox ID="txtSiteName" runat="server" CssClass="form-control" MaxLength="100" /></div>
-                    <div class="form-row"><span class="form-label">Default page title</span><asp:TextBox ID="txtDefaultPageTitle" runat="server" CssClass="form-control" MaxLength="150" /></div>
-                    <div class="form-row"><span class="form-label">Copyright text</span><asp:TextBox ID="txtCopyright" runat="server" CssClass="form-control" MaxLength="200" /></div>
-                    <div class="form-row"><span class="form-label">Logo alternative text</span><asp:TextBox ID="txtLogoAlt" runat="server" CssClass="form-control" MaxLength="100" /></div>
-                    <div class="form-row"><span class="form-label">Logo width (px)</span><asp:TextBox ID="txtLogoWidth" runat="server" CssClass="form-control" MaxLength="4" /></div>
-                    <div class="form-row"><span class="form-label">Logo height (px)</span><asp:TextBox ID="txtLogoHeight" runat="server" CssClass="form-control" MaxLength="4" /></div>
-                    <div class="form-row"><asp:Button ID="btnSave" runat="server" Text="Save Settings" CssClass="action-button" OnClick="btnSave_Click" /></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_SiteName") %></span><asp:TextBox ID="txtSiteName" runat="server" CssClass="form-control" MaxLength="100" /></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_LanguageLabel") %></span><asp:DropDownList ID="ddlLanguage" runat="server" CssClass="form-control"><asp:ListItem Value="en" Text="<%$ Resources:Strings, Settings_LanguageEnglish %>" /><asp:ListItem Value="ru" Text="<%$ Resources:Strings, Settings_LanguageRussian %>" /></asp:DropDownList></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_DefaultPageTitle") %></span><asp:TextBox ID="txtDefaultPageTitle" runat="server" CssClass="form-control" MaxLength="150" /></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_Copyright") %></span><asp:TextBox ID="txtCopyright" runat="server" CssClass="form-control" MaxLength="200" /></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_LogoAlt") %></span><asp:TextBox ID="txtLogoAlt" runat="server" CssClass="form-control" MaxLength="100" /></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_LogoWidth") %></span><asp:TextBox ID="txtLogoWidth" runat="server" CssClass="form-control" MaxLength="4" /></div>
+                    <div class="form-row"><span class="form-label"><%= Localization.GetHtml("Settings_LogoHeight") %></span><asp:TextBox ID="txtLogoHeight" runat="server" CssClass="form-control" MaxLength="4" /></div>
+                    <div class="form-row"><asp:Button ID="btnSave" runat="server" Text="<%$ Resources:Strings, Settings_SaveButton %>" CssClass="action-button" OnClick="btnSave_Click" /></div>
                 </asp:Panel>
             </ContentTemplate>
         </uc:ContentBox>

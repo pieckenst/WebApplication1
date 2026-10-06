@@ -45,7 +45,7 @@
         </div>
         <uc:ContentBox ID="cbSalesList" runat="server" HeaderText="Sales Transactions" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <asp:GridView ID="gvSales" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="50" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvSales_PageIndexChanging" EmptyDataText="No sales match the selected filters.">
+                <asp:GridView ID="gvSales" runat="server" AutoGenerateColumns="false" AllowPaging="false" CssClass="data-table" GridLines="Both" EmptyDataText="No sales match the selected filters.">
                     <Columns>
                         <asp:BoundField DataField="SaleDate" HeaderText="Sale time" DataFormatString="{0:dd.MM.yyyy HH:mm}" />
                         <asp:BoundField DataField="RouteNumber" HeaderText="Route" />
@@ -58,6 +58,11 @@
                         <asp:BoundField DataField="PaymentStatus" HeaderText="Payment" />
                     </Columns>
                 </asp:GridView>
+                <div class="pagination">
+                    <asp:LinkButton ID="btnPreviousPage" runat="server" Text="Previous" OnClick="btnPreviousPage_Click" CausesValidation="false" />
+                    <asp:Label ID="lblPageInfo" runat="server" />
+                    <asp:LinkButton ID="btnNextPage" runat="server" Text="Next" OnClick="btnNextPage_Click" CausesValidation="false" />
+                </div>
             </ContentTemplate>
         </uc:ContentBox>
     </div>

@@ -149,6 +149,20 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                 parameters);
         }
 
+        public List<RouteSchedule> GetSchedulesForStatusReconciliation(DateTime throughDate)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@through_date", throughDate, SqlDbType.Date),
+                DatabaseHelper.CreateParameter("@planned_status", ScheduleStatus.Planned, SqlDbType.NVarChar, 30),
+                DatabaseHelper.CreateParameter("@in_progress_status", ScheduleStatus.InProgress, SqlDbType.NVarChar, 30)
+            };
+
+            return GetSchedules(
+                "rs.service_date <= @through_date AND rs.schedule_status IN (@planned_status, @in_progress_status)",
+                parameters);
+        }
+
         public RouteSchedule GetScheduleById(int scheduleId)
         {
             SqlParameter[] parameters = new SqlParameter[]

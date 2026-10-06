@@ -84,6 +84,13 @@ namespace BRU.WEBFORMS.ASPNET.APP
 
         #region Page Lifecycle
 
+        protected override void InitializeCulture()
+        {
+            base.InitializeCulture();
+            Culture = Localization.Culture.Name;
+            UICulture = Localization.Culture.Name;
+        }
+
         protected override void OnPreInit(EventArgs e)
         {
             _pageLoadTimer = Stopwatch.StartNew();
@@ -103,6 +110,8 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 Title = configTitle;
             else if (string.IsNullOrEmpty(Title) || Title == "Untitled Page")
                 Title = SiteConfig.DefaultPageTitle;
+
+            Title = Localization.GetPageTitle(PageContentKey, Title);
 
             // Wire up error event
             Error += BasePage_Error;
