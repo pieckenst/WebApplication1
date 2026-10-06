@@ -1,10 +1,15 @@
-<%@ Page Title="Employee Management - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Employees.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Personnel.Employees" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Personnel_Employees_35 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Employees.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Personnel.Employees" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; box-sizing: border-box; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page input, .content-page select, .content-page textarea { box-sizing: border-box; max-width: 100%; }
+        .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; margin-bottom: 18px; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 10px; } .data-table { font-size: 8pt; } }
         .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
         .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
         .text-regular { font-size: 10pt; line-height: 1.5; }
@@ -48,11 +53,13 @@
         .detail-row { margin-bottom: 6px; font-size: 9pt; }
         .detail-label { display: inline-block; width: 150px; font-weight: bold; color: #666666; }
         .detail-value { color: #000000; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label, .filter-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'], input[type='date'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } }
     </style>
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Employee Management</div>
+        <div class="page-title"><%= Localization.GetHtml("Auto_Personnel_Employees_36") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -65,33 +72,33 @@
 
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Total Employees:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Personnel_Employees_37") %></span>
                 <asp:Literal ID="litTotalEmployees" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Active:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Personnel_Employees_38") %></span>
                 <asp:Literal ID="litActiveEmployees" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">On Vacation:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Personnel_Employees_39") %></span>
                 <asp:Literal ID="litVacationEmployees" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Sick Leave:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Personnel_Employees_40") %></span>
                 <asp:Literal ID="litSickEmployees" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Dismissed:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Personnel_Employees_41") %></span>
                 <asp:Literal ID="litDismissedEmployees" runat="server" Text="0" />
             </div>
         </div>
 
         <div class="action-bar">
-            <asp:Button ID="btnAddEmployee" runat="server" Text="Add New Employee" CssClass="action-button" OnClick="btnAddEmployee_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnAddEmployee" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_1 %>" CssClass="action-button" OnClick="btnAddEmployee_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_2 %>" CssClass="action-button" OnClick="btnRefresh_Click" />
             <div class="search-box">
                 <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" Placeholder="Search by name or phone..." />
-                <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="action-button" OnClick="btnSearch_Click" />
+                <asp:Button ID="btnSearch" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_3 %>" CssClass="action-button" OnClick="btnSearch_Click" />
             </div>
         </div>
 
@@ -99,30 +106,30 @@
             <ContentTemplate>
                 <div class="filter-section">
                     <div class="filter-row">
-                        <span class="filter-label">Status:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Personnel_Employees_42") %></span>
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
-                                <asp:ListItem Text="All Statuses" Value="" />
-                                <asp:ListItem Text="Working" Value="Работает" />
-                                <asp:ListItem Text="On Vacation" Value="Отпуск" />
-                                <asp:ListItem Text="Sick Leave" Value="Больничный" />
-                                <asp:ListItem Text="Dismissed" Value="Уволен" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_4 %>" Value="" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_5 %>" Value="Работает" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_6 %>" Value="Отпуск" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_7 %>" Value="Больничный" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_8 %>" Value="Уволен" />
                             </asp:DropDownList>
                         </span>
                     </div>
                     <div class="filter-row">
-                        <span class="filter-label">Job:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Personnel_Employees_43") %></span>
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlJobFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlJobFilter_SelectedIndexChanged">
-                                <asp:ListItem Text="All Jobs" Value="" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_9 %>" Value="" />
                             </asp:DropDownList>
                         </span>
                     </div>
                     <div class="filter-row">
-                        <span class="filter-label">Department:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Personnel_Employees_44") %></span>
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlDepartmentFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlDepartmentFilter_SelectedIndexChanged">
-                                <asp:ListItem Text="All Departments" Value="" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_10 %>" Value="" />
                             </asp:DropDownList>
                         </span>
                     </div>
@@ -134,23 +141,23 @@
             <ContentTemplate>
                 <asp:GridView ID="gvEmployees" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvEmployees_PageIndexChanging" OnSorting="gvEmployees_Sorting" OnRowCommand="gvEmployees_RowCommand" OnRowDataBound="gvEmployees_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="EmployeeId" HeaderText="ID" SortExpression="employee_id" ReadOnly="true" />
-                        <asp:BoundField DataField="EmployeeName" HeaderText="Full Name" SortExpression="employee_name" />
-                        <asp:BoundField DataField="JobTitle" HeaderText="Job Title" SortExpression="job_title" />
-                        <asp:BoundField DataField="DepartmentName" HeaderText="Department" SortExpression="department_name" />
-                        <asp:BoundField DataField="ServiceYears" HeaderText="Years" SortExpression="service_years" />
-                        <asp:TemplateField HeaderText="Status" SortExpression="status">
+                        <asp:BoundField DataField="EmployeeId" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_11 %>" SortExpression="employee_id" ReadOnly="true" />
+                        <asp:BoundField DataField="EmployeeName" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_12 %>" SortExpression="employee_name" />
+                        <asp:BoundField DataField="JobTitle" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_13 %>" SortExpression="job_title" />
+                        <asp:BoundField DataField="DepartmentName" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_14 %>" SortExpression="department_name" />
+                        <asp:BoundField DataField="ServiceYears" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_15 %>" SortExpression="service_years" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_16 %>" SortExpression="status">
                             <ItemTemplate>
                                 <asp:Literal ID="litStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="Phone" HeaderText="Phone" />
-                        <asp:BoundField DataField="Email" HeaderText="Email" />
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:BoundField DataField="Phone" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_17 %>" />
+                        <asp:BoundField DataField="Email" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_18 %>" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_19 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="View" CommandName="View" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this employee?');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_20 %>" CommandName="View" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_21 %>" CommandName="EditEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_22 %>" CommandName="DeleteEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -167,53 +174,53 @@
             <ContentTemplate>
                 <asp:Panel ID="pnlEmployeeForm" runat="server" DefaultButton="btnSave">
                     <div class="form-row">
-                        <span class="form-label">Surname <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_49") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtSurname" runat="server" CssClass="form-control" MaxLength="60" />
-                        <asp:RequiredFieldValidator ID="rfvSurname" runat="server" ControlToValidate="txtSurname" ErrorMessage="Surname is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
+                        <asp:RequiredFieldValidator ID="rfvSurname" runat="server" ControlToValidate="txtSurname" ErrorMessage="<%$ Resources:Strings, Auto_Personnel_Employees_23 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Name <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_50") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="60" />
-                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" ErrorMessage="Name is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
+                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" ErrorMessage="<%$ Resources:Strings, Auto_Personnel_Employees_24 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Patronymic</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_51") %></span>
                         <asp:TextBox ID="txtPatronym" runat="server" CssClass="form-control" MaxLength="60" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Employed Date <span class="form-required">*</span></span>
-                        <asp:TextBox ID="txtEmployedDate" runat="server" CssClass="form-control" placeholder="dd.MM.yyyy" />
-                        <asp:RequiredFieldValidator ID="rfvEmployedDate" runat="server" ControlToValidate="txtEmployedDate" ErrorMessage="Date is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_52") %><span class="form-required">*</span></span>
+                        <asp:TextBox ID="txtEmployedDate" runat="server" CssClass="form-control" placeholder="<%$ Resources:Strings, Auto_Personnel_Employees_25 %>" />
+                        <asp:RequiredFieldValidator ID="rfvEmployedDate" runat="server" ControlToValidate="txtEmployedDate" ErrorMessage="<%$ Resources:Strings, Auto_Personnel_Employees_26 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Job <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_53") %><span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlJob" runat="server" CssClass="form-control" />
-                        <asp:RequiredFieldValidator ID="rfvJob" runat="server" ControlToValidate="ddlJob" InitialValue="" ErrorMessage="Job is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
+                        <asp:RequiredFieldValidator ID="rfvJob" runat="server" ControlToValidate="ddlJob" InitialValue="" ErrorMessage="<%$ Resources:Strings, Auto_Personnel_Employees_27 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="EmployeeForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Department</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_54") %></span>
                         <asp:DropDownList ID="ddlDepartment" runat="server" CssClass="form-control" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Phone</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_55") %></span>
                         <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" MaxLength="30" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Email</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_56") %></span>
                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="120" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Status <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_57") %><span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="Working" Value="Работает" />
-                            <asp:ListItem Text="On Vacation" Value="Отпуск" />
-                            <asp:ListItem Text="Sick Leave" Value="Больничный" />
-                            <asp:ListItem Text="Dismissed" Value="Уволен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_28 %>" Value="Работает" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_29 %>" Value="Отпуск" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_30 %>" Value="Больничный" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_31 %>" Value="Уволен" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row" style="margin-top: 15px;">
-                        <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="EmployeeForm" />
-                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancel_Click" CausesValidation="false" />
+                        <asp:Button ID="btnSave" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_32 %>" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="EmployeeForm" />
+                        <asp:Button ID="btnCancel" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_33 %>" CssClass="action-button" OnClick="btnCancel_Click" CausesValidation="false" />
                     </div>
                 </asp:Panel>
             </ContentTemplate>
@@ -233,12 +240,12 @@
                 <asp:Literal ID="litDetailStatus" runat="server" />
                 <asp:Literal ID="litDetailServiceYears" runat="server" />
                 <div style="margin-top: 15px;">
-                    <asp:Button ID="btnDetailClose" runat="server" Text="Close" CssClass="action-button" OnClick="btnDetailClose_Click" />
+                    <asp:Button ID="btnDetailClose" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_34 %>" CssClass="action-button" OnClick="btnDetailClose_Click" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Auto_Personnel_Employees_58") %></a></p>
     </div>
 
 </asp:Content>

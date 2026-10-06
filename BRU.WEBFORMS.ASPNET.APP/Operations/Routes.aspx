@@ -1,10 +1,17 @@
-<%@ Page Title="Route Management - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Routes.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Operations.Routes" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Operations_Routes_22 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Routes.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Operations.Routes" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; box-sizing: border-box; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page input, .content-page select, .content-page textarea { box-sizing: border-box; max-width: 100%; }
+        .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; }
+        .filter-row:last-child { margin-bottom: 0; }
+        .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; margin-bottom: 18px; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 10px; } .filter-label { width: auto; min-width: 120px; } .data-table { font-size: 8pt; } }
         .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
         .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
         .text-regular { font-size: 10pt; line-height: 1.5; }
@@ -46,6 +53,8 @@
         .tabs { margin-bottom: 10px; }
         .tab { display: inline-block; padding: 6px 16px; background-color: #EDF2FB; border: 1px solid #1447AE; border-bottom: none; margin-right: 2px; font-size: 9pt; cursor: pointer; text-decoration: none; color: #1447AE; font-weight: bold; }
         .tab.active { background-color: #1447AE; color: #FFFFFF; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } .action-button { margin: 0; } }
     </style>
 
     <div class="content-page">
@@ -63,25 +72,25 @@
 
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Total Routes:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Routes_23") %></span>
                 <asp:Literal ID="litTotalRoutes" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Active Routes:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Routes_24") %></span>
                 <asp:Literal ID="litActiveRoutes" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Total Stops:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Routes_25") %></span>
                 <asp:Literal ID="litTotalStops" runat="server" Text="0" />
             </div>
         </div>
 
         <div class="action-bar">
-            <asp:Button ID="btnAddRoute" runat="server" Text="Add New Route" CssClass="action-button" OnClick="btnAddRoute_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnAddRoute" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_1 %>" CssClass="action-button" OnClick="btnAddRoute_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_2 %>" CssClass="action-button" OnClick="btnRefresh_Click" />
             <div class="search-box">
                 <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" Placeholder="Search by route number or name..." />
-                <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="action-button" OnClick="btnSearch_Click" />
+                <asp:Button ID="btnSearch" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_3 %>" CssClass="action-button" OnClick="btnSearch_Click" />
             </div>
         </div>
 
@@ -89,26 +98,26 @@
             <ContentTemplate>
                 <asp:GridView ID="gvRoutes" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="15" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvRoutes_PageIndexChanging" OnSorting="gvRoutes_Sorting" OnRowCommand="gvRoutes_RowCommand" OnRowDataBound="gvRoutes_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="RouteId" HeaderText="ID" SortExpression="route_id" ReadOnly="true" />
-                        <asp:TemplateField HeaderText="Route #" SortExpression="route_num">
+                        <asp:BoundField DataField="RouteId" HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_4 %>" SortExpression="route_id" ReadOnly="true" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_5 %>" SortExpression="route_num">
                             <ItemTemplate>
                                 <span class="route-num"><%# Eval("RouteNum") %></span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="RouteName" HeaderText="Route Name" SortExpression="route_name" />
-                        <asp:BoundField DataField="StartStop" HeaderText="Start Stop" SortExpression="start_stop" />
-                        <asp:BoundField DataField="EndStop" HeaderText="End Stop" SortExpression="end_stop" />
-                        <asp:BoundField DataField="StopCount" HeaderText="Stops" SortExpression="stop_count" />
-                        <asp:TemplateField HeaderText="Status" SortExpression="is_active">
+                        <asp:BoundField DataField="RouteName" HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_6 %>" SortExpression="route_name" />
+                        <asp:BoundField DataField="StartStop" HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_7 %>" SortExpression="start_stop" />
+                        <asp:BoundField DataField="EndStop" HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_8 %>" SortExpression="end_stop" />
+                        <asp:BoundField DataField="StopCount" HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_9 %>" SortExpression="stop_count" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_10 %>" SortExpression="is_active">
                             <ItemTemplate>
                                 <asp:Literal ID="litStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_11 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="View Stops" CommandName="ViewStops" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this route?');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_12 %>" CommandName="ViewStops" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_13 %>" CommandName="EditRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_14 %>" CommandName="DeleteRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -125,32 +134,32 @@
             <ContentTemplate>
                 <asp:Panel ID="pnlRouteForm" runat="server" DefaultButton="btnSaveRoute">
                     <div class="form-row">
-                        <span class="form-label">Route Number <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Routes_30") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtRouteNum" runat="server" CssClass="form-control" MaxLength="20" Width="100" />
-                        <asp:RequiredFieldValidator ID="rfvRouteNum" runat="server" ControlToValidate="txtRouteNum" ErrorMessage="Route number is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
+                        <asp:RequiredFieldValidator ID="rfvRouteNum" runat="server" ControlToValidate="txtRouteNum" ErrorMessage="<%$ Resources:Strings, Auto_Operations_Routes_15 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Route Name <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Routes_31") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtRouteName" runat="server" CssClass="form-control" MaxLength="120" />
-                        <asp:RequiredFieldValidator ID="rfvRouteName" runat="server" ControlToValidate="txtRouteName" ErrorMessage="Route name is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
+                        <asp:RequiredFieldValidator ID="rfvRouteName" runat="server" ControlToValidate="txtRouteName" ErrorMessage="<%$ Resources:Strings, Auto_Operations_Routes_16 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Start Stop <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Routes_32") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtStartStop" runat="server" CssClass="form-control" MaxLength="120" />
-                        <asp:RequiredFieldValidator ID="rfvStartStop" runat="server" ControlToValidate="txtStartStop" ErrorMessage="Start stop is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
+                        <asp:RequiredFieldValidator ID="rfvStartStop" runat="server" ControlToValidate="txtStartStop" ErrorMessage="<%$ Resources:Strings, Auto_Operations_Routes_17 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">End Stop <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Routes_33") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtEndStop" runat="server" CssClass="form-control" MaxLength="120" />
-                        <asp:RequiredFieldValidator ID="rfvEndStop" runat="server" ControlToValidate="txtEndStop" ErrorMessage="End stop is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
+                        <asp:RequiredFieldValidator ID="rfvEndStop" runat="server" ControlToValidate="txtEndStop" ErrorMessage="<%$ Resources:Strings, Auto_Operations_Routes_18 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="RouteForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Active</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Routes_34") %></span>
                         <asp:CheckBox ID="chkActive" runat="server" Checked="true" />
                     </div>
                     <div class="form-row" style="margin-top: 15px;">
-                        <asp:Button ID="btnSaveRoute" runat="server" Text="Save" CssClass="action-button" OnClick="btnSaveRoute_Click" ValidationGroup="RouteForm" />
-                        <asp:Button ID="btnCancelRoute" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancelRoute_Click" CausesValidation="false" />
+                        <asp:Button ID="btnSaveRoute" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_19 %>" CssClass="action-button" OnClick="btnSaveRoute_Click" ValidationGroup="RouteForm" />
+                        <asp:Button ID="btnCancelRoute" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_20 %>" CssClass="action-button" OnClick="btnCancelRoute_Click" CausesValidation="false" />
                     </div>
                 </asp:Panel>
             </ContentTemplate>
@@ -161,12 +170,12 @@
             <ContentTemplate>
                 <asp:Literal ID="litRouteStops" runat="server" />
                 <div style="margin-top: 15px;">
-                    <asp:Button ID="btnCloseStops" runat="server" Text="Close" CssClass="action-button" OnClick="btnCloseStops_Click" />
+                    <asp:Button ID="btnCloseStops" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_21 %>" CssClass="action-button" OnClick="btnCloseStops_Click" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Auto_Operations_Routes_35") %></a></p>
     </div>
 
 </asp:Content>

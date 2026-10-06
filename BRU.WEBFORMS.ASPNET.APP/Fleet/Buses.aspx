@@ -1,13 +1,16 @@
-<%@ Page Title="Bus Fleet Management - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Buses.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Fleet.Buses" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Fleet_Buses_1 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Buses.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Fleet.Buses" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     
     <style type="text/css">
         .content-page {
-            padding: 10px;
+            padding: 18px;
             font-family: Tahoma, Verdana, Arial, sans-serif;
+            max-width: 1480px;
+            margin: 0 auto;
         }
+        .content-page > * + * { margin-top: 16px; }
         .page-title { 
             font-size: 16pt; 
             color: #000080; 
@@ -29,12 +32,16 @@
         .action-bar {
             background-color: #EDF2FB;
             border: 1px solid #1447AE;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
         }
         .action-button {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 7px 12px;
             background-color: #1447AE;
             color: #FFFFFF;
             text-decoration: none;
@@ -168,6 +175,17 @@
             width: 150px;
             font-weight: bold;
             font-size: 9pt;
+        }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .page-title { font-size: 14pt; }
+            .search-box { display: block; margin: 8px 0 0; }
+            .search-input, .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .filter-label, .form-label { display: block; width: auto; margin: 0 0 4px; }
+            .action-bar { display: flex; flex-wrap: wrap; gap: 6px; }
+            .action-button { margin: 0; }
+            .modal-content { width: calc(100% - 20px); margin: 5% auto; box-sizing: border-box; }
         }
         .form-control {
             padding: 4px 8px;

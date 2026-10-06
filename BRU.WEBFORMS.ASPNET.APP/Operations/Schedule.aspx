@@ -1,10 +1,17 @@
-<%@ Page Title="Schedule Management - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Schedule.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Operations.Schedule" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Operations_Schedule_34 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Schedule.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Operations.Schedule" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; box-sizing: border-box; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page input, .content-page select, .content-page textarea { box-sizing: border-box; max-width: 100%; }
+        .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; }
+        .filter-row:last-child { margin-bottom: 0; }
+        .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; margin-bottom: 18px; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 10px; } .filter-label { width: auto; min-width: 120px; } .data-table { font-size: 8pt; } }
         .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
         .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
         .text-regular { font-size: 10pt; line-height: 1.5; }
@@ -47,6 +54,13 @@
         .editor-field .form-control { width: 100%; box-sizing: border-box; }
         .editor-actions { margin-top: 12px; }
         .weekday-list label { display: inline-block; margin-right: 12px; }
+        @media (max-width: 760px) {
+            .content-page { padding: 8px; }
+            .form-label { display: block; width: auto; margin-left: 0 !important; }
+            .form-control, .date-input { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .action-bar > div { margin-left: 0 !important; width: 100%; }
+            .data-table { min-width: 760px; }
+        }
     </style>
 
     <script type="text/javascript">
@@ -70,7 +84,7 @@
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Schedule Management</div>
+        <div class="page-title"><%= Localization.GetHtml("Schedule_Heading") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -83,149 +97,149 @@
 
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Today's Trips:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Schedule_35") %></span>
                 <asp:Literal ID="litTodayTrips" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Planned:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Schedule_36") %></span>
                 <asp:Literal ID="litPlanned" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">In Progress:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Schedule_37") %></span>
                 <asp:Literal ID="litInProgress" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Completed:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Schedule_38") %></span>
                 <asp:Literal ID="litCompleted" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Cancelled:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Operations_Schedule_39") %></span>
                 <asp:Literal ID="litCancelled" runat="server" Text="0" />
             </div>
         </div>
 
         <div class="action-bar">
-            <asp:Button ID="btnToday" runat="server" Text="Today's Schedule" CssClass="action-button" OnClick="btnToday_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
-            <asp:Button ID="btnUpdateStatuses" runat="server" Text="Update Trip Statuses" CssClass="action-button" OnClick="btnUpdateStatuses_Click" />
+            <asp:Button ID="btnToday" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_1 %>" CssClass="action-button" OnClick="btnToday_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_2 %>" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnUpdateStatuses" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_3 %>" CssClass="action-button" OnClick="btnUpdateStatuses_Click" />
             <div style="display: inline-block; margin-left: 20px;">
-                <span class="form-label">Route:</span>
+                <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Schedule_40") %></span>
                 <asp:DropDownList ID="ddlRouteFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlRouteFilter_SelectedIndexChanged">
-                    <asp:ListItem Text="All Routes" Value="" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_4 %>" Value="" />
                 </asp:DropDownList>
             </div>
         </div>
 
         <div class="date-picker-section">
             <div class="form-row">
-                <span class="form-label">Date From:</span>
-                <asp:TextBox ID="txtDateFrom" runat="server" CssClass="date-input" placeholder="dd.MM.yyyy" />
-                <span class="form-label" style="margin-left: 20px;">Date To:</span>
-                <asp:TextBox ID="txtDateTo" runat="server" CssClass="date-input" placeholder="dd.MM.yyyy" />
-                <asp:Button ID="btnApplyDateRange" runat="server" Text="Apply Range" CssClass="action-button" OnClick="btnApplyDateRange_Click" />
+                <span class="form-label"><%= Localization.GetHtml("Auto_Operations_Schedule_41") %></span>
+                <asp:TextBox ID="txtDateFrom" runat="server" CssClass="date-input" placeholder="<%$ Resources:Strings, Auto_Operations_Schedule_5 %>" />
+                <span class="form-label" style="margin-left: 20px;"><%= Localization.GetHtml("Auto_Operations_Schedule_42") %></span>
+                <asp:TextBox ID="txtDateTo" runat="server" CssClass="date-input" placeholder="<%$ Resources:Strings, Auto_Operations_Schedule_6 %>" />
+                <asp:Button ID="btnApplyDateRange" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_7 %>" CssClass="action-button" OnClick="btnApplyDateRange_Click" />
             </div>
         </div>
 
         <asp:Panel ID="pnlScheduleEditor" runat="server" CssClass="schedule-editor" Visible="false">
-            <h3>Schedule Planning</h3>
+            <h3><%= Localization.GetHtml("Auto_Operations_Schedule_43") %></h3>
             <asp:HiddenField ID="hidScheduleId" runat="server" Value="0" />
             <div class="editor-grid">
                 <div class="editor-field">
-                    <label for="<%= ddlScheduleRoute.ClientID %>">Route</label>
+                    <label for="<%= ddlScheduleRoute.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_44") %></label>
                     <asp:DropDownList ID="ddlScheduleRoute" runat="server" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= ddlScheduleBus.ClientID %>">Bus</label>
+                    <label for="<%= ddlScheduleBus.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_45") %></label>
                     <asp:DropDownList ID="ddlScheduleBus" runat="server" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= ddlScheduleDriver.ClientID %>">Driver</label>
+                    <label for="<%= ddlScheduleDriver.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_46") %></label>
                     <asp:DropDownList ID="ddlScheduleDriver" runat="server" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= txtServiceDate.ClientID %>">Service date</label>
+                    <label for="<%= txtServiceDate.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_47") %></label>
                     <asp:TextBox ID="txtServiceDate" runat="server" TextMode="Date" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= txtDeparture.ClientID %>">Departure</label>
+                    <label for="<%= txtDeparture.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_48") %></label>
                     <asp:TextBox ID="txtDeparture" runat="server" TextMode="Time" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= txtArrival.ClientID %>">Arrival</label>
+                    <label for="<%= txtArrival.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_49") %></label>
                     <asp:TextBox ID="txtArrival" runat="server" TextMode="Time" CssClass="form-control" />
                 </div>
             </div>
             <div class="editor-actions">
-                <asp:Button ID="btnNewSchedule" runat="server" Text="New Schedule" CssClass="action-button" OnClick="btnNewSchedule_Click" CausesValidation="false" />
-                <asp:Button ID="btnSaveSchedule" runat="server" Text="Save Schedule" CssClass="action-button" OnClick="btnSaveSchedule_Click" />
-                <asp:Button ID="btnCancelScheduleEdit" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancelScheduleEdit_Click" CausesValidation="false" />
+                <asp:Button ID="btnNewSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_8 %>" CssClass="action-button" OnClick="btnNewSchedule_Click" CausesValidation="false" />
+                <asp:Button ID="btnSaveSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_9 %>" CssClass="action-button" OnClick="btnSaveSchedule_Click" />
+                <asp:Button ID="btnCancelScheduleEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_10 %>" CssClass="action-button" OnClick="btnCancelScheduleEdit_Click" CausesValidation="false" />
             </div>
             <hr />
-            <h4>Recurring Schedule Generation</h4>
+            <h4><%= Localization.GetHtml("Auto_Operations_Schedule_50") %></h4>
             <div class="editor-grid">
                 <div class="editor-field">
-                    <label for="<%= txtTemplateDate.ClientID %>">Template date</label>
+                    <label for="<%= txtTemplateDate.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_51") %></label>
                     <asp:TextBox ID="txtTemplateDate" runat="server" TextMode="Date" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= txtRecurringFrom.ClientID %>">Generate from</label>
+                    <label for="<%= txtRecurringFrom.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_52") %></label>
                     <asp:TextBox ID="txtRecurringFrom" runat="server" TextMode="Date" CssClass="form-control" />
                 </div>
                 <div class="editor-field">
-                    <label for="<%= txtRecurringTo.ClientID %>">Generate through</label>
+                    <label for="<%= txtRecurringTo.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_53") %></label>
                     <asp:TextBox ID="txtRecurringTo" runat="server" TextMode="Date" CssClass="form-control" />
                 </div>
             </div>
             <div class="form-row weekday-list">
                 <asp:CheckBoxList ID="cblRecurringDays" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-                    <asp:ListItem Text="Mon" Value="Monday" />
-                    <asp:ListItem Text="Tue" Value="Tuesday" />
-                    <asp:ListItem Text="Wed" Value="Wednesday" />
-                    <asp:ListItem Text="Thu" Value="Thursday" />
-                    <asp:ListItem Text="Fri" Value="Friday" />
-                    <asp:ListItem Text="Sat" Value="Saturday" />
-                    <asp:ListItem Text="Sun" Value="Sunday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_11 %>" Value="Monday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_12 %>" Value="Tuesday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_13 %>" Value="Wednesday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_14 %>" Value="Thursday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_15 %>" Value="Friday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_16 %>" Value="Saturday" />
+                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_17 %>" Value="Sunday" />
                 </asp:CheckBoxList>
             </div>
-            <asp:Button ID="btnGenerateRecurring" runat="server" Text="Generate Recurring Trips" CssClass="action-button" OnClientClick="return confirmRecurringBackfill();" OnClick="btnGenerateRecurring_Click" />
-            <asp:Button ID="btnValidateSchedule" runat="server" Text="Validate Schedule" CssClass="action-button" OnClick="btnValidateSchedule_Click" CausesValidation="false" />
+            <asp:Button ID="btnGenerateRecurring" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_18 %>" CssClass="action-button" OnClientClick="return confirmRecurringBackfill();" OnClick="btnGenerateRecurring_Click" />
+            <asp:Button ID="btnValidateSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_19 %>" CssClass="action-button" OnClick="btnValidateSchedule_Click" CausesValidation="false" />
         </asp:Panel>
 
         <uc:ContentBox ID="cbScheduleList" runat="server" HeaderText="Trip Schedule" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <asp:GridView ID="gvSchedule" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvSchedule_PageIndexChanging" OnSorting="gvSchedule_Sorting" OnRowDataBound="gvSchedule_RowDataBound" OnRowCommand="gvSchedule_RowCommand">
                     <Columns>
-                        <asp:BoundField DataField="ScheduleId" HeaderText="ID" SortExpression="schedule_id" ReadOnly="true" />
-                        <asp:TemplateField HeaderText="Route" SortExpression="route_num">
+                        <asp:BoundField DataField="ScheduleId" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_20 %>" SortExpression="schedule_id" ReadOnly="true" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_21 %>" SortExpression="route_num">
                             <ItemTemplate>
                                 <span class="route-num"><%# Eval("RouteNum") %></span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="RouteName" HeaderText="Route Name" SortExpression="route_name" />
-                        <asp:BoundField DataField="ServiceDate" HeaderText="Date" SortExpression="service_date" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:TemplateField HeaderText="Departure" SortExpression="departure_time">
+                        <asp:BoundField DataField="RouteName" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_22 %>" SortExpression="route_name" />
+                        <asp:BoundField DataField="ServiceDate" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_23 %>" SortExpression="service_date" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_24 %>" SortExpression="departure_time">
                             <ItemTemplate>
                                 <span class="schedule-time"><%# Eval("DepartureTime") %></span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Arrival" SortExpression="arrival_time">
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_25 %>" SortExpression="arrival_time">
                             <ItemTemplate>
                                 <span class="schedule-time"><%# Eval("ArrivalTime") %></span>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="TripMinutes" HeaderText="Duration (min)" SortExpression="trip_minutes" />
-                        <asp:BoundField DataField="FleetNumber" HeaderText="Bus" SortExpression="fleet_number" />
-                        <asp:BoundField DataField="BusModel" HeaderText="Model" SortExpression="bus_model" />
-                        <asp:BoundField DataField="DriverName" HeaderText="Driver" SortExpression="driver_name" />
-                        <asp:BoundField DataField="AvailableSeatNum" HeaderText="Seats" SortExpression="available_seat_num" />
-                        <asp:TemplateField HeaderText="Status" SortExpression="schedule_status">
+                        <asp:BoundField DataField="TripMinutes" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_26 %>" SortExpression="trip_minutes" />
+                        <asp:BoundField DataField="FleetNumber" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_27 %>" SortExpression="fleet_number" />
+                        <asp:BoundField DataField="BusModel" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_28 %>" SortExpression="bus_model" />
+                        <asp:BoundField DataField="DriverName" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_29 %>" SortExpression="driver_name" />
+                        <asp:BoundField DataField="AvailableSeatNum" HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_30 %>" SortExpression="available_seat_num" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_31 %>" SortExpression="schedule_status">
                             <ItemTemplate>
                                 <asp:Literal ID="litStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_32 %>">
                             <ItemTemplate>
-                                <asp:LinkButton ID="btnEditSchedule" runat="server" Text="Edit" CommandName="EditSchedule" CommandArgument='<%# Eval("ScheduleId") %>' CausesValidation="false" />
+                                <asp:LinkButton ID="btnEditSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_33 %>" CommandName="EditSchedule" CommandArgument='<%# Eval("ScheduleId") %>' CausesValidation="false" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -237,7 +251,7 @@
             <asp:Literal ID="litPagination" runat="server" />
         </div>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Auto_Operations_Schedule_55") %></a></p>
     </div>
 
     <script type="text/javascript">

@@ -1,10 +1,15 @@
-<%@ Page Title="Payment Processing - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Payments.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Sales.Payments" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Sales_Payments_28 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Payments.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Sales.Payments" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; box-sizing: border-box; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page input, .content-page select, .content-page textarea { box-sizing: border-box; max-width: 100%; }
+        .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; margin-bottom: 18px; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 10px; } .data-table { font-size: 8pt; } }
         .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
         .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
         .text-regular { font-size: 10pt; line-height: 1.5; }
@@ -43,11 +48,13 @@
         .detail-row { margin-bottom: 6px; font-size: 9pt; }
         .detail-label { display: inline-block; width: 150px; font-weight: bold; color: #666666; }
         .detail-value { color: #000000; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'], input[type='date'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } }
     </style>
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Payment Processing</div>
+        <div class="page-title"><%= Localization.GetHtml("Auto_Sales_Payments_29") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -60,43 +67,43 @@
 
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Total Payments:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Payments_30") %></span>
                 <asp:Literal ID="litTotalPayments" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Paid:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Payments_31") %></span>
                 <asp:Literal ID="litPaid" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Pending:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Payments_32") %></span>
                 <asp:Literal ID="litPending" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Errors:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Payments_33") %></span>
                 <asp:Literal ID="litErrors" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Total Amount:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Payments_34") %></span>
                 <asp:Literal ID="litTotalAmount" runat="server" Text="0.00" />
             </div>
         </div>
 
         <div class="action-bar">
-            <asp:Button ID="btnNewPayment" runat="server" Text="New Payment" CssClass="action-button" OnClick="btnNewPayment_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnNewPayment" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_1 %>" CssClass="action-button" OnClick="btnNewPayment_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_2 %>" CssClass="action-button" OnClick="btnRefresh_Click" />
         </div>
 
         <uc:ContentBox ID="cbFilters" runat="server" HeaderText="Filter Payments" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <div class="filter-section">
                     <div class="filter-row">
-                        <span class="filter-label">Status:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Sales_Payments_35") %></span>
                         <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
-                            <asp:ListItem Text="All" Value="" />
-                            <asp:ListItem Text="Ожидает" Value="Ожидает" />
-                            <asp:ListItem Text="Оплачена" Value="Оплачена" />
-                            <asp:ListItem Text="Ошибка" Value="Ошибка" />
-                            <asp:ListItem Text="Возврат" Value="Возврат" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_3 %>" Value="" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_4 %>" Value="Ожидает" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_5 %>" Value="Успешно" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_6 %>" Value="Ошибка" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_7 %>" Value="Возврат" />
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -107,25 +114,25 @@
             <ContentTemplate>
                 <asp:GridView ID="gvPayments" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvPayments_PageIndexChanging" OnSorting="gvPayments_Sorting" OnRowCommand="gvPayments_RowCommand" OnRowDataBound="gvPayments_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="PaymentId" HeaderText="Payment ID" SortExpression="payment_id" ReadOnly="true" />
-                        <asp:BoundField DataField="SaleId" HeaderText="Sale ID" SortExpression="sale_id" />
-                        <asp:BoundField DataField="PaymentDate" HeaderText="Date" SortExpression="payment_date" DataFormatString="{0:dd.MM.yyyy HH:mm}" />
-                        <asp:BoundField DataField="Amount" HeaderText="Amount" SortExpression="amount" DataFormatString="{0:F2}" />
-                        <asp:BoundField DataField="PaymentMethod" HeaderText="Method" SortExpression="payment_method" />
-                        <asp:TemplateField HeaderText="Status" SortExpression="payment_status">
+                        <asp:BoundField DataField="PaymentId" HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_8 %>" SortExpression="payment_id" ReadOnly="true" />
+                        <asp:BoundField DataField="SaleId" HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_9 %>" SortExpression="sale_id" />
+                        <asp:BoundField DataField="PaymentDate" HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_10 %>" SortExpression="payment_date" DataFormatString="{0:dd.MM.yyyy HH:mm}" />
+                        <asp:BoundField DataField="Amount" HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_11 %>" SortExpression="amount" DataFormatString="{0:F2}" />
+                        <asp:BoundField DataField="PaymentMethod" HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_12 %>" SortExpression="payment_method" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_13 %>" SortExpression="payment_status">
                             <ItemTemplate>
                                 <asp:Literal ID="litPayStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="TransactionId" HeaderText="Transaction ID" SortExpression="transaction_id" />
-                        <asp:TemplateField HeaderText="Control" SortExpression="control_status">
+                        <asp:BoundField DataField="TransactionId" HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_14 %>" SortExpression="transaction_id" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_15 %>" SortExpression="control_status">
                             <ItemTemplate>
                                 <asp:Literal ID="litCtrlStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_16 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="View" CommandName="ViewPayment" CommandArgument='<%# Eval("PaymentId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_17 %>" CommandName="ViewPayment" CommandArgument='<%# Eval("PaymentId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -142,32 +149,32 @@
             <ContentTemplate>
                 <asp:Panel ID="pnlPaymentForm" runat="server" DefaultButton="btnSavePayment">
                     <div class="form-row">
-                        <span class="form-label">Sale ID <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Payments_37") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtSaleId" runat="server" CssClass="form-control" Width="120" />
-                        <asp:RequiredFieldValidator ID="rfvSaleId" runat="server" ControlToValidate="txtSaleId" ErrorMessage="Sale ID is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="PaymentForm" />
+                        <asp:RequiredFieldValidator ID="rfvSaleId" runat="server" ControlToValidate="txtSaleId" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Payments_18 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="PaymentForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Amount <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Payments_38") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtAmount" runat="server" CssClass="form-control" Width="120" />
-                        <asp:RequiredFieldValidator ID="rfvAmount" runat="server" ControlToValidate="txtAmount" ErrorMessage="Amount is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="PaymentForm" />
+                        <asp:RequiredFieldValidator ID="rfvAmount" runat="server" ControlToValidate="txtAmount" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Payments_19 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="PaymentForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Method <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Payments_39") %><span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlMethod" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="Наличные" Value="Наличные" />
-                            <asp:ListItem Text="Банковская карта" Value="Банковская карта" />
-                            <asp:ListItem Text="Электронный кошелек" Value="Электронный кошелек" />
-                            <asp:ListItem Text="QR-код" Value="QR-код" />
-                            <asp:ListItem Text="Безналичный расчет" Value="Безналичный расчет" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_20 %>" Value="Наличные" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_21 %>" Value="Банковская карта" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_22 %>" Value="Электронный кошелек" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_23 %>" Value="QR-код" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_24 %>" Value="Безналичный расчет" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Transaction ID</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Payments_40") %></span>
                         <asp:TextBox ID="txtTransactionId" runat="server" CssClass="form-control" MaxLength="80" />
                     </div>
                     <div class="form-row" style="margin-top: 15px;">
-                        <asp:Button ID="btnSavePayment" runat="server" Text="Create Payment" CssClass="action-button" OnClick="btnSavePayment_Click" ValidationGroup="PaymentForm" />
-                        <asp:Button ID="btnCancelPayment" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancelPayment_Click" CausesValidation="false" />
+                        <asp:Button ID="btnSavePayment" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_25 %>" CssClass="action-button" OnClick="btnSavePayment_Click" ValidationGroup="PaymentForm" />
+                        <asp:Button ID="btnCancelPayment" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_26 %>" CssClass="action-button" OnClick="btnCancelPayment_Click" CausesValidation="false" />
                     </div>
                 </asp:Panel>
             </ContentTemplate>
@@ -178,12 +185,12 @@
             <ContentTemplate>
                 <asp:Literal ID="litPaymentDetail" runat="server" />
                 <div style="margin-top: 15px;">
-                    <asp:Button ID="btnDetailClose" runat="server" Text="Close" CssClass="action-button" OnClick="btnDetailClose_Click" />
+                    <asp:Button ID="btnDetailClose" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_27 %>" CssClass="action-button" OnClick="btnDetailClose_Click" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Auto_Sales_Payments_41") %></a></p>
     </div>
 
 </asp:Content>

@@ -1,10 +1,15 @@
-<%@ Page Title="Ticket Type Management - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Tickets.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Sales.Tickets" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Sales_Tickets_32 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Tickets.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Sales.Tickets" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; box-sizing: border-box; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page input, .content-page select, .content-page textarea { box-sizing: border-box; max-width: 100%; }
+        .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; margin-bottom: 18px; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 10px; } .data-table { font-size: 8pt; } }
         .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
         .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
         .text-regular { font-size: 10pt; line-height: 1.5; }
@@ -48,11 +53,13 @@
         .detail-row { margin-bottom: 6px; font-size: 9pt; }
         .detail-label { display: inline-block; width: 150px; font-weight: bold; color: #666666; }
         .detail-value { color: #000000; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .form-label, .filter-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='text'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } }
     </style>
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Ticket Type Management</div>
+        <div class="page-title"><%= Localization.GetHtml("Auto_Sales_Tickets_33") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
@@ -65,33 +72,33 @@
 
         <div class="stats-summary">
             <div class="stats-item">
-                <span class="stats-label">Total Ticket Types:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Tickets_34") %></span>
                 <asp:Literal ID="litTotalTickets" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Active:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Tickets_35") %></span>
                 <asp:Literal ID="litActiveTickets" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Low Stock:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Tickets_36") %></span>
                 <asp:Literal ID="litLowStock" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Out of Stock:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Tickets_37") %></span>
                 <asp:Literal ID="litOutOfStock" runat="server" Text="0" />
             </div>
             <div class="stats-item">
-                <span class="stats-label">Avg Price:</span>
+                <span class="stats-label"><%= Localization.GetHtml("Auto_Sales_Tickets_38") %></span>
                 <asp:Literal ID="litAvgPrice" runat="server" Text="0.00" />
             </div>
         </div>
 
         <div class="action-bar">
-            <asp:Button ID="btnAddTicket" runat="server" Text="Add New Ticket Type" CssClass="action-button" OnClick="btnAddTicket_Click" />
-            <asp:Button ID="btnRefresh" runat="server" Text="Refresh" CssClass="action-button" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnAddTicket" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_1 %>" CssClass="action-button" OnClick="btnAddTicket_Click" />
+            <asp:Button ID="btnRefresh" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_2 %>" CssClass="action-button" OnClick="btnRefresh_Click" />
             <div class="search-box">
                 <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" Placeholder="Search by name or type..." />
-                <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="action-button" OnClick="btnSearch_Click" />
+                <asp:Button ID="btnSearch" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_3 %>" CssClass="action-button" OnClick="btnSearch_Click" />
             </div>
         </div>
 
@@ -99,28 +106,28 @@
             <ContentTemplate>
                 <div class="filter-section">
                     <div class="filter-row">
-                        <span class="filter-label">Ticket Type:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Sales_Tickets_39") %></span>
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlTypeFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlTypeFilter_SelectedIndexChanged">
-                                <asp:ListItem Text="All Types" Value="" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Tickets_4 %>" Value="" />
                             </asp:DropDownList>
                         </span>
                     </div>
                     <div class="filter-row">
-                        <span class="filter-label">Price Range:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Sales_Tickets_40") %></span>
                         <span class="filter-control">
                             <asp:TextBox ID="txtPriceFrom" runat="server" CssClass="form-control" Width="80" Placeholder="From" />
                             <asp:TextBox ID="txtPriceTo" runat="server" CssClass="form-control" Width="80" Placeholder="To" />
-                            <asp:Button ID="btnApplyPriceFilter" runat="server" Text="Apply" CssClass="action-button" OnClick="btnApplyPriceFilter_Click" />
+                            <asp:Button ID="btnApplyPriceFilter" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_5 %>" CssClass="action-button" OnClick="btnApplyPriceFilter_Click" />
                         </span>
                     </div>
                     <div class="filter-row">
-                        <span class="filter-label">Status:</span>
+                        <span class="filter-label"><%= Localization.GetHtml("Auto_Sales_Tickets_41") %></span>
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
-                                <asp:ListItem Text="All" Value="" />
-                                <asp:ListItem Text="Active" Value="1" />
-                                <asp:ListItem Text="Inactive" Value="0" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Tickets_6 %>" Value="" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Tickets_7 %>" Value="1" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Tickets_8 %>" Value="0" />
                             </asp:DropDownList>
                         </span>
                     </div>
@@ -132,33 +139,33 @@
             <ContentTemplate>
                 <asp:GridView ID="gvTickets" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="20" AllowSorting="true" CssClass="data-table" GridLines="Both" PagerStyle-CssClass="pagination" OnPageIndexChanging="gvTickets_PageIndexChanging" OnSorting="gvTickets_Sorting" OnRowCommand="gvTickets_RowCommand" OnRowDataBound="gvTickets_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="TicketId" HeaderText="ID" SortExpression="ticket_id" ReadOnly="true" />
-                        <asp:BoundField DataField="TicketName" HeaderText="Ticket Name" SortExpression="ticket_name" />
-                        <asp:BoundField DataField="TicketType" HeaderText="Type" SortExpression="ticket_type" />
-                        <asp:BoundField DataField="Zone" HeaderText="Zone" />
-                        <asp:TemplateField HeaderText="Price" SortExpression="price">
+                        <asp:BoundField DataField="TicketId" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_9 %>" SortExpression="ticket_id" ReadOnly="true" />
+                        <asp:BoundField DataField="TicketName" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_10 %>" SortExpression="ticket_name" />
+                        <asp:BoundField DataField="TicketType" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_11 %>" SortExpression="ticket_type" />
+                        <asp:BoundField DataField="Zone" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_12 %>" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_13 %>" SortExpression="price">
                             <ItemTemplate>
                                 <asp:Literal ID="litPrice" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="ValidDays" HeaderText="Valid (days)" SortExpression="valid_days" />
-                        <asp:TemplateField HeaderText="Available" SortExpression="available_count">
+                        <asp:BoundField DataField="ValidDays" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_14 %>" SortExpression="valid_days" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_15 %>" SortExpression="available_count">
                             <ItemTemplate>
                                 <asp:Literal ID="litStock" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="IssueDate" HeaderText="Issue Date" SortExpression="issue_date" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:BoundField DataField="ExpiryDate" HeaderText="Expiry Date" SortExpression="expiry_date" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:TemplateField HeaderText="Status" SortExpression="is_active">
+                        <asp:BoundField DataField="IssueDate" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_16 %>" SortExpression="issue_date" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:BoundField DataField="ExpiryDate" HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_17 %>" SortExpression="expiry_date" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_18 %>" SortExpression="is_active">
                             <ItemTemplate>
                                 <asp:Literal ID="litStatus" runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Actions">
+                        <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_19 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="View" CommandName="ViewTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this ticket type?');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_20 %>" CommandName="ViewTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_21 %>" CommandName="EditTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_22 %>" CommandName="DeleteTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -175,45 +182,45 @@
             <ContentTemplate>
                 <asp:Panel ID="pnlTicketForm" runat="server" DefaultButton="btnSave">
                     <div class="form-row">
-                        <span class="form-label">Ticket Name <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_46") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtTicketName" runat="server" CssClass="form-control" MaxLength="120" />
-                        <asp:RequiredFieldValidator ID="rfvTicketName" runat="server" ControlToValidate="txtTicketName" ErrorMessage="Name is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
+                        <asp:RequiredFieldValidator ID="rfvTicketName" runat="server" ControlToValidate="txtTicketName" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Tickets_23 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Ticket Type <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_47") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtTicketType" runat="server" CssClass="form-control" MaxLength="40" />
-                        <asp:RequiredFieldValidator ID="rfvTicketType" runat="server" ControlToValidate="txtTicketType" ErrorMessage="Type is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
+                        <asp:RequiredFieldValidator ID="rfvTicketType" runat="server" ControlToValidate="txtTicketType" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Tickets_24 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Zone</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_48") %></span>
                         <asp:TextBox ID="txtZone" runat="server" CssClass="form-control" MaxLength="40" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Price <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_49") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control" Width="120" />
-                        <asp:RequiredFieldValidator ID="rfvPrice" runat="server" ControlToValidate="txtPrice" ErrorMessage="Price is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
+                        <asp:RequiredFieldValidator ID="rfvPrice" runat="server" ControlToValidate="txtPrice" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Tickets_25 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Valid Days <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_50") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtValidDays" runat="server" CssClass="form-control" Width="80" />
-                        <asp:RequiredFieldValidator ID="rfvValidDays" runat="server" ControlToValidate="txtValidDays" ErrorMessage="Valid days required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
+                        <asp:RequiredFieldValidator ID="rfvValidDays" runat="server" ControlToValidate="txtValidDays" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Tickets_26 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Available Count <span class="form-required">*</span></span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_51") %><span class="form-required">*</span></span>
                         <asp:TextBox ID="txtAvailableCount" runat="server" CssClass="form-control" Width="120" />
-                        <asp:RequiredFieldValidator ID="rfvAvailableCount" runat="server" ControlToValidate="txtAvailableCount" ErrorMessage="Count is required" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
+                        <asp:RequiredFieldValidator ID="rfvAvailableCount" runat="server" ControlToValidate="txtAvailableCount" ErrorMessage="<%$ Resources:Strings, Auto_Sales_Tickets_27 %>" Display="Dynamic" ForeColor="#CC0000" Font-Size="8pt" ValidationGroup="TicketForm" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Expiry Date</span>
-                        <asp:TextBox ID="txtExpiryDate" runat="server" CssClass="form-control" Width="120" placeholder="dd.MM.yyyy" />
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_52") %></span>
+                        <asp:TextBox ID="txtExpiryDate" runat="server" CssClass="form-control" Width="120" placeholder="<%$ Resources:Strings, Auto_Sales_Tickets_28 %>" />
                     </div>
                     <div class="form-row">
-                        <span class="form-label">Active</span>
+                        <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Tickets_53") %></span>
                         <asp:CheckBox ID="chkActive" runat="server" Checked="true" />
                     </div>
                     <div class="form-row" style="margin-top: 15px;">
-                        <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="TicketForm" />
-                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="action-button" OnClick="btnCancel_Click" CausesValidation="false" />
+                        <asp:Button ID="btnSave" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_29 %>" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="TicketForm" />
+                        <asp:Button ID="btnCancel" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_30 %>" CssClass="action-button" OnClick="btnCancel_Click" CausesValidation="false" />
                     </div>
                 </asp:Panel>
             </ContentTemplate>
@@ -224,12 +231,12 @@
             <ContentTemplate>
                 <asp:Literal ID="litDetail" runat="server" />
                 <div style="margin-top: 15px;">
-                    <asp:Button ID="btnDetailClose" runat="server" Text="Close" CssClass="action-button" OnClick="btnDetailClose_Click" />
+                    <asp:Button ID="btnDetailClose" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_31 %>" CssClass="action-button" OnClick="btnDetailClose_Click" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
 
-        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;">Back to top &#9650;</a></p>
+        <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Auto_Sales_Tickets_54") %></a></p>
     </div>
 
 </asp:Content>

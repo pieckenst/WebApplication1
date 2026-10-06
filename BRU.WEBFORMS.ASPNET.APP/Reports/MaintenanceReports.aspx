@@ -1,8 +1,13 @@
-<%@ Page Title="Maintenance Reports - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MaintenanceReports.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Reports.MaintenanceReports" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_19 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MaintenanceReports.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Reports.MaintenanceReports" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; box-sizing: border-box; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page input, .content-page select, .content-page textarea { box-sizing: border-box; max-width: 100%; }
+        .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; margin-bottom: 18px; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 10px; } .data-table { font-size: 8pt; } }
         .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
         .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
         .action-button { display: inline-block; padding: 6px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin-right: 8px; margin-bottom: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; }
@@ -18,47 +23,49 @@
         .data-table td { padding: 8px; border: 1px solid #CCCCCC; background-color: #FFFFFF; }
         .pagination { margin-top: 15px; text-align: right; }
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
+        .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .page-title { font-size: 14pt; } .filter-label { display: block; width: auto; margin: 0 0 4px; } .form-control, select, input[type='date'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-bar { display: flex; flex-wrap: wrap; gap: 6px; } }
     </style>
     <div class="content-page">
-        <div class="page-title">Maintenance Reports</div>
+        <div class="page-title"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_20") %></div>
         <div class="page-divider"></div>
         <asp:Label ID="lblError" runat="server" CssClass="error-message" Visible="false" />
         <uc:ContentBox ID="cbMaintenanceFilters" runat="server" HeaderText="Filter Options" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
                 <div class="filter-section">
-                    <div class="filter-row"><span class="filter-label">Service date from:</span><asp:TextBox ID="txtDateFrom" runat="server" TextMode="Date" CssClass="form-control" /></div>
-                    <div class="filter-row"><span class="filter-label">Service date through:</span><asp:TextBox ID="txtDateTo" runat="server" TextMode="Date" CssClass="form-control" /></div>
-                    <div class="filter-row"><span class="filter-label">Bus:</span><asp:DropDownList ID="ddlBus" runat="server" CssClass="form-control"><asp:ListItem Text="All buses" Value="" /></asp:DropDownList></div>
-                    <div class="filter-row"><span class="filter-label">Roadworthiness:</span><asp:DropDownList ID="ddlRoadworthiness" runat="server" CssClass="form-control"><asp:ListItem Text="All states" Value="" /><asp:ListItem Text="Исправен" Value="Исправен" /><asp:ListItem Text="Требует внимания" Value="Требует внимания" /><asp:ListItem Text="Неисправен" Value="Неисправен" /></asp:DropDownList></div>
-                    <asp:Button ID="btnApply" runat="server" Text="Apply Filters" CssClass="action-button" OnClick="btnApply_Click" />
-                    <asp:Button ID="btnExport" runat="server" Text="Export CSV" CssClass="action-button" OnClick="btnExport_Click" CausesValidation="false" />
+                    <div class="filter-row"><span class="filter-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_21") %></span><asp:TextBox ID="txtDateFrom" runat="server" TextMode="Date" CssClass="form-control" /></div>
+                    <div class="filter-row"><span class="filter-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_22") %></span><asp:TextBox ID="txtDateTo" runat="server" TextMode="Date" CssClass="form-control" /></div>
+                    <div class="filter-row"><span class="filter-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_23") %></span><asp:DropDownList ID="ddlBus" runat="server" CssClass="form-control"><asp:ListItem Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_1 %>" Value="" /></asp:DropDownList></div>
+                    <div class="filter-row"><span class="filter-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_24") %></span><asp:DropDownList ID="ddlRoadworthiness" runat="server" CssClass="form-control"><asp:ListItem Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_2 %>" Value="" /><asp:ListItem Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_3 %>" Value="Исправен" /><asp:ListItem Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_4 %>" Value="Требует внимания" /><asp:ListItem Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_5 %>" Value="Неисправен" /></asp:DropDownList></div>
+                    <asp:Button ID="btnApply" runat="server" Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_6 %>" CssClass="action-button" OnClick="btnApply_Click" />
+                    <asp:Button ID="btnExport" runat="server" Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_7 %>" CssClass="action-button" OnClick="btnExport_Click" CausesValidation="false" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>
         <div class="stats-summary">
-            <div class="stats-item"><span class="stats-label">Records:</span> <asp:Literal ID="litRecordCount" runat="server" Text="0" /></div>
-            <div class="stats-item"><span class="stats-label">Total cost:</span> <asp:Literal ID="litTotalCost" runat="server" Text="0.00" /></div>
-            <div class="stats-item"><span class="stats-label">Needs attention:</span> <asp:Literal ID="litNotRoadworthy" runat="server" Text="0" /></div>
-            <div class="stats-item"><span class="stats-label">Due in 30 days:</span> <asp:Literal ID="litUpcoming" runat="server" Text="0" /></div>
+            <div class="stats-item"><span class="stats-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_25") %></span> <asp:Literal ID="litRecordCount" runat="server" Text="0" /></div>
+            <div class="stats-item"><span class="stats-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_26") %></span> <asp:Literal ID="litTotalCost" runat="server" Text="0.00" /></div>
+            <div class="stats-item"><span class="stats-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_27") %></span> <asp:Literal ID="litNotRoadworthy" runat="server" Text="0" /></div>
+            <div class="stats-item"><span class="stats-label"><%= Localization.GetHtml("Auto_Reports_MaintenanceReports_28") %></span> <asp:Literal ID="litUpcoming" runat="server" Text="0" /></div>
         </div>
         <uc:ContentBox ID="cbMaintenanceList" runat="server" HeaderText="Maintenance Analysis" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <asp:GridView ID="gvMaintenance" runat="server" AutoGenerateColumns="false" AllowPaging="false" CssClass="data-table" GridLines="Both" EmptyDataText="No maintenance records match the selected filters.">
+                <asp:GridView ID="gvMaintenance" runat="server" AutoGenerateColumns="false" AllowPaging="false" CssClass="data-table" GridLines="Both" EmptyDataText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_8 %>">
                     <Columns>
-                        <asp:BoundField DataField="MaintenanceDate" HeaderText="Service date" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:BoundField DataField="FleetNumber" HeaderText="Bus" />
-                        <asp:BoundField DataField="BusModel" HeaderText="Model" />
-                        <asp:BoundField DataField="MaintenanceType" HeaderText="Service" />
-                        <asp:BoundField DataField="Roadworthiness" HeaderText="Roadworthiness" />
-                        <asp:BoundField DataField="MaintenanceCost" HeaderText="Cost" DataFormatString="{0:N2}" />
-                        <asp:BoundField DataField="NextMaintenanceDate" HeaderText="Next service" DataFormatString="{0:dd.MM.yyyy}" />
-                        <asp:BoundField DataField="EmployeeName" HeaderText="Mechanic" />
+                        <asp:BoundField DataField="MaintenanceDate" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_9 %>" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:BoundField DataField="FleetNumber" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_10 %>" />
+                        <asp:BoundField DataField="BusModel" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_11 %>" />
+                        <asp:BoundField DataField="MaintenanceType" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_12 %>" />
+                        <asp:BoundField DataField="Roadworthiness" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_13 %>" />
+                        <asp:BoundField DataField="MaintenanceCost" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_14 %>" DataFormatString="{0:N2}" />
+                        <asp:BoundField DataField="NextMaintenanceDate" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_15 %>" DataFormatString="{0:dd.MM.yyyy}" />
+                        <asp:BoundField DataField="EmployeeName" HeaderText="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_16 %>" />
                     </Columns>
                 </asp:GridView>
                 <div class="pagination">
-                    <asp:LinkButton ID="btnPreviousPage" runat="server" Text="Previous" OnClick="btnPreviousPage_Click" CausesValidation="false" />
+                    <asp:LinkButton ID="btnPreviousPage" runat="server" Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_17 %>" OnClick="btnPreviousPage_Click" CausesValidation="false" />
                     <asp:Label ID="lblPageInfo" runat="server" />
-                    <asp:LinkButton ID="btnNextPage" runat="server" Text="Next" OnClick="btnNextPage_Click" CausesValidation="false" />
+                    <asp:LinkButton ID="btnNextPage" runat="server" Text="<%$ Resources:Strings, Auto_Reports_MaintenanceReports_18 %>" OnClick="btnNextPage_Click" CausesValidation="false" />
                 </div>
             </ContentTemplate>
         </uc:ContentBox>

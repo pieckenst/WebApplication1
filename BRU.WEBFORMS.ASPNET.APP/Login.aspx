@@ -1,4 +1,4 @@
-<%@ Page Title="Sign In - Autopark Management System" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Login" %>
+<%@ Page Title="<%$ Resources:Strings, Auto_Login_1 %>" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="BRU.WEBFORMS.ASPNET.APP.Login" %>
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="HeadContent1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
@@ -10,6 +10,7 @@
         .form-control { padding: 4px 8px; border: 1px solid #1447AE; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; width: 300px; }
         .action-button { display: inline-block; padding: 6px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin-right: 8px; margin-bottom: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; }
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
+        @media (max-width: 760px) { .content-page { padding: 8px; } .login-panel, .form-panel { width: 100%; max-width: 100%; box-sizing: border-box; } .form-control, input[type='text'], input[type='password'] { width: 100%; max-width: 100%; box-sizing: border-box; } .action-button { width: 100%; margin: 0 0 6px; } }
     </style>
 </asp:Content>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">

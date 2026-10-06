@@ -30,3 +30,59 @@ pre, pre * { font-family: revert; }
 ::-webkit-scrollbar-button:horizontal:end,
 ::-webkit-scrollbar-button:vertical:start,
 ::-webkit-scrollbar-button:vertical:end { all: revert; }
+
+/* Keep the classic XP frame usable on narrow screens without changing its visual language. */
+.frame-content { min-width: 0; }
+.frame-content > form, .frame-content table { max-width: 100%; }
+.frame-content table { overflow-wrap: anywhere; }
+
+.content-page { max-width: 100%; box-sizing: border-box; }
+.content-page img, .content-page input, .content-page select, .content-page textarea { max-width: 100%; box-sizing: border-box; }
+.content-page .action-bar, .content-page .filter-section, .content-page .date-picker-section, .content-page .schedule-editor { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.content-page .form-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.content-page .form-label { max-width: 100%; }
+.content-page .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.content-page .kpi-cell { width: auto; display: block; box-sizing: border-box; }
+.content-page .chart-bar-track { max-width: calc(100% - 170px); }
+
+@media (max-width: 760px) {
+  .frame-container { height: auto; min-height: 100vh; overflow: visible; }
+  .frame-middle { display: block; overflow: visible; }
+  .frame-sidebar { width: 100%; max-height: 220px; border-right: 0; border-bottom: 2px solid #2B64C8; }
+  .frame-content { overflow: visible; }
+  .frame-bottom { min-height: 24px; height: auto; }
+  .frame-top { height: auto; min-height: 84px; }
+  .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+
+@media (max-width: 420px) {
+  .frame-sidebar { max-height: 180px; }
+  .frame-top { min-height: 70px; }
+}
+
+/* Preserve the compact Windows XP vocabulary while letting forms and tables reflow. */
+@media (max-width: 760px) {
+  .content-page { padding: 8px; }
+  .content-page .form-row,
+  .content-page .filter-row { align-items: stretch; flex-direction: column; }
+  .content-page .form-label,
+  .content-page .filter-label { display: block; width: auto; }
+  .content-page .form-control,
+  .content-page select,
+  .content-page input[type="text"],
+  .content-page input[type="date"],
+  .content-page textarea { width: 100%; min-height: 30px; }
+  .content-page .action-bar > .action-button,
+  .content-page .filter-section > .action-button { width: 100%; margin-right: 0; }
+  .content-page .stats-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .content-page .stats-item { margin-right: 0; }
+  .content-page .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-page .modal-content { width: calc(100% - 20px); margin: 5% auto; box-sizing: border-box; }
+}
+
+@media (max-width: 420px) {
+  .content-page .page-title { font-size: 14pt; }
+  .content-page .stats-summary,
+  .content-page .kpi-grid { grid-template-columns: 1fr; }
+  .content-page .action-button { min-height: 32px; }
+}
