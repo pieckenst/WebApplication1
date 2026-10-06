@@ -50,7 +50,7 @@
 
     <div class="content-page">
         <a name="top"></a>
-        <div class="page-title">Route Management</div>
+        <div class="page-title"><%= Localization.GetHtml("Route_Heading") %></div>
         <div class="page-divider"></div>
 
         <asp:Panel ID="pnlError" runat="server" CssClass="error-message" Visible="false">
