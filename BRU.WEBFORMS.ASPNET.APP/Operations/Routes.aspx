@@ -115,9 +115,9 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Routes_11 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_12 %>"<%= Localization.GetHtml("Auto_Operations_Routes_26") %><%# Eval("RouteId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_13 %>"<%= Localization.GetHtml("Auto_Operations_Routes_27") %><%# Eval("RouteId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_14 %>"<%= Localization.GetHtml("Auto_Operations_Routes_28") %><%# Eval("RouteId") %><%= Localization.GetHtml("Auto_Operations_Routes_29") %><%$ Resources:Strings, Common_DeleteRouteConfirm %>');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_12 %>" CommandName="ViewStops" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_13 %>" CommandName="EditRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Routes_14 %>" CommandName="DeleteRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

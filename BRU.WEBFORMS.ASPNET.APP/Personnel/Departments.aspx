@@ -56,8 +56,8 @@
                         <asp:BoundField DataField="EmployeeCount" HeaderText="<%$ Resources:Strings, Auto_Personnel_Departments_13 %>" />
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Personnel_Departments_14 %>"><ItemTemplate><%# Eval("StatusDescription") %></ItemTemplate></asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Personnel_Departments_15 %>"><ItemTemplate>
-                            <asp:LinkButton ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Departments_16 %>"<%= Localization.GetHtml("Auto_Personnel_Departments_23") %><%# Eval("DepartmentId") %>' CausesValidation="false" />
-                            <asp:LinkButton ID="btnToggle" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Departments_17 %>"<%= Localization.GetHtml("Auto_Personnel_Departments_24") %><%# Eval("DepartmentId") %>' CausesValidation="false" />
+                            <asp:LinkButton ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Departments_16 %>" CommandName="EditDepartment" CommandArgument='<%# Eval("DepartmentId") %>' CssClass="action-button" CausesValidation="false" />
+                            <asp:LinkButton ID="btnToggle" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Departments_17 %>" CommandName="ToggleDepartment" CommandArgument='<%# Eval("DepartmentId") %>' CssClass="action-button" CausesValidation="false" />
                         </ItemTemplate></asp:TemplateField>
                     </Columns>
                 </asp:GridView>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BRU.WEBFORMS.ASPNET.APP.Services;
@@ -554,6 +555,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                Button deleteButton = e.Row.FindControl("btnDelete") as Button;
+                if (deleteButton != null)
+                {
+                    deleteButton.OnClientClick = "return confirm(" +
+                        HttpUtility.JavaScriptStringEncode(Localization.Get("Common_DeleteEmployeeConfirm"), true) + ");";
+                }
+
                 Employee emp = (Employee)e.Row.DataItem;
                 Literal litStatus = (Literal)e.Row.FindControl("litStatus");
                 if (litStatus != null)

@@ -67,8 +67,8 @@
                         <asp:BoundField DataField="RouteCount" HeaderText="<%$ Resources:Strings, Auto_Operations_Stops_13 %>" />
                         <asp:BoundField DataField="IsActive" HeaderText="<%$ Resources:Strings, Auto_Operations_Stops_14 %>" />
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Stops_15 %>"><ItemTemplate>
-                            <asp:LinkButton ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Stops_16 %>"<%= Localization.GetHtml("Auto_Operations_Stops_24") %><%# Eval("StopId") %>' CausesValidation="false" />
-                            <asp:LinkButton ID="btnToggle" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Stops_17 %>"<%= Localization.GetHtml("Auto_Operations_Stops_25") %><%# Eval("StopId") %>' CausesValidation="false" />
+                            <asp:LinkButton ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Stops_16 %>" CommandName="EditStop" CommandArgument='<%# Eval("StopId") %>' CssClass="action-button" CausesValidation="false" />
+                            <asp:LinkButton ID="btnToggle" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Stops_17 %>" CommandName="ToggleStop" CommandArgument='<%# Eval("StopId") %>' CssClass="action-button" CausesValidation="false" />
                         </ItemTemplate></asp:TemplateField>
                     </Columns>
                 </asp:GridView>

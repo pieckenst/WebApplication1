@@ -162,7 +162,7 @@
                         <asp:BoundField DataField="CashierName" HeaderText="<%$ Resources:Strings, Auto_Sales_Sales_27 %>" SortExpression="cashier_name" />
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Sales_28 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Sales_29 %>"<%= Localization.GetHtml("Auto_Sales_Sales_52") %><%# Eval("SaleId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Sales_29 %>" CommandName="ViewSale" CommandArgument='<%# Eval("SaleId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

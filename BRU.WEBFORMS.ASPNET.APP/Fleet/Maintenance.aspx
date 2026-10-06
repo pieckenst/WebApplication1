@@ -107,7 +107,7 @@
                             <asp:ListItem Text="<%$ Resources:Strings, Common_All %>" Value="" />
                             <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
                             <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неис��равен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
                         </asp:DropDownList>
                     </div>
                     <div class="filter-row">

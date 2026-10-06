@@ -1207,13 +1207,13 @@
     <value>All states</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_3" xml:space="preserve">
-    <value>Исправен</value>
+    <value>Operational</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_4" xml:space="preserve">
-    <value>Требует внимания</value>
+    <value>Needs attention</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_5" xml:space="preserve">
-    <value>Неисправен</value>
+    <value>Not operational</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_6" xml:space="preserve">
     <value>Apply Filters</value>
@@ -1561,19 +1561,19 @@
     <value>Amount is required</value>
   </data>
   <data name="Auto_Sales_Payments_20" xml:space="preserve">
-    <value>Наличные</value>
+    <value>Cash</value>
   </data>
   <data name="Auto_Sales_Payments_21" xml:space="preserve">
-    <value>Банковская карта</value>
+    <value>Bank card</value>
   </data>
   <data name="Auto_Sales_Payments_22" xml:space="preserve">
-    <value>Электронный кошелек</value>
+    <value>Electronic wallet</value>
   </data>
   <data name="Auto_Sales_Payments_23" xml:space="preserve">
-    <value>QR-код</value>
+    <value>QR code</value>
   </data>
   <data name="Auto_Sales_Payments_24" xml:space="preserve">
-    <value>Безналичный расчет</value>
+    <value>Cashless payment</value>
   </data>
   <data name="Auto_Sales_Payments_25" xml:space="preserve">
     <value>Create Payment</value>

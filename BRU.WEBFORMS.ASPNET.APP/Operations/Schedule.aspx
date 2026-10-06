@@ -239,7 +239,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Operations_Schedule_32 %>">
                             <ItemTemplate>
-                                <asp:LinkButton ID="btnEditSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_33 %>"<%= Localization.GetHtml("Auto_Operations_Schedule_54") %><%# Eval("ScheduleId") %>' CausesValidation="false" />
+                                <asp:LinkButton ID="btnEditSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_33 %>" CommandName="EditSchedule" CommandArgument='<%# Eval("ScheduleId") %>' CausesValidation="false" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

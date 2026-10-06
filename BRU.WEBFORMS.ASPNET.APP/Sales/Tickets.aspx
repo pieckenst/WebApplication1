@@ -163,9 +163,9 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Tickets_19 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_20 %>"<%= Localization.GetHtml("Auto_Sales_Tickets_42") %><%# Eval("TicketId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_21 %>"<%= Localization.GetHtml("Auto_Sales_Tickets_43") %><%# Eval("TicketId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_22 %>"<%= Localization.GetHtml("Auto_Sales_Tickets_44") %><%# Eval("TicketId") %><%= Localization.GetHtml("Auto_Sales_Tickets_45") %><%$ Resources:Strings, Common_DeleteTicketConfirm %>');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_20 %>" CommandName="ViewTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_21 %>" CommandName="EditTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Tickets_22 %>" CommandName="DeleteTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

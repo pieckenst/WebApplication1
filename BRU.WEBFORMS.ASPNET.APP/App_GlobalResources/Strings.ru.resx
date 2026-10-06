@@ -577,16 +577,16 @@
     <value>Управление пользователями</value>
   </data>
   <data name="Auto_Default_1" xml:space="preserve">
-    <value>Dashboard - Autopark Management System</value>
+    <value>Панель управления - Автопарк</value>
   </data>
   <data name="Auto_Login_1" xml:space="preserve">
-    <value>Sign In - Autopark Management System</value>
+    <value>Вход - Автопарк</value>
   </data>
   <data name="Auto_Logout_1" xml:space="preserve">
-    <value>Signing Out - Autopark Management System</value>
+    <value>Выход - Автопарк</value>
   </data>
   <data name="Auto_Fleet_Buses_1" xml:space="preserve">
-    <value>Bus Fleet Management - Autopark Management System</value>
+    <value>Управление автобусным парком - Автопарк</value>
   </data>
   <data name="Auto_Fleet_Maintenance_1" xml:space="preserve">
     <value>dd.MM.yyyy</value>
@@ -595,7 +595,7 @@
     <value>dd.MM.yyyy</value>
   </data>
   <data name="Auto_Fleet_Maintenance_3" xml:space="preserve">
-    <value>Maintenance Records - Autopark Management System</value>
+    <value>Записи об обслуживании - Автопарк</value>
   </data>
   <data name="Auto_Fleet_Maintenance_4" xml:space="preserve">
     <value>" CommandName="ViewRecord" CommandArgument='</value>
@@ -610,73 +610,73 @@
     <value>' CssClass="action-button" OnClientClick="return confirm('</value>
   </data>
   <data name="Auto_Operations_Stops_1" xml:space="preserve">
-    <value>Add Stop</value>
+    <value>Добавить остановку</value>
   </data>
   <data name="Auto_Operations_Stops_2" xml:space="preserve">
-    <value>Search stops or locations...</value>
+    <value>Поиск остановок или местоположений...</value>
   </data>
   <data name="Auto_Operations_Stops_3" xml:space="preserve">
-    <value>All statuses</value>
+    <value>Все статусы</value>
   </data>
   <data name="Auto_Operations_Stops_4" xml:space="preserve">
-    <value>Active</value>
+    <value>Активные</value>
   </data>
   <data name="Auto_Operations_Stops_5" xml:space="preserve">
-    <value>Inactive</value>
+    <value>Неактивные</value>
   </data>
   <data name="Auto_Operations_Stops_6" xml:space="preserve">
-    <value>Apply Filter</value>
+    <value>Применить фильтр</value>
   </data>
   <data name="Auto_Operations_Stops_7" xml:space="preserve">
-    <value>Save</value>
+    <value>Сохранить</value>
   </data>
   <data name="Auto_Operations_Stops_8" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Operations_Stops_9" xml:space="preserve">
-    <value>No stops match the filters.</value>
+    <value>Нет остановок, соответствующих фильтрам.</value>
   </data>
   <data name="Auto_Operations_Stops_10" xml:space="preserve">
-    <value>Stop</value>
+    <value>Остановка</value>
   </data>
   <data name="Auto_Operations_Stops_11" xml:space="preserve">
-    <value>Location</value>
+    <value>Местоположение</value>
   </data>
   <data name="Auto_Operations_Stops_12" xml:space="preserve">
-    <value>Coordinates</value>
+    <value>Координаты</value>
   </data>
   <data name="Auto_Operations_Stops_13" xml:space="preserve">
-    <value>Routes</value>
+    <value>Маршруты</value>
   </data>
   <data name="Auto_Operations_Stops_14" xml:space="preserve">
-    <value>Active</value>
+    <value>Активен</value>
   </data>
   <data name="Auto_Operations_Stops_15" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Operations_Stops_16" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
   </data>
   <data name="Auto_Operations_Stops_17" xml:space="preserve">
-    <value>Deactivate</value>
+    <value>Деактивировать</value>
   </data>
   <data name="Auto_Operations_Stops_18" xml:space="preserve">
-    <value>Stops - Autopark Management System</value>
+    <value>Остановки - Автопарк</value>
   </data>
   <data name="Auto_Operations_Stops_19" xml:space="preserve">
-    <value>Stop Management</value>
+    <value>Управление остановками</value>
   </data>
   <data name="Auto_Operations_Stops_20" xml:space="preserve">
-    <value>Stop name *</value>
+    <value>Название остановки *</value>
   </data>
   <data name="Auto_Operations_Stops_21" xml:space="preserve">
-    <value>Location</value>
+    <value>Местоположение</value>
   </data>
   <data name="Auto_Operations_Stops_22" xml:space="preserve">
-    <value>Latitude</value>
+    <value>Широта</value>
   </data>
   <data name="Auto_Operations_Stops_23" xml:space="preserve">
-    <value>Longitude</value>
+    <value>Долгота</value>
   </data>
   <data name="Auto_Operations_Stops_24" xml:space="preserve">
     <value>CssClass="action-button" CommandName="EditStop" CommandArgument='</value>
@@ -685,79 +685,79 @@
     <value>CssClass="action-button" CommandName="ToggleStop" CommandArgument='</value>
   </data>
   <data name="Auto_Operations_Routes_1" xml:space="preserve">
-    <value>Add New Route</value>
+    <value>Добавить маршрут</value>
   </data>
   <data name="Auto_Operations_Routes_2" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="Auto_Operations_Routes_3" xml:space="preserve">
-    <value>Search</value>
+    <value>Поиск</value>
   </data>
   <data name="Auto_Operations_Routes_4" xml:space="preserve">
     <value>ID</value>
   </data>
   <data name="Auto_Operations_Routes_5" xml:space="preserve">
-    <value>Route #</value>
+    <value>№ маршрута</value>
   </data>
   <data name="Auto_Operations_Routes_6" xml:space="preserve">
-    <value>Route Name</value>
+    <value>Название маршрута</value>
   </data>
   <data name="Auto_Operations_Routes_7" xml:space="preserve">
-    <value>Start Stop</value>
+    <value>Начальная остановка</value>
   </data>
   <data name="Auto_Operations_Routes_8" xml:space="preserve">
-    <value>End Stop</value>
+    <value>Конечная остановка</value>
   </data>
   <data name="Auto_Operations_Routes_9" xml:space="preserve">
-    <value>Stops</value>
+    <value>Остановки</value>
   </data>
   <data name="Auto_Operations_Routes_10" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Operations_Routes_11" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Operations_Routes_12" xml:space="preserve">
-    <value>View Stops</value>
+    <value>Просмотр остановок</value>
   </data>
   <data name="Auto_Operations_Routes_13" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
   </data>
   <data name="Auto_Operations_Routes_14" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="Auto_Operations_Routes_15" xml:space="preserve">
-    <value>Route number is required</value>
+    <value>Укажите номер маршрута</value>
   </data>
   <data name="Auto_Operations_Routes_16" xml:space="preserve">
-    <value>Route name is required</value>
+    <value>Укажите название маршрута</value>
   </data>
   <data name="Auto_Operations_Routes_17" xml:space="preserve">
-    <value>Start stop is required</value>
+    <value>Укажите начальную остановку</value>
   </data>
   <data name="Auto_Operations_Routes_18" xml:space="preserve">
-    <value>End stop is required</value>
+    <value>Укажите конечную остановку</value>
   </data>
   <data name="Auto_Operations_Routes_19" xml:space="preserve">
-    <value>Save</value>
+    <value>Сохранить</value>
   </data>
   <data name="Auto_Operations_Routes_20" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Operations_Routes_21" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="Auto_Operations_Routes_22" xml:space="preserve">
-    <value>Route Management - Autopark Management System</value>
+    <value>Управление маршрутами - Автопарк</value>
   </data>
   <data name="Auto_Operations_Routes_23" xml:space="preserve">
-    <value>Total Routes:</value>
+    <value>Всего маршрутов:</value>
   </data>
   <data name="Auto_Operations_Routes_24" xml:space="preserve">
-    <value>Active Routes:</value>
+    <value>Активных маршрутов:</value>
   </data>
   <data name="Auto_Operations_Routes_25" xml:space="preserve">
-    <value>Total Stops:</value>
+    <value>Всего остановок:</value>
   </data>
   <data name="Auto_Operations_Routes_26" xml:space="preserve">
     <value>CommandName="ViewStops" CommandArgument='</value>
@@ -772,34 +772,34 @@
     <value>' CssClass="action-button" OnClientClick="return confirm('</value>
   </data>
   <data name="Auto_Operations_Routes_30" xml:space="preserve">
-    <value>Route Number</value>
+    <value>Номер маршрута</value>
   </data>
   <data name="Auto_Operations_Routes_31" xml:space="preserve">
-    <value>Route Name</value>
+    <value>Название маршрута</value>
   </data>
   <data name="Auto_Operations_Routes_32" xml:space="preserve">
-    <value>Start Stop</value>
+    <value>Начальная остановка</value>
   </data>
   <data name="Auto_Operations_Routes_33" xml:space="preserve">
-    <value>End Stop</value>
+    <value>Конечная остановка</value>
   </data>
   <data name="Auto_Operations_Routes_34" xml:space="preserve">
-    <value>Active</value>
+    <value>Активен</value>
   </data>
   <data name="Auto_Operations_Routes_35" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_Operations_Schedule_1" xml:space="preserve">
-    <value>Today's Schedule</value>
+    <value>Расписание на сегодня</value>
   </data>
   <data name="Auto_Operations_Schedule_2" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="Auto_Operations_Schedule_3" xml:space="preserve">
-    <value>Update Trip Statuses</value>
+    <value>Обновить статусы рейсов</value>
   </data>
   <data name="Auto_Operations_Schedule_4" xml:space="preserve">
-    <value>All Routes</value>
+    <value>Все маршруты</value>
   </data>
   <data name="Auto_Operations_Schedule_5" xml:space="preserve">
     <value>dd.MM.yyyy</value>
@@ -808,217 +808,217 @@
     <value>dd.MM.yyyy</value>
   </data>
   <data name="Auto_Operations_Schedule_7" xml:space="preserve">
-    <value>Apply Range</value>
+    <value>Применить период</value>
   </data>
   <data name="Auto_Operations_Schedule_8" xml:space="preserve">
-    <value>New Schedule</value>
+    <value>Новое расписание</value>
   </data>
   <data name="Auto_Operations_Schedule_9" xml:space="preserve">
-    <value>Save Schedule</value>
+    <value>Сохранить расписание</value>
   </data>
   <data name="Auto_Operations_Schedule_10" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Operations_Schedule_11" xml:space="preserve">
-    <value>Mon</value>
+    <value>Пн</value>
   </data>
   <data name="Auto_Operations_Schedule_12" xml:space="preserve">
-    <value>Tue</value>
+    <value>Вт</value>
   </data>
   <data name="Auto_Operations_Schedule_13" xml:space="preserve">
-    <value>Wed</value>
+    <value>Ср</value>
   </data>
   <data name="Auto_Operations_Schedule_14" xml:space="preserve">
-    <value>Thu</value>
+    <value>Чт</value>
   </data>
   <data name="Auto_Operations_Schedule_15" xml:space="preserve">
-    <value>Fri</value>
+    <value>Пт</value>
   </data>
   <data name="Auto_Operations_Schedule_16" xml:space="preserve">
-    <value>Sat</value>
+    <value>Сб</value>
   </data>
   <data name="Auto_Operations_Schedule_17" xml:space="preserve">
-    <value>Sun</value>
+    <value>Вс</value>
   </data>
   <data name="Auto_Operations_Schedule_18" xml:space="preserve">
-    <value>Generate Recurring Trips</value>
+    <value>Создать повторяющиеся рейсы</value>
   </data>
   <data name="Auto_Operations_Schedule_19" xml:space="preserve">
-    <value>Validate Schedule</value>
+    <value>Проверить расписание</value>
   </data>
   <data name="Auto_Operations_Schedule_20" xml:space="preserve">
     <value>ID</value>
   </data>
   <data name="Auto_Operations_Schedule_21" xml:space="preserve">
-    <value>Route</value>
+    <value>Маршрут</value>
   </data>
   <data name="Auto_Operations_Schedule_22" xml:space="preserve">
-    <value>Route Name</value>
+    <value>Название маршрута</value>
   </data>
   <data name="Auto_Operations_Schedule_23" xml:space="preserve">
-    <value>Date</value>
+    <value>Дата</value>
   </data>
   <data name="Auto_Operations_Schedule_24" xml:space="preserve">
-    <value>Departure</value>
+    <value>Отправление</value>
   </data>
   <data name="Auto_Operations_Schedule_25" xml:space="preserve">
-    <value>Arrival</value>
+    <value>Прибытие</value>
   </data>
   <data name="Auto_Operations_Schedule_26" xml:space="preserve">
-    <value>Duration (min)</value>
+    <value>Длительность (мин)</value>
   </data>
   <data name="Auto_Operations_Schedule_27" xml:space="preserve">
-    <value>Bus</value>
+    <value>Автобус</value>
   </data>
   <data name="Auto_Operations_Schedule_28" xml:space="preserve">
-    <value>Model</value>
+    <value>Модель</value>
   </data>
   <data name="Auto_Operations_Schedule_29" xml:space="preserve">
-    <value>Driver</value>
+    <value>Водитель</value>
   </data>
   <data name="Auto_Operations_Schedule_30" xml:space="preserve">
-    <value>Seats</value>
+    <value>Места</value>
   </data>
   <data name="Auto_Operations_Schedule_31" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Operations_Schedule_32" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Operations_Schedule_33" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
   </data>
   <data name="Auto_Operations_Schedule_34" xml:space="preserve">
-    <value>Schedule Management - Autopark Management System</value>
+    <value>Управление расписанием - Автопарк</value>
   </data>
   <data name="Auto_Operations_Schedule_35" xml:space="preserve">
-    <value>Today's Trips:</value>
+    <value>Рейсов сегодня:</value>
   </data>
   <data name="Auto_Operations_Schedule_36" xml:space="preserve">
-    <value>Planned:</value>
+    <value>Запланировано:</value>
   </data>
   <data name="Auto_Operations_Schedule_37" xml:space="preserve">
-    <value>In Progress:</value>
+    <value>Выполняется:</value>
   </data>
   <data name="Auto_Operations_Schedule_38" xml:space="preserve">
-    <value>Completed:</value>
+    <value>Завершено:</value>
   </data>
   <data name="Auto_Operations_Schedule_39" xml:space="preserve">
-    <value>Cancelled:</value>
+    <value>Отменено:</value>
   </data>
   <data name="Auto_Operations_Schedule_40" xml:space="preserve">
-    <value>Route:</value>
+    <value>Маршрут:</value>
   </data>
   <data name="Auto_Operations_Schedule_41" xml:space="preserve">
-    <value>Date From:</value>
+    <value>Дата с:</value>
   </data>
   <data name="Auto_Operations_Schedule_42" xml:space="preserve">
-    <value>Date To:</value>
+    <value>Дата по:</value>
   </data>
   <data name="Auto_Operations_Schedule_43" xml:space="preserve">
-    <value>Schedule Planning</value>
+    <value>Планирование расписания</value>
   </data>
   <data name="Auto_Operations_Schedule_44" xml:space="preserve">
-    <value>Route</value>
+    <value>Маршрут</value>
   </data>
   <data name="Auto_Operations_Schedule_45" xml:space="preserve">
-    <value>Bus</value>
+    <value>Автобус</value>
   </data>
   <data name="Auto_Operations_Schedule_46" xml:space="preserve">
-    <value>Driver</value>
+    <value>Водитель</value>
   </data>
   <data name="Auto_Operations_Schedule_47" xml:space="preserve">
-    <value>Service date</value>
+    <value>Дата рейса</value>
   </data>
   <data name="Auto_Operations_Schedule_48" xml:space="preserve">
-    <value>Departure</value>
+    <value>Отправление</value>
   </data>
   <data name="Auto_Operations_Schedule_49" xml:space="preserve">
-    <value>Arrival</value>
+    <value>Прибытие</value>
   </data>
   <data name="Auto_Operations_Schedule_50" xml:space="preserve">
-    <value>Recurring Schedule Generation</value>
+    <value>Создание повторяющегося расписания</value>
   </data>
   <data name="Auto_Operations_Schedule_51" xml:space="preserve">
-    <value>Template date</value>
+    <value>Дата шаблона</value>
   </data>
   <data name="Auto_Operations_Schedule_52" xml:space="preserve">
-    <value>Generate from</value>
+    <value>Создать с</value>
   </data>
   <data name="Auto_Operations_Schedule_53" xml:space="preserve">
-    <value>Generate through</value>
+    <value>Создать по</value>
   </data>
   <data name="Auto_Operations_Schedule_54" xml:space="preserve">
     <value>CommandName="EditSchedule" CommandArgument='</value>
   </data>
   <data name="Auto_Operations_Schedule_55" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_Personnel_Departments_1" xml:space="preserve">
-    <value>Add Department</value>
+    <value>Добавить подразделение</value>
   </data>
   <data name="Auto_Personnel_Departments_2" xml:space="preserve">
-    <value>Search departments...</value>
+    <value>Поиск подразделений...</value>
   </data>
   <data name="Auto_Personnel_Departments_3" xml:space="preserve">
-    <value>All statuses</value>
+    <value>Все статусы</value>
   </data>
   <data name="Auto_Personnel_Departments_4" xml:space="preserve">
-    <value>Active</value>
+    <value>Активные</value>
   </data>
   <data name="Auto_Personnel_Departments_5" xml:space="preserve">
-    <value>Inactive</value>
+    <value>Неактивные</value>
   </data>
   <data name="Auto_Personnel_Departments_6" xml:space="preserve">
-    <value>Apply Filter</value>
+    <value>Применить фильтр</value>
   </data>
   <data name="Auto_Personnel_Departments_7" xml:space="preserve">
-    <value>Save</value>
+    <value>Сохранить</value>
   </data>
   <data name="Auto_Personnel_Departments_8" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Personnel_Departments_9" xml:space="preserve">
-    <value>No departments match the filters.</value>
+    <value>Нет подразделений, соответствующих фильтрам.</value>
   </data>
   <data name="Auto_Personnel_Departments_10" xml:space="preserve">
-    <value>Department</value>
+    <value>Подразделение</value>
   </data>
   <data name="Auto_Personnel_Departments_11" xml:space="preserve">
-    <value>Code</value>
+    <value>Код</value>
   </data>
   <data name="Auto_Personnel_Departments_12" xml:space="preserve">
-    <value>Description</value>
+    <value>Описание</value>
   </data>
   <data name="Auto_Personnel_Departments_13" xml:space="preserve">
-    <value>Employees</value>
+    <value>Сотрудники</value>
   </data>
   <data name="Auto_Personnel_Departments_14" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Personnel_Departments_15" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Personnel_Departments_16" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
   </data>
   <data name="Auto_Personnel_Departments_17" xml:space="preserve">
-    <value>Deactivate</value>
+    <value>Деактивировать</value>
   </data>
   <data name="Auto_Personnel_Departments_18" xml:space="preserve">
-    <value>Departments - Autopark Management System</value>
+    <value>Подразделения - Автопарк</value>
   </data>
   <data name="Auto_Personnel_Departments_19" xml:space="preserve">
-    <value>Department Management</value>
+    <value>Управление подразделениями</value>
   </data>
   <data name="Auto_Personnel_Departments_20" xml:space="preserve">
-    <value>Department name *</value>
+    <value>Название подразделения *</value>
   </data>
   <data name="Auto_Personnel_Departments_21" xml:space="preserve">
-    <value>Department code *</value>
+    <value>Код подразделения *</value>
   </data>
   <data name="Auto_Personnel_Departments_22" xml:space="preserve">
-    <value>Description</value>
+    <value>Описание</value>
   </data>
   <data name="Auto_Personnel_Departments_23" xml:space="preserve">
     <value>CssClass="action-button" CommandName="EditDepartment" CommandArgument='</value>
@@ -1027,136 +1027,136 @@
     <value>CssClass="action-button" CommandName="ToggleDepartment" CommandArgument='</value>
   </data>
   <data name="Auto_Personnel_Employees_1" xml:space="preserve">
-    <value>Add New Employee</value>
+    <value>Добавить сотрудника</value>
   </data>
   <data name="Auto_Personnel_Employees_2" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="Auto_Personnel_Employees_3" xml:space="preserve">
-    <value>Search</value>
+    <value>Поиск</value>
   </data>
   <data name="Auto_Personnel_Employees_4" xml:space="preserve">
-    <value>All Statuses</value>
+    <value>Все статусы</value>
   </data>
   <data name="Auto_Personnel_Employees_5" xml:space="preserve">
-    <value>Working</value>
+    <value>Работает</value>
   </data>
   <data name="Auto_Personnel_Employees_6" xml:space="preserve">
-    <value>On Vacation</value>
+    <value>В отпуске</value>
   </data>
   <data name="Auto_Personnel_Employees_7" xml:space="preserve">
-    <value>Sick Leave</value>
+    <value>На больничном</value>
   </data>
   <data name="Auto_Personnel_Employees_8" xml:space="preserve">
-    <value>Dismissed</value>
+    <value>Уволен</value>
   </data>
   <data name="Auto_Personnel_Employees_9" xml:space="preserve">
-    <value>All Jobs</value>
+    <value>Все должности</value>
   </data>
   <data name="Auto_Personnel_Employees_10" xml:space="preserve">
-    <value>All Departments</value>
+    <value>Все подразделения</value>
   </data>
   <data name="Auto_Personnel_Employees_11" xml:space="preserve">
     <value>ID</value>
   </data>
   <data name="Auto_Personnel_Employees_12" xml:space="preserve">
-    <value>Full Name</value>
+    <value>ФИО</value>
   </data>
   <data name="Auto_Personnel_Employees_13" xml:space="preserve">
-    <value>Job Title</value>
+    <value>Должность</value>
   </data>
   <data name="Auto_Personnel_Employees_14" xml:space="preserve">
-    <value>Department</value>
+    <value>Подразделение</value>
   </data>
   <data name="Auto_Personnel_Employees_15" xml:space="preserve">
-    <value>Years</value>
+    <value>Стаж (лет)</value>
   </data>
   <data name="Auto_Personnel_Employees_16" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Personnel_Employees_17" xml:space="preserve">
-    <value>Phone</value>
+    <value>Телефон</value>
   </data>
   <data name="Auto_Personnel_Employees_18" xml:space="preserve">
-    <value>Email</value>
+    <value>Электронная почта</value>
   </data>
   <data name="Auto_Personnel_Employees_19" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Personnel_Employees_20" xml:space="preserve">
-    <value>View</value>
+    <value>Просмотр</value>
   </data>
   <data name="Auto_Personnel_Employees_21" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
   </data>
   <data name="Auto_Personnel_Employees_22" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="Auto_Personnel_Employees_23" xml:space="preserve">
-    <value>Surname is required</value>
+    <value>Укажите фамилию</value>
   </data>
   <data name="Auto_Personnel_Employees_24" xml:space="preserve">
-    <value>Name is required</value>
+    <value>Укажите имя</value>
   </data>
   <data name="Auto_Personnel_Employees_25" xml:space="preserve">
     <value>dd.MM.yyyy</value>
   </data>
   <data name="Auto_Personnel_Employees_26" xml:space="preserve">
-    <value>Date is required</value>
+    <value>Укажите дату</value>
   </data>
   <data name="Auto_Personnel_Employees_27" xml:space="preserve">
-    <value>Job is required</value>
+    <value>Укажите должность</value>
   </data>
   <data name="Auto_Personnel_Employees_28" xml:space="preserve">
-    <value>Working</value>
+    <value>Работает</value>
   </data>
   <data name="Auto_Personnel_Employees_29" xml:space="preserve">
-    <value>On Vacation</value>
+    <value>В отпуске</value>
   </data>
   <data name="Auto_Personnel_Employees_30" xml:space="preserve">
-    <value>Sick Leave</value>
+    <value>На больничном</value>
   </data>
   <data name="Auto_Personnel_Employees_31" xml:space="preserve">
-    <value>Dismissed</value>
+    <value>Уволен</value>
   </data>
   <data name="Auto_Personnel_Employees_32" xml:space="preserve">
-    <value>Save</value>
+    <value>Сохранить</value>
   </data>
   <data name="Auto_Personnel_Employees_33" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Personnel_Employees_34" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="Auto_Personnel_Employees_35" xml:space="preserve">
-    <value>Employee Management - Autopark Management System</value>
+    <value>Управление персоналом - Автопарк</value>
   </data>
   <data name="Auto_Personnel_Employees_36" xml:space="preserve">
-    <value>Employee Management</value>
+    <value>Управление персоналом</value>
   </data>
   <data name="Auto_Personnel_Employees_37" xml:space="preserve">
-    <value>Total Employees:</value>
+    <value>Всего сотрудников:</value>
   </data>
   <data name="Auto_Personnel_Employees_38" xml:space="preserve">
-    <value>Active:</value>
+    <value>Активных:</value>
   </data>
   <data name="Auto_Personnel_Employees_39" xml:space="preserve">
-    <value>On Vacation:</value>
+    <value>В отпуске:</value>
   </data>
   <data name="Auto_Personnel_Employees_40" xml:space="preserve">
-    <value>Sick Leave:</value>
+    <value>На больничном:</value>
   </data>
   <data name="Auto_Personnel_Employees_41" xml:space="preserve">
-    <value>Dismissed:</value>
+    <value>Уволено:</value>
   </data>
   <data name="Auto_Personnel_Employees_42" xml:space="preserve">
-    <value>Status:</value>
+    <value>Статус:</value>
   </data>
   <data name="Auto_Personnel_Employees_43" xml:space="preserve">
-    <value>Job:</value>
+    <value>Должность:</value>
   </data>
   <data name="Auto_Personnel_Employees_44" xml:space="preserve">
-    <value>Department:</value>
+    <value>Подразделение:</value>
   </data>
   <data name="Auto_Personnel_Employees_45" xml:space="preserve">
     <value>CommandName="View" CommandArgument='</value>
@@ -1171,40 +1171,40 @@
     <value>' CssClass="action-button" OnClientClick="return confirm('</value>
   </data>
   <data name="Auto_Personnel_Employees_49" xml:space="preserve">
-    <value>Surname</value>
+    <value>Фамилия</value>
   </data>
   <data name="Auto_Personnel_Employees_50" xml:space="preserve">
-    <value>Name</value>
+    <value>Имя</value>
   </data>
   <data name="Auto_Personnel_Employees_51" xml:space="preserve">
-    <value>Patronymic</value>
+    <value>Отчество</value>
   </data>
   <data name="Auto_Personnel_Employees_52" xml:space="preserve">
-    <value>Employed Date</value>
+    <value>Дата приёма на работу</value>
   </data>
   <data name="Auto_Personnel_Employees_53" xml:space="preserve">
-    <value>Job</value>
+    <value>Должность</value>
   </data>
   <data name="Auto_Personnel_Employees_54" xml:space="preserve">
-    <value>Department</value>
+    <value>Подразделение</value>
   </data>
   <data name="Auto_Personnel_Employees_55" xml:space="preserve">
-    <value>Phone</value>
+    <value>Телефон</value>
   </data>
   <data name="Auto_Personnel_Employees_56" xml:space="preserve">
-    <value>Email</value>
+    <value>Электронная почта</value>
   </data>
   <data name="Auto_Personnel_Employees_57" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Personnel_Employees_58" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_1" xml:space="preserve">
-    <value>All buses</value>
+    <value>Все автобусы</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_2" xml:space="preserve">
-    <value>All states</value>
+    <value>Все состояния</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_3" xml:space="preserve">
     <value>Исправен</value>
@@ -1216,76 +1216,76 @@
     <value>Неисправен</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_6" xml:space="preserve">
-    <value>Apply Filters</value>
+    <value>Применить фильтры</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_7" xml:space="preserve">
-    <value>Export CSV</value>
+    <value>Экспорт в CSV</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_8" xml:space="preserve">
-    <value>No maintenance records match the selected filters.</value>
+    <value>Нет записей об обслуживании, соответствующих выбранным фильтрам.</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_9" xml:space="preserve">
-    <value>Service date</value>
+    <value>Дата обслуживания</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_10" xml:space="preserve">
-    <value>Bus</value>
+    <value>Автобус</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_11" xml:space="preserve">
-    <value>Model</value>
+    <value>Модель</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_12" xml:space="preserve">
-    <value>Service</value>
+    <value>Обслуживание</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_13" xml:space="preserve">
-    <value>Roadworthiness</value>
+    <value>Техническое состояние</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_14" xml:space="preserve">
-    <value>Cost</value>
+    <value>Стоимость</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_15" xml:space="preserve">
-    <value>Next service</value>
+    <value>Следующее обслуживание</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_16" xml:space="preserve">
-    <value>Mechanic</value>
+    <value>Механик</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_17" xml:space="preserve">
-    <value>Previous</value>
+    <value>Назад</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_18" xml:space="preserve">
-    <value>Next</value>
+    <value>Далее</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_19" xml:space="preserve">
-    <value>Maintenance Reports - Autopark Management System</value>
+    <value>Отчёты по обслуживанию - Автопарк</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_20" xml:space="preserve">
-    <value>Maintenance Reports</value>
+    <value>Отчёты по обслуживанию</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_21" xml:space="preserve">
-    <value>Service date from:</value>
+    <value>Дата обслуживания с:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_22" xml:space="preserve">
-    <value>Service date through:</value>
+    <value>Дата обслуживания по:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_23" xml:space="preserve">
-    <value>Bus:</value>
+    <value>Автобус:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_24" xml:space="preserve">
-    <value>Roadworthiness:</value>
+    <value>Техническое состояние:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_25" xml:space="preserve">
-    <value>Records:</value>
+    <value>Записей:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_26" xml:space="preserve">
-    <value>Total cost:</value>
+    <value>Общая стоимость:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_27" xml:space="preserve">
-    <value>Needs attention:</value>
+    <value>Требуют внимания:</value>
   </data>
   <data name="Auto_Reports_MaintenanceReports_28" xml:space="preserve">
-    <value>Due in 30 days:</value>
+    <value>Обслуживание в ближайшие 30 дней:</value>
   </data>
   <data name="Auto_Reports_SalesReports_1" xml:space="preserve">
-    <value>All channels</value>
+    <value>Все каналы</value>
   </data>
   <data name="Auto_Reports_SalesReports_2" xml:space="preserve">
     <value>Касса</value>
@@ -1303,7 +1303,7 @@
     <value>Онлайн</value>
   </data>
   <data name="Auto_Reports_SalesReports_7" xml:space="preserve">
-    <value>All statuses</value>
+    <value>Все статусы</value>
   </data>
   <data name="Auto_Reports_SalesReports_8" xml:space="preserve">
     <value>Завершена</value>
@@ -1315,202 +1315,202 @@
     <value>Возврат</value>
   </data>
   <data name="Auto_Reports_SalesReports_11" xml:space="preserve">
-    <value>Apply Filters</value>
+    <value>Применить фильтры</value>
   </data>
   <data name="Auto_Reports_SalesReports_12" xml:space="preserve">
-    <value>Export CSV</value>
+    <value>Экспорт в CSV</value>
   </data>
   <data name="Auto_Reports_SalesReports_13" xml:space="preserve">
-    <value>No sales match the selected filters.</value>
+    <value>Нет продаж, соответствующих выбранным фильтрам.</value>
   </data>
   <data name="Auto_Reports_SalesReports_14" xml:space="preserve">
-    <value>Sale time</value>
+    <value>Время продажи</value>
   </data>
   <data name="Auto_Reports_SalesReports_15" xml:space="preserve">
-    <value>Route</value>
+    <value>Маршрут</value>
   </data>
   <data name="Auto_Reports_SalesReports_16" xml:space="preserve">
-    <value>Ticket</value>
+    <value>Билет</value>
   </data>
   <data name="Auto_Reports_SalesReports_17" xml:space="preserve">
-    <value>Qty</value>
+    <value>Кол-во</value>
   </data>
   <data name="Auto_Reports_SalesReports_18" xml:space="preserve">
-    <value>Unit price</value>
+    <value>Цена за единицу</value>
   </data>
   <data name="Auto_Reports_SalesReports_19" xml:space="preserve">
-    <value>Total</value>
+    <value>Итого</value>
   </data>
   <data name="Auto_Reports_SalesReports_20" xml:space="preserve">
-    <value>Channel</value>
+    <value>Канал</value>
   </data>
   <data name="Auto_Reports_SalesReports_21" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Reports_SalesReports_22" xml:space="preserve">
-    <value>Payment</value>
+    <value>Оплата</value>
   </data>
   <data name="Auto_Reports_SalesReports_23" xml:space="preserve">
-    <value>Previous</value>
+    <value>Назад</value>
   </data>
   <data name="Auto_Reports_SalesReports_24" xml:space="preserve">
-    <value>Next</value>
+    <value>Далее</value>
   </data>
   <data name="Auto_Reports_SalesReports_25" xml:space="preserve">
-    <value>Sales Reports - Autopark Management System</value>
+    <value>Отчёты по продажам - Автопарк</value>
   </data>
   <data name="Auto_Reports_SalesReports_26" xml:space="preserve">
-    <value>Sales Reports</value>
+    <value>Отчёты по продажам</value>
   </data>
   <data name="Auto_Reports_SalesReports_27" xml:space="preserve">
-    <value>Sale date from:</value>
+    <value>Дата продажи с:</value>
   </data>
   <data name="Auto_Reports_SalesReports_28" xml:space="preserve">
-    <value>Sale date through:</value>
+    <value>Дата продажи по:</value>
   </data>
   <data name="Auto_Reports_SalesReports_29" xml:space="preserve">
-    <value>Channel:</value>
+    <value>Канал:</value>
   </data>
   <data name="Auto_Reports_SalesReports_30" xml:space="preserve">
-    <value>Sale status:</value>
+    <value>Статус продажи:</value>
   </data>
   <data name="Auto_Reports_SalesReports_31" xml:space="preserve">
-    <value>Sales:</value>
+    <value>Продаж:</value>
   </data>
   <data name="Auto_Reports_SalesReports_32" xml:space="preserve">
-    <value>Tickets:</value>
+    <value>Билетов:</value>
   </data>
   <data name="Auto_Reports_SalesReports_33" xml:space="preserve">
-    <value>Gross:</value>
+    <value>Выручка до возвратов:</value>
   </data>
   <data name="Auto_Reports_SalesReports_34" xml:space="preserve">
-    <value>Refunds:</value>
+    <value>Возвраты:</value>
   </data>
   <data name="Auto_Reports_SalesReports_35" xml:space="preserve">
-    <value>Net:</value>
+    <value>Выручка после возвратов:</value>
   </data>
   <data name="Auto_Reports_Analytics_1" xml:space="preserve">
-    <value>Refresh Data</value>
+    <value>Обновить данные</value>
   </data>
   <data name="Auto_Reports_Analytics_2" xml:space="preserve">
-    <value>Export Summary</value>
+    <value>Экспорт сводки</value>
   </data>
   <data name="Auto_Reports_Analytics_3" xml:space="preserve">
-    <value>Channel</value>
+    <value>Канал</value>
   </data>
   <data name="Auto_Reports_Analytics_4" xml:space="preserve">
-    <value>Sales</value>
+    <value>Продажи</value>
   </data>
   <data name="Auto_Reports_Analytics_5" xml:space="preserve">
-    <value>Tickets Sold</value>
+    <value>Продано билетов</value>
   </data>
   <data name="Auto_Reports_Analytics_6" xml:space="preserve">
-    <value>Total Revenue</value>
+    <value>Общая выручка</value>
   </data>
   <data name="Auto_Reports_Analytics_7" xml:space="preserve">
-    <value>Avg Price</value>
+    <value>Средняя цена</value>
   </data>
   <data name="Auto_Reports_Analytics_8" xml:space="preserve">
-    <value>Route #</value>
+    <value>№ маршрута</value>
   </data>
   <data name="Auto_Reports_Analytics_9" xml:space="preserve">
-    <value>Route Name</value>
+    <value>Название маршрута</value>
   </data>
   <data name="Auto_Reports_Analytics_10" xml:space="preserve">
-    <value>Sales</value>
+    <value>Продажи</value>
   </data>
   <data name="Auto_Reports_Analytics_11" xml:space="preserve">
-    <value>Tickets Sold</value>
+    <value>Продано билетов</value>
   </data>
   <data name="Auto_Reports_Analytics_12" xml:space="preserve">
-    <value>Total Revenue</value>
+    <value>Общая выручка</value>
   </data>
   <data name="Auto_Reports_Analytics_13" xml:space="preserve">
-    <value>Employee</value>
+    <value>Сотрудник</value>
   </data>
   <data name="Auto_Reports_Analytics_14" xml:space="preserve">
-    <value>Position</value>
+    <value>Должность</value>
   </data>
   <data name="Auto_Reports_Analytics_15" xml:space="preserve">
-    <value>Sales</value>
+    <value>Продажи</value>
   </data>
   <data name="Auto_Reports_Analytics_16" xml:space="preserve">
-    <value>Total Revenue</value>
+    <value>Общая выручка</value>
   </data>
   <data name="Auto_Reports_Analytics_17" xml:space="preserve">
-    <value>Business Analytics - Autopark Management System</value>
+    <value>Бизнес-аналитика - Автопарк</value>
   </data>
   <data name="Auto_Reports_Analytics_18" xml:space="preserve">
-    <value>Autopark Overview</value>
+    <value>Обзор автопарка</value>
   </data>
   <data name="Auto_Reports_Analytics_19" xml:space="preserve">
-    <value>Active Buses</value>
+    <value>Активные автобусы</value>
   </data>
   <data name="Auto_Reports_Analytics_20" xml:space="preserve">
-    <value>Operational fleet</value>
+    <value>Исправные автобусы</value>
   </data>
   <data name="Auto_Reports_Analytics_21" xml:space="preserve">
-    <value>Active Employees</value>
+    <value>Активные сотрудники</value>
   </data>
   <data name="Auto_Reports_Analytics_22" xml:space="preserve">
-    <value>Working staff</value>
+    <value>Работающий персонал</value>
   </data>
   <data name="Auto_Reports_Analytics_23" xml:space="preserve">
-    <value>Active Routes</value>
+    <value>Активные маршруты</value>
   </data>
   <data name="Auto_Reports_Analytics_24" xml:space="preserve">
-    <value>In service</value>
+    <value>Действующие маршруты</value>
   </data>
   <data name="Auto_Reports_Analytics_25" xml:space="preserve">
-    <value>Today's Trips</value>
+    <value>Рейсы сегодня</value>
   </data>
   <data name="Auto_Reports_Analytics_26" xml:space="preserve">
-    <value>Scheduled today</value>
+    <value>Запланировано на сегодня</value>
   </data>
   <data name="Auto_Reports_Analytics_27" xml:space="preserve">
-    <value>Today's Sales</value>
+    <value>Продажи сегодня</value>
   </data>
   <data name="Auto_Reports_Analytics_28" xml:space="preserve">
-    <value>Transactions</value>
+    <value>Операции</value>
   </data>
   <data name="Auto_Reports_Analytics_29" xml:space="preserve">
-    <value>Today's Revenue</value>
+    <value>Выручка сегодня</value>
   </data>
   <data name="Auto_Reports_Analytics_30" xml:space="preserve">
-    <value>Total amount</value>
+    <value>Общая сумма</value>
   </data>
   <data name="Auto_Reports_Analytics_31" xml:space="preserve">
-    <value>Need Attention</value>
+    <value>Требуют внимания</value>
   </data>
   <data name="Auto_Reports_Analytics_32" xml:space="preserve">
-    <value>Buses requiring service</value>
+    <value>Автобусы, требующие обслуживания</value>
   </data>
   <data name="Auto_Reports_Analytics_33" xml:space="preserve">
-    <value>Avg Sale</value>
+    <value>Средняя сумма продажи</value>
   </data>
   <data name="Auto_Reports_Analytics_34" xml:space="preserve">
-    <value>Per transaction</value>
+    <value>На одну операцию</value>
   </data>
   <data name="Auto_Reports_Analytics_35" xml:space="preserve">
-    <value>Sales by Channel</value>
+    <value>Продажи по каналам</value>
   </data>
   <data name="Auto_Reports_Analytics_36" xml:space="preserve">
-    <value>Sales by Route</value>
+    <value>Продажи по маршрутам</value>
   </data>
   <data name="Auto_Reports_Analytics_37" xml:space="preserve">
-    <value>Sales by Employee</value>
+    <value>Продажи по сотрудникам</value>
   </data>
   <data name="Auto_Reports_Analytics_38" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_Sales_Payments_1" xml:space="preserve">
-    <value>New Payment</value>
+    <value>Новый платёж</value>
   </data>
   <data name="Auto_Sales_Payments_2" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="Auto_Sales_Payments_3" xml:space="preserve">
-    <value>All</value>
+    <value>Все</value>
   </data>
   <data name="Auto_Sales_Payments_4" xml:space="preserve">
     <value>Ожидает</value>
@@ -1525,40 +1525,40 @@
     <value>Возврат</value>
   </data>
   <data name="Auto_Sales_Payments_8" xml:space="preserve">
-    <value>Payment ID</value>
+    <value>ID платежа</value>
   </data>
   <data name="Auto_Sales_Payments_9" xml:space="preserve">
-    <value>Sale ID</value>
+    <value>ID продажи</value>
   </data>
   <data name="Auto_Sales_Payments_10" xml:space="preserve">
-    <value>Date</value>
+    <value>Дата</value>
   </data>
   <data name="Auto_Sales_Payments_11" xml:space="preserve">
-    <value>Amount</value>
+    <value>Сумма</value>
   </data>
   <data name="Auto_Sales_Payments_12" xml:space="preserve">
-    <value>Method</value>
+    <value>Способ оплаты</value>
   </data>
   <data name="Auto_Sales_Payments_13" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Sales_Payments_14" xml:space="preserve">
-    <value>Transaction ID</value>
+    <value>ID транзакции</value>
   </data>
   <data name="Auto_Sales_Payments_15" xml:space="preserve">
-    <value>Control</value>
+    <value>Контроль</value>
   </data>
   <data name="Auto_Sales_Payments_16" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Sales_Payments_17" xml:space="preserve">
-    <value>View</value>
+    <value>Просмотр</value>
   </data>
   <data name="Auto_Sales_Payments_18" xml:space="preserve">
-    <value>Sale ID is required</value>
+    <value>Укажите ID продажи</value>
   </data>
   <data name="Auto_Sales_Payments_19" xml:space="preserve">
-    <value>Amount is required</value>
+    <value>Укажите сумму</value>
   </data>
   <data name="Auto_Sales_Payments_20" xml:space="preserve">
     <value>Наличные</value>
@@ -1576,61 +1576,61 @@
     <value>Безналичный расчет</value>
   </data>
   <data name="Auto_Sales_Payments_25" xml:space="preserve">
-    <value>Create Payment</value>
+    <value>Создать платёж</value>
   </data>
   <data name="Auto_Sales_Payments_26" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Sales_Payments_27" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="Auto_Sales_Payments_28" xml:space="preserve">
-    <value>Payment Processing - Autopark Management System</value>
+    <value>Обработка платежей - Автопарк</value>
   </data>
   <data name="Auto_Sales_Payments_29" xml:space="preserve">
-    <value>Payment Processing</value>
+    <value>Обработка платежей</value>
   </data>
   <data name="Auto_Sales_Payments_30" xml:space="preserve">
-    <value>Total Payments:</value>
+    <value>Всего платежей:</value>
   </data>
   <data name="Auto_Sales_Payments_31" xml:space="preserve">
-    <value>Paid:</value>
+    <value>Оплачено:</value>
   </data>
   <data name="Auto_Sales_Payments_32" xml:space="preserve">
-    <value>Pending:</value>
+    <value>В ожидании:</value>
   </data>
   <data name="Auto_Sales_Payments_33" xml:space="preserve">
-    <value>Errors:</value>
+    <value>Ошибок:</value>
   </data>
   <data name="Auto_Sales_Payments_34" xml:space="preserve">
-    <value>Total Amount:</value>
+    <value>Общая сумма:</value>
   </data>
   <data name="Auto_Sales_Payments_35" xml:space="preserve">
-    <value>Status:</value>
+    <value>Статус:</value>
   </data>
   <data name="Auto_Sales_Payments_36" xml:space="preserve">
     <value>CommandName="ViewPayment" CommandArgument='</value>
   </data>
   <data name="Auto_Sales_Payments_37" xml:space="preserve">
-    <value>Sale ID</value>
+    <value>ID продажи</value>
   </data>
   <data name="Auto_Sales_Payments_38" xml:space="preserve">
-    <value>Amount</value>
+    <value>Сумма</value>
   </data>
   <data name="Auto_Sales_Payments_39" xml:space="preserve">
-    <value>Method</value>
+    <value>Способ оплаты</value>
   </data>
   <data name="Auto_Sales_Payments_40" xml:space="preserve">
-    <value>Transaction ID</value>
+    <value>ID транзакции</value>
   </data>
   <data name="Auto_Sales_Payments_41" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_Sales_Sales_1" xml:space="preserve">
-    <value>New Sale</value>
+    <value>Новая продажа</value>
   </data>
   <data name="Auto_Sales_Sales_2" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="Auto_Sales_Sales_3" xml:space="preserve">
     <value>dd.MM.yyyy</value>
@@ -1639,10 +1639,10 @@
     <value>dd.MM.yyyy</value>
   </data>
   <data name="Auto_Sales_Sales_5" xml:space="preserve">
-    <value>Apply</value>
+    <value>Применить</value>
   </data>
   <data name="Auto_Sales_Sales_6" xml:space="preserve">
-    <value>All Channels</value>
+    <value>Все каналы</value>
   </data>
   <data name="Auto_Sales_Sales_7" xml:space="preserve">
     <value>Касса</value>
@@ -1660,7 +1660,7 @@
     <value>Онлайн</value>
   </data>
   <data name="Auto_Sales_Sales_12" xml:space="preserve">
-    <value>All</value>
+    <value>Все</value>
   </data>
   <data name="Auto_Sales_Sales_13" xml:space="preserve">
     <value>Создана</value>
@@ -1675,52 +1675,52 @@
     <value>Возврат</value>
   </data>
   <data name="Auto_Sales_Sales_17" xml:space="preserve">
-    <value>Sale ID</value>
+    <value>ID продажи</value>
   </data>
   <data name="Auto_Sales_Sales_18" xml:space="preserve">
-    <value>Date</value>
+    <value>Дата</value>
   </data>
   <data name="Auto_Sales_Sales_19" xml:space="preserve">
-    <value>Ticket</value>
+    <value>Билет</value>
   </data>
   <data name="Auto_Sales_Sales_20" xml:space="preserve">
-    <value>Type</value>
+    <value>Тип</value>
   </data>
   <data name="Auto_Sales_Sales_21" xml:space="preserve">
-    <value>Qty</value>
+    <value>Кол-во</value>
   </data>
   <data name="Auto_Sales_Sales_22" xml:space="preserve">
-    <value>Unit Price</value>
+    <value>Цена за единицу</value>
   </data>
   <data name="Auto_Sales_Sales_23" xml:space="preserve">
-    <value>Total</value>
+    <value>Итого</value>
   </data>
   <data name="Auto_Sales_Sales_24" xml:space="preserve">
-    <value>Channel</value>
+    <value>Канал</value>
   </data>
   <data name="Auto_Sales_Sales_25" xml:space="preserve">
-    <value>Sale Status</value>
+    <value>Статус продажи</value>
   </data>
   <data name="Auto_Sales_Sales_26" xml:space="preserve">
-    <value>Payment</value>
+    <value>Оплата</value>
   </data>
   <data name="Auto_Sales_Sales_27" xml:space="preserve">
-    <value>Cashier</value>
+    <value>Кассир</value>
   </data>
   <data name="Auto_Sales_Sales_28" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Sales_Sales_29" xml:space="preserve">
-    <value>View</value>
+    <value>Просмотр</value>
   </data>
   <data name="Auto_Sales_Sales_30" xml:space="preserve">
-    <value>Ticket is required</value>
+    <value>Укажите билет</value>
   </data>
   <data name="Auto_Sales_Sales_31" xml:space="preserve">
-    <value>Quantity is required</value>
+    <value>Укажите количество</value>
   </data>
   <data name="Auto_Sales_Sales_32" xml:space="preserve">
-    <value>Price is required</value>
+    <value>Укажите цену</value>
   </data>
   <data name="Auto_Sales_Sales_33" xml:space="preserve">
     <value>Касса</value>
@@ -1738,190 +1738,190 @@
     <value>Онлайн</value>
   </data>
   <data name="Auto_Sales_Sales_38" xml:space="preserve">
-    <value>Create Sale</value>
+    <value>Создать продажу</value>
   </data>
   <data name="Auto_Sales_Sales_39" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Sales_Sales_40" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="Auto_Sales_Sales_41" xml:space="preserve">
-    <value>Sales Transactions - Autopark Management System</value>
+    <value>Операции продаж - Автопарк</value>
   </data>
   <data name="Auto_Sales_Sales_42" xml:space="preserve">
-    <value>Sales Transactions</value>
+    <value>Операции продаж</value>
   </data>
   <data name="Auto_Sales_Sales_43" xml:space="preserve">
-    <value>Total Sales:</value>
+    <value>Всего продаж:</value>
   </data>
   <data name="Auto_Sales_Sales_44" xml:space="preserve">
-    <value>Completed:</value>
+    <value>Завершено:</value>
   </data>
   <data name="Auto_Sales_Sales_45" xml:space="preserve">
-    <value>Total Tickets Sold:</value>
+    <value>Всего продано билетов:</value>
   </data>
   <data name="Auto_Sales_Sales_46" xml:space="preserve">
-    <value>Total Revenue:</value>
+    <value>Общая выручка:</value>
   </data>
   <data name="Auto_Sales_Sales_47" xml:space="preserve">
-    <value>Avg Sale:</value>
+    <value>Средняя сумма продажи:</value>
   </data>
   <data name="Auto_Sales_Sales_48" xml:space="preserve">
-    <value>Date Range:</value>
+    <value>Период:</value>
   </data>
   <data name="Auto_Sales_Sales_49" xml:space="preserve">
-    <value>to</value>
+    <value>по</value>
   </data>
   <data name="Auto_Sales_Sales_50" xml:space="preserve">
-    <value>Channel:</value>
+    <value>Канал:</value>
   </data>
   <data name="Auto_Sales_Sales_51" xml:space="preserve">
-    <value>Status:</value>
+    <value>Статус:</value>
   </data>
   <data name="Auto_Sales_Sales_52" xml:space="preserve">
     <value>CommandName="ViewSale" CommandArgument='</value>
   </data>
   <data name="Auto_Sales_Sales_53" xml:space="preserve">
-    <value>Ticket</value>
+    <value>Билет</value>
   </data>
   <data name="Auto_Sales_Sales_54" xml:space="preserve">
-    <value>Quantity</value>
+    <value>Количество</value>
   </data>
   <data name="Auto_Sales_Sales_55" xml:space="preserve">
-    <value>Sale Price</value>
+    <value>Цена продажи</value>
   </data>
   <data name="Auto_Sales_Sales_56" xml:space="preserve">
-    <value>Channel</value>
+    <value>Канал</value>
   </data>
   <data name="Auto_Sales_Sales_57" xml:space="preserve">
-    <value>Cashier</value>
+    <value>Кассир</value>
   </data>
   <data name="Auto_Sales_Sales_58" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_Sales_Tickets_1" xml:space="preserve">
-    <value>Add New Ticket Type</value>
+    <value>Добавить тип билета</value>
   </data>
   <data name="Auto_Sales_Tickets_2" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Обновить</value>
   </data>
   <data name="Auto_Sales_Tickets_3" xml:space="preserve">
-    <value>Search</value>
+    <value>Поиск</value>
   </data>
   <data name="Auto_Sales_Tickets_4" xml:space="preserve">
-    <value>All Types</value>
+    <value>Все типы</value>
   </data>
   <data name="Auto_Sales_Tickets_5" xml:space="preserve">
-    <value>Apply</value>
+    <value>Применить</value>
   </data>
   <data name="Auto_Sales_Tickets_6" xml:space="preserve">
-    <value>All</value>
+    <value>Все</value>
   </data>
   <data name="Auto_Sales_Tickets_7" xml:space="preserve">
-    <value>Active</value>
+    <value>Активные</value>
   </data>
   <data name="Auto_Sales_Tickets_8" xml:space="preserve">
-    <value>Inactive</value>
+    <value>Неактивные</value>
   </data>
   <data name="Auto_Sales_Tickets_9" xml:space="preserve">
     <value>ID</value>
   </data>
   <data name="Auto_Sales_Tickets_10" xml:space="preserve">
-    <value>Ticket Name</value>
+    <value>Название билета</value>
   </data>
   <data name="Auto_Sales_Tickets_11" xml:space="preserve">
-    <value>Type</value>
+    <value>Тип</value>
   </data>
   <data name="Auto_Sales_Tickets_12" xml:space="preserve">
-    <value>Zone</value>
+    <value>Зона</value>
   </data>
   <data name="Auto_Sales_Tickets_13" xml:space="preserve">
-    <value>Price</value>
+    <value>Цена</value>
   </data>
   <data name="Auto_Sales_Tickets_14" xml:space="preserve">
-    <value>Valid (days)</value>
+    <value>Срок действия (дней)</value>
   </data>
   <data name="Auto_Sales_Tickets_15" xml:space="preserve">
-    <value>Available</value>
+    <value>В наличии</value>
   </data>
   <data name="Auto_Sales_Tickets_16" xml:space="preserve">
-    <value>Issue Date</value>
+    <value>Дата выпуска</value>
   </data>
   <data name="Auto_Sales_Tickets_17" xml:space="preserve">
-    <value>Expiry Date</value>
+    <value>Дата окончания действия</value>
   </data>
   <data name="Auto_Sales_Tickets_18" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_Sales_Tickets_19" xml:space="preserve">
-    <value>Actions</value>
+    <value>Действия</value>
   </data>
   <data name="Auto_Sales_Tickets_20" xml:space="preserve">
-    <value>View</value>
+    <value>Просмотр</value>
   </data>
   <data name="Auto_Sales_Tickets_21" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
   </data>
   <data name="Auto_Sales_Tickets_22" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="Auto_Sales_Tickets_23" xml:space="preserve">
-    <value>Name is required</value>
+    <value>Укажите название</value>
   </data>
   <data name="Auto_Sales_Tickets_24" xml:space="preserve">
-    <value>Type is required</value>
+    <value>Укажите тип</value>
   </data>
   <data name="Auto_Sales_Tickets_25" xml:space="preserve">
-    <value>Price is required</value>
+    <value>Укажите цену</value>
   </data>
   <data name="Auto_Sales_Tickets_26" xml:space="preserve">
-    <value>Valid days required</value>
+    <value>Укажите срок действия в днях</value>
   </data>
   <data name="Auto_Sales_Tickets_27" xml:space="preserve">
-    <value>Count is required</value>
+    <value>Укажите количество</value>
   </data>
   <data name="Auto_Sales_Tickets_28" xml:space="preserve">
     <value>dd.MM.yyyy</value>
   </data>
   <data name="Auto_Sales_Tickets_29" xml:space="preserve">
-    <value>Save</value>
+    <value>Сохранить</value>
   </data>
   <data name="Auto_Sales_Tickets_30" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="Auto_Sales_Tickets_31" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="Auto_Sales_Tickets_32" xml:space="preserve">
-    <value>Ticket Type Management - Autopark Management System</value>
+    <value>Управление типами билетов - Автопарк</value>
   </data>
   <data name="Auto_Sales_Tickets_33" xml:space="preserve">
-    <value>Ticket Type Management</value>
+    <value>Управление типами билетов</value>
   </data>
   <data name="Auto_Sales_Tickets_34" xml:space="preserve">
-    <value>Total Ticket Types:</value>
+    <value>Всего типов билетов:</value>
   </data>
   <data name="Auto_Sales_Tickets_35" xml:space="preserve">
-    <value>Active:</value>
+    <value>Активных:</value>
   </data>
   <data name="Auto_Sales_Tickets_36" xml:space="preserve">
-    <value>Low Stock:</value>
+    <value>Заканчиваются:</value>
   </data>
   <data name="Auto_Sales_Tickets_37" xml:space="preserve">
-    <value>Out of Stock:</value>
+    <value>Нет в наличии:</value>
   </data>
   <data name="Auto_Sales_Tickets_38" xml:space="preserve">
-    <value>Avg Price:</value>
+    <value>Средняя цена:</value>
   </data>
   <data name="Auto_Sales_Tickets_39" xml:space="preserve">
-    <value>Ticket Type:</value>
+    <value>Тип билета:</value>
   </data>
   <data name="Auto_Sales_Tickets_40" xml:space="preserve">
-    <value>Price Range:</value>
+    <value>Диапазон цен:</value>
   </data>
   <data name="Auto_Sales_Tickets_41" xml:space="preserve">
-    <value>Status:</value>
+    <value>Статус:</value>
   </data>
   <data name="Auto_Sales_Tickets_42" xml:space="preserve">
     <value>CommandName="ViewTicket" CommandArgument='</value>
@@ -1936,78 +1936,78 @@
     <value>' CssClass="action-button" OnClientClick="return confirm('</value>
   </data>
   <data name="Auto_Sales_Tickets_46" xml:space="preserve">
-    <value>Ticket Name</value>
+    <value>Название билета</value>
   </data>
   <data name="Auto_Sales_Tickets_47" xml:space="preserve">
-    <value>Ticket Type</value>
+    <value>Тип билета</value>
   </data>
   <data name="Auto_Sales_Tickets_48" xml:space="preserve">
-    <value>Zone</value>
+    <value>Зона</value>
   </data>
   <data name="Auto_Sales_Tickets_49" xml:space="preserve">
-    <value>Price</value>
+    <value>Цена</value>
   </data>
   <data name="Auto_Sales_Tickets_50" xml:space="preserve">
-    <value>Valid Days</value>
+    <value>Срок действия (дней)</value>
   </data>
   <data name="Auto_Sales_Tickets_51" xml:space="preserve">
-    <value>Available Count</value>
+    <value>Количество в наличии</value>
   </data>
   <data name="Auto_Sales_Tickets_52" xml:space="preserve">
-    <value>Expiry Date</value>
+    <value>Дата окончания действия</value>
   </data>
   <data name="Auto_Sales_Tickets_53" xml:space="preserve">
-    <value>Active</value>
+    <value>Активен</value>
   </data>
   <data name="Auto_Sales_Tickets_54" xml:space="preserve">
-    <value>Back to top ▲</value>
+    <value>Наверх ▲</value>
   </data>
   <data name="Auto_System_Roles_1" xml:space="preserve">
-    <value>No roles found.</value>
+    <value>Роли не найдены.</value>
   </data>
   <data name="Auto_System_Roles_2" xml:space="preserve">
-    <value>Role</value>
+    <value>Роль</value>
   </data>
   <data name="Auto_System_Roles_3" xml:space="preserve">
-    <value>Description</value>
+    <value>Описание</value>
   </data>
   <data name="Auto_System_Roles_4" xml:space="preserve">
-    <value>Users</value>
+    <value>Пользователи</value>
   </data>
   <data name="Auto_System_Roles_5" xml:space="preserve">
-    <value>Permissions</value>
+    <value>Разрешения</value>
   </data>
   <data name="Auto_System_Roles_6" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_System_Roles_7" xml:space="preserve">
-    <value>Roles &amp; Permissions - Autopark Management System</value>
+    <value>Роли и разрешения - Автопарк</value>
   </data>
   <data name="Auto_System_Roles_8" xml:space="preserve">
-    <value>Roles &amp; Permissions</value>
+    <value>Роли и разрешения</value>
   </data>
   <data name="Auto_System_Settings_1" xml:space="preserve">
-    <value>System Settings - Autopark Management System</value>
+    <value>Системные настройки - Автопарк</value>
   </data>
   <data name="Auto_System_Users_1" xml:space="preserve">
-    <value>No users found.</value>
+    <value>Пользователи не найдены.</value>
   </data>
   <data name="Auto_System_Users_2" xml:space="preserve">
-    <value>Login</value>
+    <value>Логин</value>
   </data>
   <data name="Auto_System_Users_3" xml:space="preserve">
-    <value>Employee</value>
+    <value>Сотрудник</value>
   </data>
   <data name="Auto_System_Users_4" xml:space="preserve">
-    <value>Email</value>
+    <value>Электронная почта</value>
   </data>
   <data name="Auto_System_Users_5" xml:space="preserve">
-    <value>Phone</value>
+    <value>Телефон</value>
   </data>
   <data name="Auto_System_Users_6" xml:space="preserve">
-    <value>Status</value>
+    <value>Статус</value>
   </data>
   <data name="Auto_System_Users_7" xml:space="preserve">
-    <value>Users - Autopark Management System</value>
+    <value>Пользователи - Автопарк</value>
   </data>
 </root>

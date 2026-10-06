@@ -155,9 +155,9 @@
                         <asp:BoundField DataField="Email" HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_18 %>" />
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Personnel_Employees_19 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_20 %>"<%= Localization.GetHtml("Auto_Personnel_Employees_45") %><%# Eval("EmployeeId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_21 %>"<%= Localization.GetHtml("Auto_Personnel_Employees_46") %><%# Eval("EmployeeId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_22 %>"<%= Localization.GetHtml("Auto_Personnel_Employees_47") %><%# Eval("EmployeeId") %><%= Localization.GetHtml("Auto_Personnel_Employees_48") %><%$ Resources:Strings, Common_DeleteEmployeeConfirm %>');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_20 %>" CommandName="View" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_21 %>" CommandName="EditEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Auto_Personnel_Employees_22 %>" CommandName="DeleteEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

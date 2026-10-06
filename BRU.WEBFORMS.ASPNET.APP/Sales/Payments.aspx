@@ -101,7 +101,7 @@
                         <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
                             <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_3 %>" Value="" />
                             <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_4 %>" Value="Ожидает" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_5 %>" Value="Оплачена" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_5 %>" Value="Успешно" />
                             <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_6 %>" Value="Ошибка" />
                             <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_7 %>" Value="Возврат" />
                         </asp:DropDownList>
@@ -132,7 +132,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Auto_Sales_Payments_16 %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_17 %>"<%= Localization.GetHtml("Auto_Sales_Payments_36") %><%# Eval("PaymentId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Auto_Sales_Payments_17 %>" CommandName="ViewPayment" CommandArgument='<%# Eval("PaymentId") %>' CssClass="action-button" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
