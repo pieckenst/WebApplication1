@@ -2,13 +2,15 @@
 <%@ Register TagPrefix="uc" TagName="ContentBox" Src="~/Controls/ContentBox.ascx" %>
 <asp:Content ID="MainContent1" ContentPlaceHolderID="MainContent" runat="server">
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
-        .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
-        .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
-        .action-bar { background-color: #EDF2FB; border: 1px solid #1447AE; padding: 10px; margin-bottom: 15px; }
-        .action-button { display: inline-block; padding: 6px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin-right: 8px; margin-bottom: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; }
-        .filter-section { background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 10px; margin-bottom: 15px; }
-        .filter-row { margin-bottom: 8px; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; }
+        .content-page > * + * { margin-top: 16px; }
+        .page-title { font-size: 16pt; color: #000080; font-weight: bold; margin-bottom: 6px; }
+        .page-divider { height: 2px; background-color: #000080; margin: 0 0 20px 0; }
+        .action-bar { background-color: #EDF2FB; border: 1px solid #1447AE; padding: 12px; margin-bottom: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .action-button { display: inline-block; padding: 7px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin: 0; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; min-height: 30px; box-sizing: border-box; }
+        .filter-section { background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 14px; margin-bottom: 18px; }
+        .filter-row { margin-bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+        .filter-row:last-child { margin-bottom: 0; }
         .filter-label { display: inline-block; width: 150px; font-weight: bold; font-size: 9pt; }
         .form-control { padding: 4px 8px; border: 1px solid #1447AE; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; width: 220px; }
         .stats-summary { background-color: #EDF2FB; border: 1px solid #1447AE; padding: 10px; margin-bottom: 15px; font-size: 9pt; }

@@ -5,9 +5,12 @@
     
     <style type="text/css">
         .content-page {
-            padding: 10px;
+            padding: 18px;
             font-family: Tahoma, Verdana, Arial, sans-serif;
+            max-width: 1480px;
+            margin: 0 auto;
         }
+        .content-page > * + * { margin-top: 16px; }
         .page-title { 
             font-size: 16pt; 
             color: #000080; 
@@ -29,12 +32,16 @@
         .action-bar {
             background-color: #EDF2FB;
             border: 1px solid #1447AE;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
         }
         .action-button {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 7px 12px;
             background-color: #1447AE;
             color: #FFFFFF;
             text-decoration: none;

@@ -4,16 +4,20 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <style type="text/css">
-        .content-page { padding: 10px; font-family: Tahoma, Verdana, Arial, sans-serif; }
-        .page-title { font-size: 16pt; color: #000080; font-weight: bold; }
-        .page-divider { height: 2px; background-color: #000080; margin: 5px 0 15px 0; }
+        .content-page { padding: 18px; font-family: Tahoma, Verdana, Arial, sans-serif; max-width: 1480px; margin: 0 auto; }
+        .page-title { font-size: 16pt; color: #000080; font-weight: bold; margin-bottom: 6px; }
+        .page-divider { height: 2px; background-color: #000080; margin: 0 0 20px 0; }
         .text-regular { font-size: 10pt; line-height: 1.5; }
+        .content-page > * + * { margin-top: 16px; }
+        .content-page .page-divider + * { margin-top: 0; }
+        .content-page .action-bar, .content-page .stats-summary { margin-top: 16px; }
         .text-small { font-size: 8pt; color: #666666; }
-        .action-bar { background-color: #EDF2FB; border: 1px solid #1447AE; padding: 10px; margin-bottom: 15px; }
-        .action-button { display: inline-block; padding: 6px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin-right: 8px; margin-bottom: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; }
+        .action-bar { background-color: #EDF2FB; border: 1px solid #1447AE; padding: 12px; margin-bottom: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+        .action-button { display: inline-block; padding: 7px 12px; background-color: #1447AE; color: #FFFFFF; text-decoration: none; border: 1px solid #2459C3; border-radius: 3px; margin: 0; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; min-height: 30px; box-sizing: border-box; }
         .action-button:hover { background-color: #2459C3; }
-        .filter-section { background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 10px; margin-bottom: 15px; }
-        .filter-row { margin-bottom: 8px; }
+        .filter-section { background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 14px; margin-bottom: 18px; }
+        .filter-row { margin-bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+        .filter-row:last-child { margin-bottom: 0; }
         .filter-label { display: inline-block; width: 120px; font-weight: bold; font-size: 9pt; }
         .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 9pt; }
         .data-table th { background-color: #1447AE; color: #FFFFFF; padding: 8px; text-align: left; border: 1px solid #0A2E7A; }
@@ -30,8 +34,9 @@
         .pagination a { padding: 4px 8px; margin: 0 2px; background-color: #EDF2FB; border: 1px solid #1447AE; text-decoration: none; font-size: 9pt; }
         .pagination a:hover { background-color: #1447AE; color: #FFFFFF; }
         .pagination .current { padding: 4px 8px; margin: 0 2px; background-color: #1447AE; color: #FFFFFF; font-weight: bold; }
-        .form-row { margin-bottom: 12px; }
-        .form-label { display: inline-block; width: 180px; font-weight: bold; font-size: 9pt; }
+        .form-row { margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 12px; }
+        .form-row:last-child { margin-bottom: 0; }
+        .form-label { display: inline-block; width: 180px; padding-top: 6px; font-weight: bold; font-size: 9pt; }
         .form-control { padding: 4px 8px; border: 1px solid #1447AE; font-family: Tahoma, Arial, sans-serif; font-size: 9pt; width: 300px; }
         .form-required { color: #CC0000; }
         .error-message { background-color: #FFE6E6; border: 1px solid #CC0000; color: #CC0000; padding: 10px; margin-bottom: 15px; font-size: 10pt; }
@@ -102,7 +107,7 @@
                             <asp:ListItem Text="<%$ Resources:Strings, Common_All %>" Value="" />
                             <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
                             <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неис��равен" />
                         </asp:DropDownList>
                     </div>
                     <div class="filter-row">
@@ -138,9 +143,9 @@
                         <asp:BoundField DataField="DaysFromLastService" HeaderText="<%$ Resources:Strings, Maintenance_DaysAgo %>" SortExpression="days_from_last_service" />
                         <asp:TemplateField HeaderText="<%$ Resources:Strings, Common_Actions %>">
                             <ItemTemplate>
-                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Common_View %><%= Localization.GetHtml("Auto_Fleet_Maintenance_4") %><%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Common_Edit %><%= Localization.GetHtml("Auto_Fleet_Maintenance_5") %><%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %><%= Localization.GetHtml("Auto_Fleet_Maintenance_6") %><%# Eval("MaintenanceId") %><%= Localization.GetHtml("Auto_Fleet_Maintenance_7") %><%$ Resources:Strings, Common_DeleteMaintenanceConfirm %>');" />
+                                <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Common_View %>" CommandName="ViewRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Common_Edit %>" CommandName="EditRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %>" CommandName="DeleteRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this maintenance record?');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
