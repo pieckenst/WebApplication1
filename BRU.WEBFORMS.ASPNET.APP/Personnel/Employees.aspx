@@ -150,7 +150,7 @@
                             <ItemTemplate>
                                 <asp:Button ID="btnView" runat="server" Text="View" CommandName="View" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this employee?');" />
+                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteEmp" CommandArgument='<%# Eval("EmployeeId") %>' CssClass="action-button" OnClientClick="return confirm('<%$ Resources:Strings, Common_DeleteEmployeeConfirm %>');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

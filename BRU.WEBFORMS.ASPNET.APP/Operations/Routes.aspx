@@ -108,7 +108,7 @@
                             <ItemTemplate>
                                 <asp:Button ID="btnView" runat="server" Text="View Stops" CommandName="ViewStops" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this route?');" />
+                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteRoute" CommandArgument='<%# Eval("RouteId") %>' CssClass="action-button" OnClientClick="return confirm('<%$ Resources:Strings, Common_DeleteRouteConfirm %>');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

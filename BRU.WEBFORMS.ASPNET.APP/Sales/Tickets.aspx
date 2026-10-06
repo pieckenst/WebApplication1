@@ -158,7 +158,7 @@
                             <ItemTemplate>
                                 <asp:Button ID="btnView" runat="server" Text="View" CommandName="ViewTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" CommandName="EditTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this ticket type?');" />
+                                <asp:Button ID="btnDelete" runat="server" Text="Delete" CommandName="DeleteTicket" CommandArgument='<%# Eval("TicketId") %>' CssClass="action-button" OnClientClick="return confirm('<%$ Resources:Strings, Common_DeleteTicketConfirm %>');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

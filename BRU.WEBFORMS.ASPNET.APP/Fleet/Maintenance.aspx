@@ -98,9 +98,9 @@
                         <span class="filter-label"><%= Localization.GetHtml("Maintenance_RoadworthinessFilter") %></span>
                         <asp:DropDownList ID="ddlRwFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlRwFilter_SelectedIndexChanged">
                             <asp:ListItem Text="<%$ Resources:Strings, Common_All %>" Value="" />
-                            <asp:ListItem Text="Исправен" Value="Исправен" />
-                            <asp:ListItem Text="Требует внимания" Value="Требует внимания" />
-                            <asp:ListItem Text="Неисправен" Value="Неисправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
                         </asp:DropDownList>
                     </div>
                     <div class="filter-row">
@@ -138,7 +138,7 @@
                             <ItemTemplate>
                                 <asp:Button ID="btnView" runat="server" Text="<%$ Resources:Strings, Common_View %>" CommandName="ViewRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
                                 <asp:Button ID="btnEdit" runat="server" Text="<%$ Resources:Strings, Common_Edit %>" CommandName="EditRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" />
-                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %>" CommandName="DeleteRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" OnClientClick="return confirm('Are you sure you want to delete this maintenance record?');" />
+                                <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %>" CommandName="DeleteRecord" CommandArgument='<%# Eval("MaintenanceId") %>' CssClass="action-button" OnClientClick="return confirm('<%$ Resources:Strings, Common_DeleteMaintenanceConfirm %>');" />
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
@@ -192,9 +192,9 @@
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Common_Roadworthiness") %> <span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlRoadworthiness" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="Исправен" Value="Исправен" />
-                            <asp:ListItem Text="Требует внимания" Value="Требует внимания" />
-                            <asp:ListItem Text="Неисправен" Value="Неисправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row">

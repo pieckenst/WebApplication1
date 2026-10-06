@@ -24,6 +24,10 @@
   <data name="Settings_FieldRequired" xml:space="preserve"><value>Поле «{0}» обязательно и не должно превышать {1} символов.</value></data>
   <data name="Settings_WriteDenied" xml:space="preserve"><value>Приложению не разрешена запись в App_Data/SystemSettings.xml.</value></data>
   <data name="Settings_WriteFailed" xml:space="preserve"><value>Не удалось сохранить настройки. Проверьте права записи приложения в App_Data.</value></data>
+  <data name="Common_DeleteMaintenanceConfirm" xml:space="preserve"><value>Удалить эту запись об обслуживании?</value></data>
+  <data name="Common_DeleteEmployeeConfirm" xml:space="preserve"><value>Удалить этого сотрудника?</value></data>
+  <data name="Common_DeleteRouteConfirm" xml:space="preserve"><value>Удалить этот маршрут?</value></data>
+  <data name="Common_DeleteTicketConfirm" xml:space="preserve"><value>Удалить этот тип билета?</value></data>
   <data name="Common_Save" xml:space="preserve"><value>Сохранить</value></data>
   <data name="Title_Default" xml:space="preserve"><value>Панель управления - Автопарк</value></data>
   <data name="Title_Login" xml:space="preserve"><value>Вход - Автопарк</value></data>
@@ -131,6 +135,8 @@
   <data name="Common_ExportExcel" xml:space="preserve"><value>Экспорт в Excel</value></data>
   <data name="Common_BackToTop" xml:space="preserve"><value>Наверх ▲</value></data>
   <data name="Common_Operational" xml:space="preserve"><value>Исправен</value></data>
+  <data name="Common_Attention" xml:space="preserve"><value>Требует внимания</value></data>
+  <data name="Common_NotOperational" xml:space="preserve"><value>Неисправен</value></data>
   <data name="Common_InRepair" xml:space="preserve"><value>На ремонте</value></data>
   <data name="Common_Retired" xml:space="preserve"><value>Списан</value></data>
   <data name="Common_Reserve" xml:space="preserve"><value>Резерв</value></data>

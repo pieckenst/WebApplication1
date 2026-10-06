@@ -24,6 +24,10 @@
   <data name="Settings_FieldRequired" xml:space="preserve"><value>{0} is required and cannot exceed {1} characters.</value></data>
   <data name="Settings_WriteDenied" xml:space="preserve"><value>The application identity cannot write App_Data/SystemSettings.xml.</value></data>
   <data name="Settings_WriteFailed" xml:space="preserve"><value>Settings could not be saved. Verify that App_Data is writable by the application identity.</value></data>
+  <data name="Common_DeleteMaintenanceConfirm" xml:space="preserve"><value>Are you sure you want to delete this maintenance record?</value></data>
+  <data name="Common_DeleteEmployeeConfirm" xml:space="preserve"><value>Are you sure you want to delete this employee?</value></data>
+  <data name="Common_DeleteRouteConfirm" xml:space="preserve"><value>Are you sure you want to delete this route?</value></data>
+  <data name="Common_DeleteTicketConfirm" xml:space="preserve"><value>Are you sure you want to delete this ticket type?</value></data>
   <data name="Common_Save" xml:space="preserve"><value>Save</value></data>
   <data name="Title_Default" xml:space="preserve"><value>Dashboard - Autopark Management System</value></data>
   <data name="Title_Login" xml:space="preserve"><value>Sign In - Autopark Management System</value></data>
@@ -131,6 +135,8 @@
   <data name="Common_ExportExcel" xml:space="preserve"><value>Export to Excel</value></data>
   <data name="Common_BackToTop" xml:space="preserve"><value>Back to top ▲</value></data>
   <data name="Common_Operational" xml:space="preserve"><value>Operational</value></data>
+  <data name="Common_Attention" xml:space="preserve"><value>Needs attention</value></data>
+  <data name="Common_NotOperational" xml:space="preserve"><value>Not operational</value></data>
   <data name="Common_InRepair" xml:space="preserve"><value>In Repair</value></data>
   <data name="Common_Retired" xml:space="preserve"><value>Retired</value></data>
   <data name="Common_Reserve" xml:space="preserve"><value>Reserve</value></data>
