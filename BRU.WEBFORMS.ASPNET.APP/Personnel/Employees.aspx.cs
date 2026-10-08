@@ -604,7 +604,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         protected void btnAddEmployee_Click(object sender, EventArgs e)
         {
-            RequireRole("administrator");
+            if (!RequireWritePermission("administrator")) return;
             EditingEmployeeId = 0;
             ClearForm();
             cbEmployeeForm.HeaderText = "Add New Employee";
