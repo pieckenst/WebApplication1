@@ -485,7 +485,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     ShowEditForm(maintenanceId);
                     break;
                 case "DeleteRecord":
-                    RequireWritePermission("bus.write");
+                    if (!RequireWritePermission("bus.write")) return;
                     DeleteMaintenance(maintenanceId);
                     break;
             }
