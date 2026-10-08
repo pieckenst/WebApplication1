@@ -859,9 +859,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void DeleteMaintenance(int maintenanceId)
         {
-            RequireWritePermission("bus.write");
             try
             {
+                if (!RequireWritePermission("bus.write")) return;
                 using (MaintenanceService service = new MaintenanceService())
                 {
                     service.DeleteMaintenance(maintenanceId);
