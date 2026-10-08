@@ -995,7 +995,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
-                RequireWritePermission("bus.write");
+                if (!RequireWritePermission("bus.write")) return;
                 using (BusService busService =
                     new BusService())
                 {
