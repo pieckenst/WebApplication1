@@ -500,7 +500,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                     ShowTicketDetail(ticketId);
                     break;
                 case "EditTicket":
-                    RequireWritePermission("ticket.write");
+                    if (!RequireWritePermission("ticket.write")) return;
                     ShowEditForm(ticketId);
                     break;
                 case "DeleteTicket":
