@@ -541,9 +541,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
                             ShowEmployeeDetail(employeeId);
                             break;
                         case "EditEmp":
+                            RequireRole("administrator");
                             ShowEditForm(employeeId);
                             break;
                         case "DeleteEmp":
+                            RequireRole("administrator");
                             DeleteEmployeeRecord(employeeId);
                             break;
                     }
@@ -602,6 +604,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         protected void btnAddEmployee_Click(object sender, EventArgs e)
         {
+            RequireRole("administrator");
             EditingEmployeeId = 0;
             ClearForm();
             cbEmployeeForm.HeaderText = "Add New Employee";
@@ -776,6 +779,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         {
             if (!Page.IsValid) return;
 
+            RequireRole("administrator");
+
             try
             {
                 Employee emp = new Employee();
@@ -859,6 +864,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         private void DeleteEmployeeRecord(int employeeId)
         {
+            RequireRole("administrator");
             try
             {
                 using (EmployeeService service = new EmployeeService())
