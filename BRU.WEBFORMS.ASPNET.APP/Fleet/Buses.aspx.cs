@@ -715,6 +715,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
+                RequireWritePermission("bus.write");
                 Response.Redirect(
                     "~/Fleet/BusEdit.aspx?mode=add");
             }
@@ -900,6 +901,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
                     case "Edit":
 
+                        RequireWritePermission("bus.write");
                         Response.Redirect(
                             "~/Fleet/BusEdit.aspx?busId=" +
                             busId +
@@ -917,6 +919,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
                     case "Delete":
 
+                        RequireWritePermission("bus.write");
                         DeleteBus(busId);
 
                         break;
@@ -992,6 +995,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
+                RequireWritePermission("bus.write");
                 using (BusService busService =
                     new BusService())
                 {
