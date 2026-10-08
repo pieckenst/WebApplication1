@@ -339,7 +339,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                             ShowRouteStops(routeId);
                             break;
                         case "EditRoute":
-                            RequireWritePermission("route.write");
+                            if (!RequireWritePermission("route.write")) return;
                             ShowEditForm(routeId);
                             break;
                         case "DeleteRoute":
