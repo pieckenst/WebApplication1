@@ -500,9 +500,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                     ShowTicketDetail(ticketId);
                     break;
                 case "EditTicket":
+                    RequireWritePermission("ticket.write");
                     ShowEditForm(ticketId);
                     break;
                 case "DeleteTicket":
+                    RequireWritePermission("ticket.write");
                     DeleteTicket(ticketId);
                     break;
             }
@@ -568,6 +570,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         protected void btnAddTicket_Click(object sender, EventArgs e)
         {
+            RequireWritePermission("ticket.write");
             EditingTicketId = 0;
             ClearForm();
             cbTicketForm.HeaderText = "Add New Ticket Type";
@@ -657,6 +660,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
+                RequireWritePermission("ticket.write");
                 Ticket ticket = new Ticket();
                 ticket.TicketId = EditingTicketId;
                 ticket.TicketName = txtTicketName.Text.Trim();
@@ -836,6 +840,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         private void DeleteTicket(int ticketId)
         {
+            RequireWritePermission("ticket.write");
             try
             {
                 using (TicketService service = new TicketService())
