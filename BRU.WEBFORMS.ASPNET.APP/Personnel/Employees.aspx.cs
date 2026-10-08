@@ -779,10 +779,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         {
             if (!Page.IsValid) return;
 
-            RequireRole("administrator");
-
             try
             {
+                if (!RequireWritePermission("administrator")) return;
                 Employee emp = new Employee();
                 emp.EmployeeId = EditingEmployeeId;
                 emp.Surname = txtSurname.Text.Trim();
