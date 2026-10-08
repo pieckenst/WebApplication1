@@ -715,7 +715,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
-                RequireWritePermission("bus.write");
+                if (!RequireWritePermission("bus.write")) return;
                 Response.Redirect(
                     "~/Fleet/BusEdit.aspx?mode=add");
             }
