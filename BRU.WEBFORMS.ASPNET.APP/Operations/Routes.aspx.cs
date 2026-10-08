@@ -553,9 +553,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         private void DeleteRouteRecord(int routeId)
         {
-            RequireWritePermission("route.write");
             try
             {
+                if (!RequireWritePermission("route.write")) return;
                 using (RouteService service = new RouteService())
                 {
                     bool success = service.DeleteRoute(routeId);
