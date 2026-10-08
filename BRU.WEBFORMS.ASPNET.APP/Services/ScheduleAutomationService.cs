@@ -115,9 +115,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         #region Status Management
 
         /// <summary>
-        /// Updates schedule statuses based on current time.
-        /// Transitions: Planned → In Progress → Completed
-        /// Runs as part of automated job (every 5-15 minutes recommended)
+        /// Updates stored schedule statuses based on the current server time.
+        /// Transitions: Planned → In Progress → Completed.
+        /// Runs automatically when the authorized schedule page is loaded and
+        /// may also be invoked explicitly by trusted backend code.
         /// </summary>
         public ScheduleStatusUpdateResult UpdateScheduleStatuses()
         {
