@@ -448,6 +448,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
+                RequireWritePermission("payment.write");
                 Payment payment = new Payment();
 
                 long saleId;
