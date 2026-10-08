@@ -448,7 +448,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         protected void btnAddRoute_Click(object sender, EventArgs e)
         {
-            RequireWritePermission("route.write");
+            if (!RequireWritePermission("route.write")) return;
             EditingRouteId = 0;
             ClearForm();
             cbRouteForm.HeaderText = "Add New Route";
