@@ -863,9 +863,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         private void DeleteEmployeeRecord(int employeeId)
         {
-            RequireRole("administrator");
             try
             {
+                if (!RequireWritePermission("administrator")) return;
                 using (EmployeeService service = new EmployeeService())
                 {
                     bool success = service.DeleteEmployee(employeeId);
