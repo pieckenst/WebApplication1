@@ -498,10 +498,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         {
             if (!Page.IsValid) return;
 
-            RequireWritePermission("route.write");
-
             try
             {
+                if (!RequireWritePermission("route.write")) return;
                 Route route = new Route();
                 route.RouteId = EditingRouteId;
                 route.RouteNum = txtRouteNum.Text.Trim();
