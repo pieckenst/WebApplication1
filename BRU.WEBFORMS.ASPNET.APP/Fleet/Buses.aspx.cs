@@ -901,7 +901,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
                     case "Edit":
 
-                        RequireWritePermission("bus.write");
+                        if (!RequireWritePermission("bus.write")) break;
                         Response.Redirect(
                             "~/Fleet/BusEdit.aspx?busId=" +
                             busId +
