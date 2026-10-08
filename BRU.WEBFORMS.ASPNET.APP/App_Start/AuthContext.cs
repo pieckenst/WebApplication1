@@ -188,6 +188,22 @@ namespace BRU.WEBFORMS.ASPNET.APP
             SetSessionValue(SESSION_KEY_ROLES, roles);
             SetSessionValue(SESSION_KEY_PERMISSIONS, permissions);
 
+               // SignIn intentionally rotates the ASP.NET session ID to avoid session fixation.
+            // Session.Abandon() means the new session may not exist until the next request,
+            // so restore the login/activity timestamps from the Forms Authentication ticket
+            // before SecurePage performs the inactivity check.
+            FormsIdentity formsIdentity = HttpContext.Current.User.Identity as FormsIdentity;
+            DateTime authenticationTime = formsIdentity != null
+                ? formsIdentity.Ticket.IssueDate.ToLocalTime()
+                : DateTime.Now;
+
+            if (!LoginTime.HasValue)
+                SetSessionValue(SESSION_KEY_LOGIN_TIME, authenticationTime);
+
+            if (!LastActivityTime.HasValue)
+                SetSessionValue(SESSION_KEY_LAST_ACTIVITY, authenticationTime);
+
+
             IPrincipal currentPrincipal = HttpContext.Current.User;
             GenericPrincipal principal = new GenericPrincipal(currentPrincipal.Identity, roles.ToArray());
             HttpContext.Current.User = principal;
