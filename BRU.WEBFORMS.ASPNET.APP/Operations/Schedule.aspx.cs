@@ -153,6 +153,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
                 if (!IsPostBack)
                 {
+                    // Automatic status reconciliation is a backend read-triggered operation.
+                    // It does not use route.write and is therefore available to every
+                    // authenticated user who is already authorized to view this page.
                     using (ScheduleAutomationService automation = new ScheduleAutomationService())
                     {
                         ScheduleStatusUpdateResult statusResult = automation.UpdateScheduleStatuses();

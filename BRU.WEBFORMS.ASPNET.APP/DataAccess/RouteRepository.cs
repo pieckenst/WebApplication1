@@ -317,17 +317,33 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             return rowsAffected > 0;
         }
 
-        public bool UpdateScheduleStatus(int scheduleId, string status)
+        public bool UpdateScheduleStatus(
+            int scheduleId,
+            string expectedStatus,
+            DateTime expectedServiceDate,
+            TimeSpan expectedDepartureTime,
+            TimeSpan expectedArrivalTime,
+            string status)
         {
             SqlParameter[] parameters = new SqlParameter[]
             {
                 DatabaseHelper.CreateParameter("@schedule_id", scheduleId, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@expected_status", expectedStatus, SqlDbType.NVarChar, 30),
+                DatabaseHelper.CreateParameter("@expected_service_date", expectedServiceDate, SqlDbType.Date),
+                DatabaseHelper.CreateParameter("@expected_departure_time", expectedDepartureTime, SqlDbType.Time),
+                DatabaseHelper.CreateParameter("@expected_arrival_time", expectedArrivalTime, SqlDbType.Time),
                 DatabaseHelper.CreateParameter("@status", status, SqlDbType.NVarChar, 30),
                 DatabaseHelper.CreateParameter("@cancelled_status", ScheduleStatus.Cancelled, SqlDbType.NVarChar, 30)
             };
             return _db.ExecuteNonQuery(@"
-                UPDATE dbo.route_schedule SET schedule_status = @status
-                WHERE schedule_id = @schedule_id AND schedule_status <> @cancelled_status",
+                UPDATE dbo.route_schedule
+                SET schedule_status = @status
+                WHERE schedule_id = @schedule_id
+                  AND schedule_status = @expected_status
+                  AND schedule_status <> @cancelled_status
+                  AND service_date = @expected_service_date
+                  AND departure_time = @expected_departure_time
+                  AND arrival_time = @expected_arrival_time",
                 parameters) > 0;
         }
 

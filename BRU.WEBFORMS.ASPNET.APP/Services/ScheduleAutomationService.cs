@@ -115,9 +115,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         #region Status Management
 
         /// <summary>
-        /// Updates schedule statuses based on current time.
-        /// Transitions: Planned → In Progress → Completed
-        /// Runs as part of automated job (every 5-15 minutes recommended)
+        /// Updates stored schedule statuses based on the current server time.
+        /// Transitions: Planned → In Progress → Completed.
+        /// Runs automatically when the authorized schedule page is loaded and
+        /// may also be invoked explicitly by trusted backend code.
         /// </summary>
         public ScheduleStatusUpdateResult UpdateScheduleStatuses()
         {
@@ -168,7 +169,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                                 schedule.DepartureTime.ToString(@"hh\:mm") + "-" +
                                 schedule.ArrivalTime.ToString(@"hh\:mm") + ", old=" + oldStatus +
                                 ", new=" + newStatus + ", reason=" + reason);
-                            UpdateScheduleStatus(schedule.ScheduleId, newStatus);
+
+                            if (!UpdateScheduleStatus(schedule, newStatus))
+                            {
+                                LogScheduleTrace("STATUS", "TRANSITION_SKIPPED scheduleId=" + schedule.ScheduleId +
+                                    ", reason=concurrent schedule change or cancellation");
+                                continue;
+                            }
+
                             result.StatusTransitions.Add(new StatusTransition
                             {
                                 ScheduleId = schedule.ScheduleId,
@@ -280,12 +288,18 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         }
 
         /// <summary>
-        /// Updates a schedule's status in the database.
+        /// Updates a schedule status only when the row still matches the snapshot
+        /// used to calculate the new status.
         /// </summary>
-        private void UpdateScheduleStatus(int scheduleId, string newStatus)
+        private bool UpdateScheduleStatus(RouteSchedule schedule, string newStatus)
         {
-            if (!_routeRepository.UpdateScheduleStatus(scheduleId, newStatus))
-                throw new InvalidOperationException("Schedule status changed concurrently or the trip was cancelled.");
+            return _routeRepository.UpdateScheduleStatus(
+                schedule.ScheduleId,
+                schedule.ScheduleStatus,
+                schedule.ServiceDate,
+                schedule.DepartureTime,
+                schedule.ArrivalTime,
+                newStatus);
         }
 
         #endregion

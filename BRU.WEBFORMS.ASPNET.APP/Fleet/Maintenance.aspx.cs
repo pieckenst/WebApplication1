@@ -481,9 +481,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     ShowMaintenanceDetail(maintenanceId);
                     break;
                 case "EditRecord":
+                    if (!RequireWritePermission("bus.write")) return;
                     ShowEditForm(maintenanceId);
                     break;
                 case "DeleteRecord":
+                    if (!RequireWritePermission("bus.write")) return;
                     DeleteMaintenance(maintenanceId);
                     break;
             }
@@ -549,6 +551,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         protected void btnAddRecord_Click(object sender, EventArgs e)
         {
+            if (!RequireWritePermission("bus.write")) return;
             LoadBusFilters();
             EditingMaintenanceId = 0;
             ClearForm();
@@ -604,6 +607,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
+                if (!RequireWritePermission("bus.write")) return;
                 MaintenanceRecord record = new MaintenanceRecord();
                 record.MaintenanceId = EditingMaintenanceId;
 
@@ -857,6 +861,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
+                if (!RequireWritePermission("bus.write")) return;
                 using (MaintenanceService service = new MaintenanceService())
                 {
                     service.DeleteMaintenance(maintenanceId);

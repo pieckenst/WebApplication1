@@ -131,57 +131,57 @@ namespace BRU.WEBFORMS.ASPNET.APP
             if (!_requestAuthorized)
                 return;
 
-            string permission = GetMutationPermission(sourceControl, eventArgument);
-            if (permission != null && !HasMutationPermission(permission))
-            {
-                _requestAuthorized = false;
-                LogWarning("Denied postback mutation " + sourceControl + " for permission " + permission);
-                RedirectToAccessDenied("You do not have permission to change this record.");
-                return;
-            }
-
             base.RaisePostBackEvent(sourceControl, eventArgument);
-        }
-
-        private string GetMutationPermission(IPostBackEventHandler sourceControl, string eventArgument)
-        {
-            Control control = sourceControl as Control;
-            string controlName = control == null ? string.Empty : control.ID ?? string.Empty;
-            string action = (controlName + " " + (eventArgument ?? string.Empty)).ToLowerInvariant();
-            string[] mutationTerms = { "save", "create", "update", "delete", "add", "assign", "remove", "generate", "deactivate", "activate", "change", "reset", "approve", "refund", "cancel" };
-            bool isMutation = false;
-            foreach (string term in mutationTerms)
-                if (action.Contains(term)) { isMutation = true; break; }
-            if (!isMutation)
-                return null;
-
-            string path = Request.AppRelativeCurrentExecutionFilePath.ToLowerInvariant();
-            if (path.EndsWith("/fleet/buses.aspx")) return "bus.write";
-            if (path.EndsWith("/fleet/maintenance.aspx")) return "bus.write";
-            if (path.EndsWith("/personnel/employees.aspx")) return "administrator";
-            if (path.EndsWith("/personnel/departments.aspx")) return "administrator";
-            if (path.EndsWith("/operations/routes.aspx")) return "route.write";
-            if (path.EndsWith("/operations/schedule.aspx")) return "route.write";
-            if (path.EndsWith("/operations/stops.aspx")) return "route.write";
-            if (path.EndsWith("/sales/tickets.aspx")) return "ticket.write";
-            if (path.EndsWith("/sales/sales.aspx")) return "sale.write";
-            if (path.EndsWith("/sales/payments.aspx")) return "payment.write";
-            if (path.EndsWith("/system/users.aspx") || path.EndsWith("/system/roles.aspx") || path.EndsWith("/system/settings.aspx")) return "administrator";
-            return null;
-        }
-
-        private bool HasMutationPermission(string permission)
-        {
-            if (permission == "administrator") return AuthContext.IsInRole("administrator");
-            if (permission == "payment.write")
-                return AuthContext.HasPermission(permission) || AuthContext.HasPermission("sale.write") || AuthContext.IsInRole("administrator");
-            return AuthContext.HasPermission(permission) || AuthContext.IsInRole("administrator");
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             if (_requestAuthorized)
                 base.OnPreRender(e);
+        }
+
+        /// <summary>
+        /// Checks the effective write permission for a page operation.
+        /// Keeps the administrator and payment/sale compatibility rules that
+        /// previously existed in the postback mutation gate, but requires
+        /// each write entry point to opt in explicitly.
+        /// </summary>
+        protected bool HasWritePermission(string permissionName)
+        {
+            if (string.IsNullOrWhiteSpace(permissionName))
+                return false;
+
+            if (AuthContext.IsInRole("administrator"))
+                return true;
+
+            // Administrative operations require the role, even if a permission
+            // with the same name has been assigned to the user.
+            if (string.Equals(permissionName, "administrator", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            if (string.Equals(permissionName, "payment.write", StringComparison.OrdinalIgnoreCase))
+            {
+                return AuthContext.HasPermission(permissionName)
+                    || AuthContext.HasPermission("sale.write");
+            }
+
+            return AuthContext.HasPermission(permissionName);
+        }
+
+        /// <summary>
+        /// Requires the effective write permission for an explicit action.
+        /// </summary>
+        protected bool RequireWritePermission(string permissionName)
+        {
+            if (!_requestAuthorized || !HasWritePermission(permissionName))
+            {
+                LogWarning($"User '{AuthContext.CurrentUsername}' denied write operation - missing permission '{permissionName}'");
+                RedirectToAccessDenied("You do not have permission to change this record.");
+                return false;
+            }
+
+            LogInformation($"User '{AuthContext.CurrentUsername}' authorized for write permission '{permissionName}'");
+            return true;
         }
 
         protected void RequireAuthentication()

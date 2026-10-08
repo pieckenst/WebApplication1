@@ -339,9 +339,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                             ShowRouteStops(routeId);
                             break;
                         case "EditRoute":
+                            if (!RequireWritePermission("route.write")) return;
                             ShowEditForm(routeId);
                             break;
                         case "DeleteRoute":
+                            if (!RequireWritePermission("route.write")) return;
                             DeleteRouteRecord(routeId);
                             break;
                     }
@@ -446,6 +448,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
         protected void btnAddRoute_Click(object sender, EventArgs e)
         {
+            if (!RequireWritePermission("route.write")) return;
             EditingRouteId = 0;
             ClearForm();
             cbRouteForm.HeaderText = "Add New Route";
@@ -497,6 +500,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
             try
             {
+                if (!RequireWritePermission("route.write")) return;
                 Route route = new Route();
                 route.RouteId = EditingRouteId;
                 route.RouteNum = txtRouteNum.Text.Trim();
@@ -551,6 +555,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         {
             try
             {
+                if (!RequireWritePermission("route.write")) return;
                 using (RouteService service = new RouteService())
                 {
                     bool success = service.DeleteRoute(routeId);

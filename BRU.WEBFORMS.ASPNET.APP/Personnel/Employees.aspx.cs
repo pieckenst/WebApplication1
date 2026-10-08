@@ -541,9 +541,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
                             ShowEmployeeDetail(employeeId);
                             break;
                         case "EditEmp":
+                            if (!RequireWritePermission("administrator")) return;
                             ShowEditForm(employeeId);
                             break;
                         case "DeleteEmp":
+                            if (!RequireWritePermission("administrator")) return;
                             DeleteEmployeeRecord(employeeId);
                             break;
                     }
@@ -602,6 +604,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         protected void btnAddEmployee_Click(object sender, EventArgs e)
         {
+            if (!RequireWritePermission("administrator")) return;
             EditingEmployeeId = 0;
             ClearForm();
             cbEmployeeForm.HeaderText = "Add New Employee";
@@ -778,6 +781,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
             try
             {
+                if (!RequireWritePermission("administrator")) return;
                 Employee emp = new Employee();
                 emp.EmployeeId = EditingEmployeeId;
                 emp.Surname = txtSurname.Text.Trim();
@@ -861,6 +865,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         {
             try
             {
+                if (!RequireWritePermission("administrator")) return;
                 using (EmployeeService service = new EmployeeService())
                 {
                     bool success = service.DeleteEmployee(employeeId);

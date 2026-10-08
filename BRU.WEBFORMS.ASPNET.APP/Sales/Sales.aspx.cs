@@ -607,6 +607,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
+                if (!RequireWritePermission("sale.write")) return;
                 Sale sale = new Sale();
 
                 int ticketId;
