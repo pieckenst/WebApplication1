@@ -660,7 +660,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
         {
             try
             {
-                RequireWritePermission("ticket.write");
+                if (!RequireWritePermission("ticket.write")) return;
                 Ticket ticket = new Ticket();
                 ticket.TicketId = EditingTicketId;
                 ticket.TicketName = txtTicketName.Text.Trim();
