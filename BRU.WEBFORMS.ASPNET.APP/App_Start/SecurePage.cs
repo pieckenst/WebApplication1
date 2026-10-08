@@ -166,15 +166,17 @@ namespace BRU.WEBFORMS.ASPNET.APP
         /// <summary>
         /// Requires the effective write permission for an explicit action.
         /// </summary>
-        protected void RequireWritePermission(string permissionName)
+        protected bool RequireWritePermission(string permissionName)
         {
-            if (!HasWritePermission(permissionName))
+            if (!_requestAuthorized || !HasWritePermission(permissionName))
             {
                 LogWarning($"User '{AuthContext.CurrentUsername}' denied write operation - missing permission '{permissionName}'");
-                throw new UnauthorizedAccessException($"You do not have permission to perform this write operation: {permissionName}");
+                RedirectToAccessDenied("You do not have permission to change this record.");
+                return false;
             }
 
             LogInformation($"User '{AuthContext.CurrentUsername}' authorized for write permission '{permissionName}'");
+            return true;
         }
 
         protected void RequireAuthentication()
