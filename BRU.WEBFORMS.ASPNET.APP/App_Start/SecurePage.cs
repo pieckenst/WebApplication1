@@ -154,6 +154,11 @@ namespace BRU.WEBFORMS.ASPNET.APP
             if (AuthContext.IsInRole("administrator"))
                 return true;
 
+            // Administrative operations require the role, even if a permission
+            // with the same name has been assigned to the user.
+            if (string.Equals(permissionName, "administrator", StringComparison.OrdinalIgnoreCase))
+                return false;
+
             if (string.Equals(permissionName, "payment.write", StringComparison.OrdinalIgnoreCase))
             {
                 return AuthContext.HasPermission(permissionName)

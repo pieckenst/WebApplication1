@@ -24,4 +24,4 @@ jobs:
         run: nuget restore BRU.WEBFORMS.ASPNET.APP\packages.config -PackagesDirectory packages
 
       - name: Build
-        run: msbuild BRU.WEBFORMS.ASPNET.APP\BRU.WEBFORMS.ASPNET.APP.csproj /p:Configuration=Release /p:Platform=AnyCPU /nologo /m
+        run: msbuild BRU.ScheduleStatusJob\BRU.ScheduleStatusJob.csproj /p:Configuration=Release /p:Platform=AnyCPU /nologo /m
