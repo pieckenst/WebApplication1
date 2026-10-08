@@ -11,7 +11,7 @@
     <meta name="GENERATOR" content="Microsoft FrontPage 6.0">
     <meta name="ProgId" content="FrontPage.Editor.Document">
     <title><asp:Literal ID="litPageTitle" runat="server" /></title>
-    <link rel="icon" type="image/x-icon" href="<%= ResolveUrl("~/en/images/favicon.ico") %>">
+    <link rel="icon" type="image/svg+xml" href="<%= ResolveUrl("~/images/autopark_icon.svg") %>">
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <style>

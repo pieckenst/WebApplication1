@@ -704,7 +704,12 @@ SELECT
 FROM dbo.sale;
 GO
 
-/* Роли и прикладные пользователи. Пароли здесь учебные хэши-заглушки. */
+/* Роли и прикладные пользователи.
+   Демонстрационные пароли (PBKDF2-SHA1, 210000 итераций):
+     admin      → Admin@123
+     dispatcher → Dispatcher@123
+     cashier    → Cashier@123
+*/
 INSERT INTO dbo.app_role (role_name, description)
 VALUES
 ('administrator', N'Полный доступ к информационной системе'),
@@ -730,9 +735,9 @@ GO
 
 INSERT INTO dbo.app_user (employee_id, login, password_hash, email)
 VALUES
-(5,'admin','HASH_ADMIN','admin@autopark.local'),
-(4,'dispatcher','HASH_DISPATCHER','dispatcher@autopark.local'),
-(6,'cashier','HASH_CASHIER','cashier@autopark.local');
+(5,'admin','PBKDF2-SHA1$210000$BsIZoEL5GeibPThEqZCLOg==$vNbll/00kUKnEzfohPpW5t0EW9bft8Zr1r5SWJrSEL0=','admin@autopark.local'),
+(4,'dispatcher','PBKDF2-SHA1$210000$eQjEoDc4P0MTlQcqP1Xc3Q==$zt6CrajTwtNM+2B+mlKRsaqzCzI5AGbg6ndpbJv98Yo=','dispatcher@autopark.local'),
+(6,'cashier','PBKDF2-SHA1$210000$TUR0vHK885a0c5lygcN3Uw==$e/N2B6FtF1L4A8aR9adHXel7M0PQxa8tmj02P/ixDYY=','cashier@autopark.local');
 GO
 
 INSERT INTO dbo.user_role(user_id, role_id, assigned_by)
@@ -1356,4 +1361,433 @@ BEGIN
 
     SELECT CAST(SCOPE_IDENTITY() AS int) AS report_id;
 END;
+GO
+
+/* ================================================================
+   6. 10 DML-ТРИГГЕРОВ
+   ================================================================ */
+
+-- 1. После продажи уменьшается остаток билетов.
+CREATE TRIGGER dbo.trg_sale_insert_update_ticket_stock
+ON dbo.sale
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE t
+       SET available_count = CASE
+            WHEN t.available_count >= i.ticket_quantity THEN t.available_count - i.ticket_quantity
+            ELSE 0 END
+    FROM dbo.ticket AS t
+    INNER JOIN inserted AS i ON i.ticket_id = t.ticket_id;
+END;
+GO
+
+-- 2. При удалении продажи возвращается остаток билетов.
+CREATE TRIGGER dbo.trg_sale_delete_restore_ticket_stock
+ON dbo.sale
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE t
+       SET available_count = t.available_count + d.ticket_quantity
+    FROM dbo.ticket AS t
+    INNER JOIN deleted AS d ON d.ticket_id = t.ticket_id;
+END;
+GO
+
+-- 3. При изменении количества продажи корректируется остаток билетов.
+CREATE TRIGGER dbo.trg_sale_update_ticket_stock
+ON dbo.sale
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF UPDATE(ticket_quantity) OR UPDATE(ticket_id)
+    BEGIN
+        UPDATE t
+           SET available_count = t.available_count + d.ticket_quantity
+        FROM dbo.ticket AS t
+        INNER JOIN deleted AS d ON d.ticket_id = t.ticket_id;
+
+        UPDATE t
+           SET available_count = CASE
+                WHEN t.available_count >= i.ticket_quantity THEN t.available_count - i.ticket_quantity
+                ELSE 0 END
+        FROM dbo.ticket AS t
+        INNER JOIN inserted AS i ON i.ticket_id = t.ticket_id;
+    END;
+END;
+GO
+
+-- 4. После успешной оплаты продажа переводится в статус оплаченной.
+CREATE TRIGGER dbo.trg_payment_insert_mark_sale_paid
+ON dbo.payment
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE s
+       SET payment_status = CASE WHEN i.payment_status = N'Успешно' THEN N'Оплачена' ELSE s.payment_status END
+    FROM dbo.sale AS s
+    INNER JOIN inserted AS i ON i.sale_id = s.sale_id;
+END;
+GO
+
+-- 5. При возврате платежа продажа переводится в возврат.
+CREATE TRIGGER dbo.trg_payment_update_refund_sale
+ON dbo.payment
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE s
+       SET payment_status = N'Возврат',
+           sale_status = N'Возврат'
+    FROM dbo.sale AS s
+    INNER JOIN inserted AS i ON i.sale_id = s.sale_id
+    WHERE i.payment_status = N'Возврат';
+END;
+GO
+
+-- 6. Контроль изменения статуса автобуса: дата изменения не хранится,
+-- поэтому триггер блокирует нелогичный перевод списанного автобуса в рабочий.
+CREATE TRIGGER dbo.trg_bus_update_validate_status
+ON dbo.bus
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS
+    (
+        SELECT 1
+        FROM inserted AS i
+        INNER JOIN deleted AS d ON d.bus_id = i.bus_id
+        WHERE d.status = N'Списан'
+          AND i.status = N'Исправен'
+    )
+    BEGIN
+        THROW 51001, N'Списанный автобус нельзя перевести непосредственно в состояние «Исправен».', 1;
+    END;
+END;
+GO
+
+-- 7. При увеличении пробега автоматически проверяется необходимость обслуживания.
+CREATE TRIGGER dbo.trg_bus_update_mileage_check
+ON dbo.bus
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF UPDATE(mileage_km)
+    BEGIN
+        IF EXISTS
+        (
+            SELECT 1
+            FROM inserted AS i
+            WHERE i.mileage_km >= 250000
+              AND i.status = N'Исправен'
+        )
+        BEGIN
+            UPDATE b
+               SET status = N'Резерв'
+            FROM dbo.bus AS b
+            INNER JOIN inserted AS i ON i.bus_id = b.bus_id
+            WHERE i.mileage_km >= 250000
+              AND b.status = N'Исправен';
+        END;
+    END;
+END;
+GO
+
+-- 8. При добавлении обслуживания дата следующего ТО рассчитывается автоматически.
+CREATE TRIGGER dbo.trg_maintenance_insert_set_next_date
+ON dbo.maintenance
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE m
+       SET next_maintenance_date = COALESCE(i.next_maintenance_date, DATEADD(DAY,90,i.maintenance_date))
+    FROM dbo.maintenance AS m
+    INNER JOIN inserted AS i ON i.maintenance_id = m.maintenance_id;
+END;
+GO
+
+-- 9. При обновлении заявки на отпуск проверяется логика даты согласования.
+CREATE TRIGGER dbo.trg_vacation_request_update_validate
+ON dbo.vacation_request
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS
+    (
+        SELECT 1
+        FROM inserted AS i
+        WHERE i.status = N'Одобрена'
+          AND i.approval_date IS NULL
+    )
+    BEGIN
+        THROW 51002, N'Для одобренной заявки на отпуск должна быть указана дата согласования.', 1;
+    END;
+END;
+GO
+
+-- 10. При удалении пользователя запрещается удаление учетной записи администратора.
+CREATE TRIGGER dbo.trg_app_user_delete_protect_admin
+ON dbo.app_user
+INSTEAD OF DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS
+    (
+        SELECT 1
+        FROM deleted AS d
+        INNER JOIN dbo.user_role AS ur ON ur.user_id = d.user_id
+        INNER JOIN dbo.app_role AS r ON r.role_id = ur.role_id
+        WHERE r.role_name = 'administrator'
+    )
+    BEGIN
+        THROW 51003, N'Учетную запись администратора нельзя удалить без предварительного снятия роли.', 1;
+    END;
+
+    DELETE FROM dbo.user_role
+    WHERE user_id IN (SELECT user_id FROM deleted);
+
+    DELETE FROM dbo.app_user
+    WHERE user_id IN (SELECT user_id FROM deleted);
+END;
+GO
+
+/* ================================================================
+   7. SQL-ОПРЕДЕЛЕНИЯ КУРСОРОВ
+   ================================================================ */
+
+-- Курсор 1. просмотр автобусов с высоким пробегом.
+DECLARE @i CURSOR FOR
+SELECT fleet_number, mileage_km
+FROM dbo.bus
+WHERE mileage_km >= 150000;
+
+OPEN @i;
+DECLARE @fleet_number varchar(20), @mileage int;
+FETCH @i INTO @fleet_number, @mileage;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SELECT @fleet_number AS fleet_number, @mileage AS mileage_km, ABS(@mileage - 150000) AS mileage_over_limit;
+    FETCH @i INTO @fleet_number, @mileage;
+END;
+CLOSE @i;
+DEALLOCATE @i;
+GO
+
+-- Курсор 2. подсчет сумм продаж по каналам.
+DECLARE @i CURSOR FOR
+SELECT sale_channel, COUNT(*), ROUND(SUM(sale_price * ticket_quantity),2)
+FROM dbo.sale
+GROUP BY sale_channel;
+
+OPEN @i;
+DECLARE @channel nvarchar(30), @sale_count int, @channel_total decimal(14,2);
+FETCH @i INTO @channel, @sale_count, @channel_total;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SELECT @channel AS sale_channel, @sale_count AS sale_count, @channel_total AS amount_total;
+    FETCH @i INTO @channel, @sale_count, @channel_total;
+END;
+CLOSE @i;
+DEALLOCATE @i;
+GO
+
+-- Курсор 3. контроль состояния автобусов.
+DECLARE @i CURSOR FOR
+SELECT fleet_number, status
+FROM dbo.bus
+WHERE status <> N'Списан';
+
+OPEN @i;
+DECLARE @fleet_dynamic varchar(20), @status_dynamic nvarchar(30);
+FETCH @i INTO @fleet_dynamic, @status_dynamic;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SELECT @fleet_dynamic AS fleet_number, @status_dynamic AS status, LEN(@status_dynamic) AS status_length;
+    FETCH @i INTO @fleet_dynamic, @status_dynamic;
+END;
+CLOSE @i;
+DEALLOCATE @i;
+GO
+
+-- Курсор 4. контроль расписаний.
+DECLARE @i CURSOR FOR
+SELECT schedule_id, service_date, departure_time, arrival_time
+FROM dbo.route_schedule
+WHERE schedule_status <> N'Отменен';
+
+OPEN @i;
+DECLARE @schedule_id int, @service_date date, @departure time(0), @arrival time(0);
+FETCH @i INTO @schedule_id, @service_date, @departure, @arrival;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SELECT @schedule_id AS schedule_id,
+           @service_date AS service_date,
+           DATEDIFF(MINUTE, @departure, @arrival) AS trip_minutes,
+           DATEPART(WEEKDAY, @service_date) AS weekday_num;
+    FETCH @i INTO @schedule_id, @service_date, @departure, @arrival;
+END;
+CLOSE @i;
+DEALLOCATE @i;
+GO
+
+-- Курсор 5. формирование краткой отчетности по сотрудникам.
+DECLARE @i CURSOR FOR
+SELECT e.employee_id, e.surname, e.name, COUNT(s.sale_id)
+FROM dbo.employee AS e
+LEFT JOIN dbo.sale AS s ON s.cashier_id = e.employee_id
+GROUP BY e.employee_id, e.surname, e.name;
+
+OPEN @i;
+DECLARE @employee_id int, @surname nvarchar(60), @name nvarchar(60), @employee_sales int;
+FETCH @i INTO @employee_id, @surname, @name, @employee_sales;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SELECT CONCAT(@surname, N' ', @name) AS employee_name,
+           @employee_sales AS sale_count,
+           IIF(@employee_sales >= 10, N'Высокая нагрузка', N'Обычная нагрузка') AS workload_level;
+    FETCH @i INTO @employee_id, @surname, @name, @employee_sales;
+END;
+CLOSE @i;
+DEALLOCATE @i;
+GO
+
+/* ================================================================
+   8. ПРАВА ДОСТУПА: роли SQL Server и пользователи
+   ================================================================ */
+
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'autopark_admin')
+    DROP USER [autopark_admin];
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'autopark_dispatcher')
+    DROP USER [autopark_dispatcher];
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'autopark_cashier')
+    DROP USER [autopark_cashier];
+GO
+
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'autopark_administrator')
+    DROP ROLE [autopark_administrator];
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'autopark_dispatcher_role')
+    DROP ROLE [autopark_dispatcher_role];
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = N'autopark_cashier_role')
+    DROP ROLE [autopark_cashier_role];
+GO
+
+CREATE ROLE autopark_administrator;
+CREATE ROLE autopark_dispatcher_role;
+CREATE ROLE autopark_cashier_role;
+GO
+
+CREATE USER autopark_admin WITHOUT LOGIN;
+CREATE USER autopark_dispatcher WITHOUT LOGIN;
+CREATE USER autopark_cashier WITHOUT LOGIN;
+GO
+
+ALTER ROLE autopark_administrator ADD MEMBER autopark_admin;
+ALTER ROLE autopark_dispatcher_role ADD MEMBER autopark_dispatcher;
+ALTER ROLE autopark_cashier_role ADD MEMBER autopark_cashier;
+GO
+
+/* Администратор получает CRUD на таблицы и EXECUTE/SELECT на серверные объекты. */
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::dbo TO autopark_administrator;
+GRANT EXECUTE ON SCHEMA::dbo TO autopark_administrator;
+GO
+
+/* Диспетчер: маршруты, расписание, автобусы, сотрудники и отчеты. */
+GRANT SELECT ON dbo.bus TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.employee TO autopark_dispatcher_role;
+GRANT SELECT, INSERT, UPDATE ON dbo.route TO autopark_dispatcher_role;
+GRANT SELECT, INSERT, UPDATE ON dbo.route_schedule TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.route_stop TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.stop TO autopark_dispatcher_role;
+GRANT SELECT, INSERT ON dbo.maintenance TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.report TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_bus_status, dbo.v_employee_directory, dbo.v_active_route, dbo.v_route_schedule,
+               dbo.v_route_stops, dbo.v_latest_maintenance, dbo.v_autopark_summary TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_active_bus, dbo.get_bus_by_fleet_number, dbo.get_route_schedule, dbo.get_schedule_range,
+               dbo.get_bus_maintenance, dbo.set_bus_status, dbo.add_maintenance, dbo.add_route,
+               dbo.get_route_details, dbo.get_expiring_documents, dbo.create_sales_report TO autopark_dispatcher_role;
+GO
+
+/* Кассир: билеты, продажи и платежи. */
+GRANT SELECT ON dbo.ticket TO autopark_cashier_role;
+GRANT SELECT, INSERT, UPDATE ON dbo.sale TO autopark_cashier_role;
+GRANT SELECT, INSERT ON dbo.payment TO autopark_cashier_role;
+GRANT SELECT ON dbo.route_schedule TO autopark_cashier_role;
+GRANT SELECT ON dbo.v_sale_details, dbo.v_sales_by_channel, dbo.v_sales_by_route, dbo.v_payment_details TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_sales_by_date_range, dbo.get_sales_by_channel, dbo.get_sales_by_cashier,
+               dbo.get_route_sales, dbo.get_ticket_by_price_range, dbo.add_sale,
+               dbo.add_payment, dbo.get_daily_sales_total TO autopark_cashier_role;
+GO
+
+/* ================================================================
+   9. ПРОВЕРОЧНЫЕ ЗАПРОСЫ
+   ================================================================ */
+
+-- Количество строк в основных таблицах.
+SELECT 'department' AS table_name, COUNT(*) AS row_count FROM dbo.department
+UNION ALL SELECT 'job', COUNT(*) FROM dbo.job
+UNION ALL SELECT 'employee', COUNT(*) FROM dbo.employee
+UNION ALL SELECT 'bus', COUNT(*) FROM dbo.bus
+UNION ALL SELECT 'route', COUNT(*) FROM dbo.route
+UNION ALL SELECT 'stop', COUNT(*) FROM dbo.stop
+UNION ALL SELECT 'route_stop', COUNT(*) FROM dbo.route_stop
+UNION ALL SELECT 'route_schedule', COUNT(*) FROM dbo.route_schedule
+UNION ALL SELECT 'maintenance', COUNT(*) FROM dbo.maintenance
+UNION ALL SELECT 'ticket', COUNT(*) FROM dbo.ticket
+UNION ALL SELECT 'sale', COUNT(*) FROM dbo.sale
+UNION ALL SELECT 'payment', COUNT(*) FROM dbo.payment
+UNION ALL SELECT 'report', COUNT(*) FROM dbo.report
+UNION ALL SELECT 'app_user', COUNT(*) FROM dbo.app_user
+UNION ALL SELECT 'app_role', COUNT(*) FROM dbo.app_role
+UNION ALL SELECT 'permission', COUNT(*) FROM dbo.permission
+UNION ALL SELECT 'user_role', COUNT(*) FROM dbo.user_role
+UNION ALL SELECT 'role_permission', COUNT(*) FROM dbo.role_permission
+UNION ALL SELECT 'employee_document', COUNT(*) FROM dbo.employee_document
+UNION ALL SELECT 'employee_training', COUNT(*) FROM dbo.employee_training
+UNION ALL SELECT 'vacation_request', COUNT(*) FROM dbo.vacation_request;
+GO
+
+-- Контроль количества серверных объектов.
+SELECT 'views' AS object_type, COUNT(*) AS object_count
+FROM sys.views
+WHERE schema_id = SCHEMA_ID('dbo')
+UNION ALL
+SELECT 'procedures', COUNT(*)
+FROM sys.procedures
+WHERE schema_id = SCHEMA_ID('dbo')
+UNION ALL
+SELECT 'triggers', COUNT(*)
+FROM sys.triggers
+WHERE parent_class = 1 AND parent_id IN (SELECT object_id FROM sys.tables WHERE schema_id = SCHEMA_ID('dbo'))
+UNION ALL
+SELECT 'indexes', COUNT(*)
+FROM sys.indexes
+WHERE object_id IN (SELECT object_id FROM sys.tables WHERE schema_id = SCHEMA_ID('dbo'))
+  AND index_id > 0;
+GO
+
+-- Пример использования нескольких представлений.
+SELECT * FROM dbo.v_autopark_summary;
+SELECT TOP (20) * FROM dbo.v_sale_details ORDER BY sale_date DESC;
+SELECT * FROM dbo.v_sales_by_channel;
 GO

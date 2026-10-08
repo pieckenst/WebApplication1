@@ -228,7 +228,7 @@ namespace BRU.WEBFORMS.ASPNET.APP
                 version: 1,
                 name: user.Login,
                 issueDate: DateTime.Now,
-                expiration: DateTime.Now.AddMinutes(rememberMe ? 43200 : 480), // 30 days or 8 hours
+                expiration: DateTime.Now.AddMinutes(rememberMe ? 43200 : 30), // 30 days or 30 minutes (matches sessionState timeout)
                 isPersistent: rememberMe,
                 userData: user.UserId.ToString(),
                 cookiePath: FormsAuthentication.FormsCookiePath

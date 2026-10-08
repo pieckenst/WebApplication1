@@ -108,12 +108,10 @@ namespace BRU.WEBFORMS.ASPNET.APP
             if (!_requestAuthorized)
                 return;
 
-            // Update user activity timestamp
+            // Check for session timeout BEFORE updating activity timestamp.
+            // Otherwise the just-updated LastActivity can never be older than the threshold.
             if (!AllowAnonymous && AuthContext.IsAuthenticated)
             {
-                AuthContext.UpdateActivity();
-
-                // Check for session timeout
                 if (AuthContext.IsSessionTimedOut())
                 {
                     LogWarning($"Session timed out for user '{AuthContext.CurrentUsername}'");
@@ -121,6 +119,8 @@ namespace BRU.WEBFORMS.ASPNET.APP
                     RedirectToLogin("Your session has expired. Please log in again.");
                     return;
                 }
+
+                AuthContext.UpdateActivity();
             }
 
             base.OnLoad(e);
