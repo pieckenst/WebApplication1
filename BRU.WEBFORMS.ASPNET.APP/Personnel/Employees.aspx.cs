@@ -545,7 +545,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
                             ShowEditForm(employeeId);
                             break;
                         case "DeleteEmp":
-                            RequireRole("administrator");
+                            if (!RequireWritePermission("administrator")) return;
                             DeleteEmployeeRecord(employeeId);
                             break;
                     }
