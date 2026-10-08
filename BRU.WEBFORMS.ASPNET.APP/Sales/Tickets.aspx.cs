@@ -570,7 +570,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         protected void btnAddTicket_Click(object sender, EventArgs e)
         {
-            RequireWritePermission("ticket.write");
+            if (!RequireWritePermission("ticket.write")) return;
             EditingTicketId = 0;
             ClearForm();
             cbTicketForm.HeaderText = "Add New Ticket Type";
