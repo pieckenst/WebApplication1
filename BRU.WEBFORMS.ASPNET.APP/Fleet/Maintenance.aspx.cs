@@ -551,7 +551,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         protected void btnAddRecord_Click(object sender, EventArgs e)
         {
-            RequireWritePermission("bus.write");
+            if (!RequireWritePermission("bus.write")) return;
             LoadBusFilters();
             EditingMaintenanceId = 0;
             ClearForm();
