@@ -605,9 +605,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            RequireWritePermission("bus.write");
             try
             {
+                if (!RequireWritePermission("bus.write")) return;
                 MaintenanceRecord record = new MaintenanceRecord();
                 record.MaintenanceId = EditingMaintenanceId;
 
