@@ -840,9 +840,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         private void DeleteTicket(int ticketId)
         {
-            RequireWritePermission("ticket.write");
             try
             {
+                if (!RequireWritePermission("ticket.write")) return;
                 using (TicketService service = new TicketService())
                 {
                     service.DeleteTicket(ticketId);
