@@ -126,7 +126,15 @@ namespace BRU.WEBFORMS.ASPNET.APP
             base.OnLoad(e);
         }
 
-undefined        protected override void OnPreRender(EventArgs e)
+        protected override void RaisePostBackEvent(IPostBackEventHandler sourceControl, string eventArgument)
+        {
+            if (!_requestAuthorized)
+                return;
+
+            base.RaisePostBackEvent(sourceControl, eventArgument);
+        }
+
+        protected override void OnPreRender(EventArgs e)
         {
             if (_requestAuthorized)
                 base.OnPreRender(e);
