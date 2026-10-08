@@ -153,9 +153,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
 
                 if (!IsPostBack)
                 {
-                    using (ScheduleAutomationService automation = new ScheduleAutomationService())
+                    if (CanEditSchedules)
                     {
-                        ScheduleStatusUpdateResult statusResult = automation.UpdateScheduleStatuses();
+                        using (ScheduleAutomationService automation = new ScheduleAutomationService())
+                        {
+                            ScheduleStatusUpdateResult statusResult = automation.UpdateScheduleStatuses();
                         LogInformation("Automatic trip status update result: success=" + statusResult.Success +
                             ", processed=" + statusResult.TotalProcessed + ", transitions=" +
                             statusResult.TotalUpdated + ", error=" + (statusResult.ErrorMessage ?? "none"));
