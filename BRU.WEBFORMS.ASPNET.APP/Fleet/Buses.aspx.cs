@@ -919,7 +919,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
                     case "Delete":
 
-                        RequireWritePermission("bus.write");
+                        if (!RequireWritePermission("bus.write")) break;
                         DeleteBus(busId);
 
                         break;
