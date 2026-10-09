@@ -68,6 +68,7 @@
         }
     </style>
 
+    <asp:Panel ID="pnlBusPage" runat="server" DefaultButton="btnSave">
     <div class="content-page">
         <a name="top"></a>
 
@@ -289,5 +290,6 @@
 
         <p align="right" style="margin-top: 20px;"><a href="#top" style="font-size: 8pt; color: #000000;"><%= Localization.GetHtml("Common_BackToTop") %></a></p>
     </div>
+    </asp:Panel>
 
 </asp:Content>
