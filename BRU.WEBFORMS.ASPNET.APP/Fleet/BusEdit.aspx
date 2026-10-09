@@ -105,7 +105,7 @@
         <!-- Bus Edit Form -->
         <uc:ContentBox ID="cbBusForm" runat="server" HeaderText="<%$ Resources:Strings, Buses_Heading %>" HeaderColor="Blue" ContentColor="White">
             <ContentTemplate>
-                <asp:Panel ID="pnlBusForm" runat="server" DefaultButton="btnSave">
+                <asp:Panel ID="pnlBusForm" runat="server">
 
                     <!-- Bus ID (read-only, edit mode only) -->
                     <div class="form-row" id="rowBusId" runat="server" visible="false">
