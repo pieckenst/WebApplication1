@@ -284,6 +284,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     ShowMaintenanceDetail(maintenanceId);
                 }
             }
+            else if (string.Equals(Request.QueryString["mode"], "add", StringComparison.OrdinalIgnoreCase))
+            {
+                if (HasWritePermission("bus.write"))
+                    OpenNewMaintenanceForm();
+                else
+                    ShowWarning("You can view maintenance history, but you do not have permission to add records.");
+            }
         }
 
         private void ShowBusPicker()
@@ -659,6 +666,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             if (!RequireWritePermission("bus.write"))
                 return;
 
+            OpenNewMaintenanceForm();
+        }
+
+        private void OpenNewMaintenanceForm()
+        {
             EditingMaintenanceId = 0;
             SelectedMaintenanceId = 0;
             ClearForm();
