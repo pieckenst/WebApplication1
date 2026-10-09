@@ -396,6 +396,9 @@
   <data name="Common_Search" xml:space="preserve">
     <value>Поиск</value>
   </data>
+  <data name="Common_Required" xml:space="preserve">
+    <value>Это поле обязательно</value>
+  </data>
   <data name="Common_ExportExcel" xml:space="preserve">
     <value>Экспорт в Excel</value>
   </data>
@@ -563,6 +566,90 @@
   </data>
   <data name="Maintenance_DeleteConfirm" xml:space="preserve">
     <value>Удалить эту запись об обслуживании?</value>
+  </data>
+  <data name="BusEdit_AddHeading" xml:space="preserve">
+    <value>Добавить автобус</value>
+  </data>
+  <data name="BusEdit_EditHeading" xml:space="preserve">
+    <value>Редактировать автобус</value>
+  </data>
+  <data name="BusEdit_Saved" xml:space="preserve">
+    <value>Автобус успешно сохранён.</value>
+  </data>
+  <data name="BusEdit_Deleted" xml:space="preserve">
+    <value>Автобус успешно удалён.</value>
+  </data>
+  <data name="BusEdit_NotFound" xml:space="preserve">
+    <value>Автобус не найден.</value>
+  </data>
+  <data name="BusEdit_InvalidId" xml:space="preserve">
+    <value>Указан недопустимый ID автобуса.</value>
+  </data>
+  <data name="BusEdit_DuplicateFleetNumber" xml:space="preserve">
+    <value>Автобус с таким парковым номером уже существует.</value>
+  </data>
+  <data name="BusEdit_DuplicateRegistration" xml:space="preserve">
+    <value>Автобус с таким регистрационным номером уже существует.</value>
+  </data>
+  <data name="BusEdit_StatusChangeWarning" xml:space="preserve">
+    <value>Внимание: Невозможно перевести списанный автобус напрямую в исправные. Сначала переведите в резерв или на ремонт.</value>
+  </data>
+  <data name="BusEdit_DeleteOperationalError" xml:space="preserve">
+    <value>Невозможно удалить исправный автобус. Сначала измените статус на «Списан».</value>
+  </data>
+  <data name="BusEdit_MaintenanceHistory" xml:space="preserve">
+    <value>История обслуживания</value>
+  </data>
+  <data name="BusEdit_BusSummary" xml:space="preserve">
+    <value>Сводка по автобусу</value>
+  </data>
+  <data name="BusEdit_TotalMaintenanceCost" xml:space="preserve">
+    <value>Общая стоимость обслуживания:</value>
+  </data>
+  <data name="BusEdit_MaintenanceCount" xml:space="preserve">
+    <value>Записей:</value>
+  </data>
+  <data name="BusMaintenance_Heading" xml:space="preserve">
+    <value>Обслуживание автобуса</value>
+  </data>
+  <data name="BusMaintenance_AddHeading" xml:space="preserve">
+    <value>Добавить запись об обслуживании</value>
+  </data>
+  <data name="BusMaintenance_EditHeading" xml:space="preserve">
+    <value>Редактировать запись об обслуживании</value>
+  </data>
+  <data name="BusMaintenance_Saved" xml:space="preserve">
+    <value>Запись об обслуживании успешно сохранена.</value>
+  </data>
+  <data name="BusMaintenance_Deleted" xml:space="preserve">
+    <value>Запись об обслуживании успешно удалена.</value>
+  </data>
+  <data name="BusMaintenance_NotFound" xml:space="preserve">
+    <value>Запись об обслуживании не найдена.</value>
+  </data>
+  <data name="BusMaintenance_InvalidId" xml:space="preserve">
+    <value>Указан недопустимый ID записи об обслуживании.</value>
+  </data>
+  <data name="BusMaintenance_BusInfo" xml:space="preserve">
+    <value>Информация об автобусе</value>
+  </data>
+  <data name="BusMaintenance_PreviousRecords" xml:space="preserve">
+    <value>Предыдущие записи об обслуживании</value>
+  </data>
+  <data name="BusMaintenance_TotalRecords" xml:space="preserve">
+    <value>Всего записей:</value>
+  </data>
+  <data name="BusMaintenance_TotalCost" xml:space="preserve">
+    <value>Общая стоимость:</value>
+  </data>
+  <data name="BusMaintenance_LastService" xml:space="preserve">
+    <value>Последнее обслуживание:</value>
+  </data>
+  <data name="BusMaintenance_NextDue" xml:space="preserve">
+    <value>Следующее:</value>
+  </data>
+  <data name="BusMaintenance_Overdue" xml:space="preserve">
+    <value>ПРОСРОЧЕНО</value>
   </data>
   <data name="Route_Heading" xml:space="preserve">
     <value>Управление маршрутами</value>

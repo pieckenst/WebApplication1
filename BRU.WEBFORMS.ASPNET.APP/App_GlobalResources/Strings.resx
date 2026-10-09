@@ -396,6 +396,9 @@
   <data name="Common_Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Common_Required" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
   <data name="Common_ExportExcel" xml:space="preserve">
     <value>Export to Excel</value>
   </data>
@@ -563,6 +566,90 @@
   </data>
   <data name="Maintenance_DeleteConfirm" xml:space="preserve">
     <value>Are you sure you want to delete this maintenance record?</value>
+  </data>
+  <data name="BusEdit_AddHeading" xml:space="preserve">
+    <value>Add New Bus</value>
+  </data>
+  <data name="BusEdit_EditHeading" xml:space="preserve">
+    <value>Edit Bus</value>
+  </data>
+  <data name="BusEdit_Saved" xml:space="preserve">
+    <value>Bus saved successfully.</value>
+  </data>
+  <data name="BusEdit_Deleted" xml:space="preserve">
+    <value>Bus deleted successfully.</value>
+  </data>
+  <data name="BusEdit_NotFound" xml:space="preserve">
+    <value>Bus not found.</value>
+  </data>
+  <data name="BusEdit_InvalidId" xml:space="preserve">
+    <value>Invalid bus ID specified.</value>
+  </data>
+  <data name="BusEdit_DuplicateFleetNumber" xml:space="preserve">
+    <value>A bus with this fleet number already exists.</value>
+  </data>
+  <data name="BusEdit_DuplicateRegistration" xml:space="preserve">
+    <value>A bus with this registration number already exists.</value>
+  </data>
+  <data name="BusEdit_StatusChangeWarning" xml:space="preserve">
+    <value>Warning: Cannot change a retired bus directly to operational. Please set it to reserve or in-repair first.</value>
+  </data>
+  <data name="BusEdit_DeleteOperationalError" xml:space="preserve">
+    <value>Cannot delete an operational bus. Please change the status to retired first.</value>
+  </data>
+  <data name="BusEdit_MaintenanceHistory" xml:space="preserve">
+    <value>Maintenance History</value>
+  </data>
+  <data name="BusEdit_BusSummary" xml:space="preserve">
+    <value>Bus Summary</value>
+  </data>
+  <data name="BusEdit_TotalMaintenanceCost" xml:space="preserve">
+    <value>Total Maintenance Cost:</value>
+  </data>
+  <data name="BusEdit_MaintenanceCount" xml:space="preserve">
+    <value>Records:</value>
+  </data>
+  <data name="BusMaintenance_Heading" xml:space="preserve">
+    <value>Bus Maintenance</value>
+  </data>
+  <data name="BusMaintenance_AddHeading" xml:space="preserve">
+    <value>Add Maintenance Record</value>
+  </data>
+  <data name="BusMaintenance_EditHeading" xml:space="preserve">
+    <value>Edit Maintenance Record</value>
+  </data>
+  <data name="BusMaintenance_Saved" xml:space="preserve">
+    <value>Maintenance record saved successfully.</value>
+  </data>
+  <data name="BusMaintenance_Deleted" xml:space="preserve">
+    <value>Maintenance record deleted successfully.</value>
+  </data>
+  <data name="BusMaintenance_NotFound" xml:space="preserve">
+    <value>Maintenance record not found.</value>
+  </data>
+  <data name="BusMaintenance_InvalidId" xml:space="preserve">
+    <value>Invalid maintenance ID specified.</value>
+  </data>
+  <data name="BusMaintenance_BusInfo" xml:space="preserve">
+    <value>Bus Information</value>
+  </data>
+  <data name="BusMaintenance_PreviousRecords" xml:space="preserve">
+    <value>Previous Maintenance Records</value>
+  </data>
+  <data name="BusMaintenance_TotalRecords" xml:space="preserve">
+    <value>Total Records:</value>
+  </data>
+  <data name="BusMaintenance_TotalCost" xml:space="preserve">
+    <value>Total Cost:</value>
+  </data>
+  <data name="BusMaintenance_LastService" xml:space="preserve">
+    <value>Last Service:</value>
+  </data>
+  <data name="BusMaintenance_NextDue" xml:space="preserve">
+    <value>Next Due:</value>
+  </data>
+  <data name="BusMaintenance_Overdue" xml:space="preserve">
+    <value>OVERDUE</value>
   </data>
   <data name="Route_Heading" xml:space="preserve">
     <value>Route Management</value>
