@@ -611,6 +611,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
             cbEmployeeForm.Visible = true;
             cbEmployeeDetail.Visible = false;
             HideMessages();
+            LogInformation("Opened new employee form; formVisible=" + cbEmployeeForm.Visible);
+            ScrollToControl(btnSave, "scrollToEmployeeForm");
         }
 
         protected void btnRefresh_Click(object sender, EventArgs e)
@@ -703,6 +705,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
                         cbEmployeeDetail.Visible = true;
                         cbEmployeeForm.Visible = false;
                         HideMessages();
+                        LogInformation("Opened employee details for employeeId=" + employeeId + "; detailsVisible=" + cbEmployeeDetail.Visible);
+                        ScrollToControl(btnDetailClose, "scrollToEmployeeDetails");
                     }
                 }
             }
@@ -753,6 +757,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
                         cbEmployeeForm.Visible = true;
                         cbEmployeeDetail.Visible = false;
                         HideMessages();
+                        LogInformation("Opened employee editor for employeeId=" + employeeId + "; formVisible=" + cbEmployeeForm.Visible);
+                        ScrollToControl(btnSave, "scrollToEmployeeForm");
                     }
                 }
             }
@@ -937,6 +943,17 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
         #endregion
 
         #region UI Helpers
+
+        private void ScrollToControl(Control control, string scriptKey)
+        {
+            if (control == null)
+                return;
+
+            string targetId = HttpUtility.JavaScriptStringEncode(control.ClientID, true);
+            string script = "window.setTimeout(function(){var target=document.getElementById(" +
+                targetId + ");if(target){target.scrollIntoView({block:'center',behavior:'auto'});}},0);";
+            ScriptManager.RegisterStartupScript(this, GetType(), scriptKey, script, true);
+        }
 
         private void ShowError(string message)
         {
