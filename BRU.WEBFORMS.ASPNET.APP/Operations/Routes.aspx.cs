@@ -429,6 +429,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                     cbRouteStops.Visible = true;
                     cbRouteForm.Visible = false;
                     HideMessages();
+                    LogInformation("Opened route-stop details for routeId=" + routeId + "; detailsVisible=" + cbRouteStops.Visible);
+                    ScrollToControl(btnCloseStops, "scrollToRouteStops");
                 }
             }
             catch (Exception ex)
@@ -455,6 +457,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             cbRouteForm.Visible = true;
             cbRouteStops.Visible = false;
             HideMessages();
+            LogInformation("Opened new route form; formVisible=" + cbRouteForm.Visible);
+            ScrollToControl(btnSaveRoute, "scrollToRouteForm");
         }
 
         private void ShowEditForm(int routeId)
@@ -476,6 +480,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                         cbRouteForm.Visible = true;
                         cbRouteStops.Visible = false;
                         HideMessages();
+                        LogInformation("Opened route editor for routeId=" + routeId + "; formVisible=" + cbRouteForm.Visible);
+                        ScrollToControl(btnSaveRoute, "scrollToRouteForm");
                     }
                 }
             }
@@ -641,6 +647,17 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
         #endregion
 
         #region UI Helpers
+
+        private void ScrollToControl(Control control, string scriptKey)
+        {
+            if (control == null)
+                return;
+
+            string targetId = HttpUtility.JavaScriptStringEncode(control.ClientID, true);
+            string script = "window.setTimeout(function(){var target=document.getElementById(" +
+                targetId + ");if(target){target.scrollIntoView({block:'center',behavior:'auto'});}},0);";
+            ScriptManager.RegisterStartupScript(this, GetType(), scriptKey, script, true);
+        }
 
         private void ShowError(string message)
         {
