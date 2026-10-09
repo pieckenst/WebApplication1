@@ -96,7 +96,7 @@
 
         <!-- Action Bar -->
         <div class="action-bar">
-            <asp:Button ID="btnBack" runat="server" Text="<%$ Resources:Strings, Common_BackToTop %>" CssClass="action-button secondary" OnClick="btnBack_Click" CausesValidation="false" />
+            <asp:Button ID="btnBack" runat="server" Text="<%$ Resources:Strings, Nav_BusFleet %>" CssClass="action-button secondary" OnClick="btnBack_Click" CausesValidation="false" />
             <asp:Button ID="btnSave" runat="server" Text="<%$ Resources:Strings, Common_Save %>" CssClass="action-button" OnClick="btnSave_Click" ValidationGroup="BusEditForm" />
             <asp:Button ID="btnSaveAndNew" runat="server" Text="<%$ Resources:Strings, Common_Save %>" CssClass="action-button" OnClick="btnSaveAndNew_Click" ValidationGroup="BusEditForm" Visible="false" />
             <asp:Button ID="btnDelete" runat="server" Text="<%$ Resources:Strings, Common_Delete %>" CssClass="action-button danger" OnClick="btnDelete_Click" OnClientClick="return confirm('Are you sure you want to delete this bus? This action cannot be undone.');" Visible="false" CausesValidation="false" />

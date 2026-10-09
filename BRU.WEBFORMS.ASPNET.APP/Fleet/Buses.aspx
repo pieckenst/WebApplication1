@@ -488,7 +488,7 @@
                 ID="btnEdit"
                 runat="server"
                 Text="<%$ Resources:Strings, Common_Edit %>"
-                CommandName="Edit"
+                CommandName="EditBus"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button" />
 
@@ -504,7 +504,7 @@
                 ID="btnDelete"
                 runat="server"
                 Text="<%$ Resources:Strings, Common_Delete %>"
-                CommandName="Delete"
+                CommandName="DeleteBus"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button"
                 OnClientClick="return confirm('<%$ Resources:Strings, Buses_DeleteConfirm %>');" />

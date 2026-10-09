@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -114,19 +115,40 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         /// </summary>
         public int InsertMaintenance(Maintenance maintenance)
         {
+            if (maintenance == null)
+                throw new ArgumentNullException("maintenance");
+
+            // Persist the complete form. The legacy dbo.add_maintenance procedure
+            // accepts only six fields and silently discards the supplied work date,
+            // next-service date, mileage and roadworthiness values.
             SqlParameter[] parameters = new SqlParameter[]
             {
                 DatabaseHelper.CreateParameter("@bus_id", maintenance.BusId, SqlDbType.Int),
                 DatabaseHelper.CreateParameter("@employee_id", maintenance.EmployeeId ?? (object)DBNull.Value, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@maintenance_date", maintenance.MaintenanceDate, SqlDbType.Date),
+                DatabaseHelper.CreateParameter("@next_maintenance_date", maintenance.NextMaintenanceDate ?? (object)DBNull.Value, SqlDbType.Date),
                 DatabaseHelper.CreateParameter("@maintenance_type", maintenance.MaintenanceType, SqlDbType.NVarChar, 100),
                 DatabaseHelper.CreateParameter("@found_issue", maintenance.FoundIssue ?? (object)DBNull.Value, SqlDbType.NVarChar, 500),
                 DatabaseHelper.CreateParameter("@service_result", maintenance.ServiceResult ?? (object)DBNull.Value, SqlDbType.NVarChar, 500),
+                DatabaseHelper.CreateParameter("@mileage_km", maintenance.MileageKm ?? (object)DBNull.Value, SqlDbType.Int),
+                DatabaseHelper.CreateParameter("@roadworthiness", maintenance.Roadworthiness, SqlDbType.NVarChar, 30),
                 DatabaseHelper.CreateParameter("@maintenance_cost", maintenance.MaintenanceCost, SqlDbType.Decimal)
             };
-            
-            string sql = @"EXEC dbo.add_maintenance @bus_id, @employee_id, @maintenance_type, @found_issue, @service_result, @maintenance_cost";
+
+            string sql = @"
+                INSERT INTO dbo.maintenance
+                    (bus_id, employee_id, maintenance_date, next_maintenance_date,
+                     maintenance_type, found_issue, service_result, mileage_km,
+                     roadworthiness, maintenance_cost)
+                VALUES
+                    (@bus_id, @employee_id, @maintenance_date, @next_maintenance_date,
+                     @maintenance_type, @found_issue, @service_result, @mileage_km,
+                     @roadworthiness, @maintenance_cost);
+
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
             object result = _db.ExecuteScalar(sql, parameters);
-            return Convert.ToInt32(result);
+            return Convert.ToInt32(result, CultureInfo.InvariantCulture);
         }
 
         /// <summary>

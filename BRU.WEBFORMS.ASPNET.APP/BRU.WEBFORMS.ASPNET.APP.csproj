@@ -112,6 +112,9 @@
     <Content Include="Content\xpcss\PerfectDOSVGA437Win.woff" />
     <Content Include="Content\xpcss\PerfectDOSVGA437Win.woff2" />
     <Content Include="Fleet\Buses.aspx" />
+    <Content Include="Fleet\BusDetails.aspx" />
+    <Content Include="Fleet\BusEdit.aspx" />
+    <Content Include="Fleet\BusMaintenance.aspx" />
     <Content Include="Fleet\Maintenance.aspx" />
     <Content Include="Personnel\Employees.aspx" />
     <Content Include="Personnel\Departments.aspx" />
@@ -166,6 +169,18 @@
     </Compile>
     <Compile Include="Fleet\Buses.aspx.cs">
       <DependentUpon>Buses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Fleet\BusDetails.aspx.cs">
+      <DependentUpon>BusDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Fleet\BusEdit.aspx.cs">
+      <DependentUpon>BusEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Fleet\BusMaintenance.aspx.cs">
+      <DependentUpon>BusMaintenance.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Fleet\Maintenance.aspx.cs">

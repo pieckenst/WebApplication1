@@ -709,15 +709,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #region Event Handlers
 
-        protected void btnAddBus_Click(
-            object sender,
-            EventArgs e)
+        protected void btnAddBus_Click(object sender, EventArgs e)
         {
             try
             {
-                if (!RequireWritePermission("bus.write")) return;
-                Response.Redirect(
-                    "~/Fleet/BusEdit.aspx?mode=add");
+                if (!RequireWritePermission("bus.write"))
+                    return;
+
+                RedirectTo("~/Fleet/BusEdit.aspx?mode=add");
             }
             catch (Exception ex)
             {
@@ -874,55 +873,56 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        protected void gvBuses_RowCommand(
-            object sender,
-            GridViewCommandEventArgs e)
+        protected void gvBuses_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
-                if (e == null ||
-                    e.CommandArgument == null)
-                {
+                if (e == null || e.CommandArgument == null)
                     return;
+
+                // Do not use GridView's reserved "Edit" and "Delete" command names.
+                // Custom command names keep these buttons routed through this handler
+                // instead of starting GridView's built-in edit/delete pipeline.
+                switch (e.CommandName)
+                {
+                    case "View":
+                    case "EditBus":
+                    case "Maintenance":
+                    case "DeleteBus":
+                        break;
+                    default:
+                        // Ignore paging, sorting, and other GridView commands here.
+                        return;
                 }
 
-                int busId =
-                    Convert.ToInt32(e.CommandArgument);
+                int busId;
+                if (!int.TryParse(Convert.ToString(e.CommandArgument), out busId) || busId <= 0)
+                {
+                    LogWarning("GridView bus action received an invalid bus ID.");
+                    return;
+                }
 
                 switch (e.CommandName)
                 {
                     case "View":
+                        RedirectTo("~/Fleet/BusDetails.aspx?busId=" + busId);
+                        return;
 
-                        Response.Redirect(
-                            "~/Fleet/BusDetails.aspx?busId=" +
-                            busId);
-
-                        break;
-
-                    case "Edit":
-
-                        if (!RequireWritePermission("bus.write")) break;
-                        Response.Redirect(
-                            "~/Fleet/BusEdit.aspx?busId=" +
-                            busId +
-                            "&mode=edit");
-
-                        break;
+                    case "EditBus":
+                        if (!RequireWritePermission("bus.write"))
+                            return;
+                        RedirectTo("~/Fleet/BusEdit.aspx?busId=" + busId + "&mode=edit");
+                        return;
 
                     case "Maintenance":
+                        RedirectTo("~/Fleet/BusMaintenance.aspx?busId=" + busId);
+                        return;
 
-                        Response.Redirect(
-                            "~/Fleet/BusMaintenance.aspx?busId=" +
-                            busId);
-
-                        break;
-
-                    case "Delete":
-
-                        if (!RequireWritePermission("bus.write")) break;
+                    case "DeleteBus":
+                        if (!RequireWritePermission("bus.write"))
+                            return;
                         DeleteBus(busId);
-
-                        break;
+                        return;
                 }
             }
             catch (Exception ex)
@@ -1065,6 +1065,15 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 default:
                     return string.Empty;
             }
+        }
+
+        private void RedirectTo(string url)
+        {
+            // Response.Redirect(url) calls Response.End and raises ThreadAbortException.
+            // Use endResponse=false so action handlers don't misreport successful
+            // navigation as an unexpected application error.
+            Response.Redirect(ResolveUrl(url), false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         private void ShowSuccessMessage(
