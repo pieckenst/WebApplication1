@@ -9,6 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using BRU.WEBFORMS.ASPNET.APP.Controls;
 using BRU.WEBFORMS.ASPNET.APP.Models;
+using MaintenanceRecord = BRU.WEBFORMS.ASPNET.APP.Models.Maintenance;
 using BRU.WEBFORMS.ASPNET.APP.Services;
 
 namespace BRU.WEBFORMS.ASPNET.APP.Fleet
@@ -430,14 +431,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void LoadBusSummary(Bus bus)
         {
-            List<Maintenance> history;
+            List<MaintenanceRecord> history;
             using (MaintenanceService service = new MaintenanceService())
             {
                 history = service.GetMaintenanceByBus(bus.BusId);
             }
 
             if (history == null)
-                history = new List<Maintenance>();
+                history = new List<MaintenanceRecord>();
 
             litSummaryStatus.Text = HttpUtility.HtmlEncode(bus.Status ?? string.Empty);
             litSummaryMileage.Text = bus.MileageKm.ToString("N0", Localization.Culture);
@@ -468,13 +469,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             if (!IsEditMode || gvMaintenanceHistory == null)
                 return;
 
-            List<Maintenance> rows;
+            List<MaintenanceRecord> rows;
             using (MaintenanceService service = new MaintenanceService())
             {
                 rows = service.GetMaintenanceByBus(BusId);
             }
             if (rows == null)
-                rows = new List<Maintenance>();
+                rows = new List<MaintenanceRecord>();
 
             bool ascending = HistorySortDirection == "ASC";
             switch (HistorySortExpression)
@@ -539,7 +540,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             if (e.Row.RowType != DataControlRowType.DataRow)
                 return;
 
-            Maintenance record = e.Row.DataItem as Maintenance;
+            MaintenanceRecord record = e.Row.DataItem as MaintenanceRecord;
             if (record == null)
                 return;
 

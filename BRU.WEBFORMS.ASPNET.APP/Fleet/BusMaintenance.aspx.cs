@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using BRU.WEBFORMS.ASPNET.APP.Controls;
 using BRU.WEBFORMS.ASPNET.APP.Models;
+using MaintenanceRecord = BRU.WEBFORMS.ASPNET.APP.Models.Maintenance;
 using BRU.WEBFORMS.ASPNET.APP.Services;
 
 namespace BRU.WEBFORMS.ASPNET.APP.Fleet
@@ -338,14 +339,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #region Filtered history and statistics
 
-        private List<Maintenance> GetFilteredRows()
+        private List<MaintenanceRecord> GetFilteredRows()
         {
-            List<Maintenance> rows;
+            List<MaintenanceRecord> rows;
             using (MaintenanceService service = new MaintenanceService())
                 rows = service.GetMaintenanceByBus(BusId);
 
             if (rows == null)
-                rows = new List<Maintenance>();
+                rows = new List<MaintenanceRecord>();
 
             string search = (txtSearch.Text ?? string.Empty).Trim();
             if (search.Length > 0)
@@ -398,7 +399,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             if (BusId <= 0 || gvMaintenance == null)
                 return;
 
-            List<Maintenance> rows = GetFilteredRows();
+            List<MaintenanceRecord> rows = GetFilteredRows();
             int totalPages = Math.Max(1, (int)Math.Ceiling(rows.Count / (double)gvMaintenance.PageSize));
             if (gvMaintenance.PageIndex >= totalPages)
                 gvMaintenance.PageIndex = totalPages - 1;
@@ -412,19 +413,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void LoadStatistics()
         {
-            List<Maintenance> allRows;
+            List<MaintenanceRecord> allRows;
             using (MaintenanceService service = new MaintenanceService())
                 allRows = service.GetMaintenanceByBus(BusId);
             if (allRows == null)
-                allRows = new List<Maintenance>();
+                allRows = new List<MaintenanceRecord>();
 
             litTotalRecords.Text = allRows.Count.ToString(CultureInfo.InvariantCulture);
             litTotalCost.Text = allRows.Sum(x => x.MaintenanceCost).ToString("N2", Localization.Culture);
 
-            Maintenance latest = allRows.OrderByDescending(x => x.MaintenanceDate).FirstOrDefault();
+            MaintenanceRecord latest = allRows.OrderByDescending(x => x.MaintenanceDate).FirstOrDefault();
             litLastService.Text = latest == null ? "—" : latest.MaintenanceDate.ToString("dd.MM.yyyy", Localization.Culture);
 
-            Maintenance due = allRows.Where(x => x.NextMaintenanceDate.HasValue)
+            MaintenanceRecord due = allRows.Where(x => x.NextMaintenanceDate.HasValue)
                 .OrderBy(x => x.NextMaintenanceDate.Value).FirstOrDefault();
             if (due == null)
             {
@@ -496,7 +497,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             if (e.Row.RowType != DataControlRowType.DataRow)
                 return;
 
-            Maintenance record = e.Row.DataItem as Maintenance;
+            MaintenanceRecord record = e.Row.DataItem as MaintenanceRecord;
             if (record == null)
                 return;
 
@@ -564,11 +565,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
-        private Maintenance FindRecordForCurrentBus(int maintenanceId)
+        private MaintenanceRecord FindRecordForCurrentBus(int maintenanceId)
         {
             using (MaintenanceService service = new MaintenanceService())
             {
-                List<Maintenance> rows = service.GetMaintenanceByBus(BusId);
+                List<MaintenanceRecord> rows = service.GetMaintenanceByBus(BusId);
                 return rows == null ? null : rows.FirstOrDefault(x => x.MaintenanceId == maintenanceId);
             }
         }
@@ -577,7 +578,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
-                Maintenance record = FindRecordForCurrentBus(maintenanceId);
+                MaintenanceRecord record = FindRecordForCurrentBus(maintenanceId);
                 if (record == null)
                 {
                     ShowError(Localization.Get("BusMaintenance_NotFound"));
@@ -621,7 +622,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
-                Maintenance record = FindRecordForCurrentBus(maintenanceId);
+                MaintenanceRecord record = FindRecordForCurrentBus(maintenanceId);
                 if (record == null)
                 {
                     ShowError(Localization.Get("BusMaintenance_NotFound"));
@@ -701,7 +702,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 using (BusService busService = new BusService())
                     bus = busService.GetBusById(BusId);
 
-                Maintenance record = new Maintenance
+                MaintenanceRecord record = new MaintenanceRecord
                 {
                     MaintenanceId = EditingMaintenanceId,
                     BusId = BusId,
@@ -821,7 +822,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
             try
             {
-                Maintenance existing = FindRecordForCurrentBus(maintenanceId);
+                MaintenanceRecord existing = FindRecordForCurrentBus(maintenanceId);
                 if (existing == null)
                 {
                     ShowError(Localization.Get("BusMaintenance_NotFound"));

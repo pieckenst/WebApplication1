@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using BRU.WEBFORMS.ASPNET.APP.Controls;
 using BRU.WEBFORMS.ASPNET.APP.Models;
+using MaintenanceRecord = BRU.WEBFORMS.ASPNET.APP.Models.Maintenance;
 using BRU.WEBFORMS.ASPNET.APP.Services;
 
 namespace BRU.WEBFORMS.ASPNET.APP.Fleet
@@ -168,19 +169,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void LoadMaintenanceStatistics()
         {
-            List<Maintenance> rows;
+            List<MaintenanceRecord> rows;
             using (MaintenanceService service = new MaintenanceService())
                 rows = service.GetMaintenanceByBus(BusId);
             if (rows == null)
-                rows = new List<Maintenance>();
+                rows = new List<MaintenanceRecord>();
 
             litMaintenanceCount.Text = rows.Count.ToString(CultureInfo.InvariantCulture);
             litTotalMaintenanceCost.Text = rows.Sum(x => x.MaintenanceCost).ToString("N2", Localization.Culture);
 
-            Maintenance last = rows.OrderByDescending(x => x.MaintenanceDate).FirstOrDefault();
+            MaintenanceRecord last = rows.OrderByDescending(x => x.MaintenanceDate).FirstOrDefault();
             litLastService.Text = last == null ? "—" : last.MaintenanceDate.ToString("dd.MM.yyyy", Localization.Culture);
 
-            Maintenance due = rows.Where(x => x.NextMaintenanceDate.HasValue).OrderBy(x => x.NextMaintenanceDate.Value).FirstOrDefault();
+            MaintenanceRecord due = rows.Where(x => x.NextMaintenanceDate.HasValue).OrderBy(x => x.NextMaintenanceDate.Value).FirstOrDefault();
             if (due == null)
                 litNextDue.Text = "—";
             else
@@ -194,11 +195,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void BindMaintenanceHistory()
         {
-            List<Maintenance> rows;
+            List<MaintenanceRecord> rows;
             using (MaintenanceService service = new MaintenanceService())
                 rows = service.GetMaintenanceByBus(BusId);
             if (rows == null)
-                rows = new List<Maintenance>();
+                rows = new List<MaintenanceRecord>();
 
             bool ascending = CurrentSortDirection == "ASC";
             switch (CurrentSortExpression)
@@ -259,7 +260,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             if (e.Row.RowType != DataControlRowType.DataRow)
                 return;
 
-            Maintenance record = e.Row.DataItem as Maintenance;
+            MaintenanceRecord record = e.Row.DataItem as MaintenanceRecord;
             if (record == null)
                 return;
 
