@@ -1,5 +1,23 @@
 /*
-    AUTOPARKDB - курсовой проект по дисциплине «Системы управления базами данных».
+    IMPORTANT — HISTORICAL SCRIPT; NOT A SAFE REDEPLOYMENT SCRIPT
+
+    This copy was recovered from the developer workstation and is not guaranteed
+    to match the later, corrected AutoparkDB instance. The active SQL Server
+    database is not stored in Git; do not treat this file as the authoritative
+    definition of the current database.
+
+    DESTRUCTIVE BEHAVIOUR: if AutoparkDB already exists, this script switches
+    it to SINGLE_USER WITH ROLLBACK IMMEDIATE and then DROPs the database.
+    Run it only on an explicitly disposable instance after reviewing the whole
+    script and confirming that losing the existing database is acceptable.
+
+    This file is retained for coursework/repository history. A clean, current
+    database deployment has not been verified by the repository CI.
+*/
+
+/*
+    Existing file header:
+AUTOPARKDB - курсовой проект по дисциплине «Системы управления базами данных».
 
     Модель ориентирована на тему «Разработка программы для работы автопарка».
     Учетная запись приложения и сотрудник предприятия разделены.
