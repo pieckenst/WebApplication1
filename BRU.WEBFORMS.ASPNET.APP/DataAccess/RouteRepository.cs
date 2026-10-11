@@ -561,8 +561,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             routeStop.StopName = reader.GetString(reader.GetOrdinal("stop_name"));
             routeStop.StopLocation = reader.IsDBNull(reader.GetOrdinal("location")) ? null : reader.GetString(reader.GetOrdinal("location"));
             routeStop.DistanceKm = reader.IsDBNull(reader.GetOrdinal("distance_km")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("distance_km"));
-            routeStop.ArrivalOffsetMin = reader.IsDBNull(reader.GetOrdinal("arrival_offset_min")) ? (short?)null : reader.GetInt16(reader.GetOrdinal("arrival_offset_min"));
-            
+            int arrivalOffsetOrdinal = reader.GetOrdinal("arrival_offset_min");
+
+            routeStop.ArrivalOffsetMin = reader.IsDBNull(arrivalOffsetOrdinal)
+                ? (short?)null
+                : Convert.ToInt16(reader.GetInt32(arrivalOffsetOrdinal)); 
+
             return routeStop;
         }
 
