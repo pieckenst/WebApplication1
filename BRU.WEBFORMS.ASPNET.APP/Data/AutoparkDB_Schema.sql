@@ -5,20 +5,20 @@
     Учётная запись приложения и сотрудник предприятия разделены.
     SQL Server / T-SQL.
 
-    IMPORTANT — HISTORICAL SCRIPT; NOT A SAFE REDEPLOYMENT SCRIPT
+    ВАЖНО: ИСТОРИЧЕСКАЯ КОПИЯ, НЕ КАНОНИЧЕСКИЙ СКРИПТ РАЗВЁРТЫВАНИЯ
 
-    This copy was recovered from the developer workstation and is not guaranteed
-    to match the later, corrected AutoparkDB instance. The active SQL Server
-    database is not stored in Git; do not treat this file as the authoritative
-    definition of the current database.
+    Этот файл восстановлен из локальных файлов разработчика и не гарантирует
+    соответствия более позднему, исправленному экземпляру AutoparkDB. Текущая
+    рабочая база SQL Server в Git не хранится; не считайте этот файл её
+    авторитетным описанием.
 
-    DESTRUCTIVE BEHAVIOUR: if AutoparkDB already exists, this script switches
-    it to SINGLE_USER WITH ROLLBACK IMMEDIATE and then DROPs the database.
-    Run it only on an explicitly disposable instance after reviewing the whole
-    script and confirming that losing the existing database is acceptable.
+    РАЗРУШАЮЩЕЕ ДЕЙСТВИЕ: если AutoparkDB уже существует, скрипт переводит её
+    в SINGLE_USER WITH ROLLBACK IMMEDIATE, а затем удаляет через DROP DATABASE.
+    Запускайте его только на заведомо одноразовом экземпляре и лишь после
+    проверки скрипта и подтверждения, что потеря существующей базы допустима.
 
-    This file is retained for coursework/repository history. A clean, current
-    database deployment has not been verified by the repository CI.
+    Файл сохранён как исторический артефакт курсового проекта. CI репозитория
+    не проверяет чистое развёртывание актуальной базы данных.
 */
 
 USE master;
