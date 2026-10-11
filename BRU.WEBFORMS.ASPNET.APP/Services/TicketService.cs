@@ -394,9 +394,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 throw new ServiceException("Valid sale ID is required");
             }
 
-            if (payment.Amount < 0)
+            if (payment.Amount <= 0)
             {
-                throw new ServiceException("Payment amount cannot be negative");
+                throw new ServiceException("Payment amount must be greater than 0");
             }
 
             if (string.IsNullOrEmpty(payment.PaymentMethod))
