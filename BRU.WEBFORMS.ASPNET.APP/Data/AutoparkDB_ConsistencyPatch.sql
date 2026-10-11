@@ -595,8 +595,8 @@ BEGIN
         @ticket_id,
         @cashier_id,
         @sale_price,
-        N'Создана',
-        N'Ожидает',
+        CASE WHEN @sale_price * @ticket_quantity = 0 THEN N'Завершена' ELSE N'Создана' END,
+        CASE WHEN @sale_price * @ticket_quantity = 0 THEN N'Оплачена' ELSE N'Ожидает' END,
         @sale_channel,
         @ticket_quantity
     );
@@ -791,5 +791,123 @@ BEGIN
     INNER JOIN @affectedBusIds AS affected ON affected.bus_id = b.bus_id
     LEFT JOIN maintenance_mileage AS mm ON mm.bus_id = b.bus_id
     LEFT JOIN latest_maintenance AS lm ON lm.bus_id = b.bus_id;
+END;
+GO
+
+
+/* Complete a sale when its successful payments cover the full amount.
+   Re-evaluate both fields after payment INSERT, UPDATE, or DELETE; partial
+   payments leave the sale in Создана/Ожидает. Refund/cancellation states are
+   terminal and are not overwritten by payment recalculation. */
+CREATE OR ALTER TRIGGER dbo.trg_payment_insert_sync_sale_status
+ON dbo.payment
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE s
+       SET payment_status =
+               CASE
+                   WHEN s.sale_status = N'Возврат' THEN N'Возврат'
+                   WHEN COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                       THEN N'Оплачена'
+                   ELSE N'Ожидает'
+               END,
+           sale_status =
+               CASE
+                   WHEN s.sale_status IN (N'Отменена', N'Возврат') THEN s.sale_status
+                   WHEN COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                       THEN N'Завершена'
+                   WHEN s.sale_status = N'Завершена' THEN N'Создана'
+                   ELSE s.sale_status
+               END
+    FROM dbo.sale AS s
+    INNER JOIN (SELECT DISTINCT sale_id FROM inserted) AS affected
+        ON affected.sale_id = s.sale_id
+    OUTER APPLY
+    (
+        SELECT SUM(amount) AS paid_total
+        FROM dbo.payment AS p
+        WHERE p.sale_id = s.sale_id
+          AND p.payment_status = N'Успешно'
+    ) AS p;
+END;
+GO
+
+CREATE OR ALTER TRIGGER dbo.trg_payment_update_sync_sale_status
+ON dbo.payment
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE s
+       SET payment_status =
+               CASE
+                   WHEN s.sale_status = N'Возврат' THEN N'Возврат'
+                   WHEN COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                       THEN N'Оплачена'
+                   ELSE N'Ожидает'
+               END,
+           sale_status =
+               CASE
+                   WHEN s.sale_status IN (N'Отменена', N'Возврат') THEN s.sale_status
+                   WHEN COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                       THEN N'Завершена'
+                   WHEN s.sale_status = N'Завершена' THEN N'Создана'
+                   ELSE s.sale_status
+               END
+    FROM dbo.sale AS s
+    INNER JOIN
+    (
+        SELECT sale_id FROM inserted
+        UNION
+        SELECT sale_id FROM deleted
+    ) AS affected
+        ON affected.sale_id = s.sale_id
+    OUTER APPLY
+    (
+        SELECT SUM(amount) AS paid_total
+        FROM dbo.payment AS p
+        WHERE p.sale_id = s.sale_id
+          AND p.payment_status = N'Успешно'
+    ) AS p;
+END;
+GO
+
+CREATE OR ALTER TRIGGER dbo.trg_payment_delete_sync_sale_status
+ON dbo.payment
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE s
+       SET payment_status =
+               CASE
+                   WHEN s.sale_status = N'Возврат' THEN N'Возврат'
+                   WHEN COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                       THEN N'Оплачена'
+                   ELSE N'Ожидает'
+               END,
+           sale_status =
+               CASE
+                   WHEN s.sale_status IN (N'Отменена', N'Возврат') THEN s.sale_status
+                   WHEN COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                       THEN N'Завершена'
+                   WHEN s.sale_status = N'Завершена' THEN N'Создана'
+                   ELSE s.sale_status
+               END
+    FROM dbo.sale AS s
+    INNER JOIN (SELECT DISTINCT sale_id FROM deleted) AS affected
+        ON affected.sale_id = s.sale_id
+    OUTER APPLY
+    (
+        SELECT SUM(amount) AS paid_total
+        FROM dbo.payment AS p
+        WHERE p.sale_id = s.sale_id
+          AND p.payment_status = N'Успешно'
+    ) AS p;
 END;
 GO
