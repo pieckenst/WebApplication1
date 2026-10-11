@@ -1,0 +1,34 @@
+# Visual Studio workspace and per-user settings
+.vs/
+**/.vs/
+*.suo
+*.user
+*.csproj.user
+*.sln.docstates
+
+# Build outputs
+**/bin/
+**/obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+TestResults/
+
+# NuGet restore cache (packages are restored by the CI workflow)
+packages/
+**/packages/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.vsidx
+*.db-shm
+*.db-wal
+
+# Local-only configuration / secret overlays
+*.local.config
+*.secrets.json
