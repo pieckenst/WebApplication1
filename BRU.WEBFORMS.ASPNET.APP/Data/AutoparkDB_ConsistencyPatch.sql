@@ -12,9 +12,11 @@
          historical reset script without reconciling the schemas.
       3. Review and run on the intended database.
 
-    This patch changes database object definitions, not existing business
-    rows. It does not reconstruct ticket.available_count values already
-    affected by past cancellations; review those separately if necessary.
+    The patch does not delete or rewrite transactional history. It does
+    reconcile derived sale/payment status, trip-seat availability, and bus
+    status/mileage from the existing records. It does not reconstruct
+    ticket.available_count values already affected by past cancellations:
+    the original stock baseline cannot be inferred reliably from current rows.
 
     Fixes:
       - Remove the duplicate INSERT payment trigger which marks partial
@@ -910,4 +912,129 @@ BEGIN
           AND p.payment_status = N'Успешно'
     ) AS p;
 END;
+GO
+
+
+/* Idempotent reconciliation of derived values already stored before this
+   patch was installed. This does not rewrite payment or maintenance history. */
+;WITH successful_payments AS
+(
+    SELECT
+        p.sale_id,
+        SUM(p.amount) AS paid_total
+    FROM dbo.payment AS p
+    WHERE p.payment_status = N'Успешно'
+    GROUP BY p.sale_id
+)
+UPDATE s
+   SET payment_status =
+           CASE
+               WHEN s.sale_status = N'Возврат' THEN N'Возврат'
+               WHEN s.sale_status = N'Отменена' THEN s.payment_status
+               WHEN s.sale_price * s.ticket_quantity = 0
+                    OR COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                   THEN N'Оплачена'
+               ELSE N'Ожидает'
+           END,
+       sale_status =
+           CASE
+               WHEN s.sale_status IN (N'Отменена', N'Возврат') THEN s.sale_status
+               WHEN s.sale_price * s.ticket_quantity = 0
+                    OR COALESCE(p.paid_total, 0) >= s.sale_price * s.ticket_quantity
+                   THEN N'Завершена'
+               WHEN s.sale_status = N'Завершена' THEN N'Создана'
+               ELSE s.sale_status
+           END
+FROM dbo.sale AS s
+LEFT JOIN successful_payments AS p ON p.sale_id = s.sale_id;
+GO
+
+/* Recalculate cached free seats from the current sale rows. */
+UPDATE rs
+   SET available_seat_num = CAST
+   (
+       CASE
+           WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+           THEN b.capacity - COALESCE(sold.seats_sold, 0)
+           ELSE 0
+       END
+       AS smallint
+   )
+FROM dbo.route_schedule AS rs
+INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+OUTER APPLY
+(
+    SELECT SUM(s.ticket_quantity) AS seats_sold
+    FROM dbo.sale AS s
+    WHERE s.schedule_id = rs.schedule_id
+      AND s.sale_status NOT IN (N'Отменена', N'Возврат')
+) AS sold;
+GO
+
+/* Synchronize bus mileage/status once using the entire current maintenance
+   history, not just rows inserted after this patch. Keep odometer mileage
+   monotonic, and do not revive buses already marked as scrapped. */
+;WITH maintenance_mileage AS
+(
+    SELECT bus_id, MAX(mileage_km) AS max_mileage
+    FROM dbo.maintenance
+    GROUP BY bus_id
+),
+ranked_maintenance AS
+(
+    SELECT
+        bus_id,
+        roadworthiness,
+        ROW_NUMBER() OVER
+        (
+            PARTITION BY bus_id
+            ORDER BY maintenance_date DESC, maintenance_id DESC
+        ) AS row_num
+    FROM dbo.maintenance
+),
+latest_maintenance AS
+(
+    SELECT bus_id, roadworthiness
+    FROM ranked_maintenance
+    WHERE row_num = 1
+)
+UPDATE b
+   SET mileage_km =
+           CASE
+               WHEN mm.max_mileage > b.mileage_km THEN mm.max_mileage
+               ELSE b.mileage_km
+           END,
+       status =
+           CASE
+               WHEN b.status = N'Списан' THEN b.status
+               WHEN lm.roadworthiness IN (N'Неисправен', N'Требует внимания')
+                   THEN N'На ремонте'
+               WHEN lm.roadworthiness = N'Исправен' AND b.status = N'На ремонте'
+                   THEN N'Исправен'
+               ELSE b.status
+           END
+FROM dbo.bus AS b
+LEFT JOIN maintenance_mileage AS mm ON mm.bus_id = b.bus_id
+LEFT JOIN latest_maintenance AS lm ON lm.bus_id = b.bus_id
+WHERE
+    b.mileage_km <> CASE
+                        WHEN mm.max_mileage > b.mileage_km THEN mm.max_mileage
+                        ELSE b.mileage_km
+                    END
+    OR b.status <> CASE
+                       WHEN b.status = N'Списан' THEN b.status
+                       WHEN lm.roadworthiness IN (N'Неисправен', N'Требует внимания')
+                           THEN N'На ремонте'
+                       WHEN lm.roadworthiness = N'Исправен' AND b.status = N'На ремонте'
+                           THEN N'Исправен'
+                       ELSE b.status
+                   END;
+GO
+
+/* Ensure high-mileage operational buses that predate the trigger correction
+   are brought to the same reserve state as future updates. */
+UPDATE dbo.bus
+   SET status = N'Резерв'
+WHERE status = N'Исправен'
+  AND mileage_km >= 250000;
 GO
