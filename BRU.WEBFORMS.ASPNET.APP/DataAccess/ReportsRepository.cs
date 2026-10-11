@@ -30,7 +30,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             string sql = @"
                 SELECT COUNT_BIG(*) AS sale_count,
                        COALESCE(SUM(CASE WHEN s.sale_status NOT IN (N'Возврат', N'Отменена') THEN s.ticket_quantity ELSE 0 END), 0) AS ticket_count,
-                       COALESCE(SUM(s.sale_price * s.ticket_quantity), 0) AS gross_amount,
+                       COALESCE(SUM(CASE WHEN s.sale_status <> N'Отменена' THEN s.sale_price * s.ticket_quantity ELSE 0 END), 0) AS gross_amount,
                        COALESCE(SUM(CASE WHEN s.sale_status = N'Возврат' THEN s.sale_price * s.ticket_quantity ELSE 0 END), 0) AS refunded_amount,
                        COALESCE(SUM(CASE WHEN s.sale_status NOT IN (N'Возврат', N'Отменена') THEN s.sale_price * s.ticket_quantity ELSE 0 END), 0) AS net_amount
                 " + filter + @";
