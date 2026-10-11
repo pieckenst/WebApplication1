@@ -84,6 +84,33 @@ BEGIN
     FROM dbo.ticket AS t
     INNER JOIN demand AS d ON d.ticket_id = t.ticket_id
     WHERE d.qty > 0;
+
+    ;WITH affected_schedules AS
+    (
+        SELECT DISTINCT schedule_id
+        FROM inserted
+        WHERE schedule_id IS NOT NULL
+    )
+    UPDATE rs
+       SET available_seat_num = CAST
+       (
+           CASE
+               WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+               THEN b.capacity - COALESCE(sold.seats_sold, 0)
+               ELSE 0
+           END
+           AS smallint
+       )
+    FROM dbo.route_schedule AS rs
+    INNER JOIN affected_schedules AS a ON a.schedule_id = rs.schedule_id
+    INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+    OUTER APPLY
+    (
+        SELECT SUM(s.ticket_quantity) AS seats_sold
+        FROM dbo.sale AS s
+        WHERE s.schedule_id = rs.schedule_id
+          AND s.sale_status NOT IN (N'Отменена', N'Возврат')
+    ) AS sold;
 END;
 GO
 
@@ -170,6 +197,33 @@ BEGIN
     FROM dbo.ticket AS t
     INNER JOIN net AS n ON n.ticket_id = t.ticket_id
     WHERE n.qty_delta <> 0;
+
+    ;WITH affected_schedules AS
+    (
+        SELECT schedule_id FROM inserted WHERE schedule_id IS NOT NULL
+        UNION
+        SELECT schedule_id FROM deleted WHERE schedule_id IS NOT NULL
+    )
+    UPDATE rs
+       SET available_seat_num = CAST
+       (
+           CASE
+               WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+               THEN b.capacity - COALESCE(sold.seats_sold, 0)
+               ELSE 0
+           END
+           AS smallint
+       )
+    FROM dbo.route_schedule AS rs
+    INNER JOIN affected_schedules AS a ON a.schedule_id = rs.schedule_id
+    INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+    OUTER APPLY
+    (
+        SELECT SUM(s.ticket_quantity) AS seats_sold
+        FROM dbo.sale AS s
+        WHERE s.schedule_id = rs.schedule_id
+          AND s.sale_status NOT IN (N'Отменена', N'Возврат')
+    ) AS sold;
 END;
 GO
 
@@ -198,6 +252,33 @@ BEGIN
     FROM dbo.ticket AS t
     INNER JOIN returned AS r ON r.ticket_id = t.ticket_id
     WHERE r.qty > 0;
+
+    ;WITH affected_schedules AS
+    (
+        SELECT DISTINCT schedule_id
+        FROM deleted
+        WHERE schedule_id IS NOT NULL
+    )
+    UPDATE rs
+       SET available_seat_num = CAST
+       (
+           CASE
+               WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+               THEN b.capacity - COALESCE(sold.seats_sold, 0)
+               ELSE 0
+           END
+           AS smallint
+       )
+    FROM dbo.route_schedule AS rs
+    INNER JOIN affected_schedules AS a ON a.schedule_id = rs.schedule_id
+    INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+    OUTER APPLY
+    (
+        SELECT SUM(s.ticket_quantity) AS seats_sold
+        FROM dbo.sale AS s
+        WHERE s.schedule_id = rs.schedule_id
+          AND s.sale_status NOT IN (N'Отменена', N'Возврат')
+    ) AS sold;
 END;
 GO
 
