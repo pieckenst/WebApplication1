@@ -501,3 +501,295 @@ BEGIN
     GROUP BY r.route_num, r.route_name;
 END;
 GO
+
+
+/* Keep the cached seat count consistent regardless of whether a sale is
+   created through the Web Forms repository or by executing add_sale directly.
+   The application also checks capacity inside its transaction; these checks
+   make the stored procedure a safe database entry point as well. */
+CREATE OR ALTER PROCEDURE dbo.add_sale
+    @schedule_id int = NULL,
+    @ticket_id int,
+    @cashier_id int = NULL,
+    @sale_price decimal(10,2),
+    @sale_channel nvarchar(30),
+    @ticket_quantity int = 1,
+    @sale_id bigint OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    IF @ticket_quantity IS NULL OR @ticket_quantity <= 0
+        THROW 51120, N'Количество билетов должно быть больше нуля.', 1;
+
+    IF @sale_price IS NULL OR @sale_price < 0
+        THROW 51121, N'Цена продажи не может быть отрицательной.', 1;
+
+    IF @sale_channel IS NULL OR LTRIM(RTRIM(@sale_channel)) = N''
+        THROW 51129, N'Не указан канал продажи.', 1;
+
+    BEGIN TRANSACTION;
+
+    DECLARE @schedule_status nvarchar(30),
+            @bus_capacity int,
+            @seats_sold int,
+            @available_count int,
+            @is_active bit;
+
+    /* Lock the schedule before the ticket row. Web Forms already uses this
+       lock order when selling for a scheduled trip. */
+    IF @schedule_id IS NOT NULL
+    BEGIN
+        SELECT
+            @schedule_status = rs.schedule_status,
+            @bus_capacity = b.capacity
+        FROM dbo.route_schedule AS rs WITH (UPDLOCK, HOLDLOCK)
+        INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+        WHERE rs.schedule_id = @schedule_id;
+
+        IF @schedule_status IS NULL
+            THROW 51125, N'Указанное расписание не существует.', 1;
+
+        IF @schedule_status NOT IN (N'Запланирован', N'В пути')
+            THROW 51130, N'Нельзя продавать билеты на отменённый или завершённый рейс.', 1;
+
+        SELECT @seats_sold = COALESCE(SUM(s.ticket_quantity), 0)
+        FROM dbo.sale AS s
+        WHERE s.schedule_id = @schedule_id
+          AND s.sale_status NOT IN (N'Отменена', N'Возврат');
+
+        IF @seats_sold + @ticket_quantity > @bus_capacity
+            THROW 51131, N'Для рейса недостаточно свободных мест.', 1;
+    END;
+
+    SELECT
+        @available_count = available_count,
+        @is_active = is_active
+    FROM dbo.ticket WITH (UPDLOCK, HOLDLOCK)
+    WHERE ticket_id = @ticket_id;
+
+    IF @is_active IS NULL
+        THROW 51122, N'Указанный билет не существует.', 1;
+
+    IF @is_active = 0
+        THROW 51123, N'Нельзя продавать неактивный билет.', 1;
+
+    IF @available_count < @ticket_quantity
+        THROW 51124, N'Недостаточно билетов на остатке.', 1;
+
+    INSERT INTO dbo.sale
+    (
+        schedule_id,
+        ticket_id,
+        cashier_id,
+        sale_price,
+        sale_status,
+        payment_status,
+        sale_channel,
+        ticket_quantity
+    )
+    VALUES
+    (
+        @schedule_id,
+        @ticket_id,
+        @cashier_id,
+        @sale_price,
+        N'Создана',
+        N'Ожидает',
+        @sale_channel,
+        @ticket_quantity
+    );
+
+    SET @sale_id = CAST(SCOPE_IDENTITY() AS bigint);
+
+    IF @schedule_id IS NOT NULL
+    BEGIN
+        UPDATE rs
+           SET available_seat_num = CAST
+           (
+               CASE
+                   WHEN b.capacity - COALESCE(sold.seats_sold, 0) > 0
+                   THEN b.capacity - COALESCE(sold.seats_sold, 0)
+                   ELSE 0
+               END
+               AS smallint
+           )
+        FROM dbo.route_schedule AS rs
+        INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+        OUTER APPLY
+        (
+            SELECT SUM(s.ticket_quantity) AS seats_sold
+            FROM dbo.sale AS s
+            WHERE s.schedule_id = rs.schedule_id
+              AND s.sale_status NOT IN (N'Отменена', N'Возврат')
+        ) AS sold
+        WHERE rs.schedule_id = @schedule_id;
+    END;
+
+    COMMIT TRANSACTION;
+
+    SELECT @sale_id AS sale_id;
+END;
+GO
+
+/* Never accept a new payment for a cancelled or refunded sale. The sale row
+   remains locked for the entire check/insert transaction to serialize payment
+   attempts against the same sale. */
+CREATE OR ALTER PROCEDURE dbo.add_payment
+    @sale_id bigint,
+    @amount decimal(10,2),
+    @payment_method nvarchar(40),
+    @transaction_id varchar(80) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    IF @amount IS NULL OR @amount <= 0
+        THROW 51126, N'Сумма платежа должна быть больше нуля.', 1;
+
+    IF @payment_method IS NULL OR LTRIM(RTRIM(@payment_method)) = N''
+        THROW 51132, N'Не указан способ оплаты.', 1;
+
+    BEGIN TRANSACTION;
+
+    DECLARE @sale_total decimal(14,2),
+            @already_paid decimal(14,2),
+            @sale_status nvarchar(30);
+
+    SELECT
+        @sale_total = s.sale_price * s.ticket_quantity,
+        @sale_status = s.sale_status
+    FROM dbo.sale AS s WITH (UPDLOCK, HOLDLOCK)
+    WHERE s.sale_id = @sale_id;
+
+    IF @sale_total IS NULL
+        THROW 51127, N'Продажа не найдена.', 1;
+
+    IF @sale_status IN (N'Отменена', N'Возврат')
+        THROW 51133, N'Нельзя принимать оплату за отменённую или возвращённую продажу.', 1;
+
+    SELECT @already_paid = COALESCE(SUM(p.amount), 0)
+    FROM dbo.payment AS p
+    WHERE p.sale_id = @sale_id
+      AND p.payment_status = N'Успешно';
+
+    IF @already_paid + @amount > @sale_total
+        THROW 51128, N'Сумма платежей превышает стоимость продажи.', 1;
+
+    INSERT INTO dbo.payment
+    (
+        sale_id,
+        amount,
+        payment_method,
+        payment_status,
+        transaction_id
+    )
+    VALUES
+    (
+        @sale_id,
+        @amount,
+        @payment_method,
+        N'Успешно',
+        @transaction_id
+    );
+
+    DECLARE @payment_id bigint = CAST(SCOPE_IDENTITY() AS bigint);
+
+    COMMIT TRANSACTION;
+
+    SELECT @payment_id AS payment_id;
+END;
+GO
+
+/* The UI passes an inclusive end timestamp (23:59:59). Keep this procedure's
+   contract inclusive; the report page has a separate, half-open date range. */
+CREATE OR ALTER PROCEDURE dbo.get_sales_by_date_range
+    @date_from datetime2(0),
+    @date_to datetime2(0)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @date_from IS NULL OR @date_to IS NULL OR @date_to < @date_from
+        THROW 51134, N'Некорректный диапазон дат.', 1;
+
+    SELECT *
+    FROM dbo.v_sale_details
+    WHERE sale_date >= @date_from
+      AND sale_date <= @date_to
+    ORDER BY sale_date;
+END;
+GO
+
+/* Synchronize the bus summary from the remaining maintenance history after
+   INSERT, UPDATE, and DELETE. The date-default trigger remains responsible for
+   next_maintenance_date; this trigger owns bus mileage/status synchronization. */
+CREATE OR ALTER TRIGGER dbo.trg_maintenance_insert_sync_bus
+ON dbo.maintenance
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @affectedBusIds TABLE
+    (
+        bus_id int NOT NULL PRIMARY KEY
+    );
+
+    INSERT INTO @affectedBusIds (bus_id)
+    SELECT bus_id FROM inserted
+    UNION
+    SELECT bus_id FROM deleted;
+
+    IF NOT EXISTS (SELECT 1 FROM @affectedBusIds)
+        RETURN;
+
+    ;WITH maintenance_mileage AS
+    (
+        SELECT m.bus_id, MAX(m.mileage_km) AS max_mileage
+        FROM dbo.maintenance AS m
+        INNER JOIN @affectedBusIds AS affected ON affected.bus_id = m.bus_id
+        GROUP BY m.bus_id
+    ),
+    ranked_maintenance AS
+    (
+        SELECT
+            m.bus_id,
+            m.roadworthiness,
+            ROW_NUMBER() OVER
+            (
+                PARTITION BY m.bus_id
+                ORDER BY m.maintenance_date DESC, m.maintenance_id DESC
+            ) AS row_num
+        FROM dbo.maintenance AS m
+        INNER JOIN @affectedBusIds AS affected ON affected.bus_id = m.bus_id
+    ),
+    latest_maintenance AS
+    (
+        SELECT bus_id, roadworthiness
+        FROM ranked_maintenance
+        WHERE row_num = 1
+    )
+    UPDATE b
+       SET mileage_km =
+               CASE
+                   WHEN mm.max_mileage > b.mileage_km THEN mm.max_mileage
+                   ELSE b.mileage_km
+               END,
+           status =
+               CASE
+                   WHEN b.status = N'Списан' THEN b.status
+                   WHEN lm.roadworthiness IN (N'Неисправен', N'Требует внимания')
+                       THEN N'На ремонте'
+                   WHEN lm.roadworthiness = N'Исправен' AND b.status = N'На ремонте'
+                       THEN N'Исправен'
+                   ELSE b.status
+               END
+    FROM dbo.bus AS b
+    INNER JOIN @affectedBusIds AS affected ON affected.bus_id = b.bus_id
+    LEFT JOIN maintenance_mileage AS mm ON mm.bus_id = b.bus_id
+    LEFT JOIN latest_maintenance AS lm ON lm.bus_id = b.bus_id;
+END;
+GO
