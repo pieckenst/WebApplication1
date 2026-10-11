@@ -200,11 +200,11 @@ END;
 GO
 
 /* Mileage >= 250,000 km has one consistent outcome: a bus marked Исправен is
-   automatically moved to Резерв. Check this on any update, not only when the
-   mileage column is named in the UPDATE statement. */
+   automatically moved to Резерв. Check both inserts and updates, including
+   updates where mileage_km is not explicitly named. */
 CREATE OR ALTER TRIGGER dbo.trg_bus_update_mileage_check
 ON dbo.bus
-AFTER UPDATE
+AFTER INSERT, UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;
