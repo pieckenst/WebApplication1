@@ -1,4 +1,10 @@
 /*
+    AUTOPARKDB — курсовой проект по дисциплине «Системы управления базами данных».
+
+    Модель ориентирована на тему «Разработка программы для работы автопарка».
+    Учётная запись приложения и сотрудник предприятия разделены.
+    SQL Server / T-SQL.
+
     IMPORTANT — HISTORICAL SCRIPT; NOT A SAFE REDEPLOYMENT SCRIPT
 
     This copy was recovered from the developer workstation and is not guaranteed
@@ -13,16 +19,6 @@
 
     This file is retained for coursework/repository history. A clean, current
     database deployment has not been verified by the repository CI.
-*/
-
-/*
-    Existing file header:
-AUTOPARKDB - курсовой проект по дисциплине «Системы управления базами данных».
-
-    Модель ориентирована на тему «Разработка программы для работы автопарка».
-    Учетная запись приложения и сотрудник предприятия разделены.
-
-    SQL Server / T-SQL.
 */
 
 USE master;
