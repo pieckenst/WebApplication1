@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -408,9 +409,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                 {
                     foreach (Ticket t in tickets)
                     {
+                        // Sold-out ticket types cannot be selected for a new sale.
+                        if (t.AvailableCount <= 0)
+                            continue;
+
                         ddlTicket.Items.Add(new ListItem(
-                            t.TicketName + " (" + t.Price.ToString("F2") + ")",
-                            t.TicketId.ToString()));
+                            t.TicketName + " (" + t.Price.ToString("F2") + "; available: " +
+                            t.AvailableCount.ToString(CultureInfo.InvariantCulture) + ")",
+                            t.TicketId.ToString(CultureInfo.InvariantCulture)));
                     }
                 }
             }
