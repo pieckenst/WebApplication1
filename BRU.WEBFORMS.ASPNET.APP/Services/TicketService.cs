@@ -363,10 +363,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 throw new ServiceException("Ticket quantity must be greater than 0");
             }
 
-            if (!IsValidSaleChannel(sale.SaleChannel))
+            string normalizedSaleChannel = NormalizeSaleChannel(sale.SaleChannel);
+            if (normalizedSaleChannel == null)
             {
                 throw new ServiceException("Invalid sale channel");
             }
+
+            sale.SaleChannel = normalizedSaleChannel;
 
             if (!IsValidSaleStatus(sale.SaleStatus))
             {
@@ -399,27 +402,79 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 throw new ServiceException("Payment amount must be greater than 0");
             }
 
-            if (string.IsNullOrEmpty(payment.PaymentMethod))
+            if (string.IsNullOrWhiteSpace(payment.PaymentMethod))
             {
                 throw new ServiceException("Payment method is required");
             }
 
-            if (!IsValidPaymentStatus(payment.PaymentStatus))
+            payment.PaymentMethod = NormalizePaymentMethod(payment.PaymentMethod);
+
+            if (!IsValidPaymentRecordStatus(payment.PaymentStatus))
             {
-                throw new ServiceException("Invalid payment status");
+                throw new ServiceException("Invalid payment transaction status");
             }
         }
 
         /// <summary>
         /// Check if sale channel is valid
         /// </summary>
-        private bool IsValidSaleChannel(string channel)
+        private static string NormalizeSaleChannel(string channel)
         {
-            return channel == SaleChannel.CashDesk ||
-                   channel == SaleChannel.Conductor ||
-                   channel == SaleChannel.Validator ||
-                   channel == SaleChannel.QR ||
-                   channel == SaleChannel.Online;
+            if (string.IsNullOrWhiteSpace(channel))
+                return null;
+
+            string normalized = channel.Trim();
+            if (string.Equals(normalized, SaleChannel.CashDesk, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "cash-desk", StringComparison.OrdinalIgnoreCase))
+                return SaleChannel.CashDesk;
+            if (string.Equals(normalized, SaleChannel.Conductor, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "conductor", StringComparison.OrdinalIgnoreCase))
+                return SaleChannel.Conductor;
+            if (string.Equals(normalized, SaleChannel.Validator, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "validator", StringComparison.OrdinalIgnoreCase))
+                return SaleChannel.Validator;
+            if (string.Equals(normalized, SaleChannel.QR, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "qr", StringComparison.OrdinalIgnoreCase))
+                return SaleChannel.QR;
+            if (string.Equals(normalized, SaleChannel.Online, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "online", StringComparison.OrdinalIgnoreCase))
+                return SaleChannel.Online;
+
+            return null;
+        }
+
+        private static string NormalizePaymentMethod(string method)
+        {
+            if (string.IsNullOrWhiteSpace(method))
+                return null;
+
+            string normalized = method.Trim();
+            if (string.Equals(normalized, PaymentMethodType.Cash, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "cash", StringComparison.OrdinalIgnoreCase))
+                return PaymentMethodType.Cash;
+            if (string.Equals(normalized, PaymentMethodType.BankCard, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "bank-card", StringComparison.OrdinalIgnoreCase))
+                return PaymentMethodType.BankCard;
+            if (string.Equals(normalized, PaymentMethodType.ElectronicWallet, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "e-wallet", StringComparison.OrdinalIgnoreCase))
+                return PaymentMethodType.ElectronicWallet;
+            if (string.Equals(normalized, PaymentMethodType.QrCode, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "qr-code", StringComparison.OrdinalIgnoreCase))
+                return PaymentMethodType.QrCode;
+            if (string.Equals(normalized, PaymentMethodType.BankTransfer, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "bank-transfer", StringComparison.OrdinalIgnoreCase))
+                return PaymentMethodType.BankTransfer;
+
+            // Keep compatibility with existing callers that may supply another explicit method label.
+            return normalized;
+        }
+
+        private static bool IsValidPaymentRecordStatus(string status)
+        {
+            return status == PaymentRecordStatus.Pending ||
+                   status == PaymentRecordStatus.Successful ||
+                   status == PaymentRecordStatus.Error ||
+                   status == PaymentRecordStatus.Refunded;
         }
 
         /// <summary>
