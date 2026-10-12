@@ -367,10 +367,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 throw new ServiceException("Valid job ID is required");
             }
 
-            if (!IsValidEmployeeStatus(employee.Status))
+            string normalizedStatus = NormalizeEmployeeStatus(employee.Status);
+            if (normalizedStatus == null)
             {
                 throw new ServiceException("Invalid employee status");
             }
+
+            employee.Status = normalizedStatus;
 
             // Email validation if provided
             if (!string.IsNullOrEmpty(employee.Email))
@@ -385,12 +388,32 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         /// <summary>
         /// Check if employee status is valid
         /// </summary>
-        private bool IsValidEmployeeStatus(string status)
+        private static string NormalizeEmployeeStatus(string status)
         {
-            return status == EmployeeStatus.Working ||
-                   status == EmployeeStatus.OnVacation ||
-                   status == EmployeeStatus.OnSickLeave ||
-                   status == EmployeeStatus.Dismissed;
+            if (string.IsNullOrWhiteSpace(status))
+                return null;
+
+            string normalized = status.Trim();
+
+            if (string.Equals(normalized, EmployeeStatus.Working, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "working", StringComparison.OrdinalIgnoreCase))
+                return EmployeeStatus.Working;
+
+            if (string.Equals(normalized, EmployeeStatus.OnVacation, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "on-vacation", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "onvacation", StringComparison.OrdinalIgnoreCase))
+                return EmployeeStatus.OnVacation;
+
+            if (string.Equals(normalized, EmployeeStatus.OnSickLeave, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "on-sick-leave", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "onsickleave", StringComparison.OrdinalIgnoreCase))
+                return EmployeeStatus.OnSickLeave;
+
+            if (string.Equals(normalized, EmployeeStatus.Dismissed, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "dismissed", StringComparison.OrdinalIgnoreCase))
+                return EmployeeStatus.Dismissed;
+
+            return null;
         }
 
         /// <summary>
