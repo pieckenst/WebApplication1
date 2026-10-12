@@ -350,7 +350,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     foreach (string manufacturer in manufacturers)
                     {
                         DdlManufacturerFilter.Items.Add(
-                            new ListItem(manufacturer, manufacturer));
+                            new ListItem(manufacturer, EncodeFilterValue(manufacturer)));
                     }
                 }
             }
@@ -397,6 +397,36 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
+        private static string EncodeFilterValue(string value)
+        {
+            return string.IsNullOrEmpty(value)
+                ? string.Empty
+                : Convert.ToBase64String(Encoding.UTF8.GetBytes(value))
+                    .TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        }
+
+        private static string DecodeFilterValue(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+            string encoded = value.Replace('-', '+').Replace('_', '/');
+            switch (encoded.Length % 4)
+            {
+                case 0: break;
+                case 2: encoded += "=="; break;
+                case 3: encoded += "="; break;
+                default: return null;
+            }
+
+            try
+            {
+                return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
+        }
+
         private static string GetBusStatusFilterValue(string status)
         {
             switch (status)
@@ -438,7 +468,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                         DdlManufacturerFilter.SelectedValue))
                 {
                     string selectedManufacturer =
-                        DdlManufacturerFilter.SelectedValue;
+                        DecodeFilterValue(DdlManufacturerFilter.SelectedValue);
 
                     filteredBuses = filteredBuses
                         .Where(b => b != null &&
