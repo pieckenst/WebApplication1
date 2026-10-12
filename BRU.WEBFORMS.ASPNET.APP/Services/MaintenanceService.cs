@@ -307,20 +307,36 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 throw new ServiceException("Next maintenance date cannot be before maintenance date");
             }
 
-            if (!IsValidRoadworthinessStatus(maintenance.Roadworthiness))
+            string normalizedRoadworthiness = NormalizeRoadworthinessStatus(maintenance.Roadworthiness);
+            if (normalizedRoadworthiness == null)
             {
                 throw new ServiceException("Invalid roadworthiness status");
             }
+
+            // Persist only one of the canonical values accepted by the database constraint.
+            maintenance.Roadworthiness = normalizedRoadworthiness;
         }
 
         /// <summary>
         /// Check if roadworthiness status is valid
         /// </summary>
-        private bool IsValidRoadworthinessStatus(string status)
+        private static string NormalizeRoadworthinessStatus(string status)
         {
-            return status == RoadworthinessStatus.Operational ||
-                   status == RoadworthinessStatus.NeedsAttention ||
-                   status == RoadworthinessStatus.NotOperational;
+            if (string.IsNullOrWhiteSpace(status))
+                return null;
+
+            string normalized = status.Trim();
+
+            if (string.Equals(normalized, RoadworthinessStatus.Operational, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.Operational;
+
+            if (string.Equals(normalized, RoadworthinessStatus.NeedsAttention, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.NeedsAttention;
+
+            if (string.Equals(normalized, RoadworthinessStatus.NotOperational, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.NotOperational;
+
+            return null;
         }
 
         public void Dispose()
