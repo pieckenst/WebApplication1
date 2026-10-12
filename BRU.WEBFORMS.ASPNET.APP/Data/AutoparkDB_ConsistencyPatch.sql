@@ -302,6 +302,12 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- This trigger updates dbo.bus itself. When that UPDATE fires this same
+    -- trigger again, stop the recursive invocation; the outer invocation
+    -- already applied the reserve transition.
+    IF TRIGGER_NESTLEVEL(OBJECT_ID(N'dbo.trg_bus_update_mileage_check'), 'AFTER', 'DML') > 1
+        RETURN;
+
     UPDATE b
        SET status = N'Резерв'
     FROM dbo.bus AS b
