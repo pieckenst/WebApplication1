@@ -503,12 +503,12 @@
             <asp:Button
                 ID="btnReleaseReserve"
                 runat="server"
-                Text="Вывести из резерва"
+                Text="<%$ Resources:Strings, Buses_ReleaseFromReserve %>"
                 CommandName="ReleaseReserve"
                 CommandArgument='<%# Eval("BusId") %>'
                 CssClass="action-button"
                 Visible="false"
-                OnClientClick="return confirm('Вывести автобус из резерва, несмотря на пробег от 250 000 км? Продолжайте только после проверки технического состояния.');" />
+                OnClientClick="return confirm('<%$ Resources:Strings, Buses_ReleaseFromReserveConfirm %>');" />
 
             <asp:Button
                 ID="btnDelete"
