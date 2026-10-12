@@ -641,8 +641,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 txtCost.Text = record.MaintenanceCost.ToString("0.00", Localization.Culture);
                 if (ddlMechanic.Items.FindByValue(record.EmployeeId.HasValue ? record.EmployeeId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty) != null)
                     ddlMechanic.SelectedValue = record.EmployeeId.HasValue ? record.EmployeeId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
-                if (ddlRoadworthiness.Items.FindByValue(record.Roadworthiness) != null)
-                    ddlRoadworthiness.SelectedValue = record.Roadworthiness;
+                string roadworthinessFormValue = GetRoadworthinessFormValue(record.Roadworthiness);
+                if (roadworthinessFormValue != null && ddlRoadworthiness.Items.FindByValue(roadworthinessFormValue) != null)
+                    ddlRoadworthiness.SelectedValue = roadworthinessFormValue;
 
                 cbMaintenanceForm.HeaderText = Localization.Get("BusMaintenance_EditHeading");
                 cbMaintenanceForm.Visible = true;
@@ -682,22 +683,50 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             ScrollToControl(btnSave, "scrollToMaintenanceForm");
         }
 
+        private static string GetRoadworthinessFormValue(string roadworthiness)
+        {
+            if (string.IsNullOrWhiteSpace(roadworthiness))
+                return null;
+
+            string normalized = roadworthiness.Trim();
+            if (string.Equals(normalized, RoadworthinessStatus.Operational, StringComparison.OrdinalIgnoreCase))
+                return "operational";
+            if (string.Equals(normalized, RoadworthinessStatus.NeedsAttention, StringComparison.OrdinalIgnoreCase))
+                return "needs-attention";
+            if (string.Equals(normalized, RoadworthinessStatus.NotOperational, StringComparison.OrdinalIgnoreCase))
+                return "not-operational";
+
+            return null;
+        }
+
         private string GetRoadworthinessForSave()
         {
-            string selectedStatus = ddlRoadworthiness.SelectedValue;
-            if (!string.IsNullOrWhiteSpace(selectedStatus))
-                return selectedStatus;
+            // Translate the posted form token into the canonical DB value rather
+            // than passing a localized/UI string through the service layer.
+            switch (ddlRoadworthiness.SelectedValue)
+            {
+                case "operational":
+                    return RoadworthinessStatus.Operational;
+                case "needs-attention":
+                    return RoadworthinessStatus.NeedsAttention;
+                case "not-operational":
+                    return RoadworthinessStatus.NotOperational;
+            }
 
-            // A missing postback selection must not erase the roadworthiness status
-            // of an existing maintenance record.
+            // A missing postback selection must not erase an existing status.
             if (EditingMaintenanceId > 0)
             {
                 MaintenanceRecord existing = FindRecordForCurrentBus(EditingMaintenanceId);
-                if (existing != null && !string.IsNullOrWhiteSpace(existing.Roadworthiness))
-                    return existing.Roadworthiness;
+                if (existing != null)
+                {
+                    string formValue = GetRoadworthinessFormValue(existing.Roadworthiness);
+                    if (formValue == "operational") return RoadworthinessStatus.Operational;
+                    if (formValue == "needs-attention") return RoadworthinessStatus.NeedsAttention;
+                    if (formValue == "not-operational") return RoadworthinessStatus.NotOperational;
+                }
             }
 
-            // New records use the same default shown by the form.
+            // New records use the same default as the form.
             return RoadworthinessStatus.Operational;
         }
 
@@ -896,8 +925,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             txtCost.Text = "0.00";
             if (ddlMechanic.Items.Count > 0)
                 ddlMechanic.SelectedIndex = 0;
-            if (ddlRoadworthiness.Items.FindByValue(RoadworthinessStatus.Operational) != null)
-                ddlRoadworthiness.SelectedValue = RoadworthinessStatus.Operational;
+            if (ddlRoadworthiness.Items.FindByValue("operational") != null)
+                ddlRoadworthiness.SelectedValue = "operational";
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
