@@ -110,10 +110,10 @@
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
                                 <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_4 %>" Value="" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_5 %>" Value="Работает" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_6 %>" Value="Отпуск" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_7 %>" Value="Больничный" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_8 %>" Value="Уволен" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_5 %>" Value="working" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_6 %>" Value="on-vacation" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_7 %>" Value="on-sick-leave" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_8 %>" Value="dismissed" />
                             </asp:DropDownList>
                         </span>
                     </div>
@@ -212,10 +212,10 @@
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Auto_Personnel_Employees_57") %><span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_28 %>" Value="Работает" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_29 %>" Value="Отпуск" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_30 %>" Value="Больничный" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_31 %>" Value="Уволен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_28 %>" Value="working" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_29 %>" Value="on-vacation" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_30 %>" Value="on-sick-leave" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Personnel_Employees_31 %>" Value="dismissed" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row" style="margin-top: 15px;">
