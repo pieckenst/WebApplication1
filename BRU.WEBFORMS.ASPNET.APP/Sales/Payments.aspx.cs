@@ -372,10 +372,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                     string cssClass;
                     switch (payment.PaymentStatus)
                     {
-                        case PaymentStatus.Pending: cssClass = "pay-pending"; break;
-                        case PaymentStatus.Paid: cssClass = "pay-paid"; break;
-                        case PaymentStatus.Error: cssClass = "pay-error"; break;
-                        case PaymentStatus.Refunded: cssClass = "pay-refunded"; break;
+                        case PaymentRecordStatus.Pending: cssClass = "pay-pending"; break;
+                        case PaymentRecordStatus.Successful: cssClass = "pay-paid"; break;
+                        case PaymentRecordStatus.Error: cssClass = "pay-error"; break;
+                        case PaymentRecordStatus.Refunded: cssClass = "pay-refunded"; break;
                         default: cssClass = "pay-pending"; break;
                     }
                     litPayStatus.Text = "<span class='" + cssClass + "'>" + payment.PaymentStatus + "</span>";
