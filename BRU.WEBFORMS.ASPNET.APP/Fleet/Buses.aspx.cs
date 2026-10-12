@@ -977,7 +977,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                             }
 
                             LogInformation("High-mileage reserve release approved: busId=" + busId);
-                            ShowSuccessMessage("Автобус выведен из резерва. Пробег не изменён; разрешение действует, пока статус автобуса остаётся «Исправен».");
+                            ShowSuccessMessage(Localization.Get("Buses_ReleaseFromReserveSuccess"));
                             CurrentPage = 1;
                             LoadBusData();
                             UpdateStatistics();
