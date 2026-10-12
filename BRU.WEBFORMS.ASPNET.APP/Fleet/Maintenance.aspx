@@ -105,9 +105,9 @@
                         <span class="filter-label"><%= Localization.GetHtml("Maintenance_RoadworthinessFilter") %></span>
                         <asp:DropDownList ID="ddlRwFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlRwFilter_SelectedIndexChanged">
                             <asp:ListItem Text="<%$ Resources:Strings, Common_All %>" Value="" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="operational" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="needs-attention" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="not-operational" />
                         </asp:DropDownList>
                     </div>
                     <div class="filter-row">
@@ -199,9 +199,9 @@
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Common_Roadworthiness") %> <span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlRoadworthiness" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="operational" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="needs-attention" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="not-operational" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row">
