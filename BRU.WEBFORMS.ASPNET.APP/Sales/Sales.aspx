@@ -113,11 +113,11 @@
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlChannelFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlChannelFilter_SelectedIndexChanged">
                                 <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_6 %>" Value="" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_7 %>" Value="Касса" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_8 %>" Value="Кондуктор" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_9 %>" Value="Валидатор" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_10 %>" Value="QR" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_11 %>" Value="Онлайн" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_7 %>" Value="cash-desk" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_8 %>" Value="conductor" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_9 %>" Value="validator" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_10 %>" Value="qr" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_11 %>" Value="online" />
                             </asp:DropDownList>
                         </span>
                     </div>
@@ -126,10 +126,10 @@
                         <span class="filter-control">
                             <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
                                 <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_12 %>" Value="" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_13 %>" Value="Создана" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_14 %>" Value="Завершена" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_15 %>" Value="Отменена" />
-                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_16 %>" Value="Возврат" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_13 %>" Value="created" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_14 %>" Value="completed" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_15 %>" Value="cancelled" />
+                                <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_16 %>" Value="refunded" />
                             </asp:DropDownList>
                         </span>
                     </div>
@@ -196,11 +196,11 @@
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Sales_56") %><span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlChannel" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_33 %>" Value="Касса" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_34 %>" Value="Кондуктор" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_35 %>" Value="Валидатор" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_36 %>" Value="QR" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_37 %>" Value="Онлайн" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_33 %>" Value="cash-desk" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_34 %>" Value="conductor" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_35 %>" Value="validator" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_36 %>" Value="qr" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Sales_37 %>" Value="online" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row">
