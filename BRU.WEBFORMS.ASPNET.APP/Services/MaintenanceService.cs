@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BRU.WEBFORMS.ASPNET.APP.DataAccess;
 using BRU.WEBFORMS.ASPNET.APP.Models;
 
@@ -235,25 +236,49 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         }
 
         /// <summary>
-        /// Get buses that are overdue for maintenance
+        /// A scheduled deadline is satisfied when another maintenance record for
+        /// the same bus is dated on or after that deadline. This also handles
+        /// records entered on the exact planned service date.
+        /// </summary>
+        public static bool IsMaintenanceDeadlineSatisfied(Maintenance maintenance, IList<Maintenance> history)
+        {
+            if (maintenance == null || !maintenance.NextMaintenanceDate.HasValue || history == null)
+                return false;
+
+            DateTime dueDate = maintenance.NextMaintenanceDate.Value.Date;
+            return history.Any(other =>
+                other != null &&
+                other.BusId == maintenance.BusId &&
+                other.MaintenanceId != maintenance.MaintenanceId &&
+                other.MaintenanceDate.Date >= dueDate);
+        }
+
+        /// <summary>
+        /// A deadline is overdue only if it is in the past and no later service
+        /// record shows that the planned maintenance was carried out.
+        /// </summary>
+        public static bool IsMaintenanceDeadlineOverdue(Maintenance maintenance, IList<Maintenance> history)
+        {
+            return maintenance != null &&
+                maintenance.NextMaintenanceDate.HasValue &&
+                maintenance.NextMaintenanceDate.Value.Date < DateTime.Today &&
+                !IsMaintenanceDeadlineSatisfied(maintenance, history);
+        }
+
+        /// <summary>
+        /// Get buses with at least one unsatisfied maintenance deadline in the past.
         /// </summary>
         public List<int> GetBusesOverdueForMaintenance()
         {
             try
             {
-                List<int> overdueBusIds = new List<int>();
-                List<Maintenance> latestMaintenance = _repository.GetLatestMaintenance();
-
-                foreach (Maintenance maintenance in latestMaintenance)
-                {
-                    if (maintenance.NextMaintenanceDate.HasValue && 
-                        maintenance.NextMaintenanceDate.Value < DateTime.Today)
-                    {
-                        overdueBusIds.Add(maintenance.BusId);
-                    }
-                }
-
-                return overdueBusIds;
+                List<Maintenance> history = _repository.GetAllMaintenance() ?? new List<Maintenance>();
+                return history
+                    .Where(maintenance => IsMaintenanceDeadlineOverdue(maintenance, history))
+                    .Select(maintenance => maintenance.BusId)
+                    .Distinct()
+                    .OrderBy(busId => busId)
+                    .ToList();
             }
             catch (Exception ex)
             {
