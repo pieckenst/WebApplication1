@@ -580,7 +580,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         protected void ddlRwFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterRoadworthiness = ddlRwFilter.SelectedValue;
+            FilterRoadworthiness = GetRoadworthinessCanonicalValue(ddlRwFilter.SelectedValue) ?? string.Empty;
             CurrentPage = 1;
             LoadMaintenance();
         }
@@ -674,7 +674,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     record.MileageKm = null;
                 }
 
-                record.Roadworthiness = ddlRoadworthiness.SelectedValue;
+                record.Roadworthiness = GetRoadworthinessCanonicalValue(ddlRoadworthiness.SelectedValue);
 
                 decimal cost;
                 if (!decimal.TryParse(txtCost.Text.Trim(), out cost) || cost < 0)
@@ -728,6 +728,35 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         #endregion
 
         #region Form Helpers
+
+        private static string GetRoadworthinessCanonicalValue(string status)
+        {
+            if (string.IsNullOrWhiteSpace(status)) return null;
+
+            string normalized = status.Trim();
+            if (string.Equals(normalized, "operational", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, RoadworthinessStatus.Operational, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.Operational;
+
+            if (string.Equals(normalized, "needs-attention", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, RoadworthinessStatus.NeedsAttention, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.NeedsAttention;
+
+            if (string.Equals(normalized, "not-operational", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, RoadworthinessStatus.NotOperational, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.NotOperational;
+
+            return null;
+        }
+
+        private static string GetRoadworthinessFormValue(string status)
+        {
+            string canonical = GetRoadworthinessCanonicalValue(status);
+            if (canonical == RoadworthinessStatus.Operational) return "operational";
+            if (canonical == RoadworthinessStatus.NeedsAttention) return "needs-attention";
+            if (canonical == RoadworthinessStatus.NotOperational) return "not-operational";
+            return null;
+        }
 
         private void ClearForm()
         {
@@ -787,8 +816,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 txtServiceResult.Text = record.ServiceResult ?? string.Empty;
                 txtMileage.Text = record.MileageKm.HasValue ? record.MileageKm.Value.ToString() : string.Empty;
 
-                ListItem rwItem = ddlRoadworthiness.Items.FindByValue(record.Roadworthiness);
-                if (rwItem != null) ddlRoadworthiness.SelectedValue = record.Roadworthiness;
+                string roadworthinessFormValue = GetRoadworthinessFormValue(record.Roadworthiness);
+                if (roadworthinessFormValue != null && ddlRoadworthiness.Items.FindByValue(roadworthinessFormValue) != null)
+                    ddlRoadworthiness.SelectedValue = roadworthinessFormValue;
 
                 txtCost.Text = record.MaintenanceCost.ToString("F2");
 
