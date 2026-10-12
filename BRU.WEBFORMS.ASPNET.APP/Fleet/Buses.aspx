@@ -501,6 +501,16 @@
                 CssClass="action-button" />
 
             <asp:Button
+                ID="btnReleaseReserve"
+                runat="server"
+                Text="Вывести из резерва"
+                CommandName="ReleaseReserve"
+                CommandArgument='<%# Eval("BusId") %>'
+                CssClass="action-button"
+                Visible="false"
+                OnClientClick="return confirm('Вывести автобус из резерва, несмотря на пробег от 250 000 км? Продолжайте только после проверки технического состояния.');" />
+
+            <asp:Button
                 ID="btnDelete"
                 runat="server"
                 Text="<%$ Resources:Strings, Common_Delete %>"
