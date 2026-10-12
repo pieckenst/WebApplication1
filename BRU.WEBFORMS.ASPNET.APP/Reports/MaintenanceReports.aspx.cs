@@ -102,7 +102,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
                 using (ReportsService service = new ReportsService())
                 {
                     MaintenanceReportData firstPage = service.GetMaintenanceReport(range.From, range.ToExclusive,
-                        busId, ddlRoadworthiness.SelectedValue, 0, 10000);
+                        busId, GetRoadworthinessStatusFilterValue(ddlRoadworthiness.SelectedValue), 0, 10000);
                     if (firstPage.TotalRows > 100000)
                         throw new ServiceException("This export exceeds 100,000 rows. Narrow the date or bus filters.");
 
@@ -111,7 +111,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
                     for (int page = 1; page < pageCount; page++)
                     {
                         MaintenanceReportData nextPage = service.GetMaintenanceReport(range.From, range.ToExclusive,
-                            busId, ddlRoadworthiness.SelectedValue, page, 10000);
+                            busId, GetRoadworthinessStatusFilterValue(ddlRoadworthiness.SelectedValue), page, 10000);
                         AppendRows(csv, nextPage);
                     }
                 }
@@ -167,13 +167,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
                 using (ReportsService service = new ReportsService())
                 {
                     report = service.GetMaintenanceReport(range.From, range.ToExclusive,
-                        ReadBusFilter(), ddlRoadworthiness.SelectedValue, gvMaintenance.PageIndex, PageSize);
+                        ReadBusFilter(), GetRoadworthinessStatusFilterValue(ddlRoadworthiness.SelectedValue), gvMaintenance.PageIndex, PageSize);
                     pageCount = Math.Max(1, (int)Math.Ceiling((double)report.TotalRows / PageSize));
                     if (gvMaintenance.PageIndex >= pageCount)
                     {
                         gvMaintenance.PageIndex = pageCount - 1;
                         report = service.GetMaintenanceReport(range.From, range.ToExclusive,
-                            ReadBusFilter(), ddlRoadworthiness.SelectedValue, gvMaintenance.PageIndex, PageSize);
+                            ReadBusFilter(), GetRoadworthinessStatusFilterValue(ddlRoadworthiness.SelectedValue), gvMaintenance.PageIndex, PageSize);
                     }
                 }
 
@@ -200,6 +200,21 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
             catch (Exception ex)
             {
                 HandleGenericError(ex);
+            }
+        }
+
+        private static string GetRoadworthinessStatusFilterValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            switch (value.Trim())
+            {
+                case "operational": return RoadworthinessStatus.Operational;
+                case "needs-attention": return RoadworthinessStatus.NeedsAttention;
+                case "not-operational": return RoadworthinessStatus.NotOperational;
+                case RoadworthinessStatus.Operational: return RoadworthinessStatus.Operational;
+                case RoadworthinessStatus.NeedsAttention: return RoadworthinessStatus.NeedsAttention;
+                case RoadworthinessStatus.NotOperational: return RoadworthinessStatus.NotOperational;
+                default: return null;
             }
         }
 
