@@ -334,6 +334,16 @@ BEGIN
     BEGIN
         THROW 51108, N'Списанный автобус нельзя вернуть в эксплуатацию.', 1;
     END;
+
+    /* An override belongs to the current operational assignment only. If the
+       bus leaves Исправен for reserve, repair, or retirement, require explicit
+       approval again before it can bypass the mileage rule. */
+    UPDATE b
+       SET high_mileage_override = 0
+    FROM dbo.bus AS b
+    INNER JOIN inserted AS i ON i.bus_id = b.bus_id
+    WHERE i.status <> N'Исправен'
+      AND b.high_mileage_override = 1;
 END;
 GO
 
