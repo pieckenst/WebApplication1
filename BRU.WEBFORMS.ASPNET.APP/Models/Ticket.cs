@@ -81,6 +81,30 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
     }
 
     /// <summary>
+    /// Status values stored on payment transaction rows (dbo.payment).
+    /// This is separate from Sale.PaymentStatus, whose paid value is "Оплачена".
+    /// </summary>
+    public static class PaymentRecordStatus
+    {
+        public const string Pending = "Ожидает";
+        public const string Successful = "Успешно";
+        public const string Error = "Ошибка";
+        public const string Refunded = "Возврат";
+    }
+
+    /// <summary>
+    /// Payment methods accepted by the payment form.
+    /// </summary>
+    public static class PaymentMethodType
+    {
+        public const string Cash = "Наличные";
+        public const string BankCard = "Банковская карта";
+        public const string ElectronicWallet = "Электронный кошелек";
+        public const string QrCode = "QR-код";
+        public const string BankTransfer = "Безналичный расчет";
+    }
+
+    /// <summary>
     /// Sale channel constants
     /// </summary>
     public static class SaleChannel
