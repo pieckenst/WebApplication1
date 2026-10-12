@@ -310,7 +310,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             string normalizedRoadworthiness = NormalizeRoadworthinessStatus(maintenance.Roadworthiness);
             if (normalizedRoadworthiness == null)
             {
-                throw new ServiceException("Invalid roadworthiness status");
+                string suppliedStatus = maintenance.Roadworthiness;
+                string diagnostic = suppliedStatus == null
+                    ? "null"
+                    : "unrecognized value (length=" + suppliedStatus.Length.ToString(System.Globalization.CultureInfo.InvariantCulture) + ")";
+
+                throw new ServiceException("Invalid roadworthiness status: " + diagnostic +
+                    ". Expected one of the three supported maintenance statuses.");
             }
 
             // Persist only one of the canonical values accepted by the database constraint.
@@ -327,13 +333,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
             string normalized = status.Trim();
 
-            if (string.Equals(normalized, RoadworthinessStatus.Operational, StringComparison.OrdinalIgnoreCase))
+            // The edit form uses stable ASCII values; the database stores localized labels.
+            if (string.Equals(normalized, RoadworthinessStatus.Operational, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "operational", StringComparison.OrdinalIgnoreCase))
                 return RoadworthinessStatus.Operational;
 
-            if (string.Equals(normalized, RoadworthinessStatus.NeedsAttention, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(normalized, RoadworthinessStatus.NeedsAttention, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "needs-attention", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "needsattention", StringComparison.OrdinalIgnoreCase))
                 return RoadworthinessStatus.NeedsAttention;
 
-            if (string.Equals(normalized, RoadworthinessStatus.NotOperational, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(normalized, RoadworthinessStatus.NotOperational, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "not-operational", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "notoperational", StringComparison.OrdinalIgnoreCase))
                 return RoadworthinessStatus.NotOperational;
 
             return null;
