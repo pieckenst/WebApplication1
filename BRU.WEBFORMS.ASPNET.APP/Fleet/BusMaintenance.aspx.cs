@@ -358,7 +358,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     x.MaintenanceId.ToString(CultureInfo.InvariantCulture).Contains(search)).ToList();
             }
 
-            string status = ddlRoadworthinessFilter.SelectedValue;
+            string status = GetRoadworthinessCanonicalValue(ddlRoadworthinessFilter.SelectedValue);
             if (!string.IsNullOrWhiteSpace(status))
                 rows = rows.Where(x => string.Equals(x.Roadworthiness, status, StringComparison.OrdinalIgnoreCase)).ToList();
 
@@ -681,6 +681,23 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             cbMaintenanceForm.Visible = true;
             cbMaintenanceDetail.Visible = false;
             ScrollToControl(btnSave, "scrollToMaintenanceForm");
+        }
+
+        private static string GetRoadworthinessCanonicalValue(string status)
+        {
+            if (string.IsNullOrWhiteSpace(status)) return null;
+
+            string normalized = status.Trim();
+            if (string.Equals(normalized, "operational", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, RoadworthinessStatus.Operational, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.Operational;
+            if (string.Equals(normalized, "needs-attention", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, RoadworthinessStatus.NeedsAttention, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.NeedsAttention;
+            if (string.Equals(normalized, "not-operational", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, RoadworthinessStatus.NotOperational, StringComparison.OrdinalIgnoreCase))
+                return RoadworthinessStatus.NotOperational;
+            return null;
         }
 
         private static string GetRoadworthinessFormValue(string roadworthiness)
