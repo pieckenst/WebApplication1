@@ -279,6 +279,36 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         #region Data Loading
 
+        private static string EncodeFilterValue(string value)
+        {
+            return string.IsNullOrEmpty(value)
+                ? string.Empty
+                : Convert.ToBase64String(Encoding.UTF8.GetBytes(value))
+                    .TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        }
+
+        private static string DecodeFilterValue(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return null;
+            string encoded = value.Replace('-', '+').Replace('_', '/');
+            switch (encoded.Length % 4)
+            {
+                case 0: break;
+                case 2: encoded += "=="; break;
+                case 3: encoded += "="; break;
+                default: return null;
+            }
+
+            try
+            {
+                return Encoding.UTF8.GetString(Convert.FromBase64String(encoded));
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
+        }
+
         private void LoadTypeFilter()
         {
             ddlTypeFilter.Items.Clear();
@@ -296,7 +326,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                             types[t.TicketType] = t.TicketType;
                     }
                     foreach (string type in types.Keys)
-                        ddlTypeFilter.Items.Add(new ListItem(type, type));
+                        ddlTypeFilter.Items.Add(new ListItem(type, EncodeFilterValue(type)));
                 }
             }
         }
@@ -610,7 +640,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
         protected void ddlTypeFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterType = ddlTypeFilter.SelectedValue;
+            FilterType = DecodeFilterValue(ddlTypeFilter.SelectedValue) ?? string.Empty;
             CurrentPage = 1;
             LoadTickets();
         }
