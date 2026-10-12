@@ -1699,7 +1699,7 @@ END;
 GO
 
 /* ================================================================
-   6. 10 DML-ТРИГГЕРОВ
+   6. DML-ТРИГГЕРЫ И СИНХРОНИЗАЦИЯ
    ================================================================ */
 
 -- 1. После продажи уменьшается остаток билетов.
@@ -1949,7 +1949,7 @@ GO
 -- Payment sale status is synchronized by the consolidated trigger below.
 GO
 
--- 5. При возврате платежа продажа переводится в возврат.
+-- При возврате платежа продажа переводится в возврат.
 CREATE TRIGGER dbo.trg_payment_update_refund_sale
 ON dbo.payment
 AFTER UPDATE
@@ -1966,7 +1966,7 @@ BEGIN
 END;
 GO
 
--- 6. Контроль изменения статуса автобуса: дата изменения не хранится,
+-- Контроль изменения статуса автобуса: дата изменения не хранится,
 -- поэтому триггер блокирует нелогичный перевод списанного автобуса в рабочий.
 CREATE TRIGGER dbo.trg_bus_update_validate_status
 ON dbo.bus
@@ -2026,7 +2026,7 @@ BEGIN
 END;
 GO
 
--- 8. При добавлении обслуживания дата следующего ТО рассчитывается автоматически.
+-- Автоматическое назначение даты следующего технического обслуживания.
 CREATE TRIGGER dbo.trg_maintenance_insert_set_next_date
 ON dbo.maintenance
 AFTER INSERT
@@ -2041,7 +2041,7 @@ BEGIN
 END;
 GO
 
--- 9. При обновлении заявки на отпуск проверяется логика даты согласования.
+-- Проверка даты согласования заявки на отпуск.
 CREATE TRIGGER dbo.trg_vacation_request_update_validate
 ON dbo.vacation_request
 AFTER UPDATE
@@ -2062,7 +2062,7 @@ BEGIN
 END;
 GO
 
--- 10. При удалении пользователя запрещается удаление учетной записи администратора.
+-- Защита системной учетной записи администратора.
 CREATE TRIGGER dbo.trg_app_user_delete_protect_admin
 ON dbo.app_user
 INSTEAD OF DELETE
