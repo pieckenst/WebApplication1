@@ -105,6 +105,7 @@ CREATE TABLE dbo.bus
     capacity          smallint NOT NULL,
     status            nvarchar(30) NOT NULL CONSTRAINT df_bus_status DEFAULT (N'Исправен'),
     mileage_km        int NOT NULL CONSTRAINT df_bus_mileage DEFAULT (0),
+    high_mileage_override bit NOT NULL CONSTRAINT df_bus_high_mileage_override DEFAULT (0),
     CONSTRAINT pk_bus PRIMARY KEY (bus_id),
     CONSTRAINT uq_bus_fleet_number UNIQUE (fleet_number),
     CONSTRAINT uq_bus_registration_num UNIQUE (registration_num),
@@ -1493,32 +1494,24 @@ BEGIN
 END;
 GO
 
--- 7. При увеличении пробега автоматически проверяется необходимость обслуживания.
+-- 7. Высокий пробег автоматически отправляет автобус в резерв,
+-- если уполномоченный сотрудник явно не разрешил его дальнейшую эксплуатацию.
 CREATE TRIGGER dbo.trg_bus_update_mileage_check
 ON dbo.bus
-AFTER UPDATE
+AFTER INSERT, UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF UPDATE(mileage_km)
-    BEGIN
-        IF EXISTS
-        (
-            SELECT 1
-            FROM inserted AS i
-            WHERE i.mileage_km >= 250000
-              AND i.status = N'Исправен'
-        )
-        BEGIN
-            UPDATE b
-               SET status = N'Резерв'
-            FROM dbo.bus AS b
-            INNER JOIN inserted AS i ON i.bus_id = b.bus_id
-            WHERE i.mileage_km >= 250000
-              AND b.status = N'Исправен';
-        END;
-    END;
+    UPDATE b
+       SET status = N'Резерв'
+    FROM dbo.bus AS b
+    INNER JOIN inserted AS i ON i.bus_id = b.bus_id
+    WHERE i.mileage_km >= 250000
+      AND i.status = N'Исправен'
+      AND i.high_mileage_override = 0
+      AND b.high_mileage_override = 0
+      AND b.status = N'Исправен';
 END;
 GO
 
