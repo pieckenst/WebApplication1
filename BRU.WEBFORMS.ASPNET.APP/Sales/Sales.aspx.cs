@@ -595,16 +595,52 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
             }
         }
 
+        private static string GetSaleChannelCanonicalValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            switch (value.Trim())
+            {
+                case "cash-desk": return SaleChannel.CashDesk;
+                case "conductor": return SaleChannel.Conductor;
+                case "validator": return SaleChannel.Validator;
+                case "qr": return SaleChannel.QR;
+                case "online": return SaleChannel.Online;
+                case SaleChannel.CashDesk: return SaleChannel.CashDesk;
+                case SaleChannel.Conductor: return SaleChannel.Conductor;
+                case SaleChannel.Validator: return SaleChannel.Validator;
+                case SaleChannel.QR: return SaleChannel.QR;
+                case SaleChannel.Online: return SaleChannel.Online;
+                default: return null;
+            }
+        }
+
+        private static string GetSaleStatusCanonicalValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            switch (value.Trim())
+            {
+                case "created": return SaleStatus.Created;
+                case "completed": return SaleStatus.Completed;
+                case "cancelled": return SaleStatus.Cancelled;
+                case "refunded": return SaleStatus.Refunded;
+                case SaleStatus.Created: return SaleStatus.Created;
+                case SaleStatus.Completed: return SaleStatus.Completed;
+                case SaleStatus.Cancelled: return SaleStatus.Cancelled;
+                case SaleStatus.Refunded: return SaleStatus.Refunded;
+                default: return null;
+            }
+        }
+
         protected void ddlChannelFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterChannel = ddlChannelFilter.SelectedValue;
+            FilterChannel = GetSaleChannelCanonicalValue(ddlChannelFilter.SelectedValue) ?? string.Empty;
             CurrentPage = 1;
             LoadSales();
         }
 
         protected void ddlStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterStatus = ddlStatusFilter.SelectedValue;
+            FilterStatus = GetSaleStatusCanonicalValue(ddlStatusFilter.SelectedValue) ?? string.Empty;
             CurrentPage = 1;
             LoadSales();
         }
@@ -640,7 +676,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                 }
                 sale.SalePrice = price;
 
-                sale.SaleChannel = ddlChannel.SelectedValue;
+                sale.SaleChannel = GetSaleChannelCanonicalValue(ddlChannel.SelectedValue);
                 sale.SaleStatus = SaleStatus.Created;
                 sale.PaymentStatus = PaymentStatus.Pending;
 
