@@ -652,7 +652,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         protected void ddlStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterStatus = ddlStatusFilter.SelectedValue;
+            FilterStatus = GetEmployeeStatusForSave(ddlStatusFilter.SelectedValue) ?? string.Empty;
             CurrentPage = 1;
             LoadEmployeeData();
         }
@@ -725,6 +725,40 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
         #region Edit Form
 
+        private static string GetEmployeeStatusFormValue(string status)
+        {
+            if (string.IsNullOrWhiteSpace(status)) return null;
+            switch (status.Trim())
+            {
+                case EmployeeStatus.Working: return "working";
+                case EmployeeStatus.OnVacation: return "on-vacation";
+                case EmployeeStatus.OnSickLeave: return "on-sick-leave";
+                case EmployeeStatus.Dismissed: return "dismissed";
+                case "working": return "working";
+                case "on-vacation": return "on-vacation";
+                case "on-sick-leave": return "on-sick-leave";
+                case "dismissed": return "dismissed";
+                default: return null;
+            }
+        }
+
+        private static string GetEmployeeStatusForSave(string status)
+        {
+            if (string.IsNullOrWhiteSpace(status)) return null;
+            switch (status.Trim())
+            {
+                case "working": return EmployeeStatus.Working;
+                case "on-vacation": return EmployeeStatus.OnVacation;
+                case "on-sick-leave": return EmployeeStatus.OnSickLeave;
+                case "dismissed": return EmployeeStatus.Dismissed;
+                case EmployeeStatus.Working: return EmployeeStatus.Working;
+                case EmployeeStatus.OnVacation: return EmployeeStatus.OnVacation;
+                case EmployeeStatus.OnSickLeave: return EmployeeStatus.OnSickLeave;
+                case EmployeeStatus.Dismissed: return EmployeeStatus.Dismissed;
+                default: return null;
+            }
+        }
+
         private void ShowEditForm(int employeeId)
         {
             try
@@ -750,8 +784,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
                         else
                             ddlDepartment.SelectedIndex = 0;
 
-                        if (ddlStatus.Items.FindByValue(emp.Status) != null)
-                            ddlStatus.SelectedValue = emp.Status;
+                        string statusFormValue = GetEmployeeStatusFormValue(emp.Status);
+                        if (statusFormValue != null && ddlStatus.Items.FindByValue(statusFormValue) != null)
+                            ddlStatus.SelectedValue = statusFormValue;
 
                         cbEmployeeForm.HeaderText = "Edit Employee";
                         cbEmployeeForm.Visible = true;
@@ -822,7 +857,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Personnel
 
                 emp.Phone = string.IsNullOrEmpty(txtPhone.Text.Trim()) ? null : txtPhone.Text.Trim();
                 emp.Email = string.IsNullOrEmpty(txtEmail.Text.Trim()) ? null : txtEmail.Text.Trim();
-                emp.Status = ddlStatus.SelectedValue;
+                emp.Status = GetEmployeeStatusForSave(ddlStatus.SelectedValue);
 
                 using (EmployeeService service = new EmployeeService())
                 {
