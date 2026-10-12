@@ -31,6 +31,16 @@
 USE [AutoparkDB];
 GO
 
+/* An explicit exception is required to keep a high-mileage bus operational.
+   Existing buses default to no exception, preserving the automatic reserve rule. */
+IF COL_LENGTH(N'dbo.bus', N'high_mileage_override') IS NULL
+BEGIN
+    ALTER TABLE dbo.bus
+        ADD high_mileage_override bit NOT NULL
+            CONSTRAINT df_bus_high_mileage_override DEFAULT (0);
+END;
+GO
+
 /* Remove the duplicate trigger. trg_payment_insert_sync_sale_status already
    recalculates payment_status from the total of successful payments. */
 IF OBJECT_ID(N'dbo.trg_payment_insert_mark_sale_paid', N'TR') IS NOT NULL
@@ -282,9 +292,9 @@ BEGIN
 END;
 GO
 
-/* Mileage >= 250,000 km has one consistent outcome: a bus marked Исправен is
-   automatically moved to Резерв. Check both inserts and updates, including
-   updates where mileage_km is not explicitly named. */
+/* Mileage >= 250,000 km automatically moves a bus to Резерв unless
+   an authorized user explicitly released it. The override is persisted so an
+   ordinary edit does not silently put the bus back into reserve. */
 CREATE OR ALTER TRIGGER dbo.trg_bus_update_mileage_check
 ON dbo.bus
 AFTER INSERT, UPDATE
@@ -298,6 +308,8 @@ BEGIN
     INNER JOIN inserted AS i ON i.bus_id = b.bus_id
     WHERE i.mileage_km >= 250000
       AND i.status = N'Исправен'
+      AND i.high_mileage_override = 0
+      AND b.high_mileage_override = 0
       AND b.status = N'Исправен';
 END;
 GO
@@ -1117,5 +1129,6 @@ GO
 UPDATE dbo.bus
    SET status = N'Резерв'
 WHERE status = N'Исправен'
-  AND mileage_km >= 250000;
+  AND mileage_km >= 250000
+  AND high_mileage_override = 0;
 GO
