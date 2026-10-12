@@ -52,6 +52,8 @@ AS
 SELECT
     rs.schedule_id,
     rs.route_id,
+    rs.bus_id,
+    rs.driver_id,
     rs.service_date,
     r.route_num,
     r.route_name,
