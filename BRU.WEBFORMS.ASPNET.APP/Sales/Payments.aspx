@@ -100,10 +100,10 @@
                         <span class="filter-label"><%= Localization.GetHtml("Auto_Sales_Payments_35") %></span>
                         <asp:DropDownList ID="ddlStatusFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlStatusFilter_SelectedIndexChanged">
                             <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_3 %>" Value="" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_4 %>" Value="Ожидает" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_5 %>" Value="Успешно" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_6 %>" Value="Ошибка" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_7 %>" Value="Возврат" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_4 %>" Value="pending" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_5 %>" Value="successful" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_6 %>" Value="error" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_7 %>" Value="refunded" />
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -161,11 +161,11 @@
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Auto_Sales_Payments_39") %><span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlMethod" runat="server" CssClass="form-control">
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_20 %>" Value="Наличные" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_21 %>" Value="Банковская карта" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_22 %>" Value="Электронный кошелек" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_23 %>" Value="QR-код" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_24 %>" Value="Безналичный расчет" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_20 %>" Value="cash" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_21 %>" Value="bank-card" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_22 %>" Value="e-wallet" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_23 %>" Value="qr-code" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Sales_Payments_24 %>" Value="bank-transfer" />
                         </asp:DropDownList>
                     </div>
                     <div class="form-row">
