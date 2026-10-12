@@ -934,6 +934,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     case "View":
                     case "EditBus":
                     case "Maintenance":
+                    case "ReleaseReserve":
                     case "DeleteBus":
                         break;
                     default:
@@ -962,6 +963,29 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
                     case "Maintenance":
                         RedirectTo("~/Fleet/BusMaintenance.aspx?busId=" + busId);
+                        return;
+
+                    case "ReleaseReserve":
+                        if (!RequireWritePermission("bus.write"))
+                            return;
+
+                        try
+                        {
+                            using (BusService busService = new BusService())
+                            {
+                                busService.ReleaseBusFromReserve(busId);
+                            }
+
+                            LogInformation("High-mileage reserve release approved: busId=" + busId);
+                            ShowSuccessMessage("Автобус выведен из резерва. Пробег не изменён; разрешение действует, пока статус автобуса остаётся «Исправен».");
+                            CurrentPage = 1;
+                            LoadBusData();
+                            UpdateStatistics();
+                        }
+                        catch (ServiceException serviceEx)
+                        {
+                            ShowErrorMessage(serviceEx.Message);
+                        }
                         return;
 
                     case "DeleteBus":
@@ -995,6 +1019,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 if (bus == null)
                 {
                     return;
+                }
+
+                Button btnReleaseReserve = e.Row.FindControl("btnReleaseReserve") as Button;
+                if (btnReleaseReserve != null)
+                {
+                    btnReleaseReserve.Visible =
+                        bus.Status == BusStatus.Reserve &&
+                        bus.MileageKm >= BusService.HighMileageReserveThresholdKm;
                 }
 
                 Literal litStatus =
