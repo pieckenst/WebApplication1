@@ -12,6 +12,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
     {
         private BusRepository _repository;
 
+        public const int HighMileageReserveThresholdKm = 250000;
+
         public BusService()
         {
             _repository = new BusRepository();
@@ -182,6 +184,42 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             catch (Exception ex)
             {
                 throw new ServiceException("Error updating bus status", ex);
+            }
+        }
+
+        /// <summary>
+        /// Explicitly release a high-mileage bus from reserve. This is the
+        /// intentional exception to the automatic 250,000 km reserve rule.
+        /// </summary>
+        public bool ReleaseBusFromReserve(int busId)
+        {
+            try
+            {
+                if (busId <= 0)
+                    throw new ServiceException("A valid bus ID is required");
+
+                Bus bus = _repository.GetBusById(busId);
+                if (bus == null)
+                    throw new ServiceException("Bus not found");
+
+                if (!string.Equals(NormalizeBusStatus(bus.Status), BusStatus.Reserve, StringComparison.Ordinal))
+                    throw new ServiceException("Only a bus currently in reserve can be released with this action.");
+
+                if (bus.MileageKm < HighMileageReserveThresholdKm)
+                    throw new ServiceException("This action is reserved for buses with mileage of at least 250,000 km.");
+
+                if (!_repository.ReleaseBusFromReserve(busId))
+                    throw new ServiceException("The bus status changed before the release was saved. Refresh the fleet list and try again.");
+
+                return true;
+            }
+            catch (ServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("Error releasing bus from reserve", ex);
             }
         }
 
