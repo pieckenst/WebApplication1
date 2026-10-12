@@ -236,6 +236,37 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #region Bus form
 
+        private static string GetBusStatusFormValue(string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+                return null;
+
+            string normalized = status.Trim();
+            if (string.Equals(normalized, BusStatus.Operational, StringComparison.OrdinalIgnoreCase)) return "operational";
+            if (string.Equals(normalized, BusStatus.InRepair, StringComparison.OrdinalIgnoreCase)) return "in-repair";
+            if (string.Equals(normalized, BusStatus.Retired, StringComparison.OrdinalIgnoreCase)) return "retired";
+            if (string.Equals(normalized, BusStatus.Reserve, StringComparison.OrdinalIgnoreCase)) return "reserve";
+            return null;
+        }
+
+        private static string GetBusStatusForSave(string selectedStatus)
+        {
+            switch (selectedStatus)
+            {
+                case "operational": return BusStatus.Operational;
+                case "in-repair": return BusStatus.InRepair;
+                case "retired": return BusStatus.Retired;
+                case "reserve": return BusStatus.Reserve;
+
+                // Accept the old localized postback values during a stale browser session.
+                case BusStatus.Operational: return BusStatus.Operational;
+                case BusStatus.InRepair: return BusStatus.InRepair;
+                case BusStatus.Retired: return BusStatus.Retired;
+                case BusStatus.Reserve: return BusStatus.Reserve;
+                default: return null;
+            }
+        }
+
         private void ClearForm()
         {
             lblBusId.Text = string.Empty;
@@ -245,8 +276,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             txtModel.Text = string.Empty;
             txtManufactureYear.Text = DateTime.Today.Year.ToString(CultureInfo.InvariantCulture);
             txtCapacity.Text = "40";
-            if (ddlStatus.Items.FindByValue(BusStatus.Operational) != null)
-                ddlStatus.SelectedValue = BusStatus.Operational;
+            if (ddlStatus.Items.FindByValue("operational") != null)
+                ddlStatus.SelectedValue = "operational";
             txtMileageKm.Text = "0";
             lblMileageCategory.Text = HttpUtility.HtmlEncode(MileageCategory.Low);
         }
@@ -263,8 +294,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             txtModel.Text = bus.Model ?? string.Empty;
             txtManufactureYear.Text = bus.ManufactureYear.ToString(CultureInfo.InvariantCulture);
             txtCapacity.Text = bus.Capacity.ToString(CultureInfo.InvariantCulture);
-            if (ddlStatus.Items.FindByValue(bus.Status) != null)
-                ddlStatus.SelectedValue = bus.Status;
+            string statusFormValue = GetBusStatusFormValue(bus.Status);
+            if (statusFormValue != null && ddlStatus.Items.FindByValue(statusFormValue) != null)
+                ddlStatus.SelectedValue = statusFormValue;
             txtMileageKm.Text = bus.MileageKm.ToString(CultureInfo.InvariantCulture);
             lblMileageCategory.Text = HttpUtility.HtmlEncode(GetMileageCategory(bus));
         }
@@ -324,7 +356,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     Model = txtModel.Text.Trim(),
                     ManufactureYear = checked((short)year),
                     Capacity = checked((short)capacity),
-                    Status = ddlStatus.SelectedValue,
+                    Status = GetBusStatusForSave(ddlStatus.SelectedValue),
                     MileageKm = mileage
                 };
 
