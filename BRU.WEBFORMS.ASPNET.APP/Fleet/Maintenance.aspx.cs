@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -69,6 +70,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         #region Private Fields
 
         private List<MaintenanceRecord> _currentMaintenanceList;
+        private List<MaintenanceRecord> _allMaintenanceRecords;
         private bool _templateControlsResolved;
         private const int _pageSize = 20;
 
@@ -283,12 +285,15 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         private void LoadMaintenance()
         {
             using (MaintenanceService service = new MaintenanceService())
-            {
-                if (FilterBusId.HasValue)
-                    _currentMaintenanceList = service.GetMaintenanceByBus(FilterBusId.Value);
-                else
-                    _currentMaintenanceList = service.GetAllMaintenance();
-            }
+                _allMaintenanceRecords = service.GetAllMaintenance();
+
+            if (_allMaintenanceRecords == null)
+                _allMaintenanceRecords = new List<MaintenanceRecord>();
+
+            // Keep the full history for deadline checks even when the visible list is filtered.
+            _currentMaintenanceList = FilterBusId.HasValue
+                ? _allMaintenanceRecords.Where(record => record.BusId == FilterBusId.Value).ToList()
+                : new List<MaintenanceRecord>(_allMaintenanceRecords);
 
             ApplyFiltersAndSort();
             BindGrid();
@@ -296,10 +301,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void LoadStats()
         {
-            List<MaintenanceRecord> records;
-            using (MaintenanceService service = new MaintenanceService())
+            List<MaintenanceRecord> records = _allMaintenanceRecords;
+            if (records == null)
             {
-                records = service.GetAllMaintenance();
+                using (MaintenanceService service = new MaintenanceService())
+                    records = service.GetAllMaintenance();
             }
 
             if (records == null) records = new List<MaintenanceRecord>();
@@ -523,15 +529,16 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     litCost.Text = "<span class='" + cssClass + "'>" + record.MaintenanceCost.ToString("F2") + "</span>";
                 }
 
-                // Next maintenance date overdue check
-                if (record.NextMaintenanceDate.HasValue && record.NextMaintenanceDate.Value < DateTime.Today)
+                // Mark a date overdue only when no later maintenance record satisfies it.
+                if (MaintenanceService.IsMaintenanceDeadlineOverdue(record, _allMaintenanceRecords))
                 {
+                    string dueDate = record.NextMaintenanceDate.Value.ToString("dd.MM.yyyy");
                     foreach (TableCell cell in e.Row.Cells)
                     {
-                        // Find the "Next Service" column (index 7)
-                        if (cell.Text != null && cell.Text.Contains(record.NextMaintenanceDate.Value.ToString("dd.MM.yyyy")))
+                        // Find the "Next Service" cell without relying on its column position.
+                        if (cell.Text != null && cell.Text.Contains(dueDate))
                         {
-                            cell.Text = "<span class='overdue'>" + record.NextMaintenanceDate.Value.ToString("dd.MM.yyyy") + "</span>";
+                            cell.Text = "<span class='overdue'>" + System.Web.HttpUtility.HtmlEncode(dueDate) + "</span>";
                         }
                     }
                 }
