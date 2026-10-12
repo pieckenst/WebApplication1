@@ -682,6 +682,25 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             ScrollToControl(btnSave, "scrollToMaintenanceForm");
         }
 
+        private string GetRoadworthinessForSave()
+        {
+            string selectedStatus = ddlRoadworthiness.SelectedValue;
+            if (!string.IsNullOrWhiteSpace(selectedStatus))
+                return selectedStatus;
+
+            // A missing postback selection must not erase the roadworthiness status
+            // of an existing maintenance record.
+            if (EditingMaintenanceId > 0)
+            {
+                MaintenanceRecord existing = FindRecordForCurrentBus(EditingMaintenanceId);
+                if (existing != null && !string.IsNullOrWhiteSpace(existing.Roadworthiness))
+                    return existing.Roadworthiness;
+            }
+
+            // New records use the same default shown by the form.
+            return RoadworthinessStatus.Operational;
+        }
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             Page.Validate("MaintenanceForm");
@@ -709,7 +728,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     MaintenanceType = (txtType.Text ?? string.Empty).Trim(),
                     FoundIssue = string.IsNullOrWhiteSpace(txtFoundIssue.Text) ? null : txtFoundIssue.Text.Trim(),
                     ServiceResult = string.IsNullOrWhiteSpace(txtServiceResult.Text) ? null : txtServiceResult.Text.Trim(),
-                    Roadworthiness = ddlRoadworthiness.SelectedValue
+                    Roadworthiness = GetRoadworthinessForSave()
                 };
 
                 DateTime maintenanceDate;
