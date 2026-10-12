@@ -71,6 +71,57 @@ INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
 INNER JOIN dbo.employee AS e ON e.employee_id = rs.driver_id;
 GO
 
+/* The Oct 11 export defines this as one latest record per bus, not every
+   maintenance row. Keep the summary and maintenance reports deterministic. */
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER VIEW dbo.v_latest_maintenance
+AS
+WITH ranked AS
+(
+    SELECT
+        m.maintenance_id,
+        m.bus_id,
+        m.employee_id,
+        m.maintenance_date,
+        m.next_maintenance_date,
+        m.maintenance_type,
+        m.found_issue,
+        m.service_result,
+        m.mileage_km,
+        m.roadworthiness,
+        m.maintenance_cost,
+        b.fleet_number,
+        DATEDIFF(DAY, m.maintenance_date, CAST(GETDATE() AS date)) AS days_from_last_service,
+        ROW_NUMBER() OVER
+        (
+            PARTITION BY m.bus_id
+            ORDER BY m.maintenance_date DESC, m.maintenance_id DESC
+        ) AS maintenance_seq
+    FROM dbo.maintenance AS m
+    INNER JOIN dbo.bus AS b ON b.bus_id = m.bus_id
+)
+SELECT
+    maintenance_id,
+    bus_id,
+    employee_id,
+    maintenance_date,
+    next_maintenance_date,
+    maintenance_type,
+    found_issue,
+    service_result,
+    mileage_km,
+    roadworthiness,
+    maintenance_cost,
+    fleet_number,
+    days_from_last_service,
+    maintenance_seq
+FROM ranked
+WHERE maintenance_seq = 1;
+GO
+
 /* Recreate procedures which failed to compile in the legacy schema script. */
 SET ANSI_NULLS ON;
 GO
