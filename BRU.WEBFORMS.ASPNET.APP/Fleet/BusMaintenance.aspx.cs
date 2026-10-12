@@ -94,6 +94,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         #region State
 
         private bool _templateControlsResolved;
+        private List<MaintenanceRecord> _allMaintenanceRecords;
 
         private int BusId
         {
@@ -339,14 +340,24 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         #region Filtered history and statistics
 
+        private List<MaintenanceRecord> GetAllMaintenanceRecords()
+        {
+            if (_allMaintenanceRecords == null)
+            {
+                using (MaintenanceService service = new MaintenanceService())
+                    _allMaintenanceRecords = service.GetMaintenanceByBus(BusId);
+
+                if (_allMaintenanceRecords == null)
+                    _allMaintenanceRecords = new List<MaintenanceRecord>();
+            }
+
+            return _allMaintenanceRecords;
+        }
+
         private List<MaintenanceRecord> GetFilteredRows()
         {
-            List<MaintenanceRecord> rows;
-            using (MaintenanceService service = new MaintenanceService())
-                rows = service.GetMaintenanceByBus(BusId);
-
-            if (rows == null)
-                rows = new List<MaintenanceRecord>();
+            // Keep the complete history available while filtering the visible rows.
+            List<MaintenanceRecord> rows = new List<MaintenanceRecord>(GetAllMaintenanceRecords());
 
             string search = (txtSearch.Text ?? string.Empty).Trim();
             if (search.Length > 0)
@@ -413,11 +424,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
         private void LoadStatistics()
         {
-            List<MaintenanceRecord> allRows;
-            using (MaintenanceService service = new MaintenanceService())
-                allRows = service.GetMaintenanceByBus(BusId);
-            if (allRows == null)
-                allRows = new List<MaintenanceRecord>();
+            List<MaintenanceRecord> allRows = GetAllMaintenanceRecords();
 
             litTotalRecords.Text = allRows.Count.ToString(CultureInfo.InvariantCulture);
             litTotalCost.Text = allRows.Sum(x => x.MaintenanceCost).ToString("N2", Localization.Culture);
@@ -425,7 +432,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             MaintenanceRecord latest = allRows.OrderByDescending(x => x.MaintenanceDate).FirstOrDefault();
             litLastService.Text = latest == null ? "—" : latest.MaintenanceDate.ToString("dd.MM.yyyy", Localization.Culture);
 
-            MaintenanceRecord due = allRows.Where(x => x.NextMaintenanceDate.HasValue)
+            // Ignore older deadlines already covered by a later maintenance record.
+            MaintenanceRecord due = allRows.Where(x => x.NextMaintenanceDate.HasValue &&
+                    !MaintenanceService.IsMaintenanceDeadlineSatisfied(x, allRows))
                 .OrderBy(x => x.NextMaintenanceDate.Value).FirstOrDefault();
             if (due == null)
             {
@@ -434,7 +443,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             else
             {
                 string date = due.NextMaintenanceDate.Value.ToString("dd.MM.yyyy", Localization.Culture);
-                if (due.NextMaintenanceDate.Value.Date < DateTime.Today)
+                if (MaintenanceService.IsMaintenanceDeadlineOverdue(due, allRows))
                 {
                     litNextDue.Text = "<span class='overdue'>" + HttpUtility.HtmlEncode(date + " — " + Localization.Get("BusMaintenance_Overdue")) + "</span>";
                     ShowWarning("The next scheduled maintenance date has passed. Review the service plan before returning this bus to operational use.");
@@ -525,7 +534,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 else
                 {
                     string date = record.NextMaintenanceDate.Value.ToString("dd.MM.yyyy", Localization.Culture);
-                    bool overdue = record.NextMaintenanceDate.Value.Date < DateTime.Today;
+                    bool overdue = MaintenanceService.IsMaintenanceDeadlineOverdue(record, GetAllMaintenanceRecords());
                     next.Text = overdue
                         ? "<span class='overdue'>" + HttpUtility.HtmlEncode(date + " — " + Localization.Get("BusMaintenance_Overdue")) + "</span>"
                         : HttpUtility.HtmlEncode(date);
