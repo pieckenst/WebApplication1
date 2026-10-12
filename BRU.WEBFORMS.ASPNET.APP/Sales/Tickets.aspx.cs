@@ -296,7 +296,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                 case 0: break;
                 case 2: encoded += "=="; break;
                 case 3: encoded += "="; break;
-                default: return null;
+                default: return value;
             }
 
             try
@@ -305,7 +305,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
             }
             catch (FormatException)
             {
-                return null;
+                // Accept a pre-tokenization value from an already-open browser page.
+                return value;
             }
         }
 
