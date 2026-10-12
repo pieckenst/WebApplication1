@@ -41,6 +41,117 @@ BEGIN
 END;
 GO
 
+/* Repair objects whose original definitions used a missing route_id column in
+   v_route_schedule. Keep route_id exposed for route/date schedule lookups. */
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER VIEW dbo.v_route_schedule
+AS
+SELECT
+    rs.schedule_id,
+    rs.route_id,
+    rs.service_date,
+    r.route_num,
+    r.route_name,
+    b.fleet_number,
+    b.model,
+    CONCAT(e.surname, N' ', e.name) AS driver_name,
+    rs.departure_time,
+    rs.arrival_time,
+    DATEDIFF(MINUTE, rs.departure_time, rs.arrival_time) AS trip_minutes,
+    rs.available_seat_num,
+    rs.schedule_status
+FROM dbo.route_schedule AS rs
+INNER JOIN dbo.route AS r ON r.route_id = rs.route_id
+INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
+INNER JOIN dbo.employee AS e ON e.employee_id = rs.driver_id;
+GO
+
+/* Recreate procedures which failed to compile in the legacy schema script. */
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER PROCEDURE dbo.get_route_schedule
+    @route_id int,
+    @service_date date
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM dbo.v_route_schedule
+    WHERE route_id = @route_id
+      AND service_date = @service_date
+    ORDER BY departure_time;
+END;
+GO
+
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER PROCEDURE dbo.get_users_with_roles
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        u.user_id,
+        u.login,
+        u.is_active,
+        STRING_AGG(CAST(r.role_name AS nvarchar(max)), N', ')
+            WITHIN GROUP (ORDER BY r.role_name) AS roles
+    FROM dbo.app_user AS u
+    LEFT JOIN dbo.user_role AS ur ON ur.user_id = u.user_id
+    LEFT JOIN dbo.app_role AS r ON r.role_id = ur.role_id
+    GROUP BY u.user_id, u.login, u.is_active;
+END;
+GO
+
+/* Restore grants from the legacy script using one securable per GRANT. */
+IF DATABASE_PRINCIPAL_ID(N'autopark_dispatcher_role') IS NOT NULL
+BEGIN
+    GRANT SELECT ON dbo.v_bus_status TO autopark_dispatcher_role;
+    GRANT SELECT ON dbo.v_employee_directory TO autopark_dispatcher_role;
+    GRANT SELECT ON dbo.v_active_route TO autopark_dispatcher_role;
+    GRANT SELECT ON dbo.v_route_schedule TO autopark_dispatcher_role;
+    GRANT SELECT ON dbo.v_route_stops TO autopark_dispatcher_role;
+    GRANT SELECT ON dbo.v_latest_maintenance TO autopark_dispatcher_role;
+    GRANT SELECT ON dbo.v_autopark_summary TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_active_bus TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_bus_by_fleet_number TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_route_schedule TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_schedule_range TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_bus_maintenance TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.set_bus_status TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.add_maintenance TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.add_route TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_route_details TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.get_expiring_documents TO autopark_dispatcher_role;
+    GRANT EXECUTE ON dbo.create_sales_report TO autopark_dispatcher_role;
+END;
+GO
+
+IF DATABASE_PRINCIPAL_ID(N'autopark_cashier_role') IS NOT NULL
+BEGIN
+    GRANT SELECT ON dbo.v_sale_details TO autopark_cashier_role;
+    GRANT SELECT ON dbo.v_sales_by_channel TO autopark_cashier_role;
+    GRANT SELECT ON dbo.v_sales_by_route TO autopark_cashier_role;
+    GRANT SELECT ON dbo.v_payment_details TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.get_sales_by_date_range TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.get_sales_by_channel TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.get_sales_by_cashier TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.get_route_sales TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.get_ticket_by_price_range TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.add_sale TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.add_payment TO autopark_cashier_role;
+    GRANT EXECUTE ON dbo.get_daily_sales_total TO autopark_cashier_role;
+END;
+GO
+
 /* Remove the duplicate trigger. trg_payment_insert_sync_sale_status already
    recalculates payment_status from the total of successful payments. */
 IF OBJECT_ID(N'dbo.trg_payment_insert_mark_sale_paid', N'TR') IS NOT NULL
