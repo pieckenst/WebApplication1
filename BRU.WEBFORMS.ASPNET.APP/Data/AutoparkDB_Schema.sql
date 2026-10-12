@@ -1491,6 +1491,14 @@ BEGIN
     BEGIN
         THROW 51001, N'Списанный автобус нельзя перевести непосредственно в состояние «Исправен».', 1;
     END;
+
+    -- The high-mileage exception is valid only while the bus remains operational.
+    UPDATE b
+       SET high_mileage_override = 0
+    FROM dbo.bus AS b
+    INNER JOIN inserted AS i ON i.bus_id = b.bus_id
+    WHERE i.status <> N'Исправен'
+      AND b.high_mileage_override = 1;
 END;
 GO
 
