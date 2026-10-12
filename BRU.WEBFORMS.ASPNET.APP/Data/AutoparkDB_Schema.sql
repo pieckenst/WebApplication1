@@ -469,18 +469,18 @@ GO
 INSERT INTO dbo.employee
     (surname, name, patronym, employed_date, job_id, department_id, phone, email, status)
 VALUES
-(N'Иванов', N'Иван', N'Иванович', '2020-01-15', 1, 1, '+375291000001', 'ivanov@autopark.local', N'Работает'),
-(N'Петров', N'Петр', N'Петрович', '2019-03-20', 1, 1, '+375291000002', 'petrov@autopark.local', N'Работает'),
-(N'Сидоров', N'Алексей', N'Михайлович', '2018-06-10', 2, 2, '+375291000003', 'sidorov@autopark.local', N'Работает'),
-(N'Козлов', N'Дмитрий', N'Сергеевич', '2021-02-05', 3, 3, '+375291000004', 'kozlov@autopark.local', N'Работает'),
-(N'Морозов', N'Андрей', N'Владимирович', '2017-08-25', 5, 6, '+375291000005', 'morozov@autopark.local', N'Работает'),
-(N'Новиков', N'Сергей', N'Александрович', '2022-04-12', 4, 4, '+375291000006', 'novikov@autopark.local', N'Работает'),
-(N'Волков', N'Михаил', N'Дмитриевич', '2020-11-30', 1, 1, '+375291000007', 'volkov@autopark.local', N'Работает'),
-(N'Соловьев', N'Артем', N'Игоревич', '2019-09-15', 2, 2, '+375291000008', 'solovyev@autopark.local', N'Работает'),
-(N'Васильев', N'Николай', N'Андреевич', '2021-07-08', 1, 1, '+375291000009', 'vasiliev@autopark.local', N'Работает'),
-(N'Зайцев', N'Владимир', N'Петрович', '2018-12-03', 3, 3, '+375291000010', 'zaitsev@autopark.local', N'Работает'),
-(N'Громов', N'Олег', N'Анатольевич', '2020-05-18', 6, 4, '+375291000011', 'gromov@autopark.local', N'Работает'),
-(N'Федоров', N'Максим', N'Ильич', '2021-10-12', 7, 6, '+375291000012', 'fedorov@autopark.local', N'Работает');
+(N'Иванов', N'Иван', N'Иванович', CONVERT(date, '20200115', 112), 1, 1, '+375291000001', 'ivanov@autopark.local', N'Работает'),
+(N'Петров', N'Петр', N'Петрович', CONVERT(date, '20190320', 112), 1, 1, '+375291000002', 'petrov@autopark.local', N'Работает'),
+(N'Сидоров', N'Алексей', N'Михайлович', CONVERT(date, '20180610', 112), 2, 2, '+375291000003', 'sidorov@autopark.local', N'Работает'),
+(N'Козлов', N'Дмитрий', N'Сергеевич', CONVERT(date, '20210205', 112), 3, 3, '+375291000004', 'kozlov@autopark.local', N'Работает'),
+(N'Морозов', N'Андрей', N'Владимирович', CONVERT(date, '20170825', 112), 5, 6, '+375291000005', 'morozov@autopark.local', N'Работает'),
+(N'Новиков', N'Сергей', N'Александрович', CONVERT(date, '20220412', 112), 4, 4, '+375291000006', 'novikov@autopark.local', N'Работает'),
+(N'Волков', N'Михаил', N'Дмитриевич', CONVERT(date, '20201130', 112), 1, 1, '+375291000007', 'volkov@autopark.local', N'Работает'),
+(N'Соловьев', N'Артем', N'Игоревич', CONVERT(date, '20190915', 112), 2, 2, '+375291000008', 'solovyev@autopark.local', N'Работает'),
+(N'Васильев', N'Николай', N'Андреевич', CONVERT(date, '20210708', 112), 1, 1, '+375291000009', 'vasiliev@autopark.local', N'Работает'),
+(N'Зайцев', N'Владимир', N'Петрович', CONVERT(date, '20181203', 112), 3, 3, '+375291000010', 'zaitsev@autopark.local', N'Работает'),
+(N'Громов', N'Олег', N'Анатольевич', CONVERT(date, '20200518', 112), 6, 4, '+375291000011', 'gromov@autopark.local', N'Работает'),
+(N'Федоров', N'Максим', N'Ильич', CONVERT(date, '20211012', 112), 7, 6, '+375291000012', 'fedorov@autopark.local', N'Работает');
 GO
 
 INSERT INTO dbo.bus
@@ -680,12 +680,12 @@ GO
 INSERT INTO dbo.employee_document
     (employee_id, document_type, document_num, issue_date, expiry_date, issued_by)
 VALUES
-(1,N'Водительское удостоверение',N'3AC100001','2018-05-10',DATEADD(YEAR,5,GETDATE()),N'ГАИ'),
-(2,N'Водительское удостоверение',N'3AC100002','2017-06-20',DATEADD(YEAR,5,GETDATE()),N'ГАИ'),
-(3,N'Удостоверение механика',N'MEC-001','2020-02-15',NULL,N'Автопарк'),
-(4,N'Должностное удостоверение',N'DISP-001','2021-02-05',NULL,N'Автопарк'),
-(5,N'Паспорт',N'MP1234501','2019-08-25','2029-08-25',N'ОВД'),
-(6,N'Кассовое удостоверение',N'KAS-001','2022-04-12',NULL,N'Автопарк');
+(1,N'Водительское удостоверение',N'3AC100001',CONVERT(date, '20180510', 112),DATEADD(YEAR,5,GETDATE()),N'ГАИ'),
+(2,N'Водительское удостоверение',N'3AC100002',CONVERT(date, '20170620', 112),DATEADD(YEAR,5,GETDATE()),N'ГАИ'),
+(3,N'Удостоверение механика',N'MEC-001',CONVERT(date, '20200215', 112),NULL,N'Автопарк'),
+(4,N'Должностное удостоверение',N'DISP-001',CONVERT(date, '20210205', 112),NULL,N'Автопарк'),
+(5,N'Паспорт',N'MP1234501',CONVERT(date, '20190825', 112),CONVERT(date, '20290825', 112),N'ОВД'),
+(6,N'Кассовое удостоверение',N'KAS-001',CONVERT(date, '20220412', 112),NULL,N'Автопарк');
 GO
 
 INSERT INTO dbo.employee_training
@@ -830,6 +830,7 @@ CREATE VIEW dbo.v_route_schedule
 AS
 SELECT
     rs.schedule_id,
+    rs.route_id,
     rs.service_date,
     r.route_num,
     r.route_name,
@@ -1345,7 +1346,7 @@ BEGIN
         u.user_id,
         u.login,
         u.is_active,
-        STRING_AGG(r.role_name, N', ') WITHIN GROUP (ORDER BY r.role_name) AS roles
+        STRING_AGG(CAST(r.role_name AS nvarchar(max)), N', ') WITHIN GROUP (ORDER BY r.role_name) AS roles
     FROM dbo.app_user AS u
     LEFT JOIN dbo.user_role AS ur ON ur.user_id = u.user_id
     LEFT JOIN dbo.app_role AS r ON r.role_id = ur.role_id
@@ -1596,7 +1597,8 @@ GO
    ================================================================ */
 
 -- Курсор 1. просмотр автобусов с высоким пробегом.
-DECLARE @i CURSOR FOR
+DECLARE @i CURSOR;
+SET @i = CURSOR LOCAL FAST_FORWARD FOR
 SELECT fleet_number, mileage_km
 FROM dbo.bus
 WHERE mileage_km >= 150000;
@@ -1614,7 +1616,8 @@ DEALLOCATE @i;
 GO
 
 -- Курсор 2. подсчет сумм продаж по каналам.
-DECLARE @i CURSOR FOR
+DECLARE @i CURSOR;
+SET @i = CURSOR LOCAL FAST_FORWARD FOR
 SELECT sale_channel, COUNT(*), ROUND(SUM(sale_price * ticket_quantity),2)
 FROM dbo.sale
 GROUP BY sale_channel;
@@ -1632,7 +1635,8 @@ DEALLOCATE @i;
 GO
 
 -- Курсор 3. контроль состояния автобусов.
-DECLARE @i CURSOR FOR
+DECLARE @i CURSOR;
+SET @i = CURSOR LOCAL FAST_FORWARD FOR
 SELECT fleet_number, status
 FROM dbo.bus
 WHERE status <> N'Списан';
@@ -1650,7 +1654,8 @@ DEALLOCATE @i;
 GO
 
 -- Курсор 4. контроль расписаний.
-DECLARE @i CURSOR FOR
+DECLARE @i CURSOR;
+SET @i = CURSOR LOCAL FAST_FORWARD FOR
 SELECT schedule_id, service_date, departure_time, arrival_time
 FROM dbo.route_schedule
 WHERE schedule_status <> N'Отменен';
@@ -1671,7 +1676,8 @@ DEALLOCATE @i;
 GO
 
 -- Курсор 5. формирование краткой отчетности по сотрудникам.
-DECLARE @i CURSOR FOR
+DECLARE @i CURSOR;
+SET @i = CURSOR LOCAL FAST_FORWARD FOR
 SELECT e.employee_id, e.surname, e.name, COUNT(s.sale_id)
 FROM dbo.employee AS e
 LEFT JOIN dbo.sale AS s ON s.cashier_id = e.employee_id
@@ -1740,11 +1746,24 @@ GRANT SELECT ON dbo.route_stop TO autopark_dispatcher_role;
 GRANT SELECT ON dbo.stop TO autopark_dispatcher_role;
 GRANT SELECT, INSERT ON dbo.maintenance TO autopark_dispatcher_role;
 GRANT SELECT ON dbo.report TO autopark_dispatcher_role;
-GRANT SELECT ON dbo.v_bus_status, dbo.v_employee_directory, dbo.v_active_route, dbo.v_route_schedule,
-               dbo.v_route_stops, dbo.v_latest_maintenance, dbo.v_autopark_summary TO autopark_dispatcher_role;
-GRANT EXECUTE ON dbo.get_active_bus, dbo.get_bus_by_fleet_number, dbo.get_route_schedule, dbo.get_schedule_range,
-               dbo.get_bus_maintenance, dbo.set_bus_status, dbo.add_maintenance, dbo.add_route,
-               dbo.get_route_details, dbo.get_expiring_documents, dbo.create_sales_report TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_bus_status TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_employee_directory TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_active_route TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_route_schedule TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_route_stops TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_latest_maintenance TO autopark_dispatcher_role;
+GRANT SELECT ON dbo.v_autopark_summary TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_active_bus TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_bus_by_fleet_number TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_route_schedule TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_schedule_range TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_bus_maintenance TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.set_bus_status TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.add_maintenance TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.add_route TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_route_details TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.get_expiring_documents TO autopark_dispatcher_role;
+GRANT EXECUTE ON dbo.create_sales_report TO autopark_dispatcher_role;
 GO
 
 /* Кассир: билеты, продажи и платежи. */
@@ -1752,10 +1771,18 @@ GRANT SELECT ON dbo.ticket TO autopark_cashier_role;
 GRANT SELECT, INSERT, UPDATE ON dbo.sale TO autopark_cashier_role;
 GRANT SELECT, INSERT ON dbo.payment TO autopark_cashier_role;
 GRANT SELECT ON dbo.route_schedule TO autopark_cashier_role;
-GRANT SELECT ON dbo.v_sale_details, dbo.v_sales_by_channel, dbo.v_sales_by_route, dbo.v_payment_details TO autopark_cashier_role;
-GRANT EXECUTE ON dbo.get_sales_by_date_range, dbo.get_sales_by_channel, dbo.get_sales_by_cashier,
-               dbo.get_route_sales, dbo.get_ticket_by_price_range, dbo.add_sale,
-               dbo.add_payment, dbo.get_daily_sales_total TO autopark_cashier_role;
+GRANT SELECT ON dbo.v_sale_details TO autopark_cashier_role;
+GRANT SELECT ON dbo.v_sales_by_channel TO autopark_cashier_role;
+GRANT SELECT ON dbo.v_sales_by_route TO autopark_cashier_role;
+GRANT SELECT ON dbo.v_payment_details TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_sales_by_date_range TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_sales_by_channel TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_sales_by_cashier TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_route_sales TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_ticket_by_price_range TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.add_sale TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.add_payment TO autopark_cashier_role;
+GRANT EXECUTE ON dbo.get_daily_sales_total TO autopark_cashier_role;
 GO
 
 /* ================================================================
