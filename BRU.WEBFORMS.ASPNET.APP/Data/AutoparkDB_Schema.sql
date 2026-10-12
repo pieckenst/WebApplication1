@@ -1511,6 +1511,10 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- Prevent the trigger's own status UPDATE from recursively re-entering it.
+    IF TRIGGER_NESTLEVEL(OBJECT_ID(N'dbo.trg_bus_update_mileage_check'), 'AFTER', 'DML') > 1
+        RETURN;
+
     UPDATE b
        SET status = N'Резерв'
     FROM dbo.bus AS b
