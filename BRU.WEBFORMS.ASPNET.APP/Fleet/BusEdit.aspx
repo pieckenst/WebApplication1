@@ -180,10 +180,10 @@
                     <div class="form-row">
                         <span class="form-label"><%= Localization.GetHtml("Common_Status") %> <span class="form-required">*</span></span>
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control medium">
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_InRepair %>" Value="На ремонте" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Retired %>" Value="Списан" />
-                            <asp:ListItem Text="<%$ Resources:Strings, Common_Reserve %>" Value="Резерв" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="operational" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_InRepair %>" Value="in-repair" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Retired %>" Value="retired" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Common_Reserve %>" Value="reserve" />
                         </asp:DropDownList>
                         <span class="form-hint">Cannot change retired bus directly to operational</span>
                     </div>
