@@ -155,7 +155,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         {
             try
             {
-                if (!IsValidBusStatus(newStatus))
+                newStatus = NormalizeBusStatus(newStatus);
+                if (newStatus == null)
                 {
                     throw new ServiceException("Invalid bus status");
                 }
@@ -292,21 +293,45 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                 throw new ServiceException("Mileage cannot be negative");
             }
 
-            if (!IsValidBusStatus(bus.Status))
+            string normalizedStatus = NormalizeBusStatus(bus.Status);
+            if (normalizedStatus == null)
             {
                 throw new ServiceException("Invalid bus status");
             }
+
+            // Always persist the canonical labels used by the database.
+            bus.Status = normalizedStatus;
         }
 
         /// <summary>
-        /// Check if bus status is valid
+        /// Normalize a posted form token or localized status label to the
+        /// canonical value expected by the database.
         /// </summary>
-        private bool IsValidBusStatus(string status)
+        private static string NormalizeBusStatus(string status)
         {
-            return status == BusStatus.Operational ||
-                   status == BusStatus.InRepair ||
-                   status == BusStatus.Retired ||
-                   status == BusStatus.Reserve;
+            if (string.IsNullOrWhiteSpace(status))
+                return null;
+
+            string normalized = status.Trim();
+
+            if (string.Equals(normalized, BusStatus.Operational, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "operational", StringComparison.OrdinalIgnoreCase))
+                return BusStatus.Operational;
+
+            if (string.Equals(normalized, BusStatus.InRepair, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "in-repair", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "inrepair", StringComparison.OrdinalIgnoreCase))
+                return BusStatus.InRepair;
+
+            if (string.Equals(normalized, BusStatus.Retired, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "retired", StringComparison.OrdinalIgnoreCase))
+                return BusStatus.Retired;
+
+            if (string.Equals(normalized, BusStatus.Reserve, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "reserve", StringComparison.OrdinalIgnoreCase))
+                return BusStatus.Reserve;
+
+            return null;
         }
 
         public void Dispose()
