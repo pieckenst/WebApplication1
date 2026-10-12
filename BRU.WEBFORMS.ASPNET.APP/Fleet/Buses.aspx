@@ -306,7 +306,7 @@
 
                         <asp:ListItem
                             Text="<%$ Resources:Strings, Common_Operational %>"
-                            Value="Исправен" />
+                            Value="operational" />
 
                         <asp:ListItem
                             Text="<%$ Resources:Strings, Common_InRepair %>"
