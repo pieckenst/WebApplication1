@@ -492,6 +492,15 @@
   <data name="Buses_DeleteConfirm" xml:space="preserve">
     <value>Удалить этот автобус?</value>
   </data>
+  <data name="Buses_ReleaseFromReserve" xml:space="preserve">
+    <value>Вывести из резерва</value>
+  </data>
+  <data name="Buses_ReleaseFromReserveConfirm" xml:space="preserve">
+    <value>Вывести автобус из резерва несмотря на пробег от 250 000 км? Продолжайте только после проверки технического состояния.</value>
+  </data>
+  <data name="Buses_ReleaseFromReserveSuccess" xml:space="preserve">
+    <value>Автобус выведен из резерва. Пробег не изменён; разрешение действует, пока статус автобуса остаётся «Исправен».</value>
+  </data>
   <data name="Maintenance_Heading" xml:space="preserve">
     <value>Записи об обслуживании</value>
   </data>
