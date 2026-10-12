@@ -310,15 +310,15 @@
 
                         <asp:ListItem
                             Text="<%$ Resources:Strings, Common_InRepair %>"
-                            Value="На ремонте" />
+                            Value="in-repair" />
 
                         <asp:ListItem
                             Text="<%$ Resources:Strings, Common_Retired %>"
-                            Value="Списан" />
+                            Value="retired" />
 
                         <asp:ListItem
                             Text="<%$ Resources:Strings, Common_Reserve %>"
-                            Value="Резерв" />
+                            Value="reserve" />
 
                     </asp:DropDownList>
                 </span>
