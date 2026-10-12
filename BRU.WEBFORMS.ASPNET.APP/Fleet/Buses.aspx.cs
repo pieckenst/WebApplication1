@@ -397,6 +397,22 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             }
         }
 
+        private static string GetBusStatusFilterValue(string status)
+        {
+            switch (status)
+            {
+                case "operational": return BusStatus.Operational;
+                case "in-repair": return BusStatus.InRepair;
+                case "retired": return BusStatus.Retired;
+                case "reserve": return BusStatus.Reserve;
+                case BusStatus.Operational: return BusStatus.Operational;
+                case BusStatus.InRepair: return BusStatus.InRepair;
+                case BusStatus.Retired: return BusStatus.Retired;
+                case BusStatus.Reserve: return BusStatus.Reserve;
+                default: return null;
+            }
+        }
+
         private List<Bus> ApplyFilters(List<Bus> buses)
         {
             try
@@ -408,8 +424,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                 if (DdlStatusFilter != null &&
                     !string.IsNullOrEmpty(DdlStatusFilter.SelectedValue))
                 {
-                    string selectedStatus =
-                        DdlStatusFilter.SelectedValue;
+                    string selectedStatus = GetBusStatusFilterValue(DdlStatusFilter.SelectedValue);
 
                     filteredBuses = filteredBuses
                         .Where(b => b != null &&
