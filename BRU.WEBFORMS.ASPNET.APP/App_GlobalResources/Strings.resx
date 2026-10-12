@@ -492,6 +492,15 @@
   <data name="Buses_DeleteConfirm" xml:space="preserve">
     <value>Are you sure you want to delete this bus?</value>
   </data>
+  <data name="Buses_ReleaseFromReserve" xml:space="preserve">
+    <value>Release from reserve</value>
+  </data>
+  <data name="Buses_ReleaseFromReserveConfirm" xml:space="preserve">
+    <value>Move this bus out of reserve despite mileage of 250,000 km or more? Continue only after confirming its roadworthiness.</value>
+  </data>
+  <data name="Buses_ReleaseFromReserveSuccess" xml:space="preserve">
+    <value>Bus released from reserve. Mileage is unchanged; the exception remains active while the bus status stays Operational.</value>
+  </data>
   <data name="Maintenance_Heading" xml:space="preserve">
     <value>Maintenance Records</value>
   </data>
