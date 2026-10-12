@@ -210,7 +210,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         {
             try
             {
-                if (!IsValidSaleChannel(saleChannel))
+                saleChannel = NormalizeSaleChannel(saleChannel);
+                if (saleChannel == null)
                 {
                     throw new ServiceException("Invalid sale channel");
                 }
