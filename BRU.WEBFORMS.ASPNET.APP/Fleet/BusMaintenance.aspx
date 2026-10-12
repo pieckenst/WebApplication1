@@ -127,9 +127,9 @@
                     <span class="form-label"><%= Localization.GetHtml("Common_Roadworthiness") %></span>
                     <asp:DropDownList ID="ddlRoadworthinessFilter" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlRoadworthinessFilter_SelectedIndexChanged">
                         <asp:ListItem Text="All statuses" Value="" />
-                        <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="Исправен" />
-                        <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="Требует внимания" />
-                        <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="Неисправен" />
+                        <asp:ListItem Text="<%$ Resources:Strings, Common_Operational %>" Value="operational" />
+                        <asp:ListItem Text="<%$ Resources:Strings, Common_Attention %>" Value="needs-attention" />
+                        <asp:ListItem Text="<%$ Resources:Strings, Common_NotOperational %>" Value="not-operational" />
                     </asp:DropDownList>
                 </div>
             </ContentTemplate>
