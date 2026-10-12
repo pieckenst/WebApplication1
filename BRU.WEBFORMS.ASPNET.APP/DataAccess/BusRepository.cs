@@ -158,7 +158,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                               manufacture_year = @manufacture_year, 
                               capacity = @capacity, 
                               status = @status, 
-                              mileage_km = @mileage_km
+                              mileage_km = @mileage_km,
+                              high_mileage_override = CASE WHEN @status = N'Исправен' THEN high_mileage_override ELSE 0 END
                           WHERE bus_id = @bus_id";
             
             int rowsAffected = _db.ExecuteNonQuery(sql, parameters);
@@ -176,7 +177,31 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                 DatabaseHelper.CreateParameter("@status", status, SqlDbType.NVarChar, 30)
             };
             
-            string sql = "UPDATE dbo.bus SET status = @status WHERE bus_id = @bus_id";
+            string sql = @"UPDATE dbo.bus
+                            SET status = @status,
+                                high_mileage_override = CASE WHEN @status = N'Исправен' THEN high_mileage_override ELSE 0 END
+                            WHERE bus_id = @bus_id";
+            int rowsAffected = _db.ExecuteNonQuery(sql, parameters);
+            return rowsAffected > 0;
+        }
+
+        /// <summary>
+        /// Explicitly release a high-mileage reserve bus. The override flag prevents
+        /// the mileage trigger from silently putting it back into reserve.
+        /// </summary>
+        public bool ReleaseBusFromReserve(int busId)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                DatabaseHelper.CreateParameter("@bus_id", busId, SqlDbType.Int)
+            };
+
+            const string sql = @"UPDATE dbo.bus
+                                 SET status = N'Исправен',
+                                     high_mileage_override = 1
+                                 WHERE bus_id = @bus_id
+                                   AND status = N'Резерв'
+                                   AND mileage_km >= 250000";
             int rowsAffected = _db.ExecuteNonQuery(sql, parameters);
             return rowsAffected > 0;
         }
