@@ -3,7 +3,8 @@
 
     Target: the AutoparkDB object set captured by the database export dated
     2026-10-11. This is NOT a database creation/reset script and is NOT a
-    replacement for AutoparkDB_Schema.sql, which is explicitly historical.
+    replacement for AutoparkDB_Schema.sql, which drops/recreates the database
+    and inserts demo data. Use this patch to repair an existing database.
 
     Before running:
       1. Back up the database.
