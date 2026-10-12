@@ -219,14 +219,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
 
             foreach (Payment p in payments)
             {
-                if (p.PaymentStatus == PaymentStatus.Paid)
+                if (p.PaymentStatus == PaymentRecordStatus.Successful)
                 {
                     paidCount++;
                     totalAmount += p.Amount;
                 }
-                else if (p.PaymentStatus == PaymentStatus.Pending)
+                else if (p.PaymentStatus == PaymentRecordStatus.Pending)
                     pendingCount++;
-                else if (p.PaymentStatus == PaymentStatus.Error)
+                else if (p.PaymentStatus == PaymentRecordStatus.Error)
                     errorCount++;
             }
 
@@ -437,9 +437,43 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
             ShowSuccess("Payment list refreshed successfully.");
         }
 
+        private static string GetPaymentRecordStatusFilterValue(string value)
+        {
+            switch (value)
+            {
+                case "pending": return PaymentRecordStatus.Pending;
+                case "successful": return PaymentRecordStatus.Successful;
+                case "error": return PaymentRecordStatus.Error;
+                case "refunded": return PaymentRecordStatus.Refunded;
+                case PaymentRecordStatus.Pending: return PaymentRecordStatus.Pending;
+                case PaymentRecordStatus.Successful: return PaymentRecordStatus.Successful;
+                case PaymentRecordStatus.Error: return PaymentRecordStatus.Error;
+                case PaymentRecordStatus.Refunded: return PaymentRecordStatus.Refunded;
+                default: return null;
+            }
+        }
+
+        private static string GetPaymentMethodForSave(string value)
+        {
+            switch (value)
+            {
+                case "cash": return PaymentMethodType.Cash;
+                case "bank-card": return PaymentMethodType.BankCard;
+                case "e-wallet": return PaymentMethodType.ElectronicWallet;
+                case "qr-code": return PaymentMethodType.QrCode;
+                case "bank-transfer": return PaymentMethodType.BankTransfer;
+                case PaymentMethodType.Cash: return PaymentMethodType.Cash;
+                case PaymentMethodType.BankCard: return PaymentMethodType.BankCard;
+                case PaymentMethodType.ElectronicWallet: return PaymentMethodType.ElectronicWallet;
+                case PaymentMethodType.QrCode: return PaymentMethodType.QrCode;
+                case PaymentMethodType.BankTransfer: return PaymentMethodType.BankTransfer;
+                default: return null;
+            }
+        }
+
         protected void ddlStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterStatus = ddlStatusFilter.SelectedValue;
+            FilterStatus = GetPaymentRecordStatusFilterValue(ddlStatusFilter.SelectedValue) ?? string.Empty;
             CurrentPage = 1;
             LoadPayments();
         }
@@ -467,8 +501,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Sales
                 }
                 payment.Amount = amount;
 
-                payment.PaymentMethod = ddlMethod.SelectedValue;
-                payment.PaymentStatus = PaymentStatus.Paid;
+                payment.PaymentMethod = GetPaymentMethodForSave(ddlMethod.SelectedValue);
+                payment.PaymentStatus = PaymentRecordStatus.Successful;
                 payment.TransactionId = string.IsNullOrWhiteSpace(txtTransactionId.Text)
                     ? null : txtTransactionId.Text.Trim();
 
