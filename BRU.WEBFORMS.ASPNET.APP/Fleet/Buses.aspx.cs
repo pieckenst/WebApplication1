@@ -806,53 +806,86 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
             object sender,
             EventArgs e)
         {
+            string exportId = Guid.NewGuid().ToString("N");
+            DateTime startedAt = DateTime.UtcNow;
+            Global.WriteDiagnostic("BUS_EXPORT_START", "ExportId=" + exportId +
+                "; User=" + (Context.User == null || Context.User.Identity == null ? "(unknown)" : Context.User.Identity.Name) +
+                "; Request=" + Request.HttpMethod + " " + Request.RawUrl);
+
             try
             {
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId + "; Stage=ValidateControls");
                 ValidateTemplateControls();
 
                 List<Bus> allBuses;
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId + "; Stage=QueryBuses");
                 using (BusService busService = new BusService())
                 {
                     allBuses = busService.GetAllBuses() ?? new List<Bus>();
                 }
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId +
+                    "; Stage=QueryComplete; RowsFromDatabase=" + allBuses.Count);
 
                 // Export all rows matching the active filters, not only the visible page.
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId + "; Stage=ApplyFiltersAndSort");
                 List<Bus> exportBuses = ApplySorting(ApplyFilters(allBuses));
                 if (exportBuses.Count > MaxExportRows)
                     throw new ServiceException("The export exceeds 100,000 rows. Apply filters and try again.");
 
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId +
+                    "; Stage=BuildWorkbook; ExportRows=" + exportBuses.Count);
                 byte[] workbook = CreateExcelWorkbook(exportBuses);
                 string fileName = "autopark-buses-" +
                     DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture) + ".xlsx";
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId +
+                    "; Stage=WorkbookReady; Bytes=" + workbook.Length + "; File=" + fileName);
 
-                // Complete the file response without aborting the ASP.NET request thread.
+                // Do not call Response.End(): it aborts the request thread by design.
                 _exporting = true;
                 Response.Clear();
+                Response.BufferOutput = true;
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 Response.ContentEncoding = Encoding.UTF8;
-                Response.Charset = "utf-8";
-                Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName);
+                Response.Charset = string.Empty;
+                Response.AddHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
                 Response.AddHeader("Content-Length", workbook.Length.ToString(CultureInfo.InvariantCulture));
                 Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
                 Response.Cache.SetNoStore();
+
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId + "; Stage=WriteResponse");
                 Response.BinaryWrite(workbook);
                 Response.Flush();
+                Global.WriteDiagnostic("BUS_EXPORT_STAGE", "ExportId=" + exportId +
+                    "; Stage=ResponseFlushed; ElapsedMs=" + (DateTime.UtcNow - startedAt).TotalMilliseconds.ToString("F0", CultureInfo.InvariantCulture));
                 Context.ApplicationInstance.CompleteRequest();
+                Global.WriteDiagnostic("BUS_EXPORT_SUCCESS", "ExportId=" + exportId +
+                    "; Bytes=" + workbook.Length + "; Rows=" + exportBuses.Count);
+            }
+            catch (System.Threading.ThreadAbortException ex)
+            {
+                // A ThreadAbortException may be raised by ASP.NET during request termination;
+                // record it distinctly rather than treating it as a generic application fault.
+                Global.WriteDiagnostic("BUS_EXPORT_THREAD_ABORT", "ExportId=" + exportId + Environment.NewLine + ex);
+                throw;
             }
             catch (ServiceException ex)
             {
+                Global.WriteDiagnostic("BUS_EXPORT_FAILED", "ExportId=" + exportId + "; Stage=ServiceException" + Environment.NewLine + ex);
                 if (!_exporting) HandleServiceError(ex);
-                else System.Diagnostics.Debug.WriteLine("Bus Excel export response failed: " + ex);
+                else System.Diagnostics.Trace.WriteLine("Bus Excel export response failed: " + ex);
             }
             catch (System.Data.SqlClient.SqlException ex)
             {
+                Global.WriteDiagnostic("BUS_EXPORT_FAILED", "ExportId=" + exportId + "; Stage=SqlException" + Environment.NewLine + ex);
                 if (!_exporting) HandleDatabaseError(ex);
-                else System.Diagnostics.Debug.WriteLine("Bus Excel export response failed: " + ex);
+                else System.Diagnostics.Trace.WriteLine("Bus Excel export response failed: " + ex);
             }
             catch (Exception ex)
             {
+                Global.WriteDiagnostic("BUS_EXPORT_FAILED", "ExportId=" + exportId +
+                    "; Stage=Unknown; Exporting=" + _exporting + Environment.NewLine + ex);
                 if (!_exporting) HandleGenericError(ex);
-                else System.Diagnostics.Debug.WriteLine("Bus Excel export response failed: " + ex);
+                else System.Diagnostics.Trace.WriteLine("Bus Excel export response failed: " + ex);
             }
         }
 
