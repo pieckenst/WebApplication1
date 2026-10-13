@@ -72,6 +72,28 @@ INNER JOIN dbo.bus AS b ON b.bus_id = rs.bus_id
 INNER JOIN dbo.employee AS e ON e.employee_id = rs.driver_id;
 GO
 
+/* Repair route-stop details: the WebForms repository filters by route_id,
+   so the view must expose that key together with the display columns. */
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER VIEW dbo.v_route_stops
+AS
+SELECT
+    rs.route_id,
+    r.route_num,
+    r.route_name,
+    rs.stop_sequence,
+    st.stop_name,
+    st.location,
+    ROUND(COALESCE(rs.distance_km, 0), 2) AS distance_km,
+    COALESCE(rs.arrival_offset_min, 0) AS arrival_offset_min
+FROM dbo.route_stop AS rs
+INNER JOIN dbo.route AS r ON r.route_id = rs.route_id
+INNER JOIN dbo.stop AS st ON st.stop_id = rs.stop_id;
+GO
+
 /* The Oct 11 export defines this as one latest record per bus, not every
    maintenance row. Keep the summary and maintenance reports deterministic. */
 SET ANSI_NULLS ON;
