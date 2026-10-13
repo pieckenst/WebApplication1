@@ -499,7 +499,16 @@
     <value>Вывести автобус из резерва несмотря на пробег от 250 000 км? Продолжайте только после проверки технического состояния.</value>
   </data>
   <data name="Buses_ReleaseFromReserveSuccess" xml:space="preserve">
-    <value>Автобус выведен из резерва. Пробег не изменён; разрешение действует, пока статус автобуса остаётся «Исправен».</value>
+    <value>Автобус выведен из резерва. Пробег не изменён; для автобусов с пробегом от 250 000 км действует отдельное разрешение, пока они остаются в статусе «Исправен».</value>
+  </data>
+  <data name="Buses_ReleasePlannedReserveConfirm" xml:space="preserve">
+    <value>Вывести запасной автобус из резерва и вернуть его в эксплуатацию?</value>
+  </data>
+  <data name="Buses_ReserveByMileage" xml:space="preserve">
+    <value>По пробегу (от 250 000 км)</value>
+  </data>
+  <data name="Buses_ReserveAsBackup" xml:space="preserve">
+    <value>Запасной автобус</value>
   </data>
   <data name="Maintenance_Heading" xml:space="preserve">
     <value>Записи об обслуживании</value>

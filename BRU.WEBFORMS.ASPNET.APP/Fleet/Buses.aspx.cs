@@ -28,6 +28,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         protected global::System.Web.UI.WebControls.Literal litTotalBuses;
         protected global::System.Web.UI.WebControls.Literal litOperationalBuses;
         protected global::System.Web.UI.WebControls.Literal litRepairBuses;
+        protected global::System.Web.UI.WebControls.Literal litReserveBuses;
         protected global::System.Web.UI.WebControls.Literal litAttentionBuses;
 
         protected global::System.Web.UI.WebControls.Button btnAddBus;
@@ -731,6 +732,12 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                                  BusStatus.InRepair)
                         .ToString();
 
+                    litReserveBuses.Text =
+                        allBuses.Count(
+                            b => b != null &&
+                                 b.Status == BusStatus.Reserve)
+                        .ToString();
+
                     List<Bus> busesNeedingAttention =
                         busService.GetBusesNeedingAttention();
 
@@ -976,7 +983,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                                 busService.ReleaseBusFromReserve(busId);
                             }
 
-                            LogInformation("High-mileage reserve release approved: busId=" + busId);
+                            LogInformation("Bus released from reserve: busId=" + busId);
                             ShowSuccessMessage(Localization.Get("Buses_ReleaseFromReserveSuccess"));
                             CurrentPage = 1;
                             LoadBusData();
@@ -1021,12 +1028,26 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
                     return;
                 }
 
+                bool isReserveBus =
+                    string.Equals(bus.Status, BusStatus.Reserve, StringComparison.Ordinal);
+
                 Button btnReleaseReserve = e.Row.FindControl("btnReleaseReserve") as Button;
                 if (btnReleaseReserve != null)
                 {
-                    btnReleaseReserve.Visible =
-                        bus.Status == BusStatus.Reserve &&
-                        bus.MileageKm >= BusService.HighMileageReserveThresholdKm;
+                    btnReleaseReserve.Visible = isReserveBus;
+
+                    if (isReserveBus)
+                    {
+                        string confirmationKey =
+                            bus.MileageKm >= BusService.HighMileageReserveThresholdKm
+                                ? "Buses_ReleaseFromReserveConfirm"
+                                : "Buses_ReleasePlannedReserveConfirm";
+
+                        btnReleaseReserve.OnClientClick =
+                            "return confirm('" +
+                            System.Web.HttpUtility.JavaScriptStringEncode(Localization.Get(confirmationKey)) +
+                            "');";
+                    }
                 }
 
                 Literal litStatus =
@@ -1035,12 +1056,27 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
 
                 if (litStatus != null)
                 {
-                    litStatus.Text =
+                    string statusMarkup =
                         "<span class='" +
                         GetStatusCssClass(bus.Status) +
                         "'>" +
                         Server.HtmlEncode(bus.Status) +
                         "</span>";
+
+                    if (isReserveBus)
+                    {
+                        string reserveReasonKey =
+                            bus.MileageKm >= BusService.HighMileageReserveThresholdKm
+                                ? "Buses_ReserveByMileage"
+                                : "Buses_ReserveAsBackup";
+
+                        statusMarkup +=
+                            "<br /><span class='text-small'>" +
+                            Server.HtmlEncode(Localization.Get(reserveReasonKey)) +
+                            "</span>";
+                    }
+
+                    litStatus.Text = statusMarkup;
                 }
 
                 Literal litMileageCategory =

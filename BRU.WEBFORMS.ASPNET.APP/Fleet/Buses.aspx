@@ -258,6 +258,10 @@
                 <asp:Literal ID="litRepairBuses" runat="server" Text="0" />
             </div>
             <div class="stats-item">
+                <span class="stats-label"><%= Localization.GetHtml("Common_Reserve") %>:</span>
+                <asp:Literal ID="litReserveBuses" runat="server" Text="0" />
+            </div>
+            <div class="stats-item">
                 <span class="stats-label"><%= Localization.GetHtml("Buses_NeedAttention") %></span>
                 <asp:Literal ID="litAttentionBuses" runat="server" Text="0" />
             </div>

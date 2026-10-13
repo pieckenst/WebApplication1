@@ -186,8 +186,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
         }
 
         /// <summary>
-        /// Explicitly release a high-mileage reserve bus. The override flag prevents
-        /// the mileage trigger from silently putting it back into reserve.
+        /// Release any reserve bus. The mileage override is needed only when
+        /// the bus meets the automatic reserve threshold; low-mileage standby
+        /// buses return to service without bypassing that rule.
         /// </summary>
         public bool ReleaseBusFromReserve(int busId)
         {
@@ -198,10 +199,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
 
             const string sql = @"UPDATE dbo.bus
                                  SET status = N'Исправен',
-                                     high_mileage_override = 1
+                                     high_mileage_override =
+                                         CASE WHEN mileage_km >= 250000 THEN 1 ELSE 0 END
                                  WHERE bus_id = @bus_id
-                                   AND status = N'Резерв'
-                                   AND mileage_km >= 250000";
+                                   AND status = N'Резерв'";
             int rowsAffected = _db.ExecuteNonQuery(sql, parameters);
             return rowsAffected > 0;
         }

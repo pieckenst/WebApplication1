@@ -499,7 +499,16 @@
     <value>Move this bus out of reserve despite mileage of 250,000 km or more? Continue only after confirming its roadworthiness.</value>
   </data>
   <data name="Buses_ReleaseFromReserveSuccess" xml:space="preserve">
-    <value>Bus released from reserve. Mileage is unchanged; the exception remains active while the bus status stays Operational.</value>
+    <value>Bus released from reserve. Mileage is unchanged; buses at 250,000 km or more use a separate approval while they remain Operational.</value>
+  </data>
+  <data name="Buses_ReleasePlannedReserveConfirm" xml:space="preserve">
+    <value>Release this standby bus from reserve and return it to service?</value>
+  </data>
+  <data name="Buses_ReserveByMileage" xml:space="preserve">
+    <value>Mileage-based reserve (250,000 km+)</value>
+  </data>
+  <data name="Buses_ReserveAsBackup" xml:space="preserve">
+    <value>Standby bus</value>
   </data>
   <data name="Maintenance_Heading" xml:space="preserve">
     <value>Maintenance Records</value>

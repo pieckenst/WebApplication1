@@ -188,8 +188,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         }
 
         /// <summary>
-        /// Explicitly release a high-mileage bus from reserve. This is the
-        /// intentional exception to the automatic 250,000 km reserve rule.
+        /// Release a bus from reserve. A low-mileage standby bus returns to
+        /// service normally; a bus at or above the automatic 250,000 km
+        /// threshold receives an explicit override so the mileage trigger
+        /// does not immediately put it back into reserve.
         /// </summary>
         public bool ReleaseBusFromReserve(int busId)
         {
@@ -204,9 +206,6 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
                 if (!string.Equals(NormalizeBusStatus(bus.Status), BusStatus.Reserve, StringComparison.Ordinal))
                     throw new ServiceException("Only a bus currently in reserve can be released with this action.");
-
-                if (bus.MileageKm < HighMileageReserveThresholdKm)
-                    throw new ServiceException("This action is reserved for buses with mileage of at least 250,000 km.");
 
                 if (!_repository.ReleaseBusFromReserve(busId))
                     throw new ServiceException("The bus status changed before the release was saved. Refresh the fleet list and try again.");
