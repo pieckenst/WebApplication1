@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -50,8 +53,10 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         #region Private Fields
 
         private List<Bus> _currentBusList;
+        private bool _exporting;
 
         private const int _pageSize = 20;
+        private const int MaxExportRows = 100000;
 
         #endregion
 
@@ -803,13 +808,279 @@ namespace BRU.WEBFORMS.ASPNET.APP.Fleet
         {
             try
             {
-                ShowSuccessMessage(
-                    "Export functionality will be implemented.");
+                ValidateTemplateControls();
+
+                List<Bus> allBuses;
+                using (BusService busService = new BusService())
+                {
+                    allBuses = busService.GetAllBuses() ?? new List<Bus>();
+                }
+
+                // Export all rows matching the active filters, not only the visible page.
+                List<Bus> exportBuses = ApplySorting(ApplyFilters(allBuses));
+                if (exportBuses.Count > MaxExportRows)
+                    throw new ServiceException("The export exceeds 100,000 rows. Apply filters and try again.");
+
+                byte[] workbook = CreateExcelWorkbook(exportBuses);
+                string fileName = "autopark-buses-" +
+                    DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture) + ".xlsx";
+
+                // Complete the file response without aborting the ASP.NET request thread.
+                _exporting = true;
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.ContentEncoding = Encoding.UTF8;
+                Response.Charset = "utf-8";
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName);
+                Response.AddHeader("Content-Length", workbook.Length.ToString(CultureInfo.InvariantCulture));
+                Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+                Response.Cache.SetNoStore();
+                Response.BinaryWrite(workbook);
+                Response.Flush();
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (ServiceException ex)
+            {
+                if (!_exporting) HandleServiceError(ex);
+                else System.Diagnostics.Debug.WriteLine("Bus Excel export response failed: " + ex);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                if (!_exporting) HandleDatabaseError(ex);
+                else System.Diagnostics.Debug.WriteLine("Bus Excel export response failed: " + ex);
             }
             catch (Exception ex)
             {
-                HandleGenericError(ex);
+                if (!_exporting) HandleGenericError(ex);
+                else System.Diagnostics.Debug.WriteLine("Bus Excel export response failed: " + ex);
             }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            // Do not append the normal WebForms HTML to the binary workbook response.
+            if (!_exporting)
+                base.Render(writer);
+        }
+
+        private static byte[] CreateExcelWorkbook(IList<Bus> buses)
+        {
+            using (MemoryStream output = new MemoryStream())
+            {
+                using (ZipArchive archive = new ZipArchive(output, ZipArchiveMode.Create, true))
+                {
+                    AddExcelPart(archive, "[Content_Types].xml",
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                        "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">" +
+                        "<Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +
+                        "<Default Extension=\"xml\" ContentType=\"application/xml\"/>" +
+                        "<Override PartName=\"/xl/workbook.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\"/>" +
+                        "<Override PartName=\"/xl/worksheets/sheet1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/>" +
+                        "<Override PartName=\"/xl/styles.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml\"/>" +
+                        "</Types>");
+
+                    AddExcelPart(archive, "_rels/.rels",
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                        "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                        "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"xl/workbook.xml\"/>" +
+                        "</Relationships>");
+
+                    AddExcelPart(archive, "xl/workbook.xml",
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                        "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" " +
+                        "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">" +
+                        "<bookViews><workbookView xWindow=\"0\" yWindow=\"0\" windowWidth=\"24000\" windowHeight=\"12000\"/></bookViews>" +
+                        "<sheets><sheet name=\"Buses\" sheetId=\"1\" r:id=\"rId1\"/></sheets></workbook>");
+
+                    AddExcelPart(archive, "xl/_rels/workbook.xml.rels",
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                        "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                        "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/>" +
+                        "<Relationship Id=\"rId2\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/>" +
+                        "</Relationships>");
+
+                    AddExcelPart(archive, "xl/styles.xml",
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                        "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\">" +
+                        "<fonts count=\"2\"><font><sz val=\"11\"/><name val=\"Calibri\"/></font>" +
+                        "<font><b/><color rgb=\"FFFFFFFF\"/><sz val=\"11\"/><name val=\"Calibri\"/></font></fonts>" +
+                        "<fills count=\"3\"><fill><patternFill patternType=\"none\"/></fill>" +
+                        "<fill><patternFill patternType=\"gray125\"/></fill>" +
+                        "<fill><patternFill patternType=\"solid\"><fgColor rgb=\"FF1447AE\"/><bgColor indexed=\"64\"/></patternFill></fill></fills>" +
+                        "<borders count=\"2\"><border><left/><right/><top/><bottom/><diagonal/></border>" +
+                        "<border><left style=\"thin\"><color rgb=\"FFD0D0D0\"/></left>" +
+                        "<right style=\"thin\"><color rgb=\"FFD0D0D0\"/></right>" +
+                        "<top style=\"thin\"><color rgb=\"FFD0D0D0\"/></top>" +
+                        "<bottom style=\"thin\"><color rgb=\"FFD0D0D0\"/></bottom><diagonal/></border></borders>" +
+                        "<cellStyleXfs count=\"1\"><xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\"/></cellStyleXfs>" +
+                        "<cellXfs count=\"2\"><xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"1\" xfId=\"0\" applyBorder=\"1\"/>" +
+                        "<xf numFmtId=\"0\" fontId=\"1\" fillId=\"2\" borderId=\"1\" xfId=\"0\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\"/></cellXfs>" +
+                        "<cellStyles count=\"1\"><cellStyle name=\"Normal\" xfId=\"0\" builtinId=\"0\"/></cellStyles></styleSheet>");
+
+                    AddExcelPart(archive, "xl/worksheets/sheet1.xml", BuildBusWorksheetXml(buses));
+                }
+
+                return output.ToArray();
+            }
+        }
+
+        private static void AddExcelPart(ZipArchive archive, string entryName, string xml)
+        {
+            ZipArchiveEntry entry = archive.CreateEntry(entryName, CompressionLevel.Optimal);
+            using (Stream stream = entry.Open())
+            using (StreamWriter writer = new StreamWriter(stream, new UTF8Encoding(false)))
+            {
+                writer.Write(xml);
+            }
+        }
+
+        private static string BuildBusWorksheetXml(IList<Bus> buses)
+        {
+            string[] headers =
+            {
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_ID"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_FleetNumber"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Registration"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Model"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Manufacturer"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Year"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Capacity"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Status"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_MileageKm"),
+                BRU.WEBFORMS.ASPNET.APP.Localization.Get("Buses_MileageCategory")
+            };
+            double[] widths = { 9, 15, 19, 20, 20, 12, 12, 18, 16, 22 };
+            int lastRow = (buses == null ? 0 : buses.Count) + 1;
+            StringBuilder xml = new StringBuilder(Math.Max(4096, lastRow * 180));
+
+            xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
+               .Append("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\">")
+               .Append("<dimension ref=\"A1:J").Append(lastRow).Append("\"/>")
+               .Append("<sheetViews><sheetView workbookViewId=\"0\">")
+               .Append("<pane ySplit=\"1\" topLeftCell=\"A2\" activePane=\"bottomLeft\" state=\"frozen\"/>")
+               .Append("<selection pane=\"bottomLeft\" activeCell=\"A2\" sqref=\"A2\"/>")
+               .Append("</sheetView></sheetViews><sheetFormatPr defaultRowHeight=\"15\"/><cols>");
+
+            for (int i = 0; i < widths.Length; i++)
+            {
+                xml.Append("<col min=\"").Append(i + 1).Append("\" max=\"").Append(i + 1)
+                   .Append("\" width=\"").Append(widths[i].ToString(CultureInfo.InvariantCulture))
+                   .Append("\" customWidth=\"1\"/>");
+            }
+
+            xml.Append("</cols><sheetData><row r=\"1\">");
+            for (int i = 0; i < headers.Length; i++)
+                AppendExcelTextCell(xml, ExcelColumnName(i + 1) + "1", headers[i], 1);
+            xml.Append("</row>");
+
+            if (buses != null)
+            {
+                for (int i = 0; i < buses.Count; i++)
+                {
+                    Bus bus = buses[i];
+                    int rowIndex = i + 2;
+                    xml.Append("<row r=\"").Append(rowIndex).Append("\">");
+                    AppendExcelNumberCell(xml, "A" + rowIndex, bus.BusId.ToString(CultureInfo.InvariantCulture));
+                    AppendExcelTextCell(xml, "B" + rowIndex, bus.FleetNumber, 0);
+                    AppendExcelTextCell(xml, "C" + rowIndex, bus.RegistrationNum, 0);
+                    AppendExcelTextCell(xml, "D" + rowIndex, bus.Model, 0);
+                    AppendExcelTextCell(xml, "E" + rowIndex, bus.Manufacturer, 0);
+                    AppendExcelNumberCell(xml, "F" + rowIndex, bus.ManufactureYear.ToString(CultureInfo.InvariantCulture));
+                    AppendExcelNumberCell(xml, "G" + rowIndex, bus.Capacity.ToString(CultureInfo.InvariantCulture));
+                    AppendExcelTextCell(xml, "H" + rowIndex, GetLocalizedBusStatus(bus.Status), 0);
+                    AppendExcelNumberCell(xml, "I" + rowIndex, bus.MileageKm.ToString(CultureInfo.InvariantCulture));
+                    AppendExcelTextCell(xml, "J" + rowIndex, GetLocalizedMileageCategory(bus.MileageCategory), 0);
+                    xml.Append("</row>");
+                }
+            }
+
+            xml.Append("</sheetData><autoFilter ref=\"A1:J").Append(lastRow).Append("\"/>")
+               .Append("<pageMargins left=\"0.25\" right=\"0.25\" top=\"0.5\" bottom=\"0.5\" header=\"0.2\" footer=\"0.2\"/>")
+               .Append("</worksheet>");
+            return xml.ToString();
+        }
+
+        private static void AppendExcelTextCell(StringBuilder xml, string reference, string value, int styleIndex)
+        {
+            xml.Append("<c r=\"").Append(reference).Append("\"");
+            if (styleIndex > 0)
+                xml.Append(" s=\"").Append(styleIndex).Append("\"");
+            xml.Append(" t=\"inlineStr\"><is><t xml:space=\"preserve\">")
+               .Append(EscapeExcelXml(value))
+               .Append("</t></is></c>");
+        }
+
+        private static void AppendExcelNumberCell(StringBuilder xml, string reference, string value)
+        {
+            xml.Append("<c r=\"").Append(reference).Append("\"><v>")
+               .Append(value)
+               .Append("</v></c>");
+        }
+
+        private static string EscapeExcelXml(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+            StringBuilder safe = new StringBuilder(value.Length);
+            for (int i = 0; i < value.Length; i++)
+            {
+                char ch = value[i];
+                if (char.IsHighSurrogate(ch))
+                {
+                    if (i + 1 < value.Length && char.IsLowSurrogate(value[i + 1]))
+                        safe.Append(ch).Append(value[++i]);
+                    continue;
+                }
+                if (char.IsLowSurrogate(ch))
+                    continue;
+                if (ch == '\t' || ch == '\n' || ch == '\r' ||
+                    (ch >= 0x20 && ch <= 0xD7FF) ||
+                    (ch >= 0xE000 && ch <= 0xFFFD))
+                    safe.Append(ch);
+            }
+
+            return safe.ToString()
+                .Replace("&", "&amp;")
+                .Replace("<", "&lt;")
+                .Replace(">", "&gt;")
+                .Replace("\"", "&quot;")
+                .Replace("'", "&apos;");
+        }
+
+        private static string ExcelColumnName(int columnNumber)
+        {
+            StringBuilder name = new StringBuilder();
+            while (columnNumber > 0)
+            {
+                int remainder = (columnNumber - 1) % 26;
+                name.Insert(0, (char)('A' + remainder));
+                columnNumber = (columnNumber - 1) / 26;
+            }
+            return name.ToString();
+        }
+
+        private static string GetLocalizedBusStatus(string status)
+        {
+            if (string.Equals(status, BusStatus.Operational, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Operational");
+            if (string.Equals(status, BusStatus.InRepair, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_InRepair");
+            if (string.Equals(status, BusStatus.Retired, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Retired");
+            if (string.Equals(status, BusStatus.Reserve, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Common_Reserve");
+            return status ?? string.Empty;
+        }
+
+        private static string GetLocalizedMileageCategory(string category)
+        {
+            if (string.Equals(category, MileageCategory.Low, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Buses_MileageLow");
+            if (string.Equals(category, MileageCategory.Medium, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Buses_MileageMedium");
+            if (string.Equals(category, MileageCategory.High, StringComparison.OrdinalIgnoreCase))
+                return BRU.WEBFORMS.ASPNET.APP.Localization.Get("Buses_MileageHigh");
+            return category ?? string.Empty;
         }
 
         protected void btnSearch_Click(

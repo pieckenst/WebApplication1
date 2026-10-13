@@ -2364,4 +2364,13 @@
   <data name="Schedule_RecurringDaysLabel" xml:space="preserve">
     <value>Дни недели для повторения</value>
   </data>
+  <data name="Buses_MileageLow" xml:space="preserve">
+    <value>Низкий пробег</value>
+  </data>
+  <data name="Buses_MileageMedium" xml:space="preserve">
+    <value>Средний пробег</value>
+  </data>
+  <data name="Buses_MileageHigh" xml:space="preserve">
+    <value>Высокий пробег</value>
+  </data>
 </root>

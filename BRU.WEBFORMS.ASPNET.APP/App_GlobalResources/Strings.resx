@@ -2364,4 +2364,13 @@
   <data name="Schedule_RecurringDaysLabel" xml:space="preserve">
     <value>Repeat on</value>
   </data>
+  <data name="Buses_MileageLow" xml:space="preserve">
+    <value>Low mileage</value>
+  </data>
+  <data name="Buses_MileageMedium" xml:space="preserve">
+    <value>Medium mileage</value>
+  </data>
+  <data name="Buses_MileageHigh" xml:space="preserve">
+    <value>High mileage</value>
+  </data>
 </root>
