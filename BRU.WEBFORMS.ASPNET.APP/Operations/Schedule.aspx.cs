@@ -743,7 +743,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                         throw new ServiceException(result.ErrorMessage);
 
                     throw new ServiceException("Generation completed with " + result.TotalDaysFailed +
-                        " failed date(s). " + result.TotalSchedulesCreated + " trip(s) were created. " + result.ErrorMessage);
+                        " failed date(s) and " + result.TotalSchedulesFailed + " failed trip(s). " +
+                        result.TotalSchedulesCreated + " trip(s) were created, and " +
+                        result.TotalSchedulesSkipped + " were skipped. " + result.ErrorMessage);
                 }
 
                 DateFrom = startDate.Date;
