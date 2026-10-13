@@ -632,12 +632,64 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                     templateDate.ToString("yyyy-MM-dd") + ", weekdays=" +
                     string.Join(",", daysOfWeek));
 
+                // Validate the template once, before iterating every selected date.
+                // Template records may be Planned or Completed; both are valid templates.
+                List<RouteSchedule> templateSchedules = _routeRepository.GetScheduleRange(
+                    templateDate.Date, templateDate.Date.AddDays(1));
+                if (templateSchedules == null || templateSchedules.Count == 0)
+                {
+                    batchResult.Success = false;
+                    batchResult.ErrorMessage = "No template schedules found for " +
+                        templateDate.ToString("yyyy-MM-dd") +
+                        ". Select a template date that already contains one or more trips.";
+                    LogScheduleTrace("GENERATION", "TEMPLATE_VALIDATION_FAILED date=" +
+                        templateDate.ToString("yyyy-MM-dd") +
+                        "; no source trips found; batch aborted before processing target dates.");
+                    return batchResult;
+                }
+
                 DateTime currentDate = startDate.Date;
                 while (currentDate <= endDate.Date)
                 {
                     if (daysOfWeek.Contains(currentDate.DayOfWeek))
                     {
-                        ScheduleGenerationResult dayResult = GenerateRecurringSchedules(currentDate, templateDate);
+                        List<RouteSchedule> existingForDate = _routeRepository.GetScheduleRange(
+                            currentDate.Date, currentDate.Date.AddDays(1));
+                        ScheduleGenerationResult dayResult;
+                        if (existingForDate != null && existingForDate.Count > 0)
+                        {
+                            // Preserve dates that already have trips instead of failing the entire batch.
+                            dayResult = new ScheduleGenerationResult
+                            {
+                                Success = true,
+                                TargetDate = currentDate.Date,
+                                TemplateDate = templateDate.Date,
+                                ExecutionTime = DateTime.Now,
+                                TotalSkipped = existingForDate.Count
+                            };
+                            foreach (RouteSchedule existingSchedule in existingForDate)
+                            {
+                                dayResult.Skipped.Add(new ScheduleGenerationItem
+                                {
+                                    ScheduleId = existingSchedule.ScheduleId,
+                                    BusId = existingSchedule.BusId,
+                                    DriverId = existingSchedule.DriverId,
+                                    RouteNum = existingSchedule.RouteNum,
+                                    DepartureTime = existingSchedule.DepartureTime,
+                                    ArrivalTime = existingSchedule.ArrivalTime,
+                                    BusFleetNumber = existingSchedule.FleetNumber,
+                                    DriverName = existingSchedule.DriverName,
+                                    Reason = "Date already has schedules; existing trips were left unchanged."
+                                });
+                            }
+                            LogScheduleTrace("GENERATION", "DATE_SKIPPED date=" +
+                                currentDate.ToString("yyyy-MM-dd") + ", existing=" +
+                                existingForDate.Count + "; existing trips left unchanged.");
+                        }
+                        else
+                        {
+                            dayResult = GenerateRecurringSchedules(currentDate, templateDate);
+                        }
                         batchResult.DailyResults.Add(dayResult);
                         LogScheduleTrace("GENERATION", "DATE_RESULT date=" + currentDate.ToString("yyyy-MM-dd") +
                             ", success=" + dayResult.Success + ", created=" + dayResult.TotalGenerated +
@@ -645,6 +697,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                             ", error=" + (dayResult.ErrorMessage ?? "none"));
 
                         batchResult.TotalDaysProcessed++;
+                        batchResult.TotalSchedulesSkipped += dayResult.TotalSkipped;
                         if (dayResult.Success)
                         {
                             batchResult.TotalDaysSucceeded++;
@@ -960,6 +1013,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         public int TotalDaysSucceeded { get; set; }
         public int TotalDaysFailed { get; set; }
         public int TotalSchedulesCreated { get; set; }
+        public int TotalSchedulesSkipped { get; set; }
         public List<ScheduleGenerationResult> DailyResults { get; set; } = new List<ScheduleGenerationResult>();
         public string ErrorMessage { get; set; }
         public Exception Exception { get; set; }
