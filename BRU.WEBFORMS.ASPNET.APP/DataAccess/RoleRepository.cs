@@ -193,14 +193,19 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                 bool oldActive = false;
                 if (!isNew)
                 {
-                    using (SqlDataReader reader = _db.ExecuteReader(
-                        "SELECT role_name, is_active FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
-                        new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int) }))
+                    SqlParameter[] roleIdParameter = new SqlParameter[]
                     {
-                        if (!reader.Read()) throw new InvalidOperationException("The role no longer exists. Refresh the page and try again.");
-                        oldName = reader.GetString(0);
-                        oldActive = reader.GetBoolean(1);
-                    }
+                        DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int)
+                    };
+                    object oldNameValue = _db.ExecuteScalar(
+                        "SELECT role_name FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
+                        roleIdParameter);
+                    if (oldNameValue == null || oldNameValue == DBNull.Value)
+                        throw new InvalidOperationException("The role no longer exists. Refresh the page and try again.");
+                    oldName = Convert.ToString(oldNameValue);
+                    oldActive = Convert.ToBoolean(_db.ExecuteScalar(
+                        "SELECT is_active FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
+                        roleIdParameter));
                 }
 
                 bool protectedAdmin = string.Equals(oldName, "administrator", StringComparison.OrdinalIgnoreCase);
