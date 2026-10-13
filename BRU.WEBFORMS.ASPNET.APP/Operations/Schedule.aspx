@@ -48,12 +48,37 @@
         .detail-row { margin-bottom: 6px; font-size: 9pt; }
         .detail-label { display: inline-block; width: 150px; font-weight: bold; color: #666666; }
         .detail-value { color: #000000; }
-        .schedule-editor { background-color: #F2F2F2; border: 1px solid #CCCCCC; padding: 12px; margin-bottom: 15px; }
-        .editor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 16px; }
-        .editor-field label { display: block; font-weight: bold; font-size: 9pt; margin-bottom: 4px; }
-        .editor-field .form-control { width: 100%; box-sizing: border-box; }
-        .editor-actions { margin-top: 12px; }
-        .weekday-list label { display: inline-block; margin-right: 12px; }
+        .schedule-editor { display: block !important; position: relative; width: 100%; min-width: 0; background-color: #F2F2F2; border: 1px solid #B9C5D8; padding: 14px; margin-bottom: 15px; box-sizing: border-box; }
+        .schedule-tools-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr); align-items: stretch; gap: 16px; width: 100%; min-width: 0; }
+        .schedule-tool-card { display: block; min-width: 0; box-sizing: border-box; background: #FFFFFF; border: 1px solid #C4D0E3; padding: 14px; }
+        .schedule-tool-card h3, .schedule-tool-card h4 { margin: 0 0 14px; padding: 0 0 9px; border-bottom: 2px solid #1447AE; color: #000080; line-height: 1.3; }
+        .schedule-tool-card h3 { font-size: 13pt; }
+        .schedule-tool-card h4 { font-size: 12pt; }
+        .editor-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; width: 100%; min-width: 0; }
+        .editor-grid-recurring { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .editor-field { display: flex; flex-direction: column; align-items: stretch; min-width: 0; }
+        .editor-field label { display: block; font-weight: bold; font-size: 9pt; line-height: 1.35; margin-bottom: 5px; color: #26344B; }
+        .editor-field .form-control { display: block; width: 100%; min-width: 0; box-sizing: border-box; }
+        .editor-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+        .schedule-tool-card .action-button { margin: 0; min-height: 32px; }
+        .schedule-tool-card hr { border: 0; border-top: 1px solid #D3DCEC; margin: 16px 0; }
+        .weekday-list { margin-top: 14px; }
+        .weekday-caption { display: block; font-weight: bold; font-size: 9pt; margin-bottom: 8px; color: #26344B; }
+        .weekday-options { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+        .weekday-options label { display: inline-block; margin: 0 0 0 3px; white-space: nowrap; }
+        .weekday-options input { vertical-align: middle; margin: 0; }
+        @media (max-width: 1100px) {
+            .schedule-tools-grid { grid-template-columns: minmax(0, 1fr); }
+            .editor-grid-recurring { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 760px) {
+            .schedule-editor { padding: 8px; }
+            .schedule-tool-card { padding: 10px; }
+            .editor-grid, .editor-grid-recurring { grid-template-columns: minmax(0, 1fr); }
+            .editor-actions { align-items: stretch; }
+            .editor-actions .action-button { width: 100%; text-align: center; }
+            .weekday-options { gap: 10px 12px; }
+        }
         @media (max-width: 760px) {
             .content-page { padding: 8px; }
             .form-label { display: block; width: auto; margin-left: 0 !important; }
@@ -141,68 +166,77 @@
         </div>
 
         <asp:Panel ID="pnlScheduleEditor" runat="server" CssClass="schedule-editor" Visible="false">
-            <h3><%= Localization.GetHtml("Auto_Operations_Schedule_43") %></h3>
-            <asp:HiddenField ID="hidScheduleId" runat="server" Value="0" />
-            <div class="editor-grid">
-                <div class="editor-field">
-                    <label for="<%= ddlScheduleRoute.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_44") %></label>
-                    <asp:DropDownList ID="ddlScheduleRoute" runat="server" CssClass="form-control" />
+            <div class="schedule-tools-grid">
+                <div class="schedule-tool-card">
+                    <h3><%= Localization.GetHtml("Auto_Operations_Schedule_43") %></h3>
+                    <asp:HiddenField ID="hidScheduleId" runat="server" Value="0" />
+                    <div class="editor-grid editor-grid-manual">
+                        <div class="editor-field">
+                            <label for="<%= ddlScheduleRoute.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_44") %></label>
+                            <asp:DropDownList ID="ddlScheduleRoute" runat="server" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= ddlScheduleBus.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_45") %></label>
+                            <asp:DropDownList ID="ddlScheduleBus" runat="server" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= ddlScheduleDriver.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_46") %></label>
+                            <asp:DropDownList ID="ddlScheduleDriver" runat="server" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= txtServiceDate.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_47") %></label>
+                            <asp:TextBox ID="txtServiceDate" runat="server" TextMode="Date" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= txtDeparture.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_48") %></label>
+                            <asp:TextBox ID="txtDeparture" runat="server" TextMode="Time" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= txtArrival.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_49") %></label>
+                            <asp:TextBox ID="txtArrival" runat="server" TextMode="Time" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="editor-actions">
+                        <asp:Button ID="btnNewSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_8 %>" CssClass="action-button" OnClick="btnNewSchedule_Click" CausesValidation="false" />
+                        <asp:Button ID="btnSaveSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_9 %>" CssClass="action-button" OnClick="btnSaveSchedule_Click" />
+                        <asp:Button ID="btnCancelScheduleEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_10 %>" CssClass="action-button" OnClick="btnCancelScheduleEdit_Click" CausesValidation="false" />
+                    </div>
                 </div>
-                <div class="editor-field">
-                    <label for="<%= ddlScheduleBus.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_45") %></label>
-                    <asp:DropDownList ID="ddlScheduleBus" runat="server" CssClass="form-control" />
-                </div>
-                <div class="editor-field">
-                    <label for="<%= ddlScheduleDriver.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_46") %></label>
-                    <asp:DropDownList ID="ddlScheduleDriver" runat="server" CssClass="form-control" />
-                </div>
-                <div class="editor-field">
-                    <label for="<%= txtServiceDate.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_47") %></label>
-                    <asp:TextBox ID="txtServiceDate" runat="server" TextMode="Date" CssClass="form-control" />
-                </div>
-                <div class="editor-field">
-                    <label for="<%= txtDeparture.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_48") %></label>
-                    <asp:TextBox ID="txtDeparture" runat="server" TextMode="Time" CssClass="form-control" />
-                </div>
-                <div class="editor-field">
-                    <label for="<%= txtArrival.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_49") %></label>
-                    <asp:TextBox ID="txtArrival" runat="server" TextMode="Time" CssClass="form-control" />
+
+                <div class="schedule-tool-card schedule-recurring-card">
+                    <h4><%= Localization.GetHtml("Auto_Operations_Schedule_50") %></h4>
+                    <div class="editor-grid editor-grid-recurring">
+                        <div class="editor-field">
+                            <label for="<%= txtTemplateDate.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_51") %></label>
+                            <asp:TextBox ID="txtTemplateDate" runat="server" TextMode="Date" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= txtRecurringFrom.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_52") %></label>
+                            <asp:TextBox ID="txtRecurringFrom" runat="server" TextMode="Date" CssClass="form-control" />
+                        </div>
+                        <div class="editor-field">
+                            <label for="<%= txtRecurringTo.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_53") %></label>
+                            <asp:TextBox ID="txtRecurringTo" runat="server" TextMode="Date" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="weekday-list">
+                        <span class="weekday-caption"><%= Localization.GetHtml("Schedule_RecurringDaysLabel") %></span>
+                        <asp:CheckBoxList ID="cblRecurringDays" runat="server" CssClass="weekday-options" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_11 %>" Value="Monday" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_12 %>" Value="Tuesday" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_13 %>" Value="Wednesday" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_14 %>" Value="Thursday" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_15 %>" Value="Friday" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_16 %>" Value="Saturday" />
+                            <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_17 %>" Value="Sunday" />
+                        </asp:CheckBoxList>
+                    </div>
+                    <div class="editor-actions">
+                        <asp:Button ID="btnGenerateRecurring" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_18 %>" CssClass="action-button" OnClientClick="return confirmRecurringBackfill();" OnClick="btnGenerateRecurring_Click" />
+                        <asp:Button ID="btnValidateSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_19 %>" CssClass="action-button" OnClick="btnValidateSchedule_Click" CausesValidation="false" />
+                    </div>
                 </div>
             </div>
-            <div class="editor-actions">
-                <asp:Button ID="btnNewSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_8 %>" CssClass="action-button" OnClick="btnNewSchedule_Click" CausesValidation="false" />
-                <asp:Button ID="btnSaveSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_9 %>" CssClass="action-button" OnClick="btnSaveSchedule_Click" />
-                <asp:Button ID="btnCancelScheduleEdit" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_10 %>" CssClass="action-button" OnClick="btnCancelScheduleEdit_Click" CausesValidation="false" />
-            </div>
-            <hr />
-            <h4><%= Localization.GetHtml("Auto_Operations_Schedule_50") %></h4>
-            <div class="editor-grid">
-                <div class="editor-field">
-                    <label for="<%= txtTemplateDate.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_51") %></label>
-                    <asp:TextBox ID="txtTemplateDate" runat="server" TextMode="Date" CssClass="form-control" />
-                </div>
-                <div class="editor-field">
-                    <label for="<%= txtRecurringFrom.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_52") %></label>
-                    <asp:TextBox ID="txtRecurringFrom" runat="server" TextMode="Date" CssClass="form-control" />
-                </div>
-                <div class="editor-field">
-                    <label for="<%= txtRecurringTo.ClientID %>"><%= Localization.GetHtml("Auto_Operations_Schedule_53") %></label>
-                    <asp:TextBox ID="txtRecurringTo" runat="server" TextMode="Date" CssClass="form-control" />
-                </div>
-            </div>
-            <div class="form-row weekday-list">
-                <asp:CheckBoxList ID="cblRecurringDays" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_11 %>" Value="Monday" />
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_12 %>" Value="Tuesday" />
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_13 %>" Value="Wednesday" />
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_14 %>" Value="Thursday" />
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_15 %>" Value="Friday" />
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_16 %>" Value="Saturday" />
-                    <asp:ListItem Text="<%$ Resources:Strings, Auto_Operations_Schedule_17 %>" Value="Sunday" />
-                </asp:CheckBoxList>
-            </div>
-            <asp:Button ID="btnGenerateRecurring" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_18 %>" CssClass="action-button" OnClientClick="return confirmRecurringBackfill();" OnClick="btnGenerateRecurring_Click" />
-            <asp:Button ID="btnValidateSchedule" runat="server" Text="<%$ Resources:Strings, Auto_Operations_Schedule_19 %>" CssClass="action-button" OnClick="btnValidateSchedule_Click" CausesValidation="false" />
         </asp:Panel>
 
         <uc:ContentBox ID="cbScheduleList" runat="server" HeaderText="Trip Schedule" HeaderColor="Blue" ContentColor="White">
