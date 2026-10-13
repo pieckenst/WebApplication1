@@ -2361,4 +2361,7 @@
   <data name="AdminRoles_InvalidRole" xml:space="preserve">
     <value>Роль не найдена или её идентификатор некорректен.</value>
   </data>
+  <data name="Schedule_RecurringDaysLabel" xml:space="preserve">
+    <value>Дни недели для повторения</value>
+  </data>
 </root>
