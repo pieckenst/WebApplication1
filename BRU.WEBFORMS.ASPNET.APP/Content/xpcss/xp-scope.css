@@ -86,3 +86,25 @@ pre, pre * { font-family: revert; }
   .content-page .kpi-grid { grid-template-columns: 1fr; }
   .content-page .action-button { min-height: 32px; }
 }
+
+/* Fix XP.css checkbox checkmark: realign the box and checkmark so the mark stays
+   inside the 13x13 checkbox and the SVG scales to fit. */
+input[type=checkbox] + label {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    min-height: 13px;
+}
+input[type=checkbox] + label::before {
+    top: 0;
+}
+input[type=checkbox]:checked + label::after,
+input[type=checkbox][disabled]:checked + label::after {
+    top: 1px;
+    left: -18px;
+    width: 11px;
+    height: 11px;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center center;
+}
