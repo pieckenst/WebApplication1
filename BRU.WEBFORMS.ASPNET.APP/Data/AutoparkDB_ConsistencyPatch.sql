@@ -168,6 +168,8 @@ GO
 /* Restore grants from the legacy script using one securable per GRANT. */
 IF DATABASE_PRINCIPAL_ID(N'autopark_dispatcher_role') IS NOT NULL
 BEGIN
+    -- The WebForms schedule editor and recurring generator write directly to this table.
+    GRANT SELECT, INSERT, UPDATE ON dbo.route_schedule TO autopark_dispatcher_role;
     GRANT SELECT ON dbo.v_bus_status TO autopark_dispatcher_role;
     GRANT SELECT ON dbo.v_employee_directory TO autopark_dispatcher_role;
     GRANT SELECT ON dbo.v_active_route TO autopark_dispatcher_role;
