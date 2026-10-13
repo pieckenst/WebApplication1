@@ -870,6 +870,7 @@ GO
 CREATE VIEW dbo.v_route_stops
 AS
 SELECT
+    s.route_id,
     r.route_num,
     r.route_name,
     s.stop_sequence,
