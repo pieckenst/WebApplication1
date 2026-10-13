@@ -50,6 +50,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
         #region Private Fields
 
         private bool _templateControlsResolved;
+        private bool _exporting;
         private decimal _maxChannelAmount = 1;
         private decimal _maxRouteAmount = 1;
         private decimal _maxEmployeeAmount = 1;
@@ -423,12 +424,6 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
         {
             try
             {
-                Response.Clear();
-                Response.ContentType = "text/plain";
-                Response.AddHeader("Content-Disposition",
-                    "attachment; filename=autopark_analytics_" +
-                    DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt");
-
                 StringBuilder sb = new StringBuilder();
                 sb.Append("AUTOPARK MANAGEMENT SYSTEM - ANALYTICS REPORT\r\n");
                 sb.Append("Generated: ").Append(DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")).Append("\r\n");
@@ -494,13 +489,33 @@ namespace BRU.WEBFORMS.ASPNET.APP.Reports
                 sb.Append("\r\n").Append(new string('=', 60)).Append("\r\n");
                 sb.Append("End of Report\r\n");
 
+                // Complete the download without aborting the request thread.
+                // The render guard prevents the normal WebForms page from being appended.
+                _exporting = true;
+                Response.Clear();
+                Response.ContentType = "text/plain";
+                Response.ContentEncoding = Encoding.UTF8;
+                Response.AddHeader("Content-Disposition",
+                    "attachment; filename=autopark_analytics_" +
+                    DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt");
+                Response.BinaryWrite(Encoding.UTF8.GetPreamble());
                 Response.Write(sb.ToString());
-                Response.End();
+                Response.Flush();
+                Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {
-                HandleGenericError(ex);
+                if (!_exporting)
+                    HandleGenericError(ex);
+                else
+                    System.Diagnostics.Debug.WriteLine("Analytics export response failed: " + ex);
             }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (!_exporting)
+                base.Render(writer);
         }
 
         #endregion
