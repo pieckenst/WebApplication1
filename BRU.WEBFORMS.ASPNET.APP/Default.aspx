@@ -31,6 +31,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
             margin-top: 15px;
+            margin-bottom: 20px;
         }
         .stat-card {
             background-color: #EDF2FB;
