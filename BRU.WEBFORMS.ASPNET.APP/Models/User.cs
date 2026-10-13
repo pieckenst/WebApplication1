@@ -22,6 +22,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
         // Navigation properties
         public string EmployeeName { get; set; }
         public string EmployeeJobTitle { get; set; }
+        public string ActiveRoleNames { get; set; }
+        public string InactiveRoleNames { get; set; }
 
         /// <summary>
         /// Gets a user-friendly status description.
@@ -103,6 +105,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Models
         public string Login { get; set; }
         public string RoleName { get; set; }
         public string AssignedByLogin { get; set; }
+        public bool IsRoleActive { get; set; }
     }
 
     /// <summary>

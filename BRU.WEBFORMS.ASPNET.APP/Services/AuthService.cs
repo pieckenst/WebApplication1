@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Net.Mail;
 using System.Web;
 using BRU.WEBFORMS.ASPNET.APP.DataAccess;
 using BRU.WEBFORMS.ASPNET.APP.Models;
@@ -205,6 +207,52 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             }
         }
 
+
+        public int SaveUserAdministration(User user, string password, List<int> roleIds, string assignedBy, int actorUserId)
+        {
+            try
+            {
+                EnsureAdministrator(actorUserId);
+                if (user == null) throw new ServiceException("A user record is required.", "Не указаны данные пользователя.");
+                bool isNew = user.UserId <= 0;
+                if (!isNew)
+                {
+                    User existing = _userRepo.GetUserById(user.UserId);
+                    if (existing == null) throw new ServiceException("The user no longer exists.", "Пользователь больше не существует.");
+                    user.Login = existing.Login;
+                }
+                else user.Login = (user.Login ?? string.Empty).Trim();
+
+                user.Email = string.IsNullOrWhiteSpace(user.Email) ? null : user.Email.Trim();
+                user.PhoneNumber = string.IsNullOrWhiteSpace(user.PhoneNumber) ? null : user.PhoneNumber.Trim();
+                ValidateUser(user);
+                if (isNew || !string.IsNullOrEmpty(password)) ValidatePassword(password);
+
+                if (user.EmployeeId.HasValue)
+                {
+                    foreach (User existing in _userRepo.GetAllUsers())
+                        if (existing.UserId != user.UserId && existing.EmployeeId.HasValue &&
+                            existing.EmployeeId.Value == user.EmployeeId.Value)
+                            throw new ServiceException(
+                                "This employee is already linked to user '" + existing.Login + "'.",
+                                "Этот сотрудник уже связан с учётной записью '" + existing.Login + "'.");
+                }
+                return _userRepo.SaveManagedUser(user, password, roleIds, assignedBy, actorUserId);
+            }
+            catch (ServiceException) { throw; }
+            catch (InvalidOperationException ex) { throw new ServiceException(ex.Message, ex.Message, ex); }
+            catch (Exception ex) { throw new ServiceException("Failed to save the user.", "Не удалось сохранить пользователя.", ex); }
+        }
+
+        private static void EnsureAdministrator(int actorUserId)
+        {
+            int? currentId = BRU.WEBFORMS.ASPNET.APP.AuthContext.CurrentUserId;
+            if (!BRU.WEBFORMS.ASPNET.APP.AuthContext.IsInRole("administrator") || !currentId.HasValue || actorUserId != currentId.Value)
+                throw new ServiceException(
+                    "Only the authenticated administrator can perform this operation.",
+                    "Выполнять эту операцию может только авторизованный администратор.");
+        }
+
         /// <summary>
         /// Changes a user's password with validation.
         /// </summary>
@@ -325,6 +373,40 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
             }
         }
 
+
+        public List<UserRole> GetUserRoleAssignments(int userId)
+        {
+            try { return _userRepo.GetUserRoleAssignments(userId); }
+            catch (Exception ex) { throw new ServiceException("Failed to retrieve role assignments.", "Не удалось получить назначения ролей.", ex); }
+        }
+
+        public int SaveRoleAdministration(Role role, List<int> permissionIds, int actorUserId)
+        {
+            try
+            {
+                EnsureAdministrator(actorUserId);
+                ValidateRole(role);
+                role.RoleName = role.RoleName.Trim().ToLowerInvariant();
+                Role existing = role.RoleId > 0 ? _roleRepo.GetRoleById(role.RoleId) : null;
+                if (role.RoleId > 0 && existing == null)
+                    throw new ServiceException("The role no longer exists.", "Роль больше не существует.");
+
+                bool isSystemAdmin = existing != null && string.Equals(existing.RoleName, "administrator", StringComparison.OrdinalIgnoreCase);
+                if (isSystemAdmin && (!role.IsActive || role.RoleName != "administrator"))
+                    throw new ServiceException("The built-in administrator role cannot be renamed or deactivated.", "Системную роль администратора нельзя переименовать или отключить.");
+                if (!isSystemAdmin && string.Equals(role.RoleName, "administrator", StringComparison.OrdinalIgnoreCase))
+                    throw new ServiceException("The built-in administrator role name is reserved.", "Имя системной роли администратора зарезервировано.");
+
+                Role duplicate = _roleRepo.GetRoleByName(role.RoleName);
+                if (duplicate != null && duplicate.RoleId != role.RoleId)
+                    throw new ServiceException("A role with this name already exists.", "Роль с таким названием уже существует.");
+                return _roleRepo.SaveRoleAdministration(role, permissionIds);
+            }
+            catch (ServiceException) { throw; }
+            catch (InvalidOperationException ex) { throw new ServiceException(ex.Message, ex.Message, ex); }
+            catch (Exception ex) { throw new ServiceException("Failed to save the role.", "Не удалось сохранить роль.", ex); }
+        }
+
         /// <summary>
         /// Deletes a role.
         /// </summary>
@@ -332,6 +414,14 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         {
             try
             {
+                if (!BRU.WEBFORMS.ASPNET.APP.AuthContext.CurrentUserId.HasValue ||
+                    !BRU.WEBFORMS.ASPNET.APP.AuthContext.IsInRole("administrator"))
+                    throw new ServiceException("Administrator access is required.", "Требуются права администратора.");
+                Role role = _roleRepo.GetRoleById(roleId);
+                if (role == null)
+                    throw new ServiceException("The role no longer exists.", "Роль больше не существует.");
+                if (string.Equals(role.RoleName, "administrator", StringComparison.OrdinalIgnoreCase))
+                    throw new ServiceException("The built-in administrator role cannot be deleted.", "Системную роль администратора нельзя удалить.");
                 return _roleRepo.DeleteRole(roleId);
             }
             catch (InvalidOperationException ex)
@@ -584,12 +674,27 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
             if (user.Login.Length > 80)
                 throw new ServiceException("Login cannot exceed 80 characters.", "Логин не может превышать 80 символов.");
+            if (!Regex.IsMatch(user.Login, @"^[A-Za-z0-9][A-Za-z0-9._-]{2,79}$"))
+                throw new ServiceException("Login contains unsupported characters.", "Логин содержит недопустимые символы.");
 
-            if (!string.IsNullOrEmpty(user.Email) && user.Email.Length > 150)
-                throw new ServiceException("Email cannot exceed 150 characters.", "Email не может превышать 150 символов.");
-
-            if (!string.IsNullOrEmpty(user.PhoneNumber) && user.PhoneNumber.Length > 30)
-                throw new ServiceException("Phone number cannot exceed 30 characters.", "Телефон не может превышать 30 символов.");
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                if (user.Email.Length > 150)
+                    throw new ServiceException("Email cannot exceed 150 characters.", "Email не может превышать 150 символов.");
+                try
+                {
+                    MailAddress address = new MailAddress(user.Email);
+                    if (!string.Equals(address.Address, user.Email, StringComparison.OrdinalIgnoreCase)) throw new FormatException();
+                }
+                catch { throw new ServiceException("Enter a valid email address.", "Укажите корректный адрес электронной почты."); }
+            }
+            if (!string.IsNullOrEmpty(user.PhoneNumber))
+            {
+                if (user.PhoneNumber.Length > 30)
+                    throw new ServiceException("Phone number cannot exceed 30 characters.", "Телефон не может превышать 30 символов.");
+                if (!Regex.IsMatch(user.PhoneNumber, @"^[0-9+() .-]+$"))
+                    throw new ServiceException("Phone number contains unsupported characters.", "Телефон содержит недопустимые символы.");
+            }
         }
 
         private void ValidatePassword(string password)
@@ -687,9 +792,11 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
             if (string.IsNullOrWhiteSpace(role.RoleName))
                 throw new ServiceException("Role name is required.", "Название роли обязательно.");
-
-            if (role.RoleName.Length > 50)
-                throw new ServiceException("Role name cannot exceed 50 characters.", "Название роли не может превышать 50 символов.");
+            role.RoleName = role.RoleName.Trim();
+            if (role.RoleName.Length < 3 || role.RoleName.Length > 50)
+                throw new ServiceException("Role name must contain between 3 and 50 characters.", "Название роли должно содержать от 3 до 50 символов.");
+            if (!Regex.IsMatch(role.RoleName, @"^[A-Za-z][A-Za-z0-9._-]{2,49}$"))
+                throw new ServiceException("Role name contains unsupported characters.", "Имя роли содержит недопустимые символы.");
 
             if (!string.IsNullOrEmpty(role.Description) && role.Description.Length > 300)
                 throw new ServiceException("Role description cannot exceed 300 characters.", "Описание роли не может превышать 300 символов.");

@@ -42,7 +42,17 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                     u.created_at,
                     u.last_login_at,
                     e.surname + ' ' + e.name + ISNULL(' ' + e.patronym, '') AS employee_name,
-                    j.job_title
+                    j.job_title,
+                    (SELECT STRING_AGG(CAST(r.role_name AS nvarchar(max)), N', ')
+                                WITHIN GROUP (ORDER BY r.role_name)
+                     FROM dbo.user_role AS ur
+                     INNER JOIN dbo.app_role AS r ON r.role_id = ur.role_id
+                     WHERE ur.user_id = u.user_id AND r.is_active = 1) AS active_role_names,
+                    (SELECT STRING_AGG(CAST(r.role_name AS nvarchar(max)), N', ')
+                                WITHIN GROUP (ORDER BY r.role_name)
+                     FROM dbo.user_role AS ur
+                     INNER JOIN dbo.app_role AS r ON r.role_id = ur.role_id
+                     WHERE ur.user_id = u.user_id AND r.is_active = 0) AS inactive_role_names
                 FROM dbo.app_user u
                 LEFT JOIN dbo.employee e ON u.employee_id = e.employee_id
                 LEFT JOIN dbo.job j ON e.job_id = j.job_id
@@ -199,6 +209,179 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
 
             int rowsAffected = _db.ExecuteNonQuery(sql, parameters);
             return rowsAffected > 0;
+        }
+
+
+        /// <summary>
+        /// Atomically saves a user, optional password and role assignments.
+        /// Protects the current and last active administrator and validates every selected role.
+        /// </summary>
+        public int SaveManagedUser(User user, string password, List<int> roleIds, string assignedBy, int actorUserId)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (actorUserId <= 0) throw new InvalidOperationException("A valid administrator identity is required.");
+
+            bool isNew = user.UserId <= 0;
+            if (isNew && string.IsNullOrWhiteSpace(password))
+                throw new InvalidOperationException("A password is required when creating a user.");
+            string passwordHash = string.IsNullOrWhiteSpace(password) ? null : HashPassword(password);
+            List<int> uniqueRoleIds = roleIds == null ? new List<int>() : new List<int>(new HashSet<int>(roleIds));
+
+            _db.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                int userId = user.UserId;
+                bool currentlyActive = false;
+                if (!isNew)
+                {
+                    object loginValue = _db.ExecuteScalar(
+                        "SELECT login FROM dbo.app_user WITH (UPDLOCK, HOLDLOCK) WHERE user_id = @user_id",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int) });
+                    if (loginValue == null || loginValue == DBNull.Value)
+                        throw new InvalidOperationException("The user no longer exists. Refresh the list and try again.");
+
+                    currentlyActive = Convert.ToBoolean(_db.ExecuteScalar(
+                        "SELECT is_active FROM dbo.app_user WITH (UPDLOCK, HOLDLOCK) WHERE user_id = @user_id",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int) }));
+                    if (userId == actorUserId && !user.IsActive)
+                        throw new InvalidOperationException("You cannot deactivate your own account.");
+                }
+                else
+                {
+                    int duplicateLogin = Convert.ToInt32(_db.ExecuteScalar(
+                        "SELECT COUNT(*) FROM dbo.app_user WITH (UPDLOCK, HOLDLOCK) WHERE login = @login",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@login", user.Login, SqlDbType.VarChar, 80) }));
+                    if (duplicateLogin > 0)
+                        throw new InvalidOperationException("A user with this login already exists.");
+                }
+
+                if (user.EmployeeId.HasValue)
+                {
+                    int employeeLinkedElsewhere = Convert.ToInt32(_db.ExecuteScalar(
+                        @"SELECT COUNT(*) FROM dbo.app_user WITH (UPDLOCK, HOLDLOCK)
+                          WHERE employee_id = @employee_id AND user_id <> @user_id",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@employee_id", user.EmployeeId.Value, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int)
+                        }));
+                    if (employeeLinkedElsewhere > 0)
+                        throw new InvalidOperationException("This employee is already linked to another account.");
+                }
+
+                int activeRoleCount = 0;
+                foreach (int roleId in uniqueRoleIds)
+                {
+                    if (roleId <= 0) throw new InvalidOperationException("One or more selected roles are invalid.");
+                    object activeValue = _db.ExecuteScalar(
+                        "SELECT is_active FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int) });
+                    if (activeValue == null || activeValue == DBNull.Value)
+                        throw new InvalidOperationException("One or more selected roles no longer exist.");
+
+                    bool activeRole = Convert.ToBoolean(activeValue);
+                    bool previouslyAssigned = !isNew && Convert.ToInt32(_db.ExecuteScalar(
+                        "SELECT COUNT(*) FROM dbo.user_role WITH (UPDLOCK, HOLDLOCK) WHERE user_id = @user_id AND role_id = @role_id",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int)
+                        })) > 0;
+                    if (!activeRole && !previouslyAssigned)
+                        throw new InvalidOperationException("An inactive role cannot be newly assigned. Activate the role first.");
+                    if (activeRole) activeRoleCount++;
+                }
+
+                if (user.IsActive && activeRoleCount == 0)
+                    throw new InvalidOperationException("An active account must have at least one active role.");
+
+                object adminRoleValue = _db.ExecuteScalar(
+                    "SELECT role_id FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_name = 'administrator' AND is_active = 1");
+                int adminRoleId = adminRoleValue == null || adminRoleValue == DBNull.Value ? 0 : Convert.ToInt32(adminRoleValue);
+                bool currentlyAdministrator = !isNew && currentlyActive && adminRoleId > 0 &&
+                    Convert.ToInt32(_db.ExecuteScalar(
+                        "SELECT COUNT(*) FROM dbo.user_role WHERE user_id = @user_id AND role_id = @role_id",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@role_id", adminRoleId, SqlDbType.Int)
+                        })) > 0;
+                bool willBeAdministrator = user.IsActive && adminRoleId > 0 && uniqueRoleIds.Contains(adminRoleId);
+
+                if (userId == actorUserId && currentlyAdministrator && !willBeAdministrator)
+                    throw new InvalidOperationException("You cannot remove your own administrator role.");
+
+                if (currentlyAdministrator && !willBeAdministrator)
+                {
+                    int otherAdministrators = Convert.ToInt32(_db.ExecuteScalar(
+                        @"SELECT COUNT(DISTINCT u.user_id)
+                          FROM dbo.app_user AS u WITH (UPDLOCK, HOLDLOCK)
+                          INNER JOIN dbo.user_role AS ur ON ur.user_id = u.user_id
+                          INNER JOIN dbo.app_role AS r ON r.role_id = ur.role_id
+                          WHERE u.is_active = 1 AND r.is_active = 1
+                            AND r.role_name = 'administrator' AND u.user_id <> @user_id",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int) }));
+                    if (otherAdministrators == 0)
+                        throw new InvalidOperationException("The last active administrator cannot be deactivated or stripped of the administrator role.");
+                }
+
+                if (isNew)
+                {
+                    object insertedId = _db.ExecuteScalar(
+                        @"INSERT INTO dbo.app_user
+                            (login, password_hash, email, phone_number, employee_id, is_active)
+                          VALUES
+                            (@login, @password_hash, @email, @phone_number, @employee_id, @is_active);
+                          SELECT CAST(SCOPE_IDENTITY() AS int);",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@login", user.Login, SqlDbType.VarChar, 80),
+                            DatabaseHelper.CreateParameter("@password_hash", passwordHash, SqlDbType.VarChar, 256),
+                            DatabaseHelper.CreateParameter("@email", user.Email ?? (object)DBNull.Value, SqlDbType.VarChar, 150),
+                            DatabaseHelper.CreateParameter("@phone_number", user.PhoneNumber ?? (object)DBNull.Value, SqlDbType.VarChar, 30),
+                            DatabaseHelper.CreateParameter("@employee_id", user.EmployeeId ?? (object)DBNull.Value, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@is_active", user.IsActive, SqlDbType.Bit)
+                        });
+                    userId = Convert.ToInt32(insertedId);
+                }
+                else
+                {
+                    _db.ExecuteNonQuery(
+                        @"UPDATE dbo.app_user
+                          SET email = @email,
+                              phone_number = @phone_number,
+                              employee_id = @employee_id,
+                              is_active = @is_active,
+                              password_hash = COALESCE(@password_hash, password_hash)
+                          WHERE user_id = @user_id",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@email", user.Email ?? (object)DBNull.Value, SqlDbType.VarChar, 150),
+                            DatabaseHelper.CreateParameter("@phone_number", user.PhoneNumber ?? (object)DBNull.Value, SqlDbType.VarChar, 30),
+                            DatabaseHelper.CreateParameter("@employee_id", user.EmployeeId ?? (object)DBNull.Value, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@is_active", user.IsActive, SqlDbType.Bit),
+                            DatabaseHelper.CreateParameter("@password_hash", passwordHash ?? (object)DBNull.Value, SqlDbType.VarChar, 256)
+                        });
+                }
+
+                _db.ExecuteNonQuery("DELETE FROM dbo.user_role WHERE user_id = @user_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int) });
+                foreach (int roleId in uniqueRoleIds)
+                    _db.ExecuteNonQuery(
+                        @"INSERT INTO dbo.user_role (user_id, role_id, assigned_by)
+                          VALUES (@user_id, @role_id, @assigned_by)",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@user_id", userId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@assigned_by", assignedBy, SqlDbType.VarChar, 80)
+                        });
+
+                _db.CommitTransaction();
+                return userId;
+            }
+            catch { _db.RollbackTransaction(); throw; }
         }
 
         /// <summary>
@@ -547,7 +730,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                     ur.assigned_at,
                     ur.assigned_by,
                     u.login,
-                    r.role_name
+                    r.role_name,
+                    r.is_active
                 FROM dbo.user_role ur
                 INNER JOIN dbo.app_user u ON ur.user_id = u.user_id
                 INNER JOIN dbo.app_role r ON ur.role_id = r.role_id
@@ -565,7 +749,8 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
                         AssignedAt = reader.GetDateTime(2),
                         AssignedBy = reader.IsDBNull(3) ? null : reader.GetString(3),
                         Login = reader.GetString(4),
-                        RoleName = reader.GetString(5)
+                        RoleName = reader.GetString(5),
+                        IsRoleActive = reader.GetBoolean(6)
                     };
                     assignments.Add(assignment);
                 }
@@ -645,11 +830,24 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
 
             int jobTitleOrdinal = reader.GetOrdinal("job_title");
             if (!reader.IsDBNull(jobTitleOrdinal))
-            {
                 user.EmployeeJobTitle = reader.GetString(jobTitleOrdinal);
-            }
+
+            int activeRolesOrdinal = TryGetOrdinal(reader, "active_role_names");
+            if (activeRolesOrdinal >= 0 && !reader.IsDBNull(activeRolesOrdinal))
+                user.ActiveRoleNames = reader.GetString(activeRolesOrdinal);
+            int inactiveRolesOrdinal = TryGetOrdinal(reader, "inactive_role_names");
+            if (inactiveRolesOrdinal >= 0 && !reader.IsDBNull(inactiveRolesOrdinal))
+                user.InactiveRoleNames = reader.GetString(inactiveRolesOrdinal);
 
             return user;
+        }
+
+        private static int TryGetOrdinal(SqlDataReader reader, string columnName)
+        {
+            for (int ordinal = 0; ordinal < reader.FieldCount; ordinal++)
+                if (string.Equals(reader.GetName(ordinal), columnName, StringComparison.OrdinalIgnoreCase))
+                    return ordinal;
+            return -1;
         }
 
         #endregion

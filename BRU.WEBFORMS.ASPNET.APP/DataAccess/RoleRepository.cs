@@ -176,34 +176,167 @@ namespace BRU.WEBFORMS.ASPNET.APP.DataAccess
             return rowsAffected > 0;
         }
 
+
+        /// <summary>
+        /// Atomically creates or updates a role and its permissions.
+        /// The built-in administrator role and permission set remain protected.
+        /// </summary>
+        public int SaveRoleAdministration(Role role, List<int> permissionIds)
+        {
+            if (role == null) throw new ArgumentNullException(nameof(role));
+            List<int> uniquePermissionIds = permissionIds == null ? new List<int>() : new List<int>(new HashSet<int>(permissionIds));
+            _db.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                bool isNew = role.RoleId <= 0;
+                string oldName = null;
+                bool oldActive = false;
+                if (!isNew)
+                {
+                    using (SqlDataReader reader = _db.ExecuteReader(
+                        "SELECT role_name, is_active FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int) }))
+                    {
+                        if (!reader.Read()) throw new InvalidOperationException("The role no longer exists. Refresh the page and try again.");
+                        oldName = reader.GetString(0);
+                        oldActive = reader.GetBoolean(1);
+                    }
+                }
+
+                bool protectedAdmin = string.Equals(oldName, "administrator", StringComparison.OrdinalIgnoreCase);
+                bool requestedAdmin = string.Equals(role.RoleName, "administrator", StringComparison.OrdinalIgnoreCase);
+                if (isNew && requestedAdmin) throw new InvalidOperationException("The administrator role name is reserved for the built-in system role.");
+                if (!isNew && protectedAdmin && (!requestedAdmin || !role.IsActive))
+                    throw new InvalidOperationException("The built-in administrator role cannot be renamed or deactivated.");
+                if (!isNew && !protectedAdmin && requestedAdmin)
+                    throw new InvalidOperationException("The built-in administrator role name cannot be assigned to another role.");
+
+                int duplicates = Convert.ToInt32(_db.ExecuteScalar(
+                    @"SELECT COUNT(*) FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK)
+                      WHERE role_name = @role_name AND (@role_id = 0 OR role_id <> @role_id)",
+                    new SqlParameter[]
+                    {
+                        DatabaseHelper.CreateParameter("@role_name", role.RoleName, SqlDbType.VarChar, 50),
+                        DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int)
+                    }));
+                if (duplicates > 0) throw new InvalidOperationException("A role with this name already exists.");
+
+                if (!isNew && oldActive && !role.IsActive)
+                {
+                    int strandedUsers = Convert.ToInt32(_db.ExecuteScalar(
+                        @"SELECT COUNT(DISTINCT u.user_id)
+                          FROM dbo.app_user AS u WITH (UPDLOCK, HOLDLOCK)
+                          INNER JOIN dbo.user_role AS ur ON ur.user_id = u.user_id AND ur.role_id = @role_id
+                          WHERE u.is_active = 1
+                            AND NOT EXISTS
+                            (
+                                SELECT 1
+                                FROM dbo.user_role AS ur2
+                                INNER JOIN dbo.app_role AS r2 ON r2.role_id = ur2.role_id
+                                WHERE ur2.user_id = u.user_id
+                                  AND ur2.role_id <> @role_id
+                                  AND r2.is_active = 1
+                            )",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int) }));
+                    if (strandedUsers > 0)
+                        throw new InvalidOperationException("This is the last active role for " + strandedUsers + " active user(s). Assign another active role before deactivating it.");
+                }
+
+                if (isNew)
+                {
+                    object newId = _db.ExecuteScalar(
+                        @"INSERT INTO dbo.app_role (role_name, description, is_active)
+                          VALUES (@role_name, @description, @is_active);
+                          SELECT CAST(SCOPE_IDENTITY() AS int);",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@role_name", role.RoleName, SqlDbType.VarChar, 50),
+                            DatabaseHelper.CreateParameter("@description", role.Description ?? (object)DBNull.Value, SqlDbType.NVarChar, 300),
+                            DatabaseHelper.CreateParameter("@is_active", role.IsActive, SqlDbType.Bit)
+                        });
+                    role.RoleId = Convert.ToInt32(newId);
+                }
+                else if (protectedAdmin)
+                {
+                    _db.ExecuteNonQuery(
+                        "UPDATE dbo.app_role SET description = @description, is_active = 1 WHERE role_id = @role_id",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@description", role.Description ?? (object)DBNull.Value, SqlDbType.NVarChar, 300),
+                            DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int)
+                        });
+                    _db.CommitTransaction();
+                    return role.RoleId;
+                }
+                else
+                {
+                    _db.ExecuteNonQuery(
+                        @"UPDATE dbo.app_role
+                          SET role_name = @role_name, description = @description, is_active = @is_active
+                          WHERE role_id = @role_id",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@role_name", role.RoleName, SqlDbType.VarChar, 50),
+                            DatabaseHelper.CreateParameter("@description", role.Description ?? (object)DBNull.Value, SqlDbType.NVarChar, 300),
+                            DatabaseHelper.CreateParameter("@is_active", role.IsActive, SqlDbType.Bit)
+                        });
+                }
+
+                foreach (int permissionId in uniquePermissionIds)
+                {
+                    int exists = Convert.ToInt32(_db.ExecuteScalar(
+                        "SELECT COUNT(*) FROM dbo.permission WITH (UPDLOCK, HOLDLOCK) WHERE permission_id = @permission_id",
+                        new SqlParameter[] { DatabaseHelper.CreateParameter("@permission_id", permissionId, SqlDbType.Int) }));
+                    if (exists == 0) throw new InvalidOperationException("One or more selected permissions no longer exist.");
+                }
+
+                _db.ExecuteNonQuery("DELETE FROM dbo.role_permission WHERE role_id = @role_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int) });
+                foreach (int permissionId in uniquePermissionIds)
+                    _db.ExecuteNonQuery("INSERT INTO dbo.role_permission (role_id, permission_id) VALUES (@role_id, @permission_id)",
+                        new SqlParameter[]
+                        {
+                            DatabaseHelper.CreateParameter("@role_id", role.RoleId, SqlDbType.Int),
+                            DatabaseHelper.CreateParameter("@permission_id", permissionId, SqlDbType.Int)
+                        });
+
+                _db.CommitTransaction();
+                return role.RoleId;
+            }
+            catch { _db.RollbackTransaction(); throw; }
+        }
+
         /// <summary>
         /// Deletes a role (only if no users are assigned).
         /// </summary>
         public bool DeleteRole(int roleId)
         {
-            SqlParameter[] parameters = new SqlParameter[]
+            if (roleId <= 0) throw new InvalidOperationException("A valid role ID is required.");
+            _db.BeginTransaction(IsolationLevel.Serializable);
+            try
             {
-                DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int)
-            };
+                object name = _db.ExecuteScalar(
+                    "SELECT role_name FROM dbo.app_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int) });
+                if (name == null || name == DBNull.Value) throw new InvalidOperationException("The role no longer exists.");
+                if (string.Equals(Convert.ToString(name), "administrator", StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException("The built-in administrator role cannot be deleted.");
 
-            // First check if any users have this role
-            string checkSql = "SELECT COUNT(*) FROM dbo.user_role WHERE role_id = @role_id";
-            object result = _db.ExecuteScalar(checkSql, parameters);
-            int userCount = Convert.ToInt32(result);
+                int userCount = Convert.ToInt32(_db.ExecuteScalar(
+                    "SELECT COUNT(*) FROM dbo.user_role WITH (UPDLOCK, HOLDLOCK) WHERE role_id = @role_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int) }));
+                if (userCount > 0)
+                    throw new InvalidOperationException("Cannot delete this role while it is assigned to " + userCount + " user(s). Deactivate it instead.");
 
-            if (userCount > 0)
-            {
-                throw new InvalidOperationException($"Cannot delete role because {userCount} user(s) are assigned to it.");
+                _db.ExecuteNonQuery("DELETE FROM dbo.role_permission WHERE role_id = @role_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int) });
+                int rows = _db.ExecuteNonQuery("DELETE FROM dbo.app_role WHERE role_id = @role_id",
+                    new SqlParameter[] { DatabaseHelper.CreateParameter("@role_id", roleId, SqlDbType.Int) });
+                _db.CommitTransaction();
+                return rows > 0;
             }
-
-            // Delete role permissions first
-            string deletePermissionsSql = "DELETE FROM dbo.role_permission WHERE role_id = @role_id";
-            _db.ExecuteNonQuery(deletePermissionsSql, parameters);
-
-            // Then delete the role
-            string deleteSql = "DELETE FROM dbo.app_role WHERE role_id = @role_id";
-            int rowsAffected = _db.ExecuteNonQuery(deleteSql, parameters);
-            return rowsAffected > 0;
+            catch { _db.RollbackTransaction(); throw; }
         }
 
         #endregion
