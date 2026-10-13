@@ -2115,4 +2115,250 @@
   <data name="Auto_System_Users_7" xml:space="preserve">
     <value>Users - Autopark Management System</value>
   </data>
+  <data name="AdminCommon_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="AdminCommon_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AdminCommon_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="AdminCommon_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="AdminCommon_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="AdminUsers_Heading" xml:space="preserve">
+    <value>User administration</value>
+  </data>
+  <data name="AdminUsers_Intro" xml:space="preserve">
+    <value>Create accounts, assign roles, reset passwords, and manage access. New permissions take effect on the user's next request.</value>
+  </data>
+  <data name="AdminUsers_Total" xml:space="preserve">
+    <value>Total accounts</value>
+  </data>
+  <data name="AdminUsers_ActiveCount" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="AdminUsers_InactiveCount" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="AdminUsers_Administrators" xml:space="preserve">
+    <value>Active administrators</value>
+  </data>
+  <data name="AdminUsers_New" xml:space="preserve">
+    <value>Add user</value>
+  </data>
+  <data name="AdminUsers_Apply" xml:space="preserve">
+    <value>Apply filters</value>
+  </data>
+  <data name="AdminUsers_AllStatuses" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="AdminUsers_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="AdminUsers_Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="AdminUsers_SearchPlaceholder" xml:space="preserve">
+    <value>Search login, employee, email, or role</value>
+  </data>
+  <data name="AdminUsers_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="AdminUsers_LoginHint" xml:space="preserve">
+    <value>3–80 characters: Latin letters, digits, dot, hyphen, or underscore.</value>
+  </data>
+  <data name="AdminUsers_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="AdminUsers_NoEmployee" xml:space="preserve">
+    <value>— No linked employee —</value>
+  </data>
+  <data name="AdminUsers_EmployeeHint" xml:space="preserve">
+    <value>An employee can be linked to only one account.</value>
+  </data>
+  <data name="AdminUsers_Email" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="AdminUsers_Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="AdminUsers_Password" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="AdminUsers_ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="AdminUsers_PasswordHint" xml:space="preserve">
+    <value>At least 12 characters with uppercase and lowercase letters, a number, and a symbol.</value>
+  </data>
+  <data name="AdminUsers_PasswordRequired" xml:space="preserve">
+    <value>A password is required when creating an account.</value>
+  </data>
+  <data name="AdminUsers_PasswordOptional" xml:space="preserve">
+    <value>Leave both fields empty to keep the existing password.</value>
+  </data>
+  <data name="AdminUsers_PasswordMismatch" xml:space="preserve">
+    <value>The password and confirmation must match.</value>
+  </data>
+  <data name="AdminUsers_ActiveAccount" xml:space="preserve">
+    <value>Account is active</value>
+  </data>
+  <data name="AdminUsers_ActiveHelp" xml:space="preserve">
+    <value>Inactive users cannot sign in.</value>
+  </data>
+  <data name="AdminUsers_Roles" xml:space="preserve">
+    <value>Assigned roles</value>
+  </data>
+  <data name="AdminUsers_RolesHint" xml:space="preserve">
+    <value>An active account must have at least one active role.</value>
+  </data>
+  <data name="AdminUsers_InactiveRolesPreserved" xml:space="preserve">
+    <value>Inactive assignments are preserved without granting access</value>
+  </data>
+  <data name="AdminUsers_NoRoles" xml:space="preserve">
+    <value>No roles assigned</value>
+  </data>
+  <data name="AdminUsers_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="AdminUsers_Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="AdminUsers_LastLogin" xml:space="preserve">
+    <value>Last sign-in</value>
+  </data>
+  <data name="AdminUsers_Empty" xml:space="preserve">
+    <value>No users match the selected filters.</value>
+  </data>
+  <data name="AdminUsers_Edit" xml:space="preserve">
+    <value>Edit user</value>
+  </data>
+  <data name="AdminUsers_Deactivate" xml:space="preserve">
+    <value>Deactivate</value>
+  </data>
+  <data name="AdminUsers_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="AdminUsers_DeactivateConfirm" xml:space="preserve">
+    <value>Deactivate this account? The user will no longer be able to sign in.</value>
+  </data>
+  <data name="AdminUsers_ActivateConfirm" xml:space="preserve">
+    <value>Activate this account?</value>
+  </data>
+  <data name="AdminUsers_CreatedSuccess" xml:space="preserve">
+    <value>User account created.</value>
+  </data>
+  <data name="AdminUsers_SavedSuccess" xml:space="preserve">
+    <value>User changes saved.</value>
+  </data>
+  <data name="AdminUsers_PasswordSaved" xml:space="preserve">
+    <value>Changes saved and password updated.</value>
+  </data>
+  <data name="AdminUsers_ActivatedSuccess" xml:space="preserve">
+    <value>User account activated.</value>
+  </data>
+  <data name="AdminUsers_DeactivatedSuccess" xml:space="preserve">
+    <value>User account deactivated.</value>
+  </data>
+  <data name="AdminUsers_CannotDisableSelf" xml:space="preserve">
+    <value>You cannot deactivate your own account or remove your own administrator role.</value>
+  </data>
+  <data name="AdminUsers_InvalidUser" xml:space="preserve">
+    <value>The user was not found or the identifier is invalid.</value>
+  </data>
+  <data name="AdminRoles_Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="AdminRoles_Heading" xml:space="preserve">
+    <value>Roles and permissions</value>
+  </data>
+  <data name="AdminRoles_Intro" xml:space="preserve">
+    <value>Create roles, assign application permissions, and monitor their use. The built-in administrator role is protected from renaming, deactivation, deletion, and permission-set changes.</value>
+  </data>
+  <data name="AdminRoles_Total" xml:space="preserve">
+    <value>Total roles</value>
+  </data>
+  <data name="AdminRoles_ActiveCount" xml:space="preserve">
+    <value>Active roles</value>
+  </data>
+  <data name="AdminRoles_InactiveCount" xml:space="preserve">
+    <value>Inactive roles</value>
+  </data>
+  <data name="AdminRoles_SearchPlaceholder" xml:space="preserve">
+    <value>Search role name or description</value>
+  </data>
+  <data name="AdminRoles_AllStatuses" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="AdminRoles_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="AdminRoles_Apply" xml:space="preserve">
+    <value>Apply filters</value>
+  </data>
+  <data name="AdminRoles_New" xml:space="preserve">
+    <value>Create role</value>
+  </data>
+  <data name="AdminRoles_Name" xml:space="preserve">
+    <value>Role name</value>
+  </data>
+  <data name="AdminRoles_NameHint" xml:space="preserve">
+    <value>3–50 characters; Latin letters, digits, dot, hyphen, or underscore. Names are saved in lowercase.</value>
+  </data>
+  <data name="AdminRoles_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="AdminRoles_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="AdminRoles_UserCount" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="AdminRoles_PermissionCount" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="AdminRoles_Permissions" xml:space="preserve">
+    <value>Application permissions</value>
+  </data>
+  <data name="AdminRoles_PermissionsHint" xml:space="preserve">
+    <value>Select the permissions granted to users who have this role.</value>
+  </data>
+  <data name="AdminRoles_ActiveHint" xml:space="preserve">
+    <value>A disabled role does not grant its assigned permissions.</value>
+  </data>
+  <data name="AdminRoles_SystemRoleNote" xml:space="preserve">
+    <value>This is the built-in administrator role. Its name, status, and permissions are protected; only its description can be changed.</value>
+  </data>
+  <data name="AdminRoles_Protected" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="AdminRoles_Empty" xml:space="preserve">
+    <value>No roles found.</value>
+  </data>
+  <data name="AdminRoles_Edit" xml:space="preserve">
+    <value>Edit role</value>
+  </data>
+  <data name="AdminRoles_CreatedSuccess" xml:space="preserve">
+    <value>Role created.</value>
+  </data>
+  <data name="AdminRoles_SavedSuccess" xml:space="preserve">
+    <value>Role and permission changes saved.</value>
+  </data>
+  <data name="AdminRoles_DeletedSuccess" xml:space="preserve">
+    <value>Role deleted.</value>
+  </data>
+  <data name="AdminRoles_DeleteConfirm" xml:space="preserve">
+    <value>Delete this role? This action cannot be undone.</value>
+  </data>
+  <data name="AdminRoles_AssignedDeleteHint" xml:space="preserve">
+    <value>This role is assigned to users. Remove its assignments or deactivate it instead.</value>
+  </data>
+  <data name="AdminRoles_InvalidRole" xml:space="preserve">
+    <value>The role was not found or the identifier is invalid.</value>
+  </data>
 </root>

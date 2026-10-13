@@ -2115,4 +2115,250 @@
   <data name="Auto_System_Users_7" xml:space="preserve">
     <value>Пользователи - Автопарк</value>
   </data>
+  <data name="AdminCommon_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="AdminCommon_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="AdminCommon_Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="AdminCommon_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="AdminCommon_Actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="AdminUsers_Heading" xml:space="preserve">
+    <value>Управление пользователями</value>
+  </data>
+  <data name="AdminUsers_Intro" xml:space="preserve">
+    <value>Создание учётных записей, назначение ролей, смена паролей и управление доступом. Новые права применяются при следующем запросе пользователя.</value>
+  </data>
+  <data name="AdminUsers_Total" xml:space="preserve">
+    <value>Всего учётных записей</value>
+  </data>
+  <data name="AdminUsers_ActiveCount" xml:space="preserve">
+    <value>Активные</value>
+  </data>
+  <data name="AdminUsers_InactiveCount" xml:space="preserve">
+    <value>Неактивные</value>
+  </data>
+  <data name="AdminUsers_Administrators" xml:space="preserve">
+    <value>Активные администраторы</value>
+  </data>
+  <data name="AdminUsers_New" xml:space="preserve">
+    <value>Добавить пользователя</value>
+  </data>
+  <data name="AdminUsers_Apply" xml:space="preserve">
+    <value>Применить фильтры</value>
+  </data>
+  <data name="AdminUsers_AllStatuses" xml:space="preserve">
+    <value>Все статусы</value>
+  </data>
+  <data name="AdminUsers_Active" xml:space="preserve">
+    <value>Активен</value>
+  </data>
+  <data name="AdminUsers_Inactive" xml:space="preserve">
+    <value>Неактивен</value>
+  </data>
+  <data name="AdminUsers_SearchPlaceholder" xml:space="preserve">
+    <value>Поиск по логину, сотруднику, email или роли</value>
+  </data>
+  <data name="AdminUsers_Login" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="AdminUsers_LoginHint" xml:space="preserve">
+    <value>3–80 символов: латинские буквы, цифры, точка, дефис или подчёркивание.</value>
+  </data>
+  <data name="AdminUsers_Employee" xml:space="preserve">
+    <value>Сотрудник</value>
+  </data>
+  <data name="AdminUsers_NoEmployee" xml:space="preserve">
+    <value>— Без привязки к сотруднику —</value>
+  </data>
+  <data name="AdminUsers_EmployeeHint" xml:space="preserve">
+    <value>Один сотрудник может быть связан только с одной учётной записью.</value>
+  </data>
+  <data name="AdminUsers_Email" xml:space="preserve">
+    <value>Электронная почта</value>
+  </data>
+  <data name="AdminUsers_Phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="AdminUsers_Password" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="AdminUsers_ConfirmPassword" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+  </data>
+  <data name="AdminUsers_PasswordHint" xml:space="preserve">
+    <value>Не менее 12 символов, верхний и нижний регистр, цифра и символ.</value>
+  </data>
+  <data name="AdminUsers_PasswordRequired" xml:space="preserve">
+    <value>При создании учётной записи пароль обязателен.</value>
+  </data>
+  <data name="AdminUsers_PasswordOptional" xml:space="preserve">
+    <value>Оставьте оба поля пустыми, чтобы сохранить существующий пароль.</value>
+  </data>
+  <data name="AdminUsers_PasswordMismatch" xml:space="preserve">
+    <value>Пароль и подтверждение должны совпадать.</value>
+  </data>
+  <data name="AdminUsers_ActiveAccount" xml:space="preserve">
+    <value>Учётная запись активна</value>
+  </data>
+  <data name="AdminUsers_ActiveHelp" xml:space="preserve">
+    <value>Неактивный пользователь не сможет войти в систему.</value>
+  </data>
+  <data name="AdminUsers_Roles" xml:space="preserve">
+    <value>Назначенные роли</value>
+  </data>
+  <data name="AdminUsers_RolesHint" xml:space="preserve">
+    <value>У активной учётной записи должна быть хотя бы одна активная роль.</value>
+  </data>
+  <data name="AdminUsers_InactiveRolesPreserved" xml:space="preserve">
+    <value>Неактивные назначения сохраняются без предоставления доступа</value>
+  </data>
+  <data name="AdminUsers_NoRoles" xml:space="preserve">
+    <value>Роли не назначены</value>
+  </data>
+  <data name="AdminUsers_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="AdminUsers_Created" xml:space="preserve">
+    <value>Создана</value>
+  </data>
+  <data name="AdminUsers_LastLogin" xml:space="preserve">
+    <value>Последний вход</value>
+  </data>
+  <data name="AdminUsers_Empty" xml:space="preserve">
+    <value>Пользователи по заданным условиям не найдены.</value>
+  </data>
+  <data name="AdminUsers_Edit" xml:space="preserve">
+    <value>Редактирование пользователя</value>
+  </data>
+  <data name="AdminUsers_Deactivate" xml:space="preserve">
+    <value>Отключить</value>
+  </data>
+  <data name="AdminUsers_Activate" xml:space="preserve">
+    <value>Активировать</value>
+  </data>
+  <data name="AdminUsers_DeactivateConfirm" xml:space="preserve">
+    <value>Отключить эту учётную запись? Пользователь больше не сможет войти.</value>
+  </data>
+  <data name="AdminUsers_ActivateConfirm" xml:space="preserve">
+    <value>Активировать эту учётную запись?</value>
+  </data>
+  <data name="AdminUsers_CreatedSuccess" xml:space="preserve">
+    <value>Учётная запись создана.</value>
+  </data>
+  <data name="AdminUsers_SavedSuccess" xml:space="preserve">
+    <value>Изменения пользователя сохранены.</value>
+  </data>
+  <data name="AdminUsers_PasswordSaved" xml:space="preserve">
+    <value>Изменения сохранены, пароль обновлён.</value>
+  </data>
+  <data name="AdminUsers_ActivatedSuccess" xml:space="preserve">
+    <value>Учётная запись активирована.</value>
+  </data>
+  <data name="AdminUsers_DeactivatedSuccess" xml:space="preserve">
+    <value>Учётная запись отключена.</value>
+  </data>
+  <data name="AdminUsers_CannotDisableSelf" xml:space="preserve">
+    <value>Нельзя отключить собственную учётную запись или снять с себя роль администратора.</value>
+  </data>
+  <data name="AdminUsers_InvalidUser" xml:space="preserve">
+    <value>Учётная запись не найдена или её идентификатор некорректен.</value>
+  </data>
+  <data name="AdminRoles_Inactive" xml:space="preserve">
+    <value>Неактивна</value>
+  </data>
+  <data name="AdminRoles_Heading" xml:space="preserve">
+    <value>Управление ролями и разрешениями</value>
+  </data>
+  <data name="AdminRoles_Intro" xml:space="preserve">
+    <value>Создавайте роли, назначайте разрешения приложения и контролируйте использование ролей. Системная роль administrator защищена от переименования, отключения, удаления и изменения набора разрешений.</value>
+  </data>
+  <data name="AdminRoles_Total" xml:space="preserve">
+    <value>Всего ролей</value>
+  </data>
+  <data name="AdminRoles_ActiveCount" xml:space="preserve">
+    <value>Активные роли</value>
+  </data>
+  <data name="AdminRoles_InactiveCount" xml:space="preserve">
+    <value>Неактивные роли</value>
+  </data>
+  <data name="AdminRoles_SearchPlaceholder" xml:space="preserve">
+    <value>Поиск по имени роли или описанию</value>
+  </data>
+  <data name="AdminRoles_AllStatuses" xml:space="preserve">
+    <value>Все статусы</value>
+  </data>
+  <data name="AdminRoles_Active" xml:space="preserve">
+    <value>Активна</value>
+  </data>
+  <data name="AdminRoles_Apply" xml:space="preserve">
+    <value>Применить фильтры</value>
+  </data>
+  <data name="AdminRoles_New" xml:space="preserve">
+    <value>Создать роль</value>
+  </data>
+  <data name="AdminRoles_Name" xml:space="preserve">
+    <value>Имя роли</value>
+  </data>
+  <data name="AdminRoles_NameHint" xml:space="preserve">
+    <value>3–50 символов; латинские буквы, цифры, точка, дефис или подчёркивание. Имя сохраняется в нижнем регистре.</value>
+  </data>
+  <data name="AdminRoles_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="AdminRoles_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="AdminRoles_UserCount" xml:space="preserve">
+    <value>Пользователей</value>
+  </data>
+  <data name="AdminRoles_PermissionCount" xml:space="preserve">
+    <value>Разрешений</value>
+  </data>
+  <data name="AdminRoles_Permissions" xml:space="preserve">
+    <value>Разрешения приложения</value>
+  </data>
+  <data name="AdminRoles_PermissionsHint" xml:space="preserve">
+    <value>Выберите разрешения, предоставляемые пользователям с этой ролью.</value>
+  </data>
+  <data name="AdminRoles_ActiveHint" xml:space="preserve">
+    <value>Отключённая роль не предоставляет назначенные ей разрешения.</value>
+  </data>
+  <data name="AdminRoles_SystemRoleNote" xml:space="preserve">
+    <value>Это встроенная роль администратора. Её имя, состояние и набор разрешений защищены; можно изменить только описание.</value>
+  </data>
+  <data name="AdminRoles_Protected" xml:space="preserve">
+    <value>Системная</value>
+  </data>
+  <data name="AdminRoles_Empty" xml:space="preserve">
+    <value>Роли не найдены.</value>
+  </data>
+  <data name="AdminRoles_Edit" xml:space="preserve">
+    <value>Редактирование роли</value>
+  </data>
+  <data name="AdminRoles_CreatedSuccess" xml:space="preserve">
+    <value>Роль создана.</value>
+  </data>
+  <data name="AdminRoles_SavedSuccess" xml:space="preserve">
+    <value>Изменения роли и разрешений сохранены.</value>
+  </data>
+  <data name="AdminRoles_DeletedSuccess" xml:space="preserve">
+    <value>Роль удалена.</value>
+  </data>
+  <data name="AdminRoles_DeleteConfirm" xml:space="preserve">
+    <value>Удалить эту роль? Это действие нельзя отменить.</value>
+  </data>
+  <data name="AdminRoles_AssignedDeleteHint" xml:space="preserve">
+    <value>Роль назначена пользователям. Сначала снимите назначения или отключите роль.</value>
+  </data>
+  <data name="AdminRoles_InvalidRole" xml:space="preserve">
+    <value>Роль не найдена или её идентификатор некорректен.</value>
+  </data>
 </root>
