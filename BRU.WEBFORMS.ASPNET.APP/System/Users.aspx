@@ -14,6 +14,9 @@
         .admin-panel { background:#fff; }
         .panel-heading { background:#1447ae; color:#fff; font-weight:bold; margin:-12px -12px 14px; padding:9px 12px; }
         .admin-page input[type=text],.admin-page input[type=password],.admin-page input[type=email],.admin-page select,.admin-page textarea { max-width:100%; box-sizing:border-box; border:1px solid #829bc8; padding:6px 8px; font:9pt Tahoma,Arial,sans-serif; }
+        .admin-page select { height:auto; min-height:30px; padding:6px 30px 6px 8px; background-position:right 8px center; background-size:16px 16px; line-height:1.2; }
+        .admin-page select:active { background-position:right 8px center; background-size:16px 16px; }
+        .admin-page select:focus { background-position:right 8px center; background-size:16px 16px; }
         .search-input { width:310px; }
         .form-grid { display:grid; grid-template-columns:repeat(2,minmax(240px,1fr)); gap:14px 18px; }
         .form-field { display:flex; flex-direction:column; align-items:flex-start; gap:5px; min-width:0; }
