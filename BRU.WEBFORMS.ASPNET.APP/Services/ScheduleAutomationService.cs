@@ -457,6 +457,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                         }
                         catch (Exception ex)
                         {
+                            LogScheduleTrace("GENERATION", "TRIP_FAILED date=" +
+                                generationDate.ToString("yyyy-MM-dd") + ", route=" + template.RouteNum +
+                                ", error=" + ex.Message);
                             result.Failed.Add(new ScheduleGenerationItem
                             {
                                 RouteNum = template.RouteNum,
@@ -465,11 +468,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                         }
                     }
 
-                    result.Success = true;
                     result.TotalGenerated = result.Created.Count;
                     result.TotalSkipped = result.Skipped.Count;
                     result.TotalFailed = result.Failed.Count;
+                    result.Success = result.TotalFailed == 0;
 
+                    // Successfully inserted trips may still be committed when another
+                    // template trip fails; the result clearly reports this partial outcome.
                     scope.Complete();
                 }
             }
@@ -698,6 +703,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
 
                         batchResult.TotalDaysProcessed++;
                         batchResult.TotalSchedulesSkipped += dayResult.TotalSkipped;
+                        batchResult.TotalSchedulesFailed += dayResult.TotalFailed;
                         if (dayResult.Success)
                         {
                             batchResult.TotalDaysSucceeded++;
@@ -712,10 +718,28 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
                     currentDate = currentDate.AddDays(1);
                 }
 
-                batchResult.Success = batchResult.TotalDaysFailed == 0;
+                batchResult.Success = batchResult.TotalDaysFailed == 0 &&
+                    batchResult.TotalSchedulesFailed == 0;
+
+                List<string> failureDetails = new List<string>();
+                foreach (ScheduleGenerationResult day in batchResult.DailyResults)
+                {
+                    if (!string.IsNullOrWhiteSpace(day.ErrorMessage))
+                        failureDetails.Add(day.TargetDate.ToString("yyyy-MM-dd") + ": " + day.ErrorMessage);
+                    foreach (ScheduleGenerationItem failedTrip in day.Failed.Take(3))
+                        failureDetails.Add(day.TargetDate.ToString("yyyy-MM-dd") + " route " +
+                            failedTrip.RouteNum + ": " + failedTrip.Reason);
+                    if (failureDetails.Count >= 5)
+                        break;
+                }
+                if (failureDetails.Count > 0)
+                    batchResult.ErrorMessage = string.Join(" | ", failureDetails.Take(5));
+
                 LogScheduleTrace("GENERATION", "FINISH success=" + batchResult.Success +
                     ", processedDays=" + batchResult.TotalDaysProcessed +
                     ", created=" + batchResult.TotalSchedulesCreated +
+                    ", skippedTrips=" + batchResult.TotalSchedulesSkipped +
+                    ", failedTrips=" + batchResult.TotalSchedulesFailed +
                     ", failedDays=" + batchResult.TotalDaysFailed);
             }
             catch (Exception ex)
@@ -1014,6 +1038,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Services
         public int TotalDaysFailed { get; set; }
         public int TotalSchedulesCreated { get; set; }
         public int TotalSchedulesSkipped { get; set; }
+        public int TotalSchedulesFailed { get; set; }
         public List<ScheduleGenerationResult> DailyResults { get; set; } = new List<ScheduleGenerationResult>();
         public string ErrorMessage { get; set; }
         public Exception Exception { get; set; }
