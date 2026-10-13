@@ -641,8 +641,18 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             {
                 EnsureScheduleWriteAccess();
                 RouteSchedule schedule = ReadScheduleEditor();
+                LogInformation("[SCHEDULE][SAVE] START mode=" +
+                    (schedule.ScheduleId == 0 ? "create" : "update") +
+                    ", routeId=" + schedule.RouteId +
+                    ", busId=" + schedule.BusId +
+                    ", driverId=" + schedule.DriverId +
+                    ", date=" + schedule.ServiceDate.ToString("yyyy-MM-dd") +
+                    ", interval=" + schedule.DepartureTime.ToString(@"hh\:mm") +
+                    "-" + schedule.ArrivalTime.ToString(@"hh\:mm"));
                 using (ScheduleAutomationService service = new ScheduleAutomationService())
                     schedule.ScheduleId = service.SaveSchedule(schedule);
+                LogInformation("[SCHEDULE][SAVE] SUCCESS scheduleId=" + schedule.ScheduleId +
+                    ", date=" + schedule.ServiceDate.ToString("yyyy-MM-dd"));
 
                 DateFrom = schedule.ServiceDate.Date;
                 DateTo = schedule.ServiceDate.Date.AddDays(1);
@@ -658,6 +668,7 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Trace.TraceError("[SCHEDULE][SAVE] FAILED: " + ex);
                 HandleGenericError(ex);
             }
         }
@@ -727,8 +738,13 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                     result = service.GenerateBatchSchedules(startDate, endDate, templateDate, days);
 
                 if (!result.Success)
+                {
+                    if (result.TotalDaysProcessed == 0 && !string.IsNullOrWhiteSpace(result.ErrorMessage))
+                        throw new ServiceException(result.ErrorMessage);
+
                     throw new ServiceException("Generation completed with " + result.TotalDaysFailed +
                         " failed date(s). " + result.TotalSchedulesCreated + " trip(s) were created. " + result.ErrorMessage);
+                }
 
                 DateFrom = startDate.Date;
                 DateTo = endDate.Date.AddDays(1);
@@ -741,8 +757,9 @@ namespace BRU.WEBFORMS.ASPNET.APP.Operations
                     ? " Past dates were processed as historical backfill; created past trips use status Completed."
                     : string.Empty;
                 ShowSuccess("Recurring generation finished: " + result.TotalSchedulesCreated + " created across " +
-                    result.TotalDaysProcessed + " selected day(s); " + result.TotalDaysFailed + " date(s) failed." +
-                    historyNotice);
+                    result.TotalDaysProcessed + " selected day(s); " + result.TotalSchedulesSkipped +
+                    " trip(s) skipped because schedules already existed or resources conflicted; " +
+                    result.TotalDaysFailed + " date(s) failed." + historyNotice);
             }
             catch (Exception ex)
             {
